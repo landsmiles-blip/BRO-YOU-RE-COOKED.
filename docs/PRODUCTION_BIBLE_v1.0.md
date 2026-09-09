@@ -1128,3 +1128,111 @@ What this version adds is the answer to the question underneath all of them — 
 The rest is discipline. Build the four levels. Show them to someone who owes you nothing. Believe what they do, not what they say.
 
 > **One line. One shot. Get him out.**
+
+---
+---
+
+# AMENDMENT A — PLATFORM VERIFICATION CORRECTIONS
+
+**Added after v1.0 was written.** Part 8.2 of this document carried an explicit caveat: the Playables SDK method names and lifecycle timing in all four source documents were unverified, and had to be checked against Google's own documentation before implementation. That verification has now been done. This amendment records what changed.
+
+**One correction is certification-blocking and it is against this document's own spec.** See A.1.
+
+Sources are listed in `EXECUTION_ROADMAP_v1.0.md` §9.
+
+## A.1 Responsive model — **REPLACES §8.3** (certification-blocking)
+
+Google requires playability across **9:32, 9:21, 9:16, 3:4, 1:1, 4:3, 16:9, 21:9 and 32:9**, forbids locking device orientation or posture, and requires game state to survive window resizing.
+
+§8.3 specified a **fixed world height of 1280** with a 720-unit safe column. Verified arithmetic:
+
+```
+9:32 → world width  360u   safe column 720u  → PUZZLE DOES NOT FIT
+9:21 → world width  549u   safe column 720u  → PUZZLE DOES NOT FIT
+9:16 → world width  720u   → fits exactly (the ratio it was designed against)
+```
+
+**Two required ratios break outright.** The fixed-height model is only valid for viewports at or wider than 9:16; every taller ratio starves the puzzle of width.
+
+**The fix — contain-fit a safe puzzle box:**
+
+```js
+export const SAFE_BOX = { w: 720, h: 1280 };   // ALL puzzle geometry lives inside this
+
+// each resize:
+scale  = Math.min(viewportW / SAFE_BOX.w, viewportH / SAFE_BOX.h);
+worldW = viewportW / scale;
+worldH = viewportH / scale;    // slack in either axis is background/decoration ONLY
+```
+
+Verified across every required ratio:
+
+| Ratio | World (units) | Constrained by |
+|---|---|---|
+| 9:32 | 720 × 2560 | width |
+| 9:21 | 720 × 1680 | width |
+| 9:16 | 720 × 1280 | height |
+| 3:4 | 960 × 1280 | height |
+| 1:1 | 1280 × 1280 | height |
+| 4:3 | 1707 × 1280 | height |
+| 16:9 | 2276 × 1280 | height |
+| 21:9 | 2987 × 1280 | height |
+| 32:9 | 4551 × 1280 | height |
+
+The safe box always fits. Everything outside it is decorative.
+
+**This also satisfies "maintain game state during resize" for free**, and that is not an accident worth glossing over: a resize changes `scale` only. World units never change, so a resize mid-simulation is mathematically incapable of perturbing the physics. **Resize during an active run becomes an explicit test case** in the QA matrix.
+
+§8.3's six-row test matrix is superseded by the nine rows above, plus the small-embed case (320 × 480 css px), which stands.
+
+## A.2 SDK names — confirms and replaces the §8.2 caveat
+
+Verified function names, no longer assumed:
+
+| Purpose | Function |
+|---|---|
+| First meaningful frame painted | `firstFrameReady` |
+| Game accepts input | `gameReady` |
+| Cloud save | `saveData` / `loadData` |
+| Lifecycle | `onPause` / `onResume` |
+| Rewarded ad | `requestRewardedAd(id)` |
+
+**New hard requirement:** the SDK **must load before any game code** — first script in `index.html`, ahead of module imports. This is an ordering constraint on the entry point, not a runtime detail.
+
+## A.3 Save data versioning — **NEW**
+
+Cloud save must maintain **data integrity and backward compatibility across game versions**. §7.5 assumed save/restore but specified no schema contract.
+
+Every save payload carries a schema version: `{ v: <n>, ... }`. The loader migrates forward through a version ladder and **never throws** on an unknown or older payload. A save written by v1 must load in v3. Unrecognised future versions degrade to a fresh save rather than crashing.
+
+## A.4 `gameReady` timing — **NEW**
+
+Initial bundle size is measured **from page-load start to the `gameReady` call**. That makes `gameReady` placement a size-compliance decision, not just a lifecycle one.
+
+- `firstFrameReady` fires the instant the frozen tableau paints.
+- `gameReady` fires the instant input is accepted — **before** non-essential warm-up.
+- Audio graph construction, later-level data, and anything else deferrable moves **after** `gameReady`.
+
+This reinforces the §3.11 boot script rather than changing it.
+
+## A.5 Memory ceiling — **NEW**
+
+Peak JS heap **must not exceed 512 MB**, cited as a crash cause on iPhone. §5.3 requires a full teardown and rebuild of the physics world on every retry; that is correct for determinism but makes leaks a live risk under heavy retrying, which is exactly the behaviour this game is designed to encourage.
+
+**A 200-retry soak with heap sampling becomes an M1 gate.**
+
+## A.6 Orientation — amends §8.3
+
+"Portrait-first" (v0.2 §102, carried into §8.3) is a **composition preference only**. `screen.orientation.lock()` is prohibited. Landscape and ultrawide are first-class supported layouts, not degraded fallbacks.
+
+## A.7 Analytics — confirms §3.13, stricter than assumed
+
+§3.13 predicted no analytics inside the sandbox and routed analytics behind an adapter. **Confirmed and stricter:** external network calls are prohibited outright, with Google Analytics and GameAnalytics named explicitly.
+
+`js/platform/analytics.js` must compile to a **hard no-op** in the Playables build, verified by a build-time grep for `fetch`, `XMLHttpRequest`, `WebSocket` and `sendBeacon` that **fails the build** on any hit.
+
+The strategic consequence in §3.13 is not merely confirmed but promoted: the open-web build is the only instrumented version of this game that will ever exist, and it is now **Milestone 3** rather than a late validation phase — because Playables access is a limited-access program in which a working, publicly-hosted demo is itself the application artifact. See `EXECUTION_ROADMAP_v1.0.md` §1.2.
+
+## A.8 What did not change
+
+Verification confirmed the rest of Part 8 as written: bundle ceilings (30 MiB hard / 15 MiB recommended — §8.4's ~200 KB estimate is ~1.3% of the recommended figure), the closed sandbox, touch **and** mouse support, full pause/resume of every subsystem, and the storage adapter rule. The §8.2 caveat is now discharged for the items above and **stands for everything else** — re-verify against Google's live documentation immediately before M5.

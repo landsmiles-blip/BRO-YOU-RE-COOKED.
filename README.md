@@ -3,8 +3,8 @@
 A physics rescue puzzle where one simple drawing can turn a disaster into a ridiculous
 last-second save. The player does not need more buttons; they need better ideas.
 
-**Platform:** YouTube Playables (primary) · open web portals (validation)
-**Status:** Pre-production
+**Platform:** YouTube Playables (primary) · open web (validation + revenue)
+**Status:** Pre-production complete → entering M0 (Truth Machine)
 
 > One line. One shot. Get him out.
 
@@ -25,15 +25,27 @@ You are drawing again four seconds later.
 
 | Document | What it is |
 |---|---|
-| **[docs/PRODUCTION_BIBLE_v1.0.md](docs/PRODUCTION_BIBLE_v1.0.md)** | **Current source of truth.** The rebuild — blind-spot analysis, locked design, physics spec, art direction, level system, phase plan with cut lines. |
-| [docs/source/v0.2_design_bible.md](docs/source/v0.2_design_bible.md) | Original design bible — philosophy, market case, principles |
-| [docs/source/v0.3_spine_and_build_spec.md](docs/source/v0.3_spine_and_build_spec.md) | First buildable spec — gap audit, schema, constants |
-| [docs/source/v0.4_addendum.md](docs/source/v0.4_addendum.md) | Second-pass gap audit |
+| **[docs/PRODUCTION_BIBLE_v1.0.md](docs/PRODUCTION_BIBLE_v1.0.md)** | **What the game is.** Blind-spot analysis, locked design, physics spec, art direction, level system. Includes **Amendment A** (platform-verification corrections). |
+| **[docs/EXECUTION_ROADMAP_v1.0.md](docs/EXECUTION_ROADMAP_v1.0.md)** | **How it ships.** Strategy, verified platform constraints, milestones M0–M7 with gates and cut lines. |
+| [docs/DECISIONS.md](docs/DECISIONS.md) | Locked calls and their reasoning |
+| [docs/CERTIFICATION_CHECKLIST.md](docs/CERTIFICATION_CHECKLIST.md) | Line-by-line sign-off sheet for the M5 certification dry-run |
+| [docs/source/](docs/source/) | Original v0.2–v0.4 documents, kept as lineage |
 
-v1.0 supersedes v0.2–v0.4. Where they disagree, v1.0 wins. The earlier documents are
-kept as lineage.
+v1.0 supersedes v0.2–v0.4. Where they disagree, v1.0 wins.
 
-## Next step
+---
 
-Pre-production closes when Part 11 of the production bible is answered. No code is
-authorised before then except the Phase 0 build described in Part 12.
+## Current milestone — M0: Truth Machine
+
+Capsules and grey circles. No art, no menu, no stars, no sound.
+
+1. Boot skeleton + state machine + RAF loop
+2. Physics adapter — fixed 120 Hz, 900 u/s clamp
+3. **Free-fall + tunneling acceptance tests — nothing proceeds until both pass**
+4. Drawing pipeline → anchoring
+5. Milo locomotion
+6. Levels A1–A4
+7. Death cam + ghost stroke
+8. Six comprehension gates, run on a stranger
+
+**Exit gate:** a stranger can say out loud why Milo died, every time.
