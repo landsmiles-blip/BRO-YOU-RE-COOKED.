@@ -150,4 +150,23 @@ export function allBodies(ctx) {
   return Composite.allBodies(ctx.world);
 }
 
+/** Ray query. Returns hit bodies, optionally filtered. */
+export function raycast(ctx, x1, y1, x2, y2, filter = null) {
+  const bodies = Composite.allBodies(ctx.world);
+  const hits = Matter.Query.ray(bodies, { x: x1, y: y1 }, { x: x2, y: y2 });
+  return filter ? hits.filter((h) => filter(h.body)) : hits;
+}
+
+/** Axis-aligned region query. */
+export function queryRegion(ctx, x, y, w, h, filter = null) {
+  const bounds = { min: { x, y }, max: { x: x + w, y: y + h } };
+  const hits = Matter.Query.region(Composite.allBodies(ctx.world), bounds);
+  return filter ? hits.filter(filter) : hits;
+}
+
+export function setPosition(body, x, y) { Body.setPosition(body, { x, y }); }
+export function setAngle(body, a) { Body.setAngle(body, a); }
+export function setAngularVelocity(body, w) { Body.setAngularVelocity(body, w); }
+export function setStatic(body, isStatic) { Body.setStatic(body, isStatic); }
+
 export { Matter as _matter };

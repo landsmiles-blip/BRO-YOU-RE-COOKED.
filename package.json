@@ -8,6 +8,7 @@
     "test": "node tools/test/run-all.js",
     "test:freefall": "node tools/test/freefall.js",
     "test:tunnel": "node tools/test/tunnel.js",
-    "serve": "node tools/serve.js"
+    "serve": "node tools/serve.js",
+    "test:browser": "node tools/test/browser.js"
   }
 }

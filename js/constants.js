@@ -43,7 +43,9 @@ export const MILO = {
   maxStepUp: 22,       // LOCKED — MUST exceed LINE.thickness or bridges are unwalkable
   maxWalkSlope: 40,    // TUNE — degrees
   groundProbe: 6,
-  stumbleImpulse: 40,  // TUNE
+  stumbleSpeed: 260,   // TUNE — u/s ALONG THE COLLISION NORMAL, not total
+                       //   relative speed. Walking is 220 u/s of tangential motion
+                       //   against the ground; measuring that stuns him every step.
   stunMs: 700,         // TUNE
   graceShrink: 6,      // LOCKED — hitbox shrink for lethal tests
 };

@@ -4,7 +4,7 @@ A physics rescue puzzle where one simple drawing can turn a disaster into a ridi
 last-second save. The player does not need more buttons; they need better ideas.
 
 **Platform:** YouTube Playables (primary) · open web (validation + revenue)
-**Status:** Pre-production complete → entering M0 (Truth Machine)
+**Status:** M0 — A1 playable
 
 > One line. One shot. Get him out.
 
@@ -35,17 +35,28 @@ v1.0 supersedes v0.2–v0.4. Where they disagree, v1.0 wins.
 
 ---
 
+## Run it
+
+```bash
+node tools/serve.js          # → http://localhost:8080
+npm test                     # physics gates + A1 solvability (headless)
+npm run test:browser         # real Chromium: 6 aspect ratios + full playthrough
+```
+
 ## Current milestone — M0: Truth Machine
 
-Capsules and grey circles. No art, no menu, no stars, no sound.
+Capsules and grey circles. No art, no menu, no stars, no sound — by design.
 
-1. Boot skeleton + state machine + RAF loop
-2. Physics adapter — fixed 120 Hz, 900 u/s clamp
-3. **Free-fall + tunneling acceptance tests — nothing proceeds until both pass**
-4. Drawing pipeline → anchoring
-5. Milo locomotion
-6. Levels A1–A4
-7. Death cam + ghost stroke
-8. Six comprehension gates, run on a stranger
+| | |
+|---|---|
+| Boot, state machine, fixed-step loop | done |
+| Physics adapter (120 Hz, 900 u/s clamp) | done |
+| Free-fall + tunneling gates | **passing** |
+| Drawing pipeline → anchoring | done |
+| Milo locomotion (walk / airborne / stunned, step-up) | done |
+| **A1 — WALL, playable end to end** | done |
+| Death cam + causality + ghost stroke | done |
+| A2 GAP · A3 REDIRECT · A4 CATCH | next |
+| Six comprehension gates, on a stranger | needs a human |
 
 **Exit gate:** a stranger can say out loud why Milo died, every time.

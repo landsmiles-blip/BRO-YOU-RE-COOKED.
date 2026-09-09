@@ -1,0 +1,16 @@
+/* Full-bleed canvas. No scroll, no bounce, no orientation lock, no user zoom.
+   The page itself must never scroll — the canvas is the entire surface. */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #E8E2D6;                 /* paper ground — matches render clear */
+  overscroll-behavior: none;
+  touch-action: none;                  /* we own every gesture */
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+#stage { display: block; width: 100%; height: 100%; }
