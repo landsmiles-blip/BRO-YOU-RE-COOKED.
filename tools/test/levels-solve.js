@@ -5,7 +5,7 @@
 // mechanic it exists to exercise.
 
 import { playLevel, assertCore, makeAssert, OUTCOME } from './lib/run-level.js';
-import { A1, A2, A3 } from '../../js/levels.js';
+import { A1, A2, A3, A4 } from '../../js/levels.js';
 
 const { assert, state } = makeAssert();
 
@@ -57,8 +57,29 @@ console.log('\nA3 — REDIRECT   (the rock must end up somewhere harmless)\n');
          `boulder ended x=${solved.objects.boulder1.x.toFixed(0)}`);
 }
 
-// A4 (CATCH) and A6 (RAMP) are HELD — they fail their solver gates and do not
-// ship, so they are not asserted here. See js/levels.js for why.
+// ── A4 — CATCH · the stroke bears MILO'S weight ─────────────────────────
+console.log("\nA4 — CATCH   (the first level where the stroke holds HIM)\n");
+{
+  const slide = [
+    { x: 245, y: 808 }, { x: 295, y: 865 }, { x: 345, y: 920 },
+    { x: 395, y: 962 }, { x: 440, y: 976 },
+  ];
+  const { idle, solved } = assertCore(assert, A4, slide);
+  assert('with no cradle he falls in the PIT', idle.outcome === OUTCOME.FELL, idle.outcome);
+  assert('the cradle anchors at BOTH ends', solved.anchors >= 2, `${solved.anchors} anchor(s)`);
+  assert('he reaches the goal on the far platform',
+         solved.miloX > A4.goal.x - A4.goal.w / 2 - 10, `ended at x=${solved.miloX.toFixed(0)}`);
+
+  // v0.4 §8.5 warned a SEALED bowl catches him and never lets go. It does.
+  const sealed = playLevel(A4, [
+    { x: 245, y: 808 }, { x: 295, y: 930 }, { x: 345, y: 1040 },
+    { x: 390, y: 1060 }, { x: 435, y: 974 },
+  ]);
+  assert('a SEALED bowl traps him instead of saving him', sealed.outcome !== OUTCOME.SUCCESS,
+         `${sealed.outcome} @ ${sealed.t.toFixed(0)}ms, stranded at x=${sealed.miloX.toFixed(0)}`);
+}
+
+// A6 (RAMP) is HELD — genuinely too hard, not a physics problem. See levels.js.
 
 console.log(state.failures === 0 ? '\nLEVELS: PASS\n' : `\nLEVELS: ${state.failures} FAILURE(S)\n`);
 process.exit(state.failures === 0 ? 0 : 1);

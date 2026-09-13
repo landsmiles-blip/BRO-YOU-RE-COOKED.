@@ -26,19 +26,58 @@ export function playLevel(level, strokePoints = null) {
   let committed = null;
   let strokeY0 = null;
 
+  // STABILITY = PATH TRAVELLED vs NET DISPLACEMENT.
+  //
+  // Two wrong metrics preceded this one, and both mattered:
+  //   - Net displacement alone is worthless: a line vibrating furiously in
+  //     place nets zero, which is why `strokeFell < 4` passed on an
+  //     unplayable build.
+  //   - Total path alone is also wrong: a stroke that legitimately FALLS 500
+  //     units racks up a huge path with nothing wrong, so it flags healthy
+  //     levels as unstable.
+  // The ratio separates them cleanly. A falling body travels roughly as far
+  // as it displaces (ratio ~1). A vibrating body travels enormously further
+  // than it displaces (ratio in the hundreds or thousands).
+  let jitter = 0;
+  let prevParts = null;
+  let firstParts = null;
+
   for (let i = 0; i < MAX_STEPS; i++) {
     if (strokePoints && !committed && sim.simTime >= freezeAt) {
       committed = commitStroke(sim, strokePoints);
       if (!committed.ok) break;
       strokeY0 = sim.stroke.position.y;
+      prevParts = partPositions(sim.stroke);
+      firstParts = prevParts;
     }
     const o = stepSim(sim);
-    if (o !== OUTCOME.RUNNING) return finish(sim, o, committed, strokeY0);
+    if (prevParts) {
+      const now = partPositions(sim.stroke);
+      for (let k = 0; k < now.length; k++) {
+        jitter += Math.hypot(now[k].x - prevParts[k].x, now[k].y - prevParts[k].y);
+      }
+      prevParts = now;
+    }
+    if (o !== OUTCOME.RUNNING) return finish(sim, o, committed, strokeY0, jitter, firstParts);
   }
-  return finish(sim, 'never-ended', committed, strokeY0);
+  return finish(sim, 'never-ended', committed, strokeY0, jitter, firstParts);
 }
 
-function finish(sim, outcome, committed, strokeY0) {
+function partPositions(body) {
+  const parts = body.parts.length > 1 ? body.parts.slice(1) : [body];
+  return parts.map((p) => ({ x: p.position.x, y: p.position.y }));
+}
+
+function finish(sim, outcome, committed, strokeY0, jitter = 0, firstParts = null) {
+  // Net displacement summed over the same parts, for the ratio.
+  let net = 0;
+  if (firstParts && sim.stroke) {
+    const last = partPositions(sim.stroke);
+    for (let k = 0; k < last.length && k < firstParts.length; k++) {
+      net += Math.hypot(last[k].x - firstParts[k].x, last[k].y - firstParts[k].y);
+    }
+  }
+  const wobble = firstParts ? jitter / Math.max(20, net) : 0;
   const r = {
     outcome,
     t: sim.simTime,
@@ -47,6 +86,9 @@ function finish(sim, outcome, committed, strokeY0) {
     miloX: sim.milo.body.position.x,
     miloY: sim.milo.body.position.y,
     strokeFell: sim.stroke && strokeY0 != null ? sim.stroke.position.y - strokeY0 : 0,
+    strokeJitter: jitter,
+    strokeWobble: wobble,     // path / net — >8 means oscillating, not moving
+    parts: sim.stroke ? (sim.stroke.parts.length > 1 ? sim.stroke.parts.length - 1 : 1) : 0,
     anchors: committed?.anchors ?? 0,
     // Where each hazard ENDED UP. For REDIRECT levels this is the whole point:
     // blocking leaves the rock on the walk line, redirecting sends it away.
@@ -56,6 +98,38 @@ function finish(sim, outcome, committed, strokeY0) {
   };
   destroySim(sim);
   return r;
+}
+
+/**
+ * Resample a stroke the way a finger draws it.
+ *
+ * THE WAVER MUST EXCEED LINE.simplifyTol (3u) OR THIS TEST IS VACUOUS.
+ * The first version used a 1.2-unit waver, and Douglas-Peucker — correctly —
+ * flattened it straight back to two points and one rigid body, so the
+ * "hand-drawn" case was still the sparse case in disguise and the gate could
+ * never have caught the bug it exists to catch. A real finger wavers several
+ * units; the assertion below refuses to pass unless the stroke really did
+ * survive simplification as a multi-part body.
+ */
+export function handDrawn(points, spacing = 8, waver = 5.5) {
+  if (points.length < 2) return points;
+  const out = [];
+  let d = 0;
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1], b = points[i];
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    const n = Math.max(1, Math.round(len / spacing));
+    for (let k = 0; k < n; k++) {
+      const t = k / n;
+      d += len / n;
+      out.push({
+        x: a.x + (b.x - a.x) * t + Math.sin(d * 0.42) * waver,
+        y: a.y + (b.y - a.y) * t + Math.cos(d * 0.55) * waver,
+      });
+    }
+  }
+  out.push(points[points.length - 1]);
+  return out;
 }
 
 // ── tiny assertion helpers, shared by every level suite ─────────────────
@@ -85,7 +159,19 @@ export function assertCore(assert, level, intendedStroke) {
   assert('the intended stroke SUCCEEDS', solved.outcome === OUTCOME.SUCCESS,
          `${solved.outcome} @ ${solved.t.toFixed(0)}ms` +
          (solved.committed && !solved.committed.ok ? ` (rejected: ${solved.committed.reason})` : ''));
-  return { idle, solved };
+
+  // A HAND-SHAPED version of the same stroke. Sparse idealised strokes collapse
+  // to a single rigid body and hide instability completely; this is what a
+  // finger actually produces, and it is what shipped an unplayable build.
+  const dense = playLevel(level, handDrawn(intendedStroke));
+  // Guard the guard: if the stroke collapsed to one part, this proves nothing.
+  assert('the hand-drawn stroke is really multi-part', dense.parts >= 5,
+         `${dense.parts} parts (a 1-part stroke cannot expose the bug)`);
+  assert('a HAND-DRAWN stroke is stable (no vibration)', dense.strokeWobble < 8,
+         `${dense.parts} parts, path/net = ${dense.strokeWobble.toFixed(1)} (${dense.strokeJitter.toFixed(0)}u travelled)`);
+  assert('a hand-drawn stroke still SUCCEEDS', dense.outcome === OUTCOME.SUCCESS,
+         `${dense.outcome}`);
+  return { idle, solved, dense };
 }
 
 export { OUTCOME };

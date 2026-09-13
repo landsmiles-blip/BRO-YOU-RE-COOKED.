@@ -19,6 +19,7 @@
 import { buildSim, stepSim, commitStroke, destroySim, OUTCOME } from '../../js/sim.js';
 import { FREEZE_AT, RUN_TIMEOUT, PHYSICS_DT, SAFE_BOX } from '../../js/constants.js';
 import { sweep, jitter, rng } from './families.js';
+import { handDrawn, playLevel } from '../test/lib/run-level.js';
 
 const MAX_STEPS = Math.ceil(RUN_TIMEOUT / PHYSICS_DT) + 400;
 
@@ -38,26 +39,63 @@ export function samplingRegion(level) {
   return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
 }
 
-/** Play one candidate stroke to completion. */
-export function runStroke(level, points) {
+/** Play one candidate stroke to completion. `trackJitter` costs time; opt in. */
+export function runStroke(level, points, trackJitter = false) {
   const sim = buildSim(level);
   const freezeAt = level.freezeAt ?? FREEZE_AT;
   let committed = null;
+  let jit = 0, prev = null;
 
   for (let i = 0; i < MAX_STEPS; i++) {
     if (points && !committed && sim.simTime >= freezeAt) {
       committed = commitStroke(sim, points);
       if (!committed.ok) { destroySim(sim); return { rejected: true, reason: committed.reason }; }
+      if (trackJitter) prev = partPos(sim.stroke);
     }
     const o = stepSim(sim);
+    if (prev) {
+      const now = partPos(sim.stroke);
+      for (let k = 0; k < now.length; k++) jit += Math.hypot(now[k].x - prev[k].x, now[k].y - prev[k].y);
+      prev = now;
+    }
     if (o !== OUTCOME.RUNNING) {
-      const res = { outcome: o, t: sim.simTime, length: committed?.length ?? 0, anchors: committed?.anchors ?? 0 };
+      const res = {
+        outcome: o, t: sim.simTime, length: committed?.length ?? 0,
+        anchors: committed?.anchors ?? 0, jitter: jit,
+        parts: sim.stroke ? (sim.stroke.parts.length > 1 ? sim.stroke.parts.length - 1 : 1) : 0,
+      };
       destroySim(sim);
       return res;
     }
   }
   destroySim(sim);
-  return { outcome: 'never-ended', t: RUN_TIMEOUT, length: committed?.length ?? 0 };
+  return { outcome: 'never-ended', t: RUN_TIMEOUT, length: committed?.length ?? 0, jitter: jit };
+}
+
+function partPos(body) {
+  const parts = body.parts.length > 1 ? body.parts.slice(1) : [body];
+  return parts.map((p) => ({ x: p.position.x, y: p.position.y }));
+}
+
+/**
+ * Worst instability across a sample of WINNING strokes, redrawn hand-shaped.
+ *
+ * Stability is checked here rather than across the whole sweep for two
+ * reasons: it is about how a stroke is BUILT, not which shape it is, and
+ * densifying 1,500 strokes into 25-part compound bodies would make the sweep
+ * far too slow to run on every physics change — which would mean it stopped
+ * being run.
+ */
+export function worstJitter(level, winners, sampleCount = 8) {
+  if (!winners.length) return 0;
+  const sorted = [...winners].sort((a, b) => a.length - b.length);
+  let worst = 0;
+  for (let i = 0; i < sampleCount; i++) {
+    const w = sorted[Math.min(sorted.length - 1, Math.round((i / Math.max(1, sampleCount - 1)) * (sorted.length - 1)))];
+    const r = playLevel(level, handDrawn(w.points));
+    if (!r.committed || r.committed.ok) worst = Math.max(worst, r.strokeWobble ?? 0);
+  }
+  return Math.round(worst * 10) / 10;
 }
 
 const percentile = (sorted, p) => {
@@ -157,6 +195,8 @@ export function analyse(level, { density = 1, onProgress = null } = {}) {
     shortestWin: shortest ? Math.round(shortest.length) : null,
     shortestWinFamily: shortest?.family ?? null,
     precisionFloor: precisionFloor(level, winners),
+    // The gate that was missing when an unplayable build shipped.
+    worstJitter: Math.round(worstJitter(level, winners)),
   };
 }
 
@@ -172,6 +212,9 @@ export function gradeLevel(a) {
   }
   if (a.solvable && a.precisionFloor < 25) {
     issues.push({ hard: true, msg: `precision floor ${a.precisionFloor}u — below the 25u thumb limit` });
+  }
+  if (a.worstJitter > 8) {
+    issues.push({ hard: true, msg: `UNSTABLE — hand-drawn solution oscillates (path/net = ${a.worstJitter})` });
   }
   return issues;
 }

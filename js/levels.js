@@ -311,7 +311,7 @@ export const A8 = {
   ],
   objects: [
     { id: 'roller', type: 'boulder', x: 655, y: 1118, radius: 32,
-      density: 0.05, restitution: 0.06, friction: 0.12, frictionAir: 0, vx: -480,
+      density: 0.05, restitution: 0.06, friction: 0.12, frictionAir: 0, vx: -420,
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
   ],
   zones: [],
@@ -392,19 +392,22 @@ export const A10 = {
 // it clears the bar, because a level that makes someone quit is negative
 // inventory.
 //
-// HELD:
-//   A4 CATCH — precision floor pinned at 10u against a 25u limit, at every
-//     geometry tried. Implementing slope-aware walking changed how Milo lands
-//     on a drawn curve and this never recovered. The catch is real but it
-//     demands better than a thumb can deliver.
-//   A6 RAMP  — only clears the gates with a 47u wall, which is barely above
-//     Milo's own 22u step-up: a level that passes while teaching nothing.
-//     Shipping that would be worse than shipping nothing.
+// A4 WAS HELD AND IS NOW SHIPPING. It was held for a precision floor of 10u,
+// which turned out to be a SYMPTOM, not the level: rigid weld constraints made
+// every drawn line oscillate, and a catch is exactly where that shows up. With
+// anchoring made static it measures 65u precision and zero wobble. Holding it
+// was right; the diagnosis was wrong, and only fixing the real bug revealed
+// that.
+//
+// STILL HELD:
+//   A6 RAMP — genuinely too hard, and not for physics reasons: 0.2% breadth,
+//     and it only clears the gates with a 47u wall, barely above Milo's own
+//     22u step-up. A level that passes while teaching nothing is worse than
+//     no level.
 // ─────────────────────────────────────────────────────────────────────────
-export const LEVELS = [A1, A2, A3, A5, A7, A8, A9, A10];
+export const LEVELS = [A1, A2, A3, A4, A5, A7, A8, A9, A10];
 
 export const HELD = [
-  { level: A4, reason: 'precision floor 10u (limit 25u) — catch demands more than a thumb can give' },
   { level: A6, reason: 'only passes with a 47u wall, barely above the 22u step-up — teaches nothing' },
 ];
 

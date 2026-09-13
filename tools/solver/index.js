@@ -41,6 +41,7 @@ for (const level of levels) {
   console.log(`  failures        ${JSON.stringify(a.outcomes)}`);
   console.log(`  shortest win    ${a.shortestWin}u (${a.shortestWinFamily})`);
   console.log(`  precision floor ${a.precisionFloor}u   [gate ≥25u]`);
+  console.log(`  hand-drawn wobble ${a.worstJitter} (path/net)   [gate ≤8]`);
   console.log(`  ★★ / ★★★        ${a.twoStarLength}u / ${a.threeStarLength}u   (60th/20th pct, MEASURED)`);
 
   const issues = gradeLevel(a);
@@ -60,6 +61,7 @@ if (!checkOnly) {
     solvable: a.solvable,
     solutionBreadth: Number(a.solutionBreadth.toFixed(4)),
     precisionFloor: a.precisionFloor,
+    worstJitter: a.worstJitter,
     distinctFamilies: a.distinctFamilies,
     twoStarLength: a.twoStarLength,
     threeStarLength: a.threeStarLength,

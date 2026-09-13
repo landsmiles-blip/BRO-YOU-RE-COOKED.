@@ -20,7 +20,7 @@
 //     COUNTERWEIGHT is one you deliberately do not.
 
 import Matter from './matter.js';
-import { addWeld } from './adapter.js';
+import { setStatic } from './adapter.js';
 import { LINE } from '../constants.js';
 
 const { Composite, Query } = Matter;
@@ -54,17 +54,27 @@ export function anchorStroke(ctx, strokeBody, strokePoints) {
   }
   if (!candidates.length) return [];
 
-  const chosen = mostSeparated(candidates, LINE.maxAnchors);
-  const anchors = [];
-  for (const a of chosen) {
-    addWeld(
-      ctx, strokeBody, a.staticBody,
-      { x: a.x - strokeBody.position.x, y: a.y - strokeBody.position.y },
-      { x: a.x - a.staticBody.position.x, y: a.y - a.staticBody.position.y },
-    );
-    anchors.push({ x: a.x, y: a.y });
-  }
-  return anchors;
+  // ANCHORED MEANS STATIC.
+  //
+  // This used to attach the stroke with up to 8 rigid zero-length constraints,
+  // which made the game unplayable and shipped that way. A stroke drawn by a
+  // finger is dense, so after simplification it is a compound body of ~28
+  // parts, and Matter's solver cannot resolve 8 redundant rigid constraints on
+  // a body like that: it oscillates violently and dumps the energy into
+  // whatever touches the line. Measured on the shipped bundle, one 40-point
+  // stroke produced 177,000 units of jitter in 90 frames and could launch Milo
+  // at ~1800 u/s. Making it static gives exactly 0.
+  //
+  // This is not a workaround for a solver quirk. Bible §3.2 specifies a weld as
+  // "rigid, not springy; it does not break" — which IS a static body. The
+  // constraints were an implementation detail that bought nothing and cost
+  // stability. A breakable or springy anchor is a real future idea; it is not
+  // this, and it would need a different mechanism anyway.
+  //
+  // Unanchored strokes are untouched: still dynamic, still fall, still teach.
+  setStatic(strokeBody, true);
+
+  return mostSeparated(candidates, LINE.maxAnchors).map((a) => ({ x: a.x, y: a.y }));
 }
 
 /** Points every `stepLen` units along the stroke, endpoints always included. */

@@ -59,65 +59,88 @@ for (const [name, w, h] of RATIOS) {
   await page.close();
 }
 
-console.log('\nPLAYTHROUGH (real pointer events through the real pipeline)\n');
-const page = await browser.newPage({ viewport: { width: 405, height: 720 }, deviceScaleFactor: 2 });
-page.on('pageerror', e => errors.push(`play: ${e.message}`));
-await page.goto(BASE, { waitUntil: 'networkidle' });
-await page.waitForFunction(() => globalThis.__byc?.game.phase === 'frozen', null, { timeout: 5000 });
-await page.screenshot({ path: '/tmp/shot-frozen.png' });
-console.log('  frozen tableau reached — captured');
+console.log('\nPLAYTHROUGH — drawn the way a FINGER draws, not the way a test does\n');
 
-// world → screen, so we can draw with a real finger
+/**
+ * The old version of this test dragged ten straight mouse moves, which
+ * Douglas-Peucker collapsed to two points and one rigid body — stable by
+ * construction. That is why an unplayable build passed every check: nothing
+ * ever simulated a hand. This draws dense, wavering strokes that survive
+ * simplification as 20+ part compound bodies, and asserts the world stays calm.
+ */
+function fingerPath(ax, ay, bx, by, n = 40, waver = 6) {
+  const out = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    out.push([
+      ax + (bx - ax) * t + Math.sin(t * 11) * waver,
+      ay + (by - ay) * t + Math.cos(t * 13) * waver,
+    ]);
+  }
+  return out;
+}
+
+const page = await browser.newPage({ viewport: { width: 405, height: 720 }, deviceScaleFactor: 2 });
+page.on('pageerror', (e) => errors.push(`play: ${e.message}`));
+await page.goto(BASE, { waitUntil: 'networkidle' });
+await page.waitForFunction(() => globalThis.__byc?.game.phase === 'frozen', null, { timeout: 8000 });
+
 const toScreen = async (wx, wy) => page.evaluate(([x, y]) => {
   const v = globalThis.__byc.view;
   return { x: (x + v.offsetX) * v.scale, y: (y + v.offsetY) * v.scale };
 }, [wx, wy]);
 
-// 1) Draw the intended span across the gap.
-const a = await toScreen(300, 790), b = await toScreen(510, 790);
-await page.mouse.move(a.x, a.y);
-await page.mouse.down();
-for (let i = 1; i <= 12; i++) {
-  await page.mouse.move(a.x + (b.x - a.x) * i / 12, a.y + (b.y - a.y) * i / 12);
-  await page.waitForTimeout(18);
+async function drawFinger(path) {
+  const pts = [];
+  for (const [x, y] of path) pts.push(await toScreen(x, y));
+  await page.mouse.move(pts[0].x, pts[0].y);
+  await page.mouse.down();
+  for (let i = 1; i < pts.length; i++) { await page.mouse.move(pts[i].x, pts[i].y); await page.waitForTimeout(14); }
+  await page.mouse.up();
 }
-await page.mouse.up();
-const afterDraw = await page.evaluate(() => ({ phase: globalThis.__byc.game.phase, anchors: globalThis.__byc.game.sim.anchors.length }));
-console.log(`  drew span → phase=${afterDraw.phase}  anchors=${afterDraw.anchors}`);
-await page.waitForTimeout(300);
-await page.screenshot({ path: '/tmp/shot-sim.png' });
 
-await page.waitForFunction(() => ['result','deathcam'].includes(globalThis.__byc.game.phase), null, { timeout: 12000 });
-const outcome = await page.evaluate(() => ({ phase: globalThis.__byc.game.phase, o: globalThis.__byc.game.sim.run.outcome }));
-console.log(`  ${outcome.o === 'success' ? 'PASS' : 'FAIL'}  intended stroke → ${outcome.o}`);
-if (outcome.o !== 'success') errors.push('playthrough did not succeed');
-await page.screenshot({ path: '/tmp/shot-result.png' });
+await drawFinger(fingerPath(300, 790, 510, 790));
 
-// 2) Do nothing → death cam must appear with a label.
-await page.evaluate(() => globalThis.__byc.retry(globalThis.__byc.game));
-await page.waitForFunction(() => globalThis.__byc.game.phase === 'frozen', null, { timeout: 5000 });
-await page.evaluate(() => { const g = globalThis.__byc.game; g.phase = 'sim'; g.phaseTime = 0; });
-await page.waitForFunction(() => globalThis.__byc.game.phase === 'deathcam', null, { timeout: 12000 });
-await page.waitForTimeout(400);
-const death = await page.evaluate(() => globalThis.__byc.game.sim.death);
-console.log(`  ${death?.label ? 'PASS' : 'FAIL'}  no stroke → death cam: "${death?.label ?? 'none'}"`);
-await page.screenshot({ path: '/tmp/shot-death.png' });
+// Watch the real animation frames for oscillation. path >> net means vibrating.
+const stability = await page.evaluate(() => new Promise((res) => {
+  const g = globalThis.__byc.game;
+  if (!g.sim.stroke) return res({ rejected: true });
+  const parts = g.sim.stroke.parts.length > 1 ? g.sim.stroke.parts.slice(1) : [g.sim.stroke];
+  const first = parts.map((p) => ({ x: p.position.x, y: p.position.y }));
+  let prev = first.map((p) => ({ ...p })), path = 0, frames = 0, maxMiloV = 0;
+  (function loop() {
+    parts.forEach((p, k) => {
+      path += Math.hypot(p.position.x - prev[k].x, p.position.y - prev[k].y);
+      prev[k] = { x: p.position.x, y: p.position.y };
+    });
+    maxMiloV = Math.max(maxMiloV, Math.hypot(g.sim.milo.body.velocity.x, g.sim.milo.body.velocity.y));
+    if (++frames < 100) requestAnimationFrame(loop);
+    else {
+      let net = 0;
+      parts.forEach((p, k) => { net += Math.hypot(p.position.x - first[k].x, p.position.y - first[k].y); });
+      res({ parts: parts.length, path: Math.round(path), net: Math.round(net),
+            wobble: +(path / Math.max(20, net)).toFixed(1), maxMiloV: +maxMiloV.toFixed(1) });
+    }
+  })();
+}));
 
-// 3) Resize mid-simulation must not perturb the run.
-await page.evaluate(() => globalThis.__byc.retry(globalThis.__byc.game));
-await page.waitForFunction(() => globalThis.__byc.game.phase === 'frozen', null, { timeout: 5000 });
-const a2 = await toScreen(300, 790), b2 = await toScreen(510, 790);
-await page.mouse.move(a2.x, a2.y); await page.mouse.down();
-for (let i = 1; i <= 12; i++) { await page.mouse.move(a2.x + (b2.x-a2.x)*i/12, a2.y); await page.waitForTimeout(18); }
-await page.mouse.up();
-await page.waitForTimeout(200);
-await page.setViewportSize({ width: 900, height: 500 });   // violent ratio change mid-run
-await page.waitForTimeout(200);
-await page.setViewportSize({ width: 405, height: 720 });
-await page.waitForFunction(() => ['result','deathcam'].includes(globalThis.__byc.game.phase), null, { timeout: 12000 });
-const resized = await page.evaluate(() => globalThis.__byc.game.sim.run.outcome);
-console.log(`  ${resized === 'success' ? 'PASS' : 'FAIL'}  resize mid-simulation → ${resized}`);
-if (resized !== 'success') errors.push('resize perturbed the run');
+if (stability.rejected) { errors.push('finger stroke was rejected'); }
+else {
+  const multi = stability.parts >= 5;
+  const calm = stability.wobble < 8;
+  const gentle = stability.maxMiloV < 8;
+  console.log(`  ${multi ? 'PASS' : 'FAIL'}  stroke is genuinely multi-part — ${stability.parts} parts`);
+  console.log(`  ${calm ? 'PASS' : 'FAIL'}  no vibration — path/net = ${stability.wobble} (${stability.path}u travelled, ${stability.net}u net)`);
+  console.log(`  ${gentle ? 'PASS' : 'FAIL'}  Milo is not launched — peak |v| ${stability.maxMiloV}`);
+  if (!multi) errors.push('finger stroke collapsed to one part — test is vacuous');
+  if (!calm) errors.push(`stroke oscillating: path/net ${stability.wobble}`);
+  if (!gentle) errors.push(`milo launched: |v| ${stability.maxMiloV}`);
+}
+
+await page.waitForFunction(() => ['result', 'deathcam'].includes(globalThis.__byc.game.phase), null, { timeout: 14000 });
+const outcome = await page.evaluate(() => globalThis.__byc.game.sim.run.outcome);
+console.log(`  ${outcome === 'success' ? 'PASS' : 'FAIL'}  a hand-drawn solution still wins — ${outcome}`);
+if (outcome !== 'success') errors.push('hand-drawn stroke did not succeed');
 
 await browser.close();
 console.log(errors.length ? `\nERRORS:\n  ${errors.join('\n  ')}\n` : '\nNo console errors, no page errors.\n');

@@ -4,7 +4,7 @@ A physics rescue puzzle where one simple drawing can turn a disaster into a ridi
 last-second save. The player does not need more buttons; they need better ideas.
 
 **Platform:** YouTube Playables (primary) · open web (validation + revenue)
-**Status:** M1 — eight levels shipping, solver-gated
+**Status:** M1 — nine levels shipping, solver-gated
 
 > One line. One shot. Get him out.
 
@@ -50,16 +50,16 @@ node tools/solver --check    # gates only, no write (regression mode)
 Every level is swept with ~1,500 human-shaped strokes and must clear all of
 them. A level that fails does **not** ship — it is held back, not deleted.
 
-| Level | Verb | Breadth (2–40%) | Precision (≥25u) | ★★/★★★ |
-|---|---|---|---|---|
-| A1 WALL | BLOCK | 22.0% | 45u | 300/222 |
-| A2 GAP | BRIDGE | 3.9% | 45u | 336/230 |
-| A3 REDIRECT | REDIRECT | 22.2% | 65u | 294/228 |
-| A5 HANG | BLOCK | 17.3% | 65u | — |
-| A7 PROP | SUPPORT | 4.4% | 45u | — |
-| A8 JAM | WEDGE | 5.3% | 65u | — |
-| A9 CHUTE | FUNNEL | 37.9% | 65u | — |
-| A10 THE SWITCH | TRIGGER | 22.7% | 65u | — |
+| Gate | Rule |
+|---|---|
+| Solvable | ≥1 winning stroke |
+| Breadth | 2–40% of plausible strokes win |
+| Precision floor | ≥25u — a thumb, on a 6cm puzzle |
+| **Stability** | hand-drawn solution path/net ≤ 8 — no vibration |
+
+Nine levels ship: BLOCK · BRIDGE · REDIRECT · CATCH · BLOCK(anchor) · SUPPORT ·
+WEDGE · FUNNEL · TRIGGER. **A6 RAMP is held back** — 0.2% breadth, and it only
+clears with a 47u wall barely above Milo's own 22u step-up.
 
 **Held back** (in the repo, not in the game):
 - **A4 CATCH** — precision floor pinned at 10u at every geometry tried.

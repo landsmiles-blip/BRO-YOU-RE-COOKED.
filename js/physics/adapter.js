@@ -24,7 +24,7 @@
 import Matter from './matter.js';
 import { GRAVITY_Y, PHYSICS_DT, MAX_SPEED, SOLVER_ITER } from '../constants.js';
 
-const { Engine, World, Bodies, Body, Composite, Events, Constraint } = Matter;
+const { Engine, World, Bodies, Body, Composite, Events } = Matter;
 
 const GRAVITY_SCALE = 0.001;
 const BASE_DELTA = 1000 / 60;
@@ -77,15 +77,10 @@ export function addCapsule(ctx, { id, x, y, w, h, chamfer, ...opts }) {
   return body;
 }
 
-/** Rigid weld between a body and static geometry — the anchoring model, Bible §3.2. */
-export function addWeld(ctx, bodyA, bodyB, pointA, pointB) {
-  const c = Constraint.create({
-    bodyA, bodyB, pointA, pointB,
-    stiffness: 1, damping: 0.1, length: 0,
-  });
-  Composite.add(ctx.world, c);
-  return c;
-}
+// NOTE: there is deliberately no weld/constraint helper here. Anchoring makes
+// a stroke STATIC (see js/physics/anchor.js) because rigid constraints on a
+// many-part compound body oscillate violently. If a springy or breakable
+// anchor is ever wanted, it needs a different mechanism, not this one.
 
 export function removeBody(ctx, body) {
   Composite.remove(ctx.world, body);
