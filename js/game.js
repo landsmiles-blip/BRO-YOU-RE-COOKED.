@@ -14,6 +14,7 @@
 
 import { buildSim, stepSim, commitStroke, abort, destroySim, OUTCOME } from './sim.js';
 import { LEVELS } from './levels.js';
+import { starsFor } from './rating.js';
 import { createStroke, begin, extend, end, remaining } from './drawing/capture.js';
 import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
@@ -35,6 +36,8 @@ export function createGame(level) {
     attempt: 0,
     phaseTime: 0,
     rejectFlash: 0,
+    lastLength: 0,
+    stars: 0,
     rejectReason: null,
     paused: false,
   };
@@ -71,7 +74,11 @@ export function tick(g, dtMs) {
     const o = stepSim(g.sim);
     if (o !== OUTCOME.RUNNING) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
-      if (o === OUTCOME.SUCCESS) { g.phase = PHASE.RESULT; g.phaseTime = 0; }
+      if (o === OUTCOME.SUCCESS) {
+        g.stars = starsFor(g.level.id, g.lastLength);
+        g.phase = PHASE.RESULT;
+        g.phaseTime = 0;
+      }
       else if (o === OUTCOME.ABORTED) { retry(g); }
       else { g.phase = PHASE.DEATHCAM; g.phaseTime = 0; }
     }
@@ -127,6 +134,7 @@ export function onUp(g) {
     track('stroke_rejected', { level: g.level.id, reason: res.reason });
     return;
   }
+  g.lastLength = res.length;
   track('stroke_committed', { level: g.level.id, length: Math.round(res.length), anchors: res.anchors });
   g.phase = PHASE.SIM;
   g.phaseTime = 0;

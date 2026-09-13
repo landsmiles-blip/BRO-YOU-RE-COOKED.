@@ -19,6 +19,7 @@ import { freezeAmount, reducedMotion } from './render/freeze.js';
 import { drawBanner, drawText, drawInk } from './render/hud.js';
 import { drawReplay, replayFrame, DEATH_CAM_MS } from './render/deathcam.js';
 import { C } from './render/palette.js';
+import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
 
 for (const lvl of LEVELS) assertLevel(lvl);
@@ -119,7 +120,7 @@ function render() {
     drawInk(ctx, inkUsed(g), inkMax(g));
   }
 
-  if (g.phase === PHASE.RESULT) drawBanner(ctx, 'NAILED IT.', 'tap for the next one', 0.44);
+  if (g.phase === PHASE.RESULT) drawResult(ctx, g);
 
   // Tiny progress marker. Deliberately unobtrusive — the puzzle owns the screen.
   if (g.phase === PHASE.FROZEN || g.phase === PHASE.SIM) {
@@ -130,6 +131,59 @@ function render() {
   if (g.rejectFlash > 0) {
     drawText(ctx, rejectText(g.rejectReason), 0.5, 0.82,
              Math.max(14, view.cssH * 0.022), C.danger);
+  }
+}
+
+/**
+ * The result as ONE panel.
+ *
+ * The first version scattered a banner, a star row and a detail line across
+ * three different heights, so the text ran straight over the scene and the
+ * hardest thing to read was the number the player most wants — how much ink
+ * they spent. A single card keeps it legible over any level geometry.
+ */
+function drawResult(ctx, g) {
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const h = Math.max(150, view.cssH * 0.30);
+  const top = view.cssH * 0.36;
+  ctx.fillStyle = 'rgba(42,38,34,0.92)';
+  ctx.fillRect(0, top, view.cssW, h);
+
+  const mid = (top + h * 0.22) / view.cssH;
+  drawText(ctx, STAR_NAME[g.stars] ?? 'NAILED IT.', 0.5, mid,
+           Math.max(20, view.cssH * 0.036), C.paper);
+  drawStars(ctx, g.stars, top + h * 0.50);
+
+  const th = thresholds(g.level.id);
+  const next = g.stars < 3
+    ? `${g.stars === 1 ? th.two : th.three}u for the next star`
+    : 'nothing left to cut';
+  drawText(ctx, `${Math.round(g.lastLength)}u of ink · ${next}`, 0.5, (top + h * 0.74) / view.cssH,
+           Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.72)');
+  drawText(ctx, 'tap for the next one', 0.5, (top + h * 0.90) / view.cssH,
+           Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.45)');
+}
+
+/** Three ink stars, filled to the rating. Drawn, like everything else. */
+function drawStars(ctx, stars, cyPx) {
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const r = Math.max(11, view.cssH * 0.022);
+  const gap = r * 2.9;
+  for (let i = 0; i < 3; i++) {
+    const cx = view.cssW / 2 + (i - 1) * gap;
+    const cy = cyPx;
+    ctx.beginPath();
+    for (let k = 0; k < 10; k++) {
+      const a = -Math.PI / 2 + (k * Math.PI) / 5;
+      const rad = k % 2 === 0 ? r : r * 0.44;
+      const x = cx + Math.cos(a) * rad, y = cy + Math.sin(a) * rad;
+      k === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.lineWidth = 2.4;
+    ctx.strokeStyle = i < stars ? C.ink : 'rgba(232,226,214,0.4)';
+    if (i < stars) { ctx.fillStyle = C.anchor; ctx.fill(); }
+    ctx.stroke();
   }
 }
 

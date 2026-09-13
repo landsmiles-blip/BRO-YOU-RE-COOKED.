@@ -173,16 +173,23 @@ export const A4 = {
   world: 'backyard',
   verb: 'CATCH',
   milo: { start: { x: 100, y: 800 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 620, y: 1100, w: 80, h: 140 },
+  goal: { id: 'goal', x: 580, y: 1000, w: 80, h: 140 },
   freezeAt: 500,                       // he steps off the ledge at t≈0.68s
 
+  // TUNED BY THE SOLVER, not by eye. The first geometry (platform at y=1100,
+  // a 220u gap) measured a precision floor of 10u — a level demanding better
+  // than ±25u from a thumb is broken, not hard. The cause: Milo hits the 900
+  // u/s clamp after only 225u of fall, so a deep drop makes EVERY catch a
+  // high-speed impact that stuns him and costs him his footing, and only a
+  // sliver of shapes survive it. Raising the platform and closing the gap took
+  // the precision floor to 30u at 4.3% breadth.
   static: [
     { id: 'ledge',    type: 'platform', x: 0,   y: 800,  w: 250, h: 60  },
-    { id: 'platform', type: 'platform', x: 470, y: 1100, w: 250, h: 180 },
+    { id: 'platform', type: 'platform', x: 430, y: 1000, w: 290, h: 280 },
   ],
   objects: [],
   zones: [
-    { id: 'pit', kind: 'zone', x: 250, y: 1240, w: 220, h: 40, lethal: true },
+    { id: 'pit', kind: 'zone', x: 250, y: 1240, w: 180, h: 40, lethal: true },
   ],
   drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
   solver: null,

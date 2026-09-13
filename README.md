@@ -41,7 +41,22 @@ v1.0 supersedes v0.2–v0.4. Where they disagree, v1.0 wins.
 node tools/serve.js          # → http://localhost:8080
 npm test                     # physics gates + A1 solvability (headless)
 npm run test:browser         # real Chromium: 6 aspect ratios + full playthrough
+node tools/solver            # sweep ~1500 strokes/level, measure the gates
+node tools/solver --check    # gates only, no write (regression mode)
 ```
+
+## Solver gates
+
+Every level is swept with ~1,500 human-shaped strokes and must clear:
+
+| Gate | Rule | A1 | A2 | A3 | A4 |
+|---|---|---|---|---|---|
+| Solvable | ≥1 win | yes | yes | yes | yes |
+| Breadth | 2%–40% of plausible strokes win | 16.9% | 3.7% | 21.2% | 2.7% |
+| Precision floor | ≥25u (a thumb, on a 6cm puzzle) | 65u | 45u | 65u | 30u |
+| ★★ / ★★★ | measured 60th/20th percentile | 300/222 | 336/230 | 294/228 | 358/246 |
+
+Star thresholds are **measured, never typed**. Re-run after any physics change.
 
 ## Current milestone — M0: Truth Machine
 

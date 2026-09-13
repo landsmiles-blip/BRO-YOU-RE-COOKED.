@@ -35,7 +35,8 @@ console.log('\nA2 — GAP   (the line becomes terrain — and he must STEP UP on
   assert('the bridge anchors to both banks', solved.anchors > 0, `${solved.anchors} anchor(s)`);
   assert('the bridge HOLDS his weight', solved.strokeFell < 6, `moved ${solved.strokeFell.toFixed(0)}u`);
   // The whole point: a 16u lip against a 72u body. maxStepUp(22) > thickness(16).
-  assert('he got ONTO the bridge and across', solved.miloX > 560,
+  assert('he got ONTO the bridge and across',
+         solved.miloX > A2.goal.x - A2.goal.w / 2 - 10,
          `ended at x=${solved.miloX.toFixed(0)}`);
 }
 
@@ -65,22 +66,26 @@ console.log("\nA4 — CATCH   (the first level where the stroke holds HIM)\n");
   // roughly tangent to his fall: a steep catching face stuns him on impact at
   // ~900 u/s, he loses walking control, and slides back off into the pit.
   const slide = [
-    { x: 245, y: 805 }, { x: 310, y: 905 }, { x: 375, y: 1015 },
-    { x: 435, y: 1090 }, { x: 495, y: 1108 },
+    { x: 245, y: 808 }, { x: 300, y: 880 }, { x: 355, y: 950 },
+    { x: 400, y: 995 }, { x: 450, y: 1006 },
   ];
   const { idle, solved } = assertCore(assert, A4, slide);
   assert('with no cradle he falls in the PIT', idle.outcome === OUTCOME.FELL, idle.outcome);
   assert('the cradle anchors at BOTH ends', solved.anchors >= 2, `${solved.anchors} anchor(s)`);
   assert('the cradle HOLDS his weight', solved.strokeFell < 8, `moved ${solved.strokeFell.toFixed(0)}u`);
-  assert('he reaches the goal on the far platform', solved.miloX > 560,
-         `ended at x=${solved.miloX.toFixed(0)}`);
+  // Derived from the level, not hardcoded — a hardcoded threshold silently
+  // goes stale the moment the geometry is tuned, which is exactly what
+  // happened when the solver moved this goal.
+  assert('he reaches the goal on the far platform',
+         solved.miloX > A4.goal.x - A4.goal.w / 2 - 10,
+         `ended at x=${solved.miloX.toFixed(0)}, goal spans ${A4.goal.x - A4.goal.w / 2}–${A4.goal.x + A4.goal.w / 2}`);
 
   // v0.4 §8.5 warned that a SEALED bowl catches him and never lets go, tripping
   // the stuck timer instead of winning. That warning is real — this proves it,
   // and it is why the goal-facing side of a cradle must stay open.
   const sealed = playLevel(A4, [
-    { x: 245, y: 805 }, { x: 320, y: 960 }, { x: 395, y: 1105 },
-    { x: 455, y: 1150 }, { x: 505, y: 1104 },
+    { x: 245, y: 808 }, { x: 300, y: 940 }, { x: 350, y: 1060 },
+    { x: 400, y: 1090 }, { x: 445, y: 1004 },
   ]);
   assert('a SEALED bowl traps him instead of saving him',
          sealed.outcome !== OUTCOME.SUCCESS,
