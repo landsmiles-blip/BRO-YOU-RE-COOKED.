@@ -5,7 +5,7 @@ const suites = ['tools/test/freefall.js', 'tools/test/tunnel.js', 'tools/test/sh
 let failed = 0;
 
 for (const s of suites) {
-  const r = spawnSync('node', [s], { stdio: 'inherit' });
+  const r = spawnSync('node', ['--import', './tools/node-matter.js', s], { stdio: 'inherit' });
   if (r.status !== 0) failed++;
 }
 

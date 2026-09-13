@@ -1,18 +1,20 @@
-// Loads Matter.js in both environments:
-//   browser — from the global installed by <script src="vendor/matter.min.js">
-//   node    — required directly, so the solver harness and physics tests run headless
+// Matter comes from the global, in every environment.
 //
-// This is the ONLY place that knows how Matter arrives. See adapter.js for the
-// only place that knows what Matter *is*.
+// This file used to detect its environment and lazily require() Matter under
+// Node, which meant top-level await and a node: import inside a browser
+// module — so it could not be bundled at all. Bundling is not optional: the
+// Playables build must be one self-contained file with no external requests.
+//
+// One job instead: read the global. Whoever boots is responsible for putting
+// it there — a <script> tag in the browser, tools/node-matter.js under Node.
 
-let Matter;
+const Matter = globalThis.Matter;
 
-if (typeof globalThis.Matter !== 'undefined') {
-  Matter = globalThis.Matter;
-} else {
-  const { createRequire } = await import('node:module');
-  const require = createRequire(import.meta.url);
-  Matter = require('../../vendor/matter.min.js');
+if (!Matter) {
+  throw new Error(
+    'Matter.js not loaded. Browser: include vendor/matter.min.js before the ' +
+    'game. Node: run with --import ./tools/node-matter.js',
+  );
 }
 
 export default Matter;
