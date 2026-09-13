@@ -80,17 +80,22 @@ export const A2 = {
   id: 'a2-gap',
   world: 'backyard',
   verb: 'BRIDGE',
-  milo: { start: { x: 120, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 620, y: 1152, w: 80, h: 140 },
+  milo: { start: { x: 120, y: 880 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 620, y: 880, w: 80, h: 140 },
   freezeAt: 500,                       // he reaches the edge at t≈0.82s
 
+  // COMPOSITION: the first pass put the ground at y=1152 with a 64u pit,
+  // which is correct physics and a dead frame — the whole level lived in the
+  // bottom fifth of a portrait screen and the "pit" was a shallow notch. The
+  // banks now sit at y=880 with a real chasm below them, so the drop reads as
+  // a drop and the frame actually has something in it.
   static: [
-    { id: 'groundL', type: 'platform', x: 0,   y: 1152, w: 300, h: 128 },
-    { id: 'groundR', type: 'platform', x: 500, y: 1152, w: 220, h: 128 },
+    { id: 'groundL', type: 'platform', x: 0,   y: 880, w: 300, h: 400 },
+    { id: 'groundR', type: 'platform', x: 500, y: 880, w: 220, h: 400 },
   ],
   objects: [],
   zones: [
-    { id: 'pit', kind: 'zone', x: 300, y: 1216, w: 200, h: 64, lethal: true },
+    { id: 'pit', kind: 'zone', x: 300, y: 1210, w: 200, h: 70, lethal: true },
   ],
   drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
   solver: null,

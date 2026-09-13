@@ -4,7 +4,7 @@ A physics rescue puzzle where one simple drawing can turn a disaster into a ridi
 last-second save. The player does not need more buttons; they need better ideas.
 
 **Platform:** YouTube Playables (primary) · open web (validation + revenue)
-**Status:** M0 — A1 playable
+**Status:** M0 complete — four levels playable, art system in
 
 > One line. One shot. Get him out.
 
@@ -54,9 +54,14 @@ Capsules and grey circles. No art, no menu, no stars, no sound — by design.
 | Free-fall + tunneling gates | **passing** |
 | Drawing pipeline → anchoring | done |
 | Milo locomotion (walk / airborne / stunned, step-up) | done |
-| **A1 — WALL, playable end to end** | done |
+| **A1 WALL · A2 GAP · A3 REDIRECT · A4 CATCH** | done — 31 assertions |
 | Death cam + causality + ghost stroke | done |
-| A2 GAP · A3 REDIRECT · A4 CATCH | next |
+| Hollow-ring closed strokes | done |
+| **Procedural art system** (boiling line, Milo rig, freeze) | done — **0 art assets** |
 | Six comprehension gates, on a stranger | needs a human |
+
+**Payload: 68.8 KB gzipped** — 0.45% of the 15 MiB recommended Playables
+ceiling, with zero image or audio assets. Load time is the competitive
+weapon in a programme that prioritises fast-loading games.
 
 **Exit gate:** a stranger can say out loud why Milo died, every time.

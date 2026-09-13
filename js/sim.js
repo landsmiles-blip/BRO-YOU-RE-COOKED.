@@ -28,6 +28,7 @@ export function buildSim(level) {
     milo: null, goal: level.goal,
     objects: new Map(),      // gameId → { body, spec }
     statics: [],
+    zones: level.zones ?? [],
     stroke: null,            // committed stroke body
     anchors: [],
     run: createRunState(),

@@ -15,6 +15,7 @@ import {
 import { A1, LEVELS, assertLevel } from './levels.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT } from './constants.js';
 import { clear, drawScene } from './render/world.js';
+import { freezeAmount, reducedMotion } from './render/freeze.js';
 import { drawBanner, drawText, drawInk } from './render/hud.js';
 import { drawReplay, replayFrame, DEATH_CAM_MS } from './render/deathcam.js';
 import { C } from './render/palette.js';
@@ -27,8 +28,11 @@ initView(canvas);
 const ctx = view.ctx;
 const game = createGame(A1);
 
+// Walk phase must reset with the sim, or a retry starts mid-stride.
+const _resetPhase = () => { walkPhase = 0; lastMiloX = null; };
+
 attachInput(canvas, {
-  onDown: (x, y, id) => onDown(game, x, y, id),
+  onDown: (x, y, id) => { const p = game.phase; onDown(game, x, y, id); if (game.phase !== p) _resetPhase(); },
   onMove: (x, y) => onMove(game, x, y),
   onUp: () => onUp(game),
 });
@@ -40,6 +44,8 @@ sdk.onResume(() => { game.paused = false; acc = 0; last = performance.now(); });
 let last = performance.now();
 let acc = 0;
 let firstFrameDone = false;
+let walkPhase = 0;          // DISTANCE-driven, so his feet never skate
+let lastMiloX = null;
 
 function frame(now) {
   requestAnimationFrame(frame);
@@ -55,6 +61,7 @@ function frame(now) {
     while (acc >= PHYSICS_DT) {
       if (steps >= MAX_STEPS_PER_FRAME) { acc = 0; break; }   // resume-from-pause
       tick(game, PHYSICS_DT);
+      advanceWalkPhase();
       acc -= PHYSICS_DT;
       steps++;
       if (!isSteppingPhase(game)) { acc = 0; break; }
@@ -75,9 +82,17 @@ function frame(now) {
   }
 }
 
+/** Walk cycle advances with distance travelled, not with wall time. */
+function advanceWalkPhase() {
+  const x = game.sim.milo.body.position.x;
+  if (lastMiloX !== null) walkPhase += Math.abs(x - lastMiloX) / 15;
+  lastMiloX = x;
+}
+
 function render() {
   clear(ctx);
   const g = game;
+  const now = reducedMotion ? 0 : performance.now();
 
   if (g.phase === PHASE.DEATHCAM) {
     const idx = replayFrame(g.sim, g.phaseTime);
@@ -86,10 +101,12 @@ function render() {
   }
 
   drawScene(ctx, g.sim, {
-    frozen: g.phase === PHASE.FROZEN,
+    now,
+    freeze: freezeAmount(g.phase, g.phaseTime, PHASE.FROZEN),
     ghostPoints: g.phase === PHASE.FROZEN ? g.ghostPoints : null,
     livePoints: g.stroke.active ? g.stroke.points : null,
     anchors: g.phase === PHASE.SIM || g.phase === PHASE.RESULT ? g.sim.anchors : null,
+    walkPhase,
   });
 
   if (g.phase === PHASE.FROZEN) {
@@ -128,6 +145,6 @@ function rejectText(reason) {
 }
 
 // Test hook — lets Playwright drive real strokes through the real pipeline.
-globalThis.__byc = { game, view, PHASE, retry, nextLevel, LEVELS };
+globalThis.__byc = { game, view, PHASE, retry, nextLevel, LEVELS, reducedMotion };
 
 requestAnimationFrame(frame);
