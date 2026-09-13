@@ -7,8 +7,8 @@
 export const SOLVER = {
   "a1-wall": {
     "solvable": true,
-    "solutionBreadth": 0.1687,
-    "precisionFloor": 65,
+    "solutionBreadth": 0.2197,
+    "precisionFloor": 45,
     "distinctFamilies": 6,
     "twoStarLength": 300,
     "threeStarLength": 222,
@@ -17,32 +17,72 @@ export const SOLVER = {
   },
   "a2-gap": {
     "solvable": true,
-    "solutionBreadth": 0.0372,
+    "solutionBreadth": 0.039,
     "precisionFloor": 45,
-    "distinctFamilies": 5,
-    "twoStarLength": 336,
-    "threeStarLength": 230,
-    "shortestWin": 165,
+    "distinctFamilies": 4,
+    "twoStarLength": 295,
+    "threeStarLength": 288,
+    "shortestWin": 200,
     "measuredAt": "2026-09-13"
   },
   "a3-redirect": {
     "solvable": true,
-    "solutionBreadth": 0.2124,
+    "solutionBreadth": 0.222,
     "precisionFloor": 65,
     "distinctFamilies": 6,
-    "twoStarLength": 294,
+    "twoStarLength": 288,
     "threeStarLength": 228,
     "shortestWin": 110,
     "measuredAt": "2026-09-13"
   },
-  "a4-catch": {
+  "a5-hang": {
     "solvable": true,
-    "solutionBreadth": 0.0274,
-    "precisionFloor": 30,
-    "distinctFamilies": 4,
+    "solutionBreadth": 0.1735,
+    "precisionFloor": 65,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-13"
+  },
+  "a7-prop": {
+    "solvable": true,
+    "solutionBreadth": 0.0439,
+    "precisionFloor": 45,
+    "distinctFamilies": 5,
     "twoStarLength": 358,
-    "threeStarLength": 246,
-    "shortestWin": 230,
+    "threeStarLength": 288,
+    "shortestWin": 243,
+    "measuredAt": "2026-09-13"
+  },
+  "a8-jam": {
+    "solvable": true,
+    "solutionBreadth": 0.0526,
+    "precisionFloor": 65,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 110,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-13"
+  },
+  "a9-chute": {
+    "solvable": true,
+    "solutionBreadth": 0.3788,
+    "precisionFloor": 65,
+    "distinctFamilies": 6,
+    "twoStarLength": 295,
+    "threeStarLength": 171,
+    "shortestWin": 86,
+    "measuredAt": "2026-09-13"
+  },
+  "a10-switch": {
+    "solvable": true,
+    "solutionBreadth": 0.2267,
+    "precisionFloor": 65,
+    "distinctFamilies": 6,
+    "twoStarLength": 305,
+    "threeStarLength": 230,
+    "shortestWin": 110,
     "measuredAt": "2026-09-13"
   }
 };

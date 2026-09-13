@@ -12,7 +12,7 @@ import {
   createGame, tick, onDown, onMove, onUp, retry, nextLevel, isSteppingPhase,
   PHASE, inkUsed, inkMax,
 } from './game.js';
-import { A1, LEVELS, assertLevel } from './levels.js';
+import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT } from './constants.js';
 import { clear, drawScene } from './render/world.js';
 import { freezeAmount, reducedMotion } from './render/freeze.js';
@@ -22,7 +22,7 @@ import { C } from './render/palette.js';
 import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
 
-for (const lvl of LEVELS) assertLevel(lvl);
+for (const lvl of ALL_LEVELS) assertLevel(lvl);
 
 const canvas = document.getElementById('stage');
 initView(canvas);

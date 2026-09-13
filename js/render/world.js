@@ -49,6 +49,12 @@ export function drawScene(ctx, sim, opts = {}) {
   // ── static geometry ───────────────────────────────────────────────────
   for (const s of sim.statics) {
     const b = s.spec;
+    ctx.save();
+    if (b.angle) {
+      ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
+      ctx.rotate(b.angle * Math.PI / 180);
+      ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
+    }
     inkShape(ctx, rectPoints(b.x, b.y, b.w, b.h), {
       now, fill: drain(C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
       width: 3.4, salt: b.x | 0,
@@ -57,7 +63,7 @@ export function drawScene(ctx, sim, opts = {}) {
     // Diagonal brackets cost nothing and make it read as a fixed structure —
     // which also tells the player, truthfully, that it is something solid to
     // anchor to. Never uses the danger accent.
-    if (b.h <= 40 && b.y < 1000) {
+    if (b.h <= 40 && b.y < 1000 && !b.angle) {
       const ink = drain(C.ink, 0.45 + freeze * 0.3);
       for (const sx of [b.x + 8, b.x + b.w - 8]) {
         const dir = sx < b.x + b.w / 2 ? 1 : -1;
@@ -67,6 +73,7 @@ export function drawScene(ctx, sim, opts = {}) {
         ], { now, colour: ink, width: 2.6, salt: (b.x + sx) | 0, passes: 1 });
       }
     }
+    ctx.restore();
   }
 
   // ── lethal zones ──────────────────────────────────────────────────────

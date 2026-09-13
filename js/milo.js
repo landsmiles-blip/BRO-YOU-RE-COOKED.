@@ -35,11 +35,16 @@ export function createMilo(ctx, level) {
     speed: level.milo.speed ?? MILO.speed,
     stunUntil: 0,
     grounded: true,
+    groundNormal: { x: 0, y: -1 },
     danger: 0,          // 0..1, drives expression + audio (Bible §6.2)
     alive: true,
   };
 }
 
+/**
+ * Ground probe. Also captures the SURFACE NORMAL, which is what makes slopes
+ * work — see updateMilo.
+ */
 function groundCheck(ctx, milo) {
   const b = milo.body;
   const feetY = b.position.y + MILO.height / 2;
@@ -47,7 +52,13 @@ function groundCheck(ctx, milo) {
     ctx, b.position.x, feetY - 4, b.position.x, feetY + MILO.groundProbe,
     (o) => o !== b,
   );
-  return hits.length > 0;
+  if (!hits.length) { milo.groundNormal = null; return false; }
+
+  // Matter's ray normals can point either way; force it to face upward.
+  let n = hits[0].normal ?? { x: 0, y: -1 };
+  if (n.y > 0) n = { x: -n.x, y: -n.y };
+  milo.groundNormal = n;
+  return true;
 }
 
 /**
@@ -98,7 +109,28 @@ export function updateMilo(ctx, milo, simTimeMs) {
   setAngularVelocity(b, 0);
 
   const v = getVelocity(b);
-  setVelocity(b, milo.dir * milo.speed, v.y);       // drive x, physics owns y
+
+  // Walk ALONG the surface, not horizontally across it.
+  //
+  // MILO.maxWalkSlope was a dead constant until now: declared, documented,
+  // quoted in a level comment, and never read. Milo's climbing was whatever
+  // emerged from shoving a body sideways into a hill, so ramps barely worked
+  // and the RAMP verb — which the level ladder leans on repeatedly — was
+  // effectively unbuildable. The solver found it by failing A6 at every rise
+  // from 112u down to 72u, which is the signature of a mechanic that is
+  // missing rather than mistuned.
+  const n = milo.groundNormal ?? { x: 0, y: -1 };
+  const slopeDeg = Math.acos(Math.min(1, Math.abs(n.y))) * 180 / Math.PI;
+
+  if (slopeDeg <= MILO.maxWalkSlope) {
+    // Tangent to the surface, pointing the way he is walking.
+    const tx = -n.y * milo.dir, ty = n.x * milo.dir;
+    setVelocity(b, tx * milo.speed, ty * milo.speed + Math.max(0, v.y));
+  } else {
+    // Too steep to climb: he scrabbles and loses most of his drive. Gravity
+    // does the rest, which reads as slipping back rather than as a bug.
+    setVelocity(b, milo.dir * milo.speed * 0.25, v.y);
+  }
 
   if (Math.abs(v.x) < milo.speed * 0.35) tryStepUp(ctx, milo);
 }

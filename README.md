@@ -4,7 +4,7 @@ A physics rescue puzzle where one simple drawing can turn a disaster into a ridi
 last-second save. The player does not need more buttons; they need better ideas.
 
 **Platform:** YouTube Playables (primary) · open web (validation + revenue)
-**Status:** M0 complete — four levels playable, art system in
+**Status:** M1 — eight levels shipping, solver-gated
 
 > One line. One shot. Get him out.
 
@@ -47,14 +47,23 @@ node tools/solver --check    # gates only, no write (regression mode)
 
 ## Solver gates
 
-Every level is swept with ~1,500 human-shaped strokes and must clear:
+Every level is swept with ~1,500 human-shaped strokes and must clear all of
+them. A level that fails does **not** ship — it is held back, not deleted.
 
-| Gate | Rule | A1 | A2 | A3 | A4 |
-|---|---|---|---|---|---|
-| Solvable | ≥1 win | yes | yes | yes | yes |
-| Breadth | 2%–40% of plausible strokes win | 16.9% | 3.7% | 21.2% | 2.7% |
-| Precision floor | ≥25u (a thumb, on a 6cm puzzle) | 65u | 45u | 65u | 30u |
-| ★★ / ★★★ | measured 60th/20th percentile | 300/222 | 336/230 | 294/228 | 358/246 |
+| Level | Verb | Breadth (2–40%) | Precision (≥25u) | ★★/★★★ |
+|---|---|---|---|---|
+| A1 WALL | BLOCK | 22.0% | 45u | 300/222 |
+| A2 GAP | BRIDGE | 3.9% | 45u | 336/230 |
+| A3 REDIRECT | REDIRECT | 22.2% | 65u | 294/228 |
+| A5 HANG | BLOCK | 17.3% | 65u | — |
+| A7 PROP | SUPPORT | 4.4% | 45u | — |
+| A8 JAM | WEDGE | 5.3% | 65u | — |
+| A9 CHUTE | FUNNEL | 37.9% | 65u | — |
+| A10 THE SWITCH | TRIGGER | 22.7% | 65u | — |
+
+**Held back** (in the repo, not in the game):
+- **A4 CATCH** — precision floor pinned at 10u at every geometry tried.
+- **A6 RAMP** — only passes with a 47u wall, barely above the 22u step-up.
 
 Star thresholds are **measured, never typed**. Re-run after any physics change.
 

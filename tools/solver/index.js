@@ -9,7 +9,7 @@
 // `npm test` as the thing that catches a physics tune breaking a level.
 
 import { writeFileSync } from 'node:fs';
-import { LEVELS, getLevel } from '../../js/levels.js';
+import { LEVELS, HELD, ALL_LEVELS, getLevel } from '../../js/levels.js';
 import { analyse, gradeLevel } from './solve.js';
 
 const argv = process.argv.slice(2);
@@ -20,7 +20,8 @@ const flag = (name, def) => {
 const density = Number(flag('--density', 1));
 const checkOnly = argv.includes('--check');
 const target = argv.find((a) => !a.startsWith('--') && !/^[\d.]+$/.test(a));
-const levels = target ? [getLevel(target)] : LEVELS;
+const levels = target ? [getLevel(target)] : ALL_LEVELS;
+const heldIds = new Set(HELD.map((h) => h.level.id));
 
 const pct = (v) => `${(v * 100).toFixed(1)}%`;
 let hardFailures = 0;
@@ -43,15 +44,19 @@ for (const level of levels) {
   console.log(`  ★★ / ★★★        ${a.twoStarLength}u / ${a.threeStarLength}u   (60th/20th pct, MEASURED)`);
 
   const issues = gradeLevel(a);
-  if (!issues.length) console.log('  VERDICT         PASS');
+  const held = heldIds.has(level.id);
+  if (!issues.length) console.log(`  VERDICT         PASS${held ? ' (held — now clears, consider shipping)' : ''}`);
   for (const i of issues) {
-    console.log(`  ${i.hard ? 'HARD FAIL' : 'WARN     '}       ${i.msg}`);
-    if (i.hard) hardFailures++;
+    // A held level is expected to fail. It is reported, not counted: the suite
+    // stays honest about the shipping set without going permanently red.
+    const tag = held ? 'HELD     ' : (i.hard ? 'HARD FAIL' : 'WARN     ');
+    console.log(`  ${tag}       ${i.msg}`);
+    if (i.hard && !held) hardFailures++;
   }
 }
 
 if (!checkOnly) {
-  const out = Object.fromEntries(Object.entries(results).map(([id, a]) => [id, {
+  const out = Object.fromEntries(Object.entries(results).filter(([id]) => !heldIds.has(id)).map(([id, a]) => [id, {
     solvable: a.solvable,
     solutionBreadth: Number(a.solutionBreadth.toFixed(4)),
     precisionFloor: a.precisionFloor,

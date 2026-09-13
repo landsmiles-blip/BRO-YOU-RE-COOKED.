@@ -6,7 +6,7 @@
 // between two attempts is the stroke.
 
 import {
-  createWorld, destroyWorld, addRect, addCircle, step as physStep,
+  createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
   onCollisionStart, allBodies, getSpeed,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
@@ -32,31 +32,61 @@ export function buildSim(level) {
     stroke: null,            // committed stroke body
     anchors: [],
     run: createRunState(),
+    // Which gates have been opened. The schema carried `triggers` from the
+    // start but nothing ever implemented it, so the design bible's own
+    // headline moment — something hits a switch, a gate opens, Milo walks
+    // through — was unbuildable. This is that.
+    triggered: new Set(),
     causality: createCausality(),
     recorder: createRecorder(),
     simTime: 0,
     death: null,
   };
 
+  // ONE COORDINATE RULE, no exceptions:
+  //   anything with w/h  → x,y is its TOP-LEFT corner
+  //   anything with radius → x,y is its CENTRE
+  //
+  // This was two rules before — top-left for static geometry, centre for
+  // objects — and it produced exactly the silent bug that kind of split
+  // always produces: A9's gate was authored as top-left, built as centre, and
+  // ended up hanging 70 units above the ground with Milo strolling underneath
+  // it. Every test passed. The level simply was not a puzzle.
   for (const s of level.static) {
-    // Authoring uses top-left; Matter uses centre.
     const body = addRect(ctx, {
-      id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h, isStatic: true,
-      friction: 0.7,
+      id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h,
+      angle: (s.angle ?? 0) * Math.PI / 180, isStatic: true, friction: 0.7,
     });
     sim.statics.push({ body, spec: s });
   }
 
   for (const o of level.objects) {
-    const body = o.radius
-      ? addCircle(ctx, {
-          id: o.id, x: o.x, y: o.y, radius: o.radius,
-          density: o.density, restitution: o.restitution, friction: o.friction ?? 0.4,
-        })
-      : addRect(ctx, {
-          id: o.id, x: o.x, y: o.y, w: o.w, h: o.h,
-          density: o.density, restitution: o.restitution, friction: o.friction ?? 0.4,
-        });
+    let body;
+    const cx = o.w ? o.x + o.w / 2 : o.x;      // top-left → centre for rects
+    const cy = o.h ? o.y + o.h / 2 : o.y;
+    if (o.type === 'switch') {
+      // A pressure plate. Static and non-colliding: it detects, it never blocks.
+      body = addRect(ctx, { id: o.id, x: cx, y: cy, w: o.w, h: o.h, isStatic: true });
+      body.isSensor = true;
+    } else if (o.type === 'gate') {
+      // Solid until something opens it.
+      body = addRect(ctx, { id: o.id, x: cx, y: cy, w: o.w, h: o.h, isStatic: true, friction: 0.6 });
+    } else if (o.radius) {
+      body = addCircle(ctx, {
+        id: o.id, x: o.x, y: o.y, radius: o.radius,
+        density: o.density, restitution: o.restitution, friction: o.friction ?? 0.4,
+        ...(o.frictionAir != null ? { frictionAir: o.frictionAir } : {}),
+      });
+    } else {
+      body = addRect(ctx, {
+        id: o.id, x: cx, y: cy, w: o.w, h: o.h,
+        angle: (o.angle ?? 0) * Math.PI / 180,
+        density: o.density, restitution: o.restitution, friction: o.friction ?? 0.4,
+      });
+    }
+    // Level-authored initial velocity — a roller that is already moving when
+    // the world starts, so the freeze catches it mid-approach.
+    if (o.vx || o.vy) setVelocity(body, o.vx ?? 0, o.vy ?? 0);
     sim.objects.set(o.id, { body, spec: o });
   }
 
@@ -65,6 +95,16 @@ export function buildSim(level) {
   onCollisionStart(ctx, (a, b, pair) => {
     const speed = normalSpeed(a, b, pair);
     noteContact(sim.causality, a, b, sim.simTime, speed);
+
+    // Switch → gate. Anything with mass can press a plate, which is the point:
+    // the player does not touch the switch, they arrange for something else to.
+    for (const [hit, other] of [[a, b], [b, a]]) {
+      const entry = sim.objects.get(hit.gameId);
+      if (!entry || entry.spec.type !== 'switch') continue;
+      if (other.isSensor) continue;
+      if (entry.spec.requires === 'heavy' && (other.mass ?? 0) < (entry.spec.minMass ?? 40)) continue;
+      fireSwitch(sim, entry);
+    }
 
     const miloBody = sim.milo.body;
     if (a !== miloBody && b !== miloBody) return;
@@ -82,6 +122,20 @@ export function buildSim(level) {
   });
 
   return sim;
+}
+
+/** Open every gate a switch points at. Idempotent — a switch fires once. */
+function fireSwitch(sim, entry) {
+  if (sim.triggered.has(entry.spec.id)) return;
+  sim.triggered.add(entry.spec.id);
+  for (const targetId of entry.spec.triggers ?? []) {
+    const target = sim.objects.get(targetId);
+    if (!target) continue;
+    sim.triggered.add(targetId);
+    // The gate stops existing physically. Visually it swings away.
+    target.body.collisionFilter.mask = 0;
+    target.body.collisionFilter.category = 0;
+  }
 }
 
 export function destroySim(sim) {
