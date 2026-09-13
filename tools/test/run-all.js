@@ -1,7 +1,7 @@
 // Runs every physics gate. Nothing downstream of these is trustworthy if they fail.
 import { spawnSync } from 'node:child_process';
 
-const suites = ['tools/test/freefall.js', 'tools/test/tunnel.js', 'tools/test/a1-solve.js'];
+const suites = ['tools/test/freefall.js', 'tools/test/tunnel.js', 'tools/test/shapes.js', 'tools/test/levels-solve.js'];
 let failed = 0;
 
 for (const s of suites) {

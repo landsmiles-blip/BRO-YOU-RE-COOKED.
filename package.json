@@ -6,6 +6,7 @@
   "description": "A physics rescue puzzle. One line. One shot. Get him out.",
   "scripts": {
     "test": "node tools/test/run-all.js",
+    "test:levels": "node tools/test/levels-solve.js",
     "test:freefall": "node tools/test/freefall.js",
     "test:tunnel": "node tools/test/tunnel.js",
     "serve": "node tools/serve.js",

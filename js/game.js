@@ -13,6 +13,7 @@
 // game that waits for you forever without a pause menu.
 
 import { buildSim, stepSim, commitStroke, abort, destroySim, OUTCOME } from './sim.js';
+import { LEVELS } from './levels.js';
 import { createStroke, begin, extend, end, remaining } from './drawing/capture.js';
 import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
@@ -26,6 +27,7 @@ export const PHASE = {
 export function createGame(level) {
   const g = {
     level,
+    levelIndex: Math.max(0, LEVELS.indexOf(level)),
     sim: null,
     phase: PHASE.LIVE,
     stroke: createStroke(),
@@ -87,6 +89,15 @@ export function retry(g) {
   reset(g);
 }
 
+/** Advance to the next level, wrapping at the end (M0 has no meta shell yet). */
+export function nextLevel(g) {
+  g.levelIndex = (g.levelIndex + 1) % LEVELS.length;
+  g.level = LEVELS[g.levelIndex];
+  g.ghostPoints = null;
+  g.attempt = 0;
+  reset(g);
+}
+
 // ── Input handlers ──────────────────────────────────────────────────────
 
 export function onDown(g, x, y, pointerId) {
@@ -95,7 +106,7 @@ export function onDown(g, x, y, pointerId) {
     if (g.phaseTime > 250) retry(g);                            // let them see it first
     return;
   }
-  if (g.phase === PHASE.RESULT) { g.ghostPoints = null; reset(g); return; }
+  if (g.phase === PHASE.RESULT) { nextLevel(g); return; }
   if (g.phase === PHASE.FROZEN) begin(g.stroke, x, y, pointerId, performance.now());
 }
 

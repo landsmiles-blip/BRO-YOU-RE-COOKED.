@@ -67,7 +67,123 @@ export const A1 = {
   solver: null,
 };
 
-export const LEVELS = [A1];
+// ─────────────────────────────────────────────────────────────────────────
+// A2 — GAP.  Teaches: your line becomes terrain he can walk on.
+//
+// Forces two code paths nothing else has executed: `zone` lethality (the pit)
+// and — the real target — MILO STEPPING UP ONTO DRAWN GEOMETRY. The bridge
+// presents a 16u lip to a 72u body, and MILO.maxStepUp (22) exceeds
+// LINE.thickness (16) precisely so that works. Those two constants live in
+// different parts of the file and only running it proves the inequality holds.
+// ─────────────────────────────────────────────────────────────────────────
+export const A2 = {
+  id: 'a2-gap',
+  world: 'backyard',
+  verb: 'BRIDGE',
+  milo: { start: { x: 120, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 620, y: 1152, w: 80, h: 140 },
+  freezeAt: 500,                       // he reaches the edge at t≈0.82s
+
+  static: [
+    { id: 'groundL', type: 'platform', x: 0,   y: 1152, w: 300, h: 128 },
+    { id: 'groundR', type: 'platform', x: 500, y: 1152, w: 220, h: 128 },
+  ],
+  objects: [],
+  zones: [
+    { id: 'pit', kind: 'zone', x: 300, y: 1216, w: 200, h: 64, lethal: true },
+  ],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A3 — REDIRECT.  Teaches: sometimes you steer it instead of stopping it.
+//
+// Blocking the boulder flat merely parks a 68u-tall rock on the walk line,
+// against a 22u step-up — the exact dead-end that made the source spec's A1
+// unsolvable. Here that failure is the LESSON rather than a bug: block it and
+// Milo is stuck; angle it and the boulder rolls off the left edge of the world
+// and is gone.
+//
+// Also forces the `strokeTouched` causality chain, so a player who deflects the
+// boulder INTO Milo is told "YOU SENT IT AT HIM" rather than something generic.
+// ─────────────────────────────────────────────────────────────────────────
+export const A3 = {
+  id: 'a3-redirect',
+  world: 'backyard',
+  verb: 'REDIRECT',
+  milo: { start: { x: 105, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 640, y: 1152, w: 80, h: 140 },
+  freezeAt: 600,
+
+  static: [
+    // Ground starts at x=60. A boulder sent left rolls off the edge of the
+    // world and is gone — which is what makes REDIRECT a real answer rather
+    // than a slower way of blocking.
+    { id: 'ground', type: 'platform', x: 60,  y: 1152, w: 660, h: 128 },
+    // The two shelves sit at DIFFERENT heights on purpose, so any stroke
+    // joining them is a SLOPE and the boulder rolls off rather than resting.
+    //
+    // HONEST LIMITATION: this does not *force* redirect over block. With the
+    // shelves fixed, the slope direction is fixed too — a stroke drawn left-to-
+    // right and right-to-left produce the identical body, so the player has no
+    // directional choice here. What the level does prove is that the boulder
+    // ends up OFF THE WORLD instead of parked on the walk line. Measuring
+    // whether a genuine block also succeeds is a job for the M1 solver harness
+    // (solution breadth), not for a hand-written assertion pretending otherwise.
+    { id: 'shelfLow',  type: 'platform', x: 240, y: 880, w: 80, h: 28 },
+    { id: 'shelfHigh', type: 'platform', x: 420, y: 740, w: 80, h: 28 },
+  ],
+  objects: [
+    {
+      id: 'boulder1', type: 'boulder', x: 370, y: 180, radius: 28,
+      density: 0.03, restitution: 0.15, friction: 0.4,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 },
+    },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A4 — CATCH.  Teaches: you can catch HIM, not just the thing chasing him.
+//
+// The first level where the stroke bears MILO'S OWN WEIGHT — every earlier
+// level only ever loaded it with a ball.
+//
+// Trajectory re-derived DISCRETELY. v0.4 computed this continuously and got
+// x=406 for the pit floor; our 900 u/s clamp makes him fall slower and drift
+// further, so the real death line is x=415. Catch geometry must engage before
+// that. Measured, walking off the ledge at 220 u/s:
+//     y=1000 → x=354   y=1050 → x=366   y=1250 → x=415
+//
+// The bowl must reach static geometry at BOTH ends. A stroke touching at one
+// point has a single weld and pivots about it — the catch collapses. And the
+// goal-facing side has to stay open, or a successful catch traps him and trips
+// the stuck timer instead of winning.
+// ─────────────────────────────────────────────────────────────────────────
+export const A4 = {
+  id: 'a4-catch',
+  world: 'backyard',
+  verb: 'CATCH',
+  milo: { start: { x: 100, y: 800 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 620, y: 1100, w: 80, h: 140 },
+  freezeAt: 500,                       // he steps off the ledge at t≈0.68s
+
+  static: [
+    { id: 'ledge',    type: 'platform', x: 0,   y: 800,  w: 250, h: 60  },
+    { id: 'platform', type: 'platform', x: 470, y: 1100, w: 250, h: 180 },
+  ],
+  objects: [],
+  zones: [
+    { id: 'pit', kind: 'zone', x: 250, y: 1240, w: 220, h: 40, lethal: true },
+  ],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4];
 
 export function getLevel(id) {
   return LEVELS.find((l) => l.id === id) ?? LEVELS[0];
