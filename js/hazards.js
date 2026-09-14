@@ -12,6 +12,13 @@
 //             makes BLOCK a real verb: a falling boulder kills, the same
 //             boulder at rest is furniture.
 //   zone    — an area rather than a body. Pit floors, out of bounds.
+//   none    — HARMLESS, and said out loud. Planks, crates, anything you are
+//             meant to touch. This kind exists because the level validator
+//             rightly refuses an object that declares no lethality at all —
+//             silence there is almost always a forgotten hazard — but the
+//             first version gave an author no way to say "this one is safe".
+//             Deleting the field to silence the check broke the whole build:
+//             the right answer is to make the third category expressible.
 //
 // CHANGED FROM THE BIBLE: the field is `minSpeed` (u/s), not `minImpulse`.
 // The Bible's `minImpulse: 55` had no derivation. Working it through with
@@ -26,6 +33,18 @@ import { getVelocity } from './physics/adapter.js';
 import { MILO } from './constants.js';
 
 export const DEFAULT_MIN_SPEED = 400;
+
+/**
+ * Every lethality kind the engine understands. The level validator checks
+ * against this, so a typo (`kind: 'impcat'`) fails the build instead of
+ * quietly producing an object that can never kill anyone.
+ */
+export const LETHAL_KINDS = new Set(['contact', 'impact', 'zone', 'none']);
+
+/** Does this spec describe something that can kill Milo by touching him? */
+export function isHazardous(spec) {
+  return !!spec && (spec.kind === 'contact' || spec.kind === 'impact');
+}
 
 /** Total relative speed between two bodies, in u/s. */
 export function relativeSpeed(a, b) {
@@ -61,7 +80,7 @@ export function normalSpeed(a, b, pair) {
  * the source documents stated as a wish and implemented nowhere.
  */
 export function isFatal(miloBody, otherBody, spec, pair) {
-  if (!spec) return false;
+  if (!spec || spec.kind === 'none') return false;
 
   if (spec.kind === 'contact') return withinGrace(miloBody, pair, spec);
   if (spec.kind === 'impact') {

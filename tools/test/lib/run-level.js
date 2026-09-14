@@ -100,37 +100,8 @@ function finish(sim, outcome, committed, strokeY0, jitter = 0, firstParts = null
   return r;
 }
 
-/**
- * Resample a stroke the way a finger draws it.
- *
- * THE WAVER MUST EXCEED LINE.simplifyTol (3u) OR THIS TEST IS VACUOUS.
- * The first version used a 1.2-unit waver, and Douglas-Peucker — correctly —
- * flattened it straight back to two points and one rigid body, so the
- * "hand-drawn" case was still the sparse case in disguise and the gate could
- * never have caught the bug it exists to catch. A real finger wavers several
- * units; the assertion below refuses to pass unless the stroke really did
- * survive simplification as a multi-part body.
- */
-export function handDrawn(points, spacing = 8, waver = 5.5) {
-  if (points.length < 2) return points;
-  const out = [];
-  let d = 0;
-  for (let i = 1; i < points.length; i++) {
-    const a = points[i - 1], b = points[i];
-    const len = Math.hypot(b.x - a.x, b.y - a.y);
-    const n = Math.max(1, Math.round(len / spacing));
-    for (let k = 0; k < n; k++) {
-      const t = k / n;
-      d += len / n;
-      out.push({
-        x: a.x + (b.x - a.x) * t + Math.sin(d * 0.42) * waver,
-        y: a.y + (b.y - a.y) * t + Math.cos(d * 0.55) * waver,
-      });
-    }
-  }
-  out.push(points[points.length - 1]);
-  return out;
-}
+export { handDrawn } from './hand.js';
+import { handDrawn } from './hand.js';
 
 // ── tiny assertion helpers, shared by every level suite ─────────────────
 export function makeAssert() {

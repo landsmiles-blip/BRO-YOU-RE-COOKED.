@@ -74,3 +74,64 @@ If clearance later comes back bad, the title changes and nothing else does — b
 
 - **Legal trademark clearance** (D4) — requires a real search and, if it matters, a lawyer.
 - **Any spend.** If the D2 cut line trips, that is a money decision and it comes back to the user.
+
+---
+
+## D7 — Verification · **LOCKED: nothing ships on numbers alone. The gate is a picture of the game being won.**
+
+Two unplayable builds shipped while every numeric gate reported green. That is a
+broken method, not bad luck, and this decision is the method that replaces it.
+
+**What actually went wrong, in order:**
+
+1. **I had never watched the game play.** Every screenshot was the *frozen
+   tableau* — the still frame before anything moves. Everything else was numbers
+   out of a headless simulation. A vibrating line, a shrinking line and a line
+   that will not sit still all satisfy an assertion about positions.
+2. **The fix to (1) was still not a gate.** The first filmstrip drew one
+   hand-authored "stroke a person would plausibly draw" per level. Most
+   plausible strokes LOSE, and a filmstrip of a loss looks exactly like a
+   filmstrip of a broken level. I read a losing A9 stroke as a dead level and
+   was one edit from "fixing" a level that was fine.
+3. **My model of a human hand was physically impossible.** `handDrawn` applied
+   tremor on both axes with a wavelength shorter than its own sample spacing —
+   it aliased, producing a crumpled zigzag whose consecutive segments sat at
+   31°, −88°, +113°, −119°. No finger draws that; no input pipeline emits it.
+   Gating on it condemned A2 as having *zero* hand-playable solutions.
+4. **`solvable: true` never meant playable.** It meant some idealised 4-point
+   polyline won. A solution only reachable by a stroke drawn to the pixel is
+   not a solution.
+
+**The standing rules:**
+
+- **One hand model** (`tools/test/lib/hand.js`), with no physics imports so
+  every tool shares it. Tremor is perpendicular to travel, and its wavelength is
+  held to at least 6× the sample spacing — the guard that makes aliasing
+  impossible. It must still survive simplification as a genuine multi-part
+  chain: realistic and demanding are not opposites; aliased is just wrong.
+- **A level is solvable only if a shaky hand can solve it.** Every winner is
+  re-run under three tremors that differ in amplitude, in where the bends fall,
+  and in pixel quantization — a pointer reports integer screen pixels, ~1.8
+  world units at phone scale, which no simulation applies on its own.
+- **The representative solution must be ANCHORED.** An anchored stroke is
+  static: it stays where it was drawn and the level plays the same way every
+  time. An unanchored one falls, tumbles and settles, and where it settles is
+  chaotic. A3's representative was an unanchored arc that passed every headless
+  tremor and then lost in the browser, jamming Milo a body's width from the
+  goal. A solution a player cannot reproduce is not a solution.
+- **Filmstrips film certified winners, and losing one is a build failure.**
+  `tools/test/filmstrip.js` exits non-zero on any level that does not reach its
+  goal, because every stroke it draws is already proven to win.
+- **The cheapest gate runs first.** `assertLevel` existed, was correct, and was
+  only ever called from `js/main.js` — at boot, in the browser. So `npm test`
+  reported ALL PHYSICS GATES PASS while the shipped bundle was a blank page. A
+  headless suite that never loads the game cannot notice the game is dead.
+  `tools/test/level-data.js` now runs first and catches it in milliseconds.
+- **Generated data merges, never overwrites.** Re-measuring one level used to
+  silently delete the other eight levels' star thresholds, and the file still
+  looked plausible afterwards. The most common way a tool is used must not be
+  its destructive path.
+
+**Verification order, every time:** `npm test` → `node tools/solver/representative.js`
+→ build → `node tools/test/filmstrip.js` → **read the images** → `npm run solver`
+→ `npm run test:browser`.

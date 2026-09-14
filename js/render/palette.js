@@ -10,6 +10,10 @@ export const C = {
   paperDark:  '#DCD4C4',
   ink:        '#2A2622',
   staticFill: '#C6BCA9',
+  // Mechanisms and props — planks, plates, gates. Warmer than fixed geometry so
+  // they read as loose or moving parts, and deliberately NOT the danger accent:
+  // they obstruct, they do not kill.
+  plank:      '#B79A6E',
   danger:     '#E0452B',   // THE accent. Danger only.
   goal:       '#3FA96B',
   goalGlow:   'rgba(63,169,107,0.28)',

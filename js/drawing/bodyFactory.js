@@ -46,6 +46,18 @@ export function buildStrokeBody(ctx, classified) {
   if (!body) return null;
 
   body.gameId = 'stroke';
+
+  // THE STROKE'S OWN GEOMETRY, in local space, so the renderer can draw the
+  // line the player actually drew.
+  //
+  // Without this the renderer rebuilt the line from PART CENTRES — which are
+  // segment MIDPOINTS — so the drawn line was short by half a segment at each
+  // end and visibly snapped inwards the moment it committed. A near-straight
+  // drag simplifies to 2 points and 1 part, which hit a third code path again
+  // (opposite corners of a rectangle). Three renderings of one object, none of
+  // them the thing the player drew.
+  body.strokePath = pts.map((p) => ({ x: p.x - body.position.x, y: p.y - body.position.y }));
+
   Composite.add(ctx.world, body);
   return body;
 }

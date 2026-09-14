@@ -12,6 +12,7 @@
 // required aspect ratio.
 
 import { SAFE_BOX, MILO, LINE } from './constants.js';
+import { LETHAL_KINDS } from './hazards.js';
 
 /** Objects that act on the world rather than threatening Milo. */
 const MECHANISM_TYPES = new Set(['switch', 'gate']);
@@ -59,7 +60,10 @@ export const A1 = {
     {
       id: 'ball1', type: 'boulder', x: 400, y: 300, radius: 28,
       density: 0.03, restitution: 0.15, friction: 0.4,
-      lethal: { kind: 'impact', minImpulse: 55, graceRadius: 6 },
+      // minSpeed, not the Bible's minImpulse — see hazards.js. The old key
+      // was dead weight here: isFatal reads minSpeed and fell back to the
+      // default, so the number in the data described nothing.
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 },
     },
   ],
 
@@ -84,21 +88,40 @@ export const A2 = {
   world: 'backyard',
   verb: 'BRIDGE',
   milo: { start: { x: 120, y: 880 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 620, y: 880, w: 80, h: 140 },
-  freezeAt: 500,                       // he reaches the edge at t≈0.82s
+  goal: { id: 'goal', x: 620, y: 1080, w: 80, h: 140 },
+  freezeAt: 500,                       // he reaches the edge at t≈0.93s
 
-  // COMPOSITION: the first pass put the ground at y=1152 with a 64u pit,
-  // which is correct physics and a dead frame — the whole level lived in the
-  // bottom fifth of a portrait screen and the "pit" was a shallow notch. The
-  // banks now sit at y=880 with a real chasm below them, so the drop reads as
-  // a drop and the frame actually has something in it.
+  // COMPOSITION: the first pass put the ground at y=1152 with a 64u pit, which
+  // is correct physics and a dead frame — the whole level lived in the bottom
+  // fifth of a portrait screen and the "pit" was a shallow notch. The banks
+  // now sit high with a real chasm below them, so the drop reads as a drop.
+  //
+  // THE FAR BANK IS 200u LOWER THAN THE NEAR ONE, and that asymmetry is the
+  // whole fix for this level. With both banks level, A2 was measured at 1.1%
+  // solution breadth — the hardest level in the game, at position TWO, against
+  // 12.7% for level one. 85% of every stroke a player could draw ended with
+  // Milo in the pit.
+  //
+  // The cause is a real asymmetry in the locomotion, not bad luck: DESCENDING
+  // IS FREE, CLIMBING IS GATED. Milo can drop any distance onto a surface, but
+  // he can only rise MILO.maxStepUp (22u) onto one. With level banks, a bridge
+  // had to land inside a ~22u window or it was useless — and 1,462 of the
+  // strokes that DID anchor to the banks still failed, because anchoring to a
+  // 400u-tall cliff face is easy and landing in that window is not.
+  //
+  // Dropping the far bank turns the whole crossing into a descent: every
+  // bridge that spans the gap at any height between the two banks now works.
+  // Measured: 1.1% -> 7.4% breadth, which puts level two back in the same band
+  // as level one instead of far below every level that ships. Raising the pit
+  // floor tightens the composition for the same reason — it stops half the
+  // frame being chasm nobody can usefully draw into.
   static: [
-    { id: 'groundL', type: 'platform', x: 0,   y: 880, w: 300, h: 400 },
-    { id: 'groundR', type: 'platform', x: 500, y: 880, w: 220, h: 400 },
+    { id: 'groundL', type: 'platform', x: 0,   y: 880,  w: 325, h: 400 },
+    { id: 'groundR', type: 'platform', x: 475, y: 1080, w: 245, h: 200 },
   ],
   objects: [],
   zones: [
-    { id: 'pit', kind: 'zone', x: 300, y: 1210, w: 200, h: 70, lethal: true },
+    { id: 'pit', kind: 'zone', x: 330, y: 1100, w: 145, h: 180, lethal: true },
   ],
   drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
   solver: null,
@@ -280,9 +303,14 @@ export const A7 = {
   ],
   objects: [
     // Rests on the left bank, overhangs the gap. Unsupported, it pivots.
+    // A PROP, not a hazard, and it says so. It used to carry an `impact` spec,
+    // so the renderer painted it in the danger accent — telling the player
+    // "do not touch" about the one object they are meant to walk across. The
+    // single-accent rule cuts both ways: the accent must mark what kills, and
+    // nothing else.
     { id: 'plank', type: 'plank', x: 170, y: 884, w: 360, h: 22,
       density: 0.005, restitution: 0.05, friction: 0.8,
-      lethal: { kind: 'impact', minSpeed: 900, graceRadius: 6 } },
+      lethal: { kind: 'none' } },
   ],
   zones: [{ id: 'pit', kind: 'zone', x: 250, y: 1240, w: 270, h: 40, lethal: true }],
   drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
@@ -376,7 +404,12 @@ export const A10 = {
     { id: 'rock', type: 'boulder', x: 330, y: 170, radius: 26,
       density: 0.03, restitution: 0.12, friction: 0.35,
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
-    { id: 'plate', type: 'switch', x: 180, y: 1120, w: 150, h: 32, triggers: ['gate'] },
+    // The plate sits ON THE LEFT SHELF, out of Milo's reach. It was on the
+    // ground across his walking line, so he pressed it himself during the live
+    // beat and the gate was already open before the player drew anything — the
+    // identical flaw I fixed in A9 and never re-checked for here. The filmstrip
+    // showed it instantly: the plate renders gold (fired) in frame one.
+    { id: 'plate', type: 'switch', x: 160, y: 674, w: 120, h: 26, triggers: ['gate'] },
     { id: 'gate',  type: 'gate',   x: 470, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
@@ -434,7 +467,14 @@ export function assertLevel(level) {
     // the author should have to say which — but a switch and a gate are a
     // third category the first version of this check had no room for.
     if (!o.lethal && !MECHANISM_TYPES.has(o.type)) {
-      problems.push(`object "${o.id}" declares no lethality — hazard, or add its type to MECHANISM_TYPES`);
+      problems.push(`object "${o.id}" declares no lethality — give it a lethal spec `
+        + `({ kind: 'none' } for a prop), or add its type to MECHANISM_TYPES`);
+    }
+    // A typo in `kind` used to produce an object that silently could not kill
+    // anyone, because isFatal falls through unknown kinds to false. Catch it
+    // here, where it is one line, instead of in playtesting.
+    if (o.lethal && !LETHAL_KINDS.has(o.lethal.kind)) {
+      problems.push(`object "${o.id}" has unknown lethal kind "${o.lethal.kind}"`);
     }
     for (const t of o.triggers ?? []) {
       const exists = level.objects.some((x) => x.id === t) || level.static.some((x) => x.id === t);

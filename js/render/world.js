@@ -10,6 +10,7 @@ import { LINE, SAFE_BOX } from '../constants.js';
 import { inkPath, inkShape, rectPoints, circlePoints } from './stroke.js';
 import { drawMilo } from './rig.js';
 import { drain, drawMotionStreaks } from './freeze.js';
+import { isHazardous } from '../hazards.js';
 
 export function clear(ctx) {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -126,15 +127,30 @@ export function drawScene(ctx, sim, opts = {}) {
   // ── the committed stroke ──────────────────────────────────────────────
   if (sim.stroke) drawStrokeBody(ctx, sim.stroke, now);
 
-  // ── hazards — THE accent, and nothing else may use it ─────────────────
+  // ── objects ───────────────────────────────────────────────────────────
+  //
+  // EVERY object type must draw. This loop used to be `if (spec.radius)` with
+  // no else, so ONLY circles were ever rendered — which meant A7's plank and
+  // the plate AND gate in both chain-reaction levels were completely
+  // INVISIBLE. Milo walked off an empty ledge into spikes for no reason a
+  // player could see, and the switch levels were unplayable by definition:
+  // you cannot aim a rock at a target that is not drawn.
+  //
+  // The single-accent rule still holds: the danger colour marks what KILLS.
+  // A plank you stand on and a gate that blocks you are obstacles, not
+  // hazards, so they take neutral ink — and shape carries the meaning either
+  // way, per the accessibility rule.
   const moving = [];
   for (const { body, spec } of sim.objects.values()) {
-    // Danger keeps its colour through the freeze: it is the thing that is
-    // going to kill him, so it is the one thing that must not drain.
-    const fill = C.danger;
+    // Danger accent iff this thing can actually kill by touch. Testing
+    // `kind !== 'zone'` was wrong the moment a prop could declare
+    // `kind: 'none'` — it would have painted the safe plank red again.
+    const lethal = isHazardous(spec.lethal);
+    const opened = sim.triggered?.has(spec.id);
+
     if (spec.radius) {
       inkShape(ctx, circlePoints(body.position.x, body.position.y, spec.radius), {
-        now, fill, ink: C.ink, width: 3.6, salt: 301,
+        now, fill: lethal ? C.danger : C.staticFill, ink: C.ink, width: 3.6, salt: 301,
       });
       // orientation tick, so rolling is visible
       inkPath(ctx, [
@@ -145,7 +161,22 @@ export function drawScene(ctx, sim, opts = {}) {
         },
       ], { now, colour: C.ink, width: 2.6, salt: 302, passes: 1 });
       moving.push({ body, radius: spec.radius });
+      continue;
     }
+
+    if (spec.type === 'switch') {
+      drawPlate(ctx, spec, opened, now, freeze);
+      continue;
+    }
+    if (spec.type === 'gate') {
+      drawGate(ctx, spec, opened, now, freeze);
+      continue;
+    }
+
+    // Any other rectangle — planks, crates, moving walls. Drawn from the
+    // body's OWN vertices so rotation is honest.
+    drawRectBody(ctx, body, lethal ? C.danger : C.plank, now, 331);
+    moving.push({ body, radius: Math.max(spec.w ?? 20, spec.h ?? 20) / 2 });
   }
 
   drawMotionStreaks(ctx, moving, freeze);
@@ -179,21 +210,80 @@ export function drawScene(ctx, sim, opts = {}) {
   }
 }
 
-/** A committed stroke is drawn from its physics parts, so it visibly moves. */
+/**
+ * The committed stroke, drawn from ITS OWN geometry.
+ *
+ * `body.strokePath` is the simplified path the player drew, stored in local
+ * space at build time and transformed here by the body's live position and
+ * angle. Exact for static or dynamic, 1 part or 30 — and identical to what was
+ * on screen a frame earlier while they were still drawing it.
+ *
+ * The previous version rebuilt the line from part centres (segment midpoints),
+ * so it lost half a segment at each end and visibly SHRANK the instant it
+ * committed. One geometry, one renderer, no special cases.
+ */
 function drawStrokeBody(ctx, body, now) {
-  const parts = body.parts.length > 1 ? body.parts.slice(1) : [body];
-  const spine = parts.map((p) => ({ x: p.position.x, y: p.position.y }));
-  if (spine.length < 2) {
-    const v = parts[0].vertices;
-    inkPath(ctx, [{ x: v[0].x, y: v[0].y }, { x: v[2].x, y: v[2].y }],
-            { now, colour: C.stroke, width: LINE.thickness, salt: 21 });
-    return;
-  }
+  const local = body.strokePath;
+  if (!local || local.length < 2) return;
+
+  const cos = Math.cos(body.angle), sin = Math.sin(body.angle);
+  const pts = local.map((p) => ({
+    x: body.position.x + p.x * cos - p.y * sin,
+    y: body.position.y + p.x * sin + p.y * cos,
+  }));
+
   ctx.save();
   ctx.globalAlpha = 0.22;
-  inkPath(ctx, spine, { now, colour: C.strokeGlow, width: LINE.thickness + 9, salt: 21, passes: 1 });
+  inkPath(ctx, pts, { now, colour: C.strokeGlow, width: LINE.thickness + 9, salt: 21, passes: 1 });
   ctx.restore();
-  inkPath(ctx, spine, { now, colour: C.stroke, width: LINE.thickness, salt: 21 });
+  inkPath(ctx, pts, { now, colour: C.stroke, width: LINE.thickness, salt: 21 });
+}
+
+/** A rectangular body, drawn from its real vertices so rotation is honest. */
+function drawRectBody(ctx, body, fill, now, salt) {
+  const parts = body.parts.length > 1 ? body.parts.slice(1) : [body];
+  for (const p of parts) {
+    inkShape(ctx, p.vertices.map((v) => ({ x: v.x, y: v.y })),
+             { now, fill, ink: C.ink, width: 3.2, salt });
+  }
+}
+
+/** A pressure plate. Visibly depresses and lights once it has fired. */
+function drawPlate(ctx, spec, fired, now, freeze) {
+  const y = spec.y + (fired ? 8 : 0);
+  inkShape(ctx, rectPoints(spec.x, y, spec.w, spec.h - (fired ? 8 : 0)), {
+    now, fill: fired ? C.anchor : drain(C.plank, freeze * 0.3), ink: C.ink, width: 3.2, salt: 411,
+  });
+  // two arrows pressing down on it — reads as "put something heavy here"
+  if (!fired) {
+    for (const fx of [0.3, 0.7]) {
+      const x = spec.x + spec.w * fx;
+      inkPath(ctx, [{ x, y: y - 30 }, { x, y: y - 8 }],
+              { now, colour: C.ink, width: 2.6, salt: 412, passes: 1 });
+      inkPath(ctx, [{ x: x - 7, y: y - 16 }, { x, y: y - 6 }, { x: x + 7, y: y - 16 }],
+              { now, colour: C.ink, width: 2.6, salt: 413, passes: 1 });
+    }
+  }
+}
+
+/** A gate. Barred when shut; swung aside and ghosted once open. */
+function drawGate(ctx, spec, open, now, freeze) {
+  ctx.save();
+  if (open) {
+    ctx.globalAlpha = 0.22;
+    ctx.translate(spec.x + spec.w / 2, spec.y);
+    ctx.rotate(-1.1);
+    ctx.translate(-(spec.x + spec.w / 2), -spec.y);
+  }
+  inkShape(ctx, rectPoints(spec.x, spec.y, spec.w, spec.h), {
+    now, fill: drain(C.plank, freeze * 0.3), ink: C.ink, width: 3.4, salt: 421,
+  });
+  for (let i = 1; i <= 3; i++) {
+    const y = spec.y + (spec.h * i) / 4;
+    inkPath(ctx, [{ x: spec.x, y }, { x: spec.x + spec.w, y }],
+            { now, colour: C.ink, width: 2.4, salt: 422 + i, passes: 1 });
+  }
+  ctx.restore();
 }
 
 export { drawMilo };

@@ -29,7 +29,8 @@ console.log('\nA1 — WALL   (the line is real, solid matter)\n');
 // ── A2 — GAP · your line is terrain he can walk on ──────────────────────
 console.log('\nA2 — GAP   (the line becomes terrain — and he must STEP UP onto it)\n');
 {
-  const bridge = [{ x: 285, y: 878 }, { x: 400, y: 878 }, { x: 515, y: 878 }];
+  // Near bank edge (x=325, y=880) down to the far bank top (x=475, y=1080).
+  const bridge = [{ x: 300, y: 876 }, { x: 400, y: 978 }, { x: 500, y: 1076 }];
   const { idle, solved } = assertCore(assert, A2, bridge);
   assert('with no bridge he falls in the PIT', idle.outcome === OUTCOME.FELL, idle.outcome);
   assert('the bridge anchors to both banks', solved.anchors > 0, `${solved.anchors} anchor(s)`);

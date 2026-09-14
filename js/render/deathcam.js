@@ -44,15 +44,28 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
       ctx.beginPath(); ctx.moveTo(-40, 0); ctx.lineTo(40, 0); ctx.stroke();
     } else {
       const spec = sim.objects.get(f.id)?.spec;
-      const r = spec?.radius ?? 20;
       // everything desaturates except the culprit
       ctx.fillStyle = guilty ? C.danger : 'rgba(160,150,140,0.7)';
       ctx.strokeStyle = guilty ? C.ink : 'rgba(42,38,34,0.4)';
       ctx.lineWidth = guilty ? 4 : 2;
-      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      if (guilty) {
-        ctx.strokeStyle = C.danger; ctx.lineWidth = 3;
-        ctx.beginPath(); ctx.arc(0, 0, r + 14, 0, Math.PI * 2); ctx.stroke();
+      // Rectangles were being replayed as radius-20 circles, so a plank or a
+      // gate turned into a small ball in the replay — the one moment the
+      // player is being shown WHY they died.
+      if (spec && !spec.radius && spec.w) {
+        ctx.beginPath();
+        ctx.rect(-spec.w / 2, -spec.h / 2, spec.w, spec.h);
+        ctx.fill(); ctx.stroke();
+        if (guilty) {
+          ctx.strokeStyle = C.danger; ctx.lineWidth = 3;
+          ctx.strokeRect(-spec.w / 2 - 10, -spec.h / 2 - 10, spec.w + 20, spec.h + 20);
+        }
+      } else {
+        const r = spec?.radius ?? 20;
+        ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        if (guilty) {
+          ctx.strokeStyle = C.danger; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.arc(0, 0, r + 14, 0, Math.PI * 2); ctx.stroke();
+        }
       }
     }
     ctx.restore();
