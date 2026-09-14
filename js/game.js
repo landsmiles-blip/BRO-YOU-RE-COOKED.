@@ -28,6 +28,10 @@ export const PHASE = {
   // The run is over and there is no next level. Reached exactly once per
   // playthrough, and its absence is why the game used to end mid-air.
   ENDING: 'ending',
+  // The level board. Openable from the freeze and from the ending — without
+  // it the only route to level 14 was playing levels 1-13 in order, every
+  // single session.
+  SELECT: 'select',
 };
 
 export function createGame(level) {
@@ -46,6 +50,8 @@ export function createGame(level) {
     rejectReason: null,
     paused: false,
     progress: createProgress(),
+    // Where to return to when the board is closed without choosing.
+    selectFrom: null,
   };
   reset(g);
   return g;
@@ -135,6 +141,26 @@ export function playAgain(g) {
   goToLevel(g, isComplete(g.progress) ? 0 : firstUnclearedIndex(g.progress));
 }
 
+export function openSelect(g) {
+  if (g.phase === PHASE.SELECT) return;
+  g.selectFrom = g.phase;
+  g.phase = PHASE.SELECT;
+  g.phaseTime = 0;
+}
+
+/**
+ * Close the board without picking. Returns to the FROZEN level rather than
+ * wherever it was opened from: coming back to a half-run simulation the player
+ * has since stopped thinking about is worse than restarting the level cleanly.
+ */
+export function closeSelect(g) {
+  if (g.phase !== PHASE.SELECT) return;
+  const from = g.selectFrom;
+  g.selectFrom = null;
+  if (from === PHASE.ENDING) { g.phase = PHASE.ENDING; g.phaseTime = 0; return; }
+  reset(g);
+}
+
 // ── Input handlers ──────────────────────────────────────────────────────
 
 export function onDown(g, x, y, pointerId) {
@@ -142,6 +168,9 @@ export function onDown(g, x, y, pointerId) {
   // that way, so this is the ONLY place it can be created. Every frame before
   // the first touch is deliberately silent.
   audio.unlock();
+  // The board consumes the whole gesture — main.js resolves the hit, because
+  // only the renderer knows where the cards ended up at this viewport size.
+  if (g.phase === PHASE.SELECT) return;
   if (g.phase === PHASE.SIM) { abort(g.sim); return; }          // tap = instant retry
   if (g.phase === PHASE.DEATHCAM) {
     if (g.phaseTime > 250) retry(g);                            // let them see it first

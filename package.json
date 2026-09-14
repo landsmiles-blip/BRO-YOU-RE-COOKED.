@@ -12,6 +12,7 @@
     "build": "node tools/build.js",
     "serve": "node tools/serve.js",
     "test:audio": "node tools/test/audio.js",
-    "test:conformance": "node tools/test/conformance.js"
+    "test:conformance": "node tools/test/conformance.js",
+    "test:board": "node tools/test/board.js"
   }
 }
