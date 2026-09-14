@@ -26,11 +26,21 @@ import { LINE } from '../constants.js';
 const { Composite, Query } = Matter;
 
 /**
- * Weld the stroke to whatever static geometry it is touching.
- * Returns the anchor points, so the renderer can spark at each one — that
- * single VFX carries the whole stability model with no UI.
+ * WHERE WOULD THIS PATH ANCHOR, IF IT WERE RELEASED RIGHT NOW?
+ *
+ * Pure: it touches nothing and mutates nothing, so the renderer can ask the
+ * same question every frame while the player is still drawing.
+ *
+ * It is one function rather than two on purpose. The anchoring rule decides
+ * every run in this game, and it was completely invisible — nothing marked
+ * what could be anchored to, nothing said whether the line being drawn would
+ * stick, and nothing explained the failure afterwards. The most natural action
+ * in the game was punished with no feedback. Fixing that means DRAWING a
+ * prediction, and a prediction computed by a second copy of this logic would
+ * eventually drift from it and start lying to the player — which is worse than
+ * no feedback at all. So the preview and the commit run the same code.
  */
-export function anchorStroke(ctx, strokeBody, strokePoints) {
+export function anchorCandidates(ctx, strokePoints) {
   const statics = Composite.allBodies(ctx.world).filter((b) => b.isStatic);
   if (!statics.length) return [];
 
@@ -52,6 +62,21 @@ export function anchorStroke(ctx, strokeBody, strokePoints) {
       }
     }
   }
+  return candidates;
+}
+
+/** Would a stroke drawn along this path hold? The live-preview question. */
+export function wouldAnchor(ctx, strokePoints) {
+  return anchorCandidates(ctx, strokePoints).length > 0;
+}
+
+/**
+ * Weld the stroke to whatever static geometry it is touching.
+ * Returns the anchor points, so the renderer can spark at each one — that
+ * single VFX carries the whole stability model with no UI.
+ */
+export function anchorStroke(ctx, strokeBody, strokePoints) {
+  const candidates = anchorCandidates(ctx, strokePoints);
   if (!candidates.length) return [];
 
   // ANCHORED MEANS STATIC.

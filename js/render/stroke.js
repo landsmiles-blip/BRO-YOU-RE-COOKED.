@@ -67,21 +67,32 @@ function trace(ctx, pts, close) {
  * single perfect stroke, and the doubling is what sells "hand-drawn" more than
  * the wobble itself does.
  */
+/**
+ * `alpha` exists because this function SETS ctx.globalAlpha itself, and then
+ * resets it to 1 — so wrapping a call in ctx.save(); ctx.globalAlpha = 0.4
+ * does nothing, silently. That cost a real bug: the "this line will fall"
+ * preview was drawn at 40% alpha, rendered at 100%, and looked identical to
+ * the "this line will hold" one, so the feedback that was the whole point of
+ * the change conveyed nothing. Multiply through here instead.
+ */
 export function inkPath(ctx, points, {
   now = 0, colour = '#2A2622', width = 3, close = false, amp = WOBBLE, salt = 0, passes = 2,
+  alpha = 1, dash = null,
 } = {}) {
   if (points.length < 2) return;
   const src = resample(points);
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.strokeStyle = colour;
+  if (dash) ctx.setLineDash(dash);
   for (let p = 0; p < passes; p++) {
-    ctx.globalAlpha = p === 0 ? 1 : 0.45;
+    ctx.globalAlpha = (p === 0 ? 1 : 0.45) * alpha;
     ctx.lineWidth = width * (p === 0 ? 1 : 0.7);
     trace(ctx, boilPath(src, boilSeed(now, salt + p * 977), amp), close);
     ctx.stroke();
   }
   ctx.globalAlpha = 1;
+  if (dash) ctx.setLineDash([]);
 }
 
 /**

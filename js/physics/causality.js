@@ -32,8 +32,27 @@ export function noteContact(c, bodyA, bodyB, simTimeMs, speed) {
 /**
  * Explain a death in one short label the player can act on.
  * Nine or ten of these cover essentially every failure in the game.
+ *
+ * `stroke` is { drawn, anchored, fell } — whether the player drew at all,
+ * whether it welded to anything, and how far it has since travelled.
  */
-export function explain(c, reason, culpritId) {
+export function explain(c, reason, culpritId, stroke = null) {
+  // THE UNANCHORED DEATH OUTRANKS EVERY OTHER EXPLANATION.
+  //
+  // If the line was never attached to anything, it fell, and nothing it might
+  // otherwise have done matters — the player needs to know THAT, not that the
+  // rock got through. Measured on A1: a stroke drawn in mid-air under the ball,
+  // which is where anyone would draw, gets zero anchors and Milo dies at
+  // 1017ms. The game's most natural action failed with no explanation, so the
+  // player's next hypothesis was "draw somewhere else" when the correct one is
+  // "draw touching something".
+  //
+  // Gated on the stroke having actually MOVED, so a deliberately unanchored
+  // stroke that did its job before toppling is not mislabelled.
+  if (stroke?.drawn && !stroke.anchored && stroke.fell > 40) {
+    return { label: 'NOTHING HELD IT UP', culpritId: 'stroke' };
+  }
+
   if (reason === 'stuck')   return { label: "HE'S STUCK",       culpritId: null };
   if (reason === 'timeout') return { label: 'STILL OUT THERE',  culpritId: null };
   if (reason === 'fell')    return { label: "HE'S GONE",        culpritId: null };

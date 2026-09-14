@@ -159,7 +159,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   );
 
   if (outcome !== OUTCOME.RUNNING && outcome !== OUTCOME.SUCCESS && !sim.death) {
-    sim.death = explain(sim.causality, outcome, sim.run.culpritId);
+    sim.death = explain(sim.causality, outcome, sim.run.culpritId, strokeState(sim));
   }
   return outcome;
 }
@@ -181,7 +181,21 @@ export function commitStroke(sim, rawPoints) {
   sim.strokePoints = pts;
   sim.strokeShape = classified.shape;
   sim.anchors = anchorStroke(sim.ctx, body, pts);
+  // Remembered so a death can be explained as "nothing held it up".
+  sim.strokeOrigin = { x: body.position.x, y: body.position.y };
   return { ok: true, length: v.length, anchors: sim.anchors.length, shape: classified.shape };
+}
+
+/** What the player's line did, for the death explanation. */
+function strokeState(sim) {
+  const b = sim.stroke;
+  if (!b) return { drawn: false, anchored: false, fell: 0 };
+  const o = sim.strokeOrigin;
+  return {
+    drawn: true,
+    anchored: (sim.anchors?.length ?? 0) > 0,
+    fell: o ? Math.hypot(b.position.x - o.x, b.position.y - o.y) : 0,
+  };
 }
 
 export function abort(sim) {

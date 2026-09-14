@@ -15,6 +15,7 @@ import {
 import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT } from './constants.js';
 import { clear, drawScene } from './render/world.js';
+import { wouldAnchor } from './physics/anchor.js';
 import { freezeAmount, reducedMotion } from './render/freeze.js';
 import { drawBanner, drawText, drawInk } from './render/hud.js';
 import { drawReplay, replayFrame, DEATH_CAM_MS } from './render/deathcam.js';
@@ -106,6 +107,13 @@ function render() {
     freeze: freezeAmount(g.phase, g.phaseTime, PHASE.FROZEN),
     ghostPoints: g.phase === PHASE.FROZEN ? g.ghostPoints : null,
     livePoints: g.stroke.active ? g.stroke.points : null,
+    // Asked every frame of the drag, by the SAME function that does the
+    // welding on release — so the preview cannot lie about the outcome.
+    liveHolds: g.stroke.active && g.stroke.points.length > 1
+      ? wouldAnchor(g.sim.ctx, g.stroke.points)
+      : null,
+    // Only while they are choosing where to draw, never during the run.
+    showAnchorable: g.phase === PHASE.FROZEN,
     anchors: g.phase === PHASE.SIM || g.phase === PHASE.RESULT ? g.sim.anchors : null,
     walkPhase,
   });

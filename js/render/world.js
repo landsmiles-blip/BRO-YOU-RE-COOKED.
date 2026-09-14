@@ -35,6 +35,12 @@ export function drawScene(ctx, sim, opts = {}) {
   const {
     now = 0, freeze = 0, ghostPoints = null, livePoints = null,
     anchors = null, walkPhase = 0,
+    // Does the line currently being drawn reach something solid? null while
+    // nothing is being drawn. See the live-stroke block at the bottom.
+    liveHolds = null,
+    // Draw the "you can attach here" marks. Only while the world is frozen and
+    // the player is choosing where to draw.
+    showAnchorable = false,
   } = opts;
 
   applyTransform(ctx);
@@ -72,6 +78,43 @@ export function drawScene(ctx, sim, opts = {}) {
           { x: sx, y: b.y + b.h },
           { x: sx + dir * 16, y: b.y + b.h + 20 },
         ], { now, colour: ink, width: 2.6, salt: (b.x + sx) | 0, passes: 1 });
+      }
+    }
+    ctx.restore();
+  }
+
+
+  // ── what you can attach to ────────────────────────────────────────────
+  //
+  // The anchoring rule decides every single run: a stroke touching static
+  // geometry is welded and holds, a stroke touching nothing falls. It was
+  // invisible. Nothing in the frame distinguished "solid thing you can build
+  // from" from "background", so the most natural action in the game — drawing
+  // in mid-air, under the danger, where the danger is — failed silently and
+  // taught nothing.
+  //
+  // These are deliberately faint hatch ticks rather than an outline or a glow:
+  // they must read as "this edge is solid" at a glance and then disappear from
+  // attention, because they are on screen while the player is composing. They
+  // show only during the freeze, and only on the edges the anchor test
+  // actually samples.
+  if (showAnchorable) {
+    ctx.save();
+    ctx.strokeStyle = C.anchor;
+    ctx.globalAlpha = 0.85;
+    ctx.lineWidth = 3.4;
+    ctx.lineCap = 'round';
+    for (const st of sim.statics) {
+      const b = st.spec;
+      if (b.angle) continue;                      // ticks would lie on a rotated edge
+      const step = 22;
+      const n = Math.max(2, Math.floor(b.w / step));
+      for (let i = 0; i <= n; i++) {
+        const x = b.x + (i / n) * b.w;
+        ctx.beginPath();
+        ctx.moveTo(x, b.y - 2);
+        ctx.lineTo(x + 9, b.y - 13);
+        ctx.stroke();
       }
     }
     ctx.restore();
@@ -201,12 +244,44 @@ export function drawScene(ctx, sim, opts = {}) {
   }
 
   // ── the stroke in progress ────────────────────────────────────────────
+  //
+  // TWO INKS, AND THE DIFFERENCE IS THE WHOLE STABILITY MODEL.
+  //
+  // Solid ink: this line reaches something solid and will HOLD.
+  // Hollow, dashed ink: it reaches nothing and WILL FALL the moment you let go.
+  //
+  // Measured on A1 before this existed: a stroke drawn in mid-air under the
+  // ball — where the danger is, where anyone would draw — got zero anchors,
+  // stayed dynamic, fell, and Milo died at 1017ms. Correct physics, correct
+  // rule, and no way whatsoever for the player to know before committing.
+  // Telling them DURING the drag costs one predicate and removes the only
+  // unfair thing in the game.
+  //
+  // `liveHolds` comes from the same function that does the welding, so this
+  // cannot drift out of agreement with what release actually does.
   if (livePoints?.length > 1) {
+    const holds = liveHolds !== false;
     ctx.save();
     ctx.globalAlpha = 0.25;
-    inkPath(ctx, livePoints, { now, colour: C.strokeGlow, width: LINE.thickness + 10, salt: 3, passes: 1 });
+    inkPath(ctx, livePoints, {
+      now, colour: holds ? C.strokeGlow : C.dim,
+      width: LINE.thickness + 10, salt: 3, passes: 1,
+    });
     ctx.restore();
-    inkPath(ctx, livePoints, { now, colour: C.stroke, width: LINE.thickness, salt: 3 });
+
+    if (holds) {
+      inkPath(ctx, livePoints, { now, colour: C.stroke, width: LINE.thickness, salt: 3 });
+    } else {
+      // BROKEN ink at full line thickness: the line is the right size and
+      // weight, but visibly not joined up. Shape carries the meaning, not
+      // colour or opacity alone — the accessibility rule applies to feedback
+      // as much as to hazards, and a player with the sound off and low
+      // contrast still has to see it.
+      inkPath(ctx, livePoints, {
+        now, colour: C.stroke, width: LINE.thickness, salt: 3,
+        passes: 1, alpha: 0.55, dash: [16, 13],
+      });
+    }
   }
 }
 
