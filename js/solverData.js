@@ -103,5 +103,60 @@ export const SOLVER = {
     "threeStarLength": 192,
     "shortestWin": 110,
     "measuredAt": "2026-09-14"
+  },
+  "a11-deadweight": {
+    "solvable": true,
+    "solutionBreadth": 0.031,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 4,
+    "twoStarLength": 288,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-14"
+  },
+  "a12-ontime": {
+    "solvable": true,
+    "solutionBreadth": 0.2891,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 183,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-14"
+  },
+  "a13-yeet": {
+    "solvable": true,
+    "solutionBreadth": 0.0307,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 4,
+    "twoStarLength": 390,
+    "threeStarLength": 288,
+    "shortestWin": 230,
+    "measuredAt": "2026-09-14"
+  },
+  "a14-twojobs": {
+    "solvable": true,
+    "solutionBreadth": 0.0419,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 295,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-14"
+  },
+  "a15-eitherway": {
+    "solvable": true,
+    "solutionBreadth": 0.0828,
+    "precisionFloor": 65,
+    "worstJitter": 3,
+    "distinctFamilies": 6,
+    "twoStarLength": 300,
+    "threeStarLength": 184,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-14"
   }
 };

@@ -438,7 +438,233 @@ export const A10 = {
 //     22u step-up. A level that passes while teaching nothing is worse than
 //     no level.
 // ─────────────────────────────────────────────────────────────────────────
-export const LEVELS = [A1, A2, A3, A4, A5, A7, A8, A9, A10];
+// ─────────────────────────────────────────────────────────────────────────
+// A11 — DEAD WEIGHT.  Teaches: NOT anchoring is also a tool.
+//
+// Every level so far has punished a floating stroke. This one requires it, and
+// it is the first level where the drawing feedback's "WILL FALL" ink is the
+// state you are AIMING for rather than the warning you are heeding.
+//
+// The plate sits on a shelf far above Milo's head, with nothing in the world
+// able to reach it — no rock, no ball, no slope. The only mass available is the
+// player's own line. Anchor it to the shelf and it hangs there for ever; draw
+// it clear in the air and it drops onto the plate and opens the gate.
+//
+// The naive read of the level is "bridge to the shelf", which is both possible
+// and useless: Milo has no reason to go up there and cannot reach the goal from
+// it. The level is won by dropping, not by building.
+// ─────────────────────────────────────────────────────────────────────────
+export const A11 = {
+  id: 'a11-deadweight', world: 'backyard', verb: 'DROP',
+  // DECLARED, not inferred. Every other level's certified solution must be
+  // anchored, because an anchored stroke is static and therefore reproducible,
+  // while an unanchored one falls and settles chaotically. This level inverts
+  // that on purpose, so it has to say so — otherwise the gate either fails a
+  // correct level or, far worse, is weakened for every level to accommodate
+  // this one. The gate demands a higher hand-robustness rate in exchange.
+  solutionKind: 'unanchored',
+  milo: { start: { x: 80, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 700,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The shelf is deliberately NARROW and high. It is an anchor the player is
+    // meant to reject, not use.
+    { id: 'shelf',  type: 'platform', x: 250, y: 800,  w: 200, h: 26  },
+  ],
+  objects: [
+    { id: 'plate', type: 'switch', x: 275, y: 768, w: 150, h: 32, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 545, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A12 — ON TIME.  Teaches: WHERE you intercept decides WHEN it arrives.
+//
+// The first moving hazard. A roller is already travelling when the world
+// freezes, so the frame the player reads is a snapshot of something in flight —
+// they are not blocking a thing, they are heading one off.
+//
+// It runs along an upper ledge and drops off its left end onto Milo's walking
+// line. Verified timing is the whole level: left alone it lands on him. Stop it
+// short and it never reaches the drop. Speed it past and it lands behind him.
+// Both are wins, which is the point — there is no single correct wall, there is
+// a window, and where you draw decides which side of the window you land on.
+// ─────────────────────────────────────────────────────────────────────────
+export const A12 = {
+  id: 'a12-ontime', world: 'backyard', verb: 'INTERCEPT',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  // The freeze lands while the roller is still ON the ledge, which is what
+  // makes "stop it short" a real option rather than a description. Timing here
+  // was found by sweeping, not by algebra: the first version had the roller
+  // land 300u BEHIND Milo, so the level solved itself — the same flaw A8 shipped
+  // with once already, and the reason the idle run is a hard gate.
+  freezeAt: 400,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The ledge stops short of the goal, so the roller must leave it somewhere.
+    { id: 'ledge',  type: 'platform', x: 500, y: 880,  w: 220, h: 30  },
+  ],
+  objects: [
+    { id: 'roller', type: 'boulder', x: 660, y: 846, radius: 34,
+      density: 0.04, restitution: 0.05, friction: 0.15, frictionAir: 0, vx: -240,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  zones: [],
+  drawing: { maxLength: 460, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A13 — YEET.  Teaches: the line can move HIM, not just stop things.
+//
+// REBUILT. The first version put a 310u pit in front of him with 380u of ink,
+// and the solver was blunt about it: 0.3% breadth, ONE stroke family, and a
+// 20u precision floor — below what a thumb can hit. Worse, the five strokes
+// that did win were all spans. It was not a launch level at all, it was a
+// precision BRIDGE, which is level two with the tolerance removed.
+//
+// The reason is physics, not taste. Milo walks at 260 u/s, so a flat launch
+// gives a ballistic range of v²/g ≈ 38u — he cannot be thrown anywhere from
+// walking speed. A LAUNCH REQUIRES GRAVITY ASSIST: he has to fall first.
+// Dropping 300u brings him to ~900 u/s (the global clamp), and redirecting
+// even a fraction of that horizontally throws him across the map.
+//
+// So the level drops him. He walks off the high ledge whatever the player
+// does; the only question is what he lands in.
+//
+// THE VERB IS "CARRY", NOT "LAUNCH", and that is a correction rather than a
+// softening. The ladder asked for a throw, and the filmstrip showed what the
+// certified solution actually is: a long diagonal he SLIDES down. Scoop
+// launches genuinely win too — the bowl family scores on this level — but they
+// are not the reliable route. I tried to force a true launch by raising the
+// far platform out of sliding range, and measured the answer: 1080 -> 3.1%,
+// 1000 -> 2.7%, 940 -> 2.5%, 880 -> 2.0%, with span (bridge) strokes still
+// dominating every variant. Forcing it makes the level worse and still does
+// not make it a launch.
+//
+// So it is named for what it does. The lesson survives intact and is the one
+// that matters: this is the first level where the line MOVES him rather than
+// stopping something — twelve levels of the line as a barrier, and now it is
+// transport. That is the new idea, not the specific trajectory.
+// ─────────────────────────────────────────────────────────────────────────
+export const A13 = {
+  id: 'a13-yeet', world: 'backyard', verb: 'CARRY',
+  milo: { start: { x: 80, y: 700 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 640, y: 1080, w: 80, h: 140 },
+  freezeAt: 450,
+  static: [
+    { id: 'ledge', type: 'platform', x: 0,   y: 700,  w: 220, h: 580 },
+    { id: 'far',   type: 'platform', x: 480, y: 1080, w: 240, h: 200 },
+  ],
+  objects: [],
+  zones: [{ id: 'pit', kind: 'zone', x: 225, y: 1215, w: 250, h: 65, lethal: true }],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A14 — TWO JOBS.  Teaches: the thing trying to kill him is also the answer.
+//
+// REBUILT, and the first version is worth recording because the failure was
+// invisible from the level data. It paired a falling rock with a gap, and the
+// solver passed it at 1.6% — but a diagnostic that simply DELETED the rock
+// changed the outcome by 25 milliseconds. The rock was decoration. The level
+// was level two wearing a costume, and no amount of breadth tuning would have
+// found that, because breadth measures how many strokes win, not whether the
+// level is the one you meant to build.
+//
+// Now the rock does both jobs, and one stroke arranges both. It falls onto
+// Milo's walking line and will kill him. The gap beyond it is exactly one rock
+// wide with a floor set so that a rock sitting on it is FLUSH with the ground.
+// Deflect the rock into the gap and it stops being a hazard and starts being
+// the floor he crosses on.
+//
+// (A rock WEDGED between two rims can never work here: a ball jammed in a gap
+// protrudes by at least its own radius, and Milo's step-up is 22u against a
+// 28u radius. It has to come to rest on a floor at a measured depth.)
+// ─────────────────────────────────────────────────────────────────────────
+export const A14 = {
+  id: 'a14-twojobs', world: 'backyard', verb: 'REPURPOSE',
+  milo: { start: { x: 70, y: 1000 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 655, y: 1000, w: 70, h: 140 },
+  freezeAt: 520,
+  // THE GROUND FUNNELS. Flat, this level measured 1.5% breadth and a 20u
+  // precision floor — it demanded that the player deflect a falling rock into
+  // a 70u target, and widening that target only made it worse (90u -> 0.8%,
+  // 110u -> 0.5%, 130u -> 0.4%: a bigger hole is a hole Milo also falls into).
+  //
+  // Tipping both banks toward the slot moves the precision OUT of the player's
+  // stroke and into the terrain: the rock self-routes once it is down, so the
+  // player's actual job is the wide one — do not let it land on him. Measured
+  // 1.5% -> 4.2%.
+  static: [
+    { id: 'groundL', type: 'platform', x: 0,   y: 1000, w: 330, h: 280, angle:  9 },
+    { id: 'groundR', type: 'platform', x: 400, y: 1000, w: 320, h: 280, angle: -9 },
+    // Depth is the design: ground top 1000, rock radius 28, so a floor at 1056
+    // leaves the resting rock's crown exactly level with the walking line.
+    { id: 'slot',    type: 'platform', x: 330, y: 1056, w: 70,  h: 224 },
+  ],
+  objects: [
+    { id: 'rock', type: 'boulder', x: 230, y: 420, radius: 28,
+      density: 0.03, restitution: 0.04, friction: 0.45,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  zones: [],
+  drawing: { maxLength: 400, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A15 — EITHER WAY.  Teaches: there is no single right answer.
+//
+// REBUILT, because the first version was not a choice at all — and the way it
+// failed is the useful part. It had a falling rock AND a gap, two hazards, and
+// I called that "two solutions". The player had to solve BOTH, so the routes
+// were not alternatives, they were halves. Measured 0.6% breadth with both
+// routes needle-thin: two solutions that exist on paper and neither of which a
+// hand can hit is not a choice, it is two traps.
+//
+// A real fork needs ONE problem with two dissimilar answers. The rock comes
+// down a chimney and out onto Milo's line. Either:
+//
+//   PLUG IT — a line anywhere across the chimney, anchored to both walls. The
+//             target is 400 units tall, so this is the forgiving route.
+//   SEND IT — a deflector under the chimney mouth that throws the rock onto
+//             the side shelf, where it is harmless. Smaller target, less ink.
+//
+// Different places, different shapes, different ideas, both clean. The claim is
+// checkable rather than asserted: the solver reports distinct stroke families,
+// and a level that promises choice and measures one family is lying.
+// ─────────────────────────────────────────────────────────────────────────
+export const A15 = {
+  id: 'a15-eitherway', world: 'backyard', verb: 'CHOOSE',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 660, y: 1152, w: 70, h: 140 },
+  freezeAt: 600,
+  static: [
+    { id: 'ground',  type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The chimney. Its walls are the anchors for the PLUG route.
+    { id: 'chimL',   type: 'platform', x: 236, y: 380,  w: 30,  h: 420 },
+    { id: 'chimR',   type: 'platform', x: 400, y: 380,  w: 30,  h: 420 },
+    // Somewhere harmless to put a rock, for the SEND route.
+    { id: 'shelf',   type: 'platform', x: 520, y: 1000, w: 200, h: 26  },
+  ],
+  objects: [
+    { id: 'rock', type: 'boulder', x: 322, y: 430, radius: 26,
+      density: 0.03, restitution: 0.06, friction: 0.35,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A7, A8, A9, A10, A11, A12, A13, A14, A15];
 
 export const HELD = [
   { level: A6, reason: 'only passes with a 47u wall, barely above the 22u step-up — teaches nothing' },

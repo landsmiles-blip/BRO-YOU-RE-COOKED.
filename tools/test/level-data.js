@@ -56,8 +56,19 @@ if (!SOLUTIONS) {
     check(`"${lvl.id}" has a hand-robust solution`, !!s?.solution,
           s ? `${s.robust}/${s.winners} winners survive a hand` : 'not measured');
     if (s?.solution) {
-      check(`"${lvl.id}" solution is ANCHORED (reproducible)`, s.solution.anchors > 0,
-            `${s.solution.anchors} anchors`);
+      if (lvl.solutionKind === 'unanchored') {
+        // A level that is ABOUT not anchoring cannot be held to the anchored
+        // rule. It is held to a stricter one instead: without staticness to
+        // guarantee reproducibility, the solution has to be demonstrably easy
+        // to land — a majority of its idealised winners must survive a hand.
+        check(`"${lvl.id}" is a declared UNANCHORED level`, s.solution.anchors === 0,
+              `${s.solution.anchors} anchors — if this anchored, the level stopped teaching its lesson`);
+        check(`"${lvl.id}" unanchored solution is reliably hittable`, s.handRate >= 0.5,
+              `${(s.handRate * 100).toFixed(0)}% of winners survive a hand (needs >= 50%)`);
+      } else {
+        check(`"${lvl.id}" solution is ANCHORED (reproducible)`, s.solution.anchors > 0,
+              `${s.solution.anchors} anchors`);
+      }
     }
   }
 }

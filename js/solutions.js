@@ -375,5 +375,196 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a11-deadweight": {
+    "id": "a11-deadweight",
+    "winners": 63,
+    "robust": 50,
+    "anchoredRobust": 0,
+    "handRate": 0.794,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 0,
+      "points": [
+        {
+          "x": 365,
+          "y": 605.7
+        },
+        {
+          "x": 316.9,
+          "y": 628
+        },
+        {
+          "x": 279.3,
+          "y": 656.3
+        },
+        {
+          "x": 252.4,
+          "y": 690.8
+        },
+        {
+          "x": 236,
+          "y": 731.4
+        },
+        {
+          "x": 230.2,
+          "y": 778.1
+        },
+        {
+          "x": 235,
+          "y": 830.9
+        }
+      ]
+    }
+  },
+  "a12-ontime": {
+    "id": "a12-ontime",
+    "winners": 569,
+    "robust": 243,
+    "anchoredRobust": 143,
+    "handRate": 0.427,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 605,
+          "y": 747.6
+        },
+        {
+          "x": 609.8,
+          "y": 800.4
+        },
+        {
+          "x": 604,
+          "y": 847.1
+        },
+        {
+          "x": 587.6,
+          "y": 887.6
+        },
+        {
+          "x": 560.7,
+          "y": 922.1
+        },
+        {
+          "x": 523.1,
+          "y": 950.5
+        },
+        {
+          "x": 475,
+          "y": 972.7
+        }
+      ]
+    }
+  },
+  "a13-yeet": {
+    "id": "a13-yeet",
+    "winners": 62,
+    "robust": 42,
+    "anchoredRobust": 42,
+    "handRate": 0.677,
+    "solution": {
+      "family": "line",
+      "length": 390,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 131.1,
+          "y": 847.5
+        },
+        {
+          "x": 243.7,
+          "y": 912.5
+        },
+        {
+          "x": 356.3,
+          "y": 977.5
+        },
+        {
+          "x": 468.9,
+          "y": 1042.5
+        }
+      ]
+    }
+  },
+  "a14-twojobs": {
+    "id": "a14-twojobs",
+    "winners": 88,
+    "robust": 29,
+    "anchoredRobust": 1,
+    "handRate": 0.33,
+    "solution": {
+      "family": "line",
+      "length": 390,
+      "parts": 13,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 228.9,
+          "y": 873.6
+        },
+        {
+          "x": 116.3,
+          "y": 938.6
+        },
+        {
+          "x": 3.7,
+          "y": 1003.6
+        },
+        {
+          "x": -108.9,
+          "y": 1068.6
+        }
+      ]
+    }
+  },
+  "a15-eitherway": {
+    "id": "a15-eitherway",
+    "winners": 179,
+    "robust": 115,
+    "anchoredRobust": 72,
+    "handRate": 0.642,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 10,
+      "anchors": 4,
+      "points": [
+        {
+          "x": 235,
+          "y": 789.4
+        },
+        {
+          "x": 230.2,
+          "y": 842.2
+        },
+        {
+          "x": 236,
+          "y": 888.9
+        },
+        {
+          "x": 252.4,
+          "y": 929.5
+        },
+        {
+          "x": 279.3,
+          "y": 964
+        },
+        {
+          "x": 316.9,
+          "y": 992.3
+        },
+        {
+          "x": 365,
+          "y": 1014.6
+        }
+      ]
+    }
   }
 };

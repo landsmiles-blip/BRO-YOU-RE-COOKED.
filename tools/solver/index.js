@@ -19,8 +19,11 @@ const flag = (name, def) => {
 };
 const density = Number(flag('--density', 1));
 const checkOnly = argv.includes('--check');
-const target = argv.find((a) => !a.startsWith('--') && !/^[\d.]+$/.test(a));
-const levels = target ? [getLevel(target)] : ALL_LEVELS;
+// Accept SEVERAL level ids, not one. Authoring happens in batches — five new
+// levels meant five separate multi-minute sweeps, and the first version
+// silently swept only the first id and ignored the rest.
+const targets = argv.filter((a) => !a.startsWith('--') && !/^[\d.]+$/.test(a));
+const levels = targets.length ? targets.map(getLevel) : ALL_LEVELS;
 const heldIds = new Set(HELD.map((h) => h.level.id));
 
 const pct = (v) => `${(v * 100).toFixed(1)}%`;
