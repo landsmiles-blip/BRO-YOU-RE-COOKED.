@@ -10,6 +10,7 @@
     "test:browser": "node tools/test/browser.js",
     "solver": "node --import ./tools/node-matter.js tools/solver",
     "build": "node tools/build.js",
-    "serve": "node tools/serve.js"
+    "serve": "node tools/serve.js",
+    "test:audio": "node tools/test/audio.js"
   }
 }

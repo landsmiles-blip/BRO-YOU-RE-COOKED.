@@ -18,6 +18,7 @@ import { validate } from './drawing/validate.js';
 import { classify } from './drawing/classify.js';
 import { buildStrokeBody } from './drawing/bodyFactory.js';
 import { anchorStroke } from './physics/anchor.js';
+import * as audio from './audio.js';
 import { simplify } from './drawing/simplify.js';
 import { PHYSICS_DT, LINE, MILO, SAFE_BOX } from './constants.js';
 
@@ -96,6 +97,16 @@ export function buildSim(level) {
     const speed = normalSpeed(a, b, pair);
     noteContact(sim.causality, a, b, sim.simTime, speed);
 
+    // The SAME number that decides lethality drives the sound, so what you hear
+    // is what nearly killed him. Milo's own footsteps are excluded: he makes
+    // ground contact every step at 220 u/s of tangential motion, and the normal
+    // component of a footfall is small but not zero.
+    if (a.gameId !== 'milo' && b.gameId !== 'milo') {
+      audio.impact(speed, { heavy: (a.mass ?? 0) + (b.mass ?? 0) > 120 });
+    } else if (speed > 140) {
+      audio.impact(speed, { heavy: false });
+    }
+
     // Switch → gate. Anything with mass can press a plate, which is the point:
     // the player does not touch the switch, they arrange for something else to.
     for (const [hit, other] of [[a, b], [b, a]]) {
@@ -128,6 +139,7 @@ export function buildSim(level) {
 function fireSwitch(sim, entry) {
   if (sim.triggered.has(entry.spec.id)) return;
   sim.triggered.add(entry.spec.id);
+  audio.trigger();
   for (const targetId of entry.spec.triggers ?? []) {
     const target = sim.objects.get(targetId);
     if (!target) continue;
@@ -151,7 +163,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   sim.simTime += PHYSICS_DT;
 
   const hazardBodies = [...sim.objects.values()].map((o) => o.body);
-  updateDanger(sim.milo, hazardBodies);
+  audio.setDanger(updateDanger(sim.milo, hazardBodies));
   record(sim.recorder, allBodies(sim.ctx));
 
   const outcome = checkRunEnd(
@@ -160,6 +172,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
 
   if (outcome !== OUTCOME.RUNNING && outcome !== OUTCOME.SUCCESS && !sim.death) {
     sim.death = explain(sim.causality, outcome, sim.run.culpritId, strokeState(sim));
+    audio.death();
   }
   return outcome;
 }

@@ -23,6 +23,7 @@ import { drawReplay, replayFrame, DEATH_CAM_MS } from './render/deathcam.js';
 import { C } from './render/palette.js';
 import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
+import * as audio from './audio.js';
 
 for (const lvl of ALL_LEVELS) assertLevel(lvl);
 
@@ -47,9 +48,11 @@ attachInput(canvas, {
   onUp: () => onUp(game),
 });
 
-// Certification: onPause MUST halt everything — loop, physics, rendering.
-sdk.onPause(() => { game.paused = true; });
-sdk.onResume(() => { game.paused = false; acc = 0; last = performance.now(); });
+// Certification: onPause MUST halt everything — loop, physics, rendering AND
+// AUDIO. Suspending the AudioContext is the difference between a paused game
+// and one that keeps humming in a backgrounded tab, which fails review.
+sdk.onPause(() => { game.paused = true; audio.pause(); });
+sdk.onResume(() => { game.paused = false; acc = 0; last = performance.now(); audio.resume(); });
 
 let last = performance.now();
 let acc = 0;

@@ -20,6 +20,7 @@ import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
 import { createProgress, record, save, isComplete, firstUnclearedIndex } from './progress.js';
+import * as audio from './audio.js';
 
 export const PHASE = {
   LIVE: 'live', FROZEN: 'frozen', SIM: 'sim',
@@ -84,6 +85,7 @@ export function tick(g, dtMs) {
         // Only a personal BEST is written, so replaying a cleared level to
         // experiment can never cost the player stars they already earned.
         if (record(g.progress, g.level.id, g.stars)) save(g.progress);
+        audio.success(g.stars);
         g.phase = PHASE.RESULT;
         g.phaseTime = 0;
       }
@@ -113,7 +115,9 @@ export function retry(g) {
  * at 24 levels exactly as much as at 9.
  */
 export function nextLevel(g) {
-  if (g.levelIndex >= LEVELS.length - 1) { g.phase = PHASE.ENDING; g.phaseTime = 0; return; }
+  if (g.levelIndex >= LEVELS.length - 1) {
+    g.phase = PHASE.ENDING; g.phaseTime = 0; audio.ending(); return;
+  }
   goToLevel(g, g.levelIndex + 1);
 }
 
@@ -134,6 +138,10 @@ export function playAgain(g) {
 // ── Input handlers ──────────────────────────────────────────────────────
 
 export function onDown(g, x, y, pointerId) {
+  // An AudioContext built before a user gesture starts suspended and stays
+  // that way, so this is the ONLY place it can be created. Every frame before
+  // the first touch is deliberately silent.
+  audio.unlock();
   if (g.phase === PHASE.SIM) { abort(g.sim); return; }          // tap = instant retry
   if (g.phase === PHASE.DEATHCAM) {
     if (g.phaseTime > 250) retry(g);                            // let them see it first
@@ -148,7 +156,10 @@ export function onDown(g, x, y, pointerId) {
 
 export function onMove(g, x, y) {
   if (g.phase !== PHASE.FROZEN || !g.stroke.active) return;
+  const before = g.stroke.length;
   extend(g.stroke, x, y, performance.now());
+  // Only when the line actually grew — a stationary finger is not drawing.
+  if (g.stroke.length > before + 1) audio.scratch();
 }
 
 export function onUp(g) {
@@ -159,11 +170,13 @@ export function onUp(g) {
     // A rejection is a NO-OP, never a spent attempt.
     g.rejectFlash = 420;
     g.rejectReason = res.reason;
+    audio.reject();
     g.stroke = createStroke();
     track('stroke_rejected', { level: g.level.id, reason: res.reason });
     return;
   }
   g.lastLength = res.length;
+  audio.release();
   track('stroke_committed', { level: g.level.id, length: Math.round(res.length), anchors: res.anchors });
   g.phase = PHASE.SIM;
   g.phaseTime = 0;

@@ -135,3 +135,55 @@ broken method, not bad luck, and this decision is the method that replaces it.
 **Verification order, every time:** `npm test` → `node tools/solver/representative.js`
 → build → `node tools/test/filmstrip.js` → **read the images** → `npm run solver`
 → `npm run test:browser`.
+
+
+---
+
+## D5a — Audio · **Gemini (or any generated samples) CANNOT be used at runtime. Synthesis stands.**
+
+Asked directly: can we use Gemini for the audio? Three separate answers, and only
+the third is a judgement call.
+
+**1. At runtime it is impossible, not merely discouraged.** YouTube Playables
+prohibits all external network calls. This repo already enforces that itself:
+`tools/build.js` line 68 fails the build on `fetch(`, `XMLHttpRequest`,
+`WebSocket`, `sendBeacon` and `importScripts`. A game that calls an audio API
+while someone is playing cannot be built here, let alone certified.
+
+**2. At build time it is possible, and payload is not the objection.** Generated
+audio baked in as files is a legitimate asset pipeline, and there is room: the
+whole game is 42 KB gzipped against a 15 MiB recommendation — 0.28%. Hundreds of
+KB of audio would fit comfortably.
+
+**3. For THIS game it is still the wrong tool, and the reason is not budget.**
+A sample is fixed. The game's entire claim is that the physics is honest: a
+boulder that lands hard kills, and the same boulder nudging your line is
+furniture. If both play the same "thunk", the audio contradicts the rule the
+player is being asked to learn. The impact sound is therefore driven by
+`normalSpeed` — **the same number `hazards.js` thresholds at 400 for lethality**
+— so what you hear is literally what nearly killed him. Measured: a 150 u/s
+contact peaks at 0.050, a 650 u/s one at 0.138, and anything under ~35 u/s is
+exactly silent. A library of velocity-layered samples is a worse, heavier
+version of this, and a single sample is a lie.
+
+**Where generated audio WOULD earn its place, and this is open:** a signature
+one-shot that is not physics-driven — a title sting, a distinctive "COOKED"
+motif. That is a build-time asset with no certification issue. It needs either
+API access or the files themselves, neither of which this session has.
+
+**What shipped instead:** WebAudio synthesis, 2.3 KB gzipped, no assets.
+Impacts scaled by collision-normal speed, a pencil scratch while drawing, a
+release whoosh, switch/reject/death/success/ending cues, and an ambient bed
+whose cutoff and gain track Milo's danger scalar — so it scores *this run*,
+which a licensed loop could never do.
+
+**Two rules that constrain every sound here:**
+- **No information is ever carried by audio alone.** The game is played inside
+  YouTube, frequently muted, often over the player's own audio. Every sound
+  duplicates something already on screen.
+- **`onPause` suspends the AudioContext**, not merely "stops scheduling". A
+  playable that keeps humming in a backgrounded tab fails review.
+
+**Verified by measurement, not by inspection** (`npm run test:audio`): every
+sound is rendered through an OfflineAudioContext and its waveform measured.
+Silence throws no error, so "the function was called" proves nothing.
