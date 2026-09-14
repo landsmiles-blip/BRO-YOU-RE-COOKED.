@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>BRO, YOU'RE COOKED.</title>
+<link rel="stylesheet" href="css/style.css">
+<!-- Inline favicon: a 404 on /favicon.ico is a console error, and the game must
+     ship with a clean console. Data URI costs no request and no payload. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E8E2D6'/%3E%3Ccircle cx='16' cy='10' r='6' fill='%23E0452B'/%3E%3Crect x='11' y='19' width='10' height='10' rx='4' fill='%232A2622'/%3E%3C/svg%3E">
+
+<!-- CERTIFICATION: the Playables SDK must load BEFORE any game code.
+     This slot is where it goes. Absent (open web / local dev), js/platform/sdk.js
+     detects that and every SDK call becomes a safe no-op. -->
+<!-- <script src="https://www.youtube.com/game_api/v1"></script> -->
+
+<script src="vendor/matter.min.js"></script>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
