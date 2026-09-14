@@ -6,7 +6,7 @@
 // catch-up. Fabricating 400ms of physics in one frame to hide a stutter nobody
 // was watching breaks determinism for nothing.
 
-import { initView, view } from './view.js';
+import { initView, view, applyTransform } from './view.js';
 import { attachInput } from './input.js';
 import {
   createGame, tick, onDown, onMove, onUp, retry, nextLevel, goToLevel, isSteppingPhase,
@@ -15,7 +15,7 @@ import {
 import { drawBoard, hitTest } from './render/levelselect.js';
 import { load as loadProgress, totalStars, maxStars, perfect, starsOn } from './progress.js';
 import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
-import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT } from './constants.js';
+import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT, CLOSE_CALL, NEAR_MISS_DIST } from './constants.js';
 import { clear, drawScene } from './render/world.js';
 import { wouldAnchor } from './physics/anchor.js';
 import { freezeAmount, reducedMotion } from './render/freeze.js';
@@ -101,7 +101,12 @@ function frame(now) {
   if (game.paused) return;             // nothing steps, nothing renders
 
   if (isSteppingPhase(game)) {
-    acc += dt;
+    // TIME DILATION. The sim keeps its fixed PHYSICS_DT; only the rate at which
+    // wall-clock time is handed to it changes. Determinism is untouched, the
+    // solver and every headless gate are unaffected, and the player gets to
+    // actually SEE the boulder miss instead of it being over in three frames.
+    const slow = now < game.slowUntil;
+    acc += slow ? dt * CLOSE_CALL.slowRate : dt;
     let steps = 0;
     while (acc >= PHYSICS_DT) {
       if (steps >= MAX_STEPS_PER_FRAME) { acc = 0; break; }   // resume-from-pause
@@ -200,6 +205,7 @@ function render() {
     drawInk(ctx, inkUsed(g), inkMax(g));
   }
 
+  if (g.phase === PHASE.SIM || g.phase === PHASE.RESULT) drawCloseCall(ctx, g, now);
   if (g.phase === PHASE.RESULT) drawResult(ctx, g);
   if (g.phase === PHASE.ENDING) drawEnding(ctx, g);
   if (g.phase === PHASE.FROZEN || g.phase === PHASE.RESULT || g.phase === PHASE.ENDING) {
@@ -242,10 +248,65 @@ function drawResult(ctx, g) {
   const next = g.stars < 3
     ? `${g.stars === 1 ? th.two : th.three}u for the next star`
     : 'nothing left to cut';
-  drawText(ctx, `${Math.round(g.lastLength)}u of ink · ${next}`, 0.5, (top + h * 0.74) / view.cssH,
-           Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.72)');
+  const calls = g.sim.closeCalls.length;
+  const line = calls
+    ? `${Math.round(g.lastLength)}u of ink · ${calls} close call${calls > 1 ? 's' : ''}`
+    : `${Math.round(g.lastLength)}u of ink · ${next}`;
+  drawText(ctx, line, 0.5, (top + h * 0.74) / view.cssH,
+           Math.max(11, view.cssH * 0.018),
+           calls ? C.danger : 'rgba(232,226,214,0.72)');
   drawText(ctx, 'tap for the next one', 0.5, (top + h * 0.90) / view.cssH,
            Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.45)');
+}
+
+/**
+ * THE CLOSE CALL — the moment this game is named after.
+ *
+ * A ring blows out from the point where it nearly happened, the frame edges
+ * flush with the danger accent, and one word lands. It reads in a quarter of a
+ * second, which is all it gets, and it is the only time the accent is allowed
+ * anywhere but on a hazard — because for that quarter second the near miss IS
+ * the hazard.
+ */
+function drawCloseCall(ctx, g, now) {
+  const calls = g.sim.closeCalls;
+  if (!calls.length) return;
+  const last = calls[calls.length - 1];
+  const age = CLOSE_CALL.slowMs - (g.slowUntil - now);
+  if (age < 0 || age > CLOSE_CALL.slowMs) return;
+  const t = age / CLOSE_CALL.slowMs;            // 0 -> 1 across the moment
+
+  applyTransform(ctx);
+  ctx.save();
+  // The ring: fast out, fading.
+  const r = NEAR_MISS_DIST + t * 150;
+  ctx.globalAlpha = (1 - t) * 0.85;
+  ctx.strokeStyle = C.danger;
+  ctx.lineWidth = 7 * (1 - t) + 1.5;
+  ctx.beginPath(); ctx.arc(last.x, last.y, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = (1 - t) * 0.35;
+  ctx.beginPath(); ctx.arc(last.x, last.y, r * 0.55, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
+
+  // Frame flush — screen space, so it hugs the viewport at every ratio.
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const edge = Math.min(view.cssW, view.cssH) * 0.16;
+  const grad = ctx.createLinearGradient(0, 0, 0, view.cssH);
+  const a = (1 - t) * 0.5;
+  grad.addColorStop(0, `rgba(224,69,43,${a})`);
+  grad.addColorStop(edge / view.cssH, 'rgba(224,69,43,0)');
+  grad.addColorStop(1 - edge / view.cssH, 'rgba(224,69,43,0)');
+  grad.addColorStop(1, `rgba(224,69,43,${a})`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, view.cssW, view.cssH);
+
+  // The word. Rises and fades — it must never outstay the moment.
+  if (t < 0.85) {
+    ctx.globalAlpha = Math.min(1, (1 - t) * 1.6);
+    drawText(ctx, last.gap < 8 ? 'THAT close' : 'CLOSE', 0.5, 0.30 - t * 0.04,
+             Math.max(22, view.cssH * 0.052), C.danger);
+    ctx.globalAlpha = 1;
+  }
 }
 
 /**

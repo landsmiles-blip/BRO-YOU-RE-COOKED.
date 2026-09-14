@@ -7,11 +7,11 @@
 
 import {
   createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
-  onCollisionStart, allBodies, getSpeed,
+  onCollisionStart, allBodies, getSpeed, getVelocity,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
-import { isFatal, normalSpeed } from './hazards.js';
+import { isFatal, normalSpeed, isHazardous } from './hazards.js';
 import { createCausality, noteContact, explain } from './physics/causality.js';
 import { createRecorder, record, reset as resetRec } from './physics/recorder.js';
 import { validate } from './drawing/validate.js';
@@ -20,7 +20,7 @@ import { buildStrokeBody } from './drawing/bodyFactory.js';
 import { anchorStroke } from './physics/anchor.js';
 import * as audio from './audio.js';
 import { simplify } from './drawing/simplify.js';
-import { PHYSICS_DT, LINE, MILO, SAFE_BOX } from './constants.js';
+import { PHYSICS_DT, LINE, MILO, SAFE_BOX, NEAR_MISS_DIST, CLOSE_CALL } from './constants.js';
 
 export function buildSim(level) {
   const ctx = createWorld();
@@ -42,6 +42,8 @@ export function buildSim(level) {
     recorder: createRecorder(),
     simTime: 0,
     death: null,
+    closeCalls: [],      // near misses this run — the game's whole personality
+    _near: new Map(),    // per-hazard: is it currently inside the radius?
   };
 
   // ONE COORDINATE RULE, no exceptions:
@@ -164,6 +166,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
 
   const hazardBodies = [...sim.objects.values()].map((o) => o.body);
   audio.setDanger(updateDanger(sim.milo, hazardBodies));
+  detectCloseCalls(sim);
   record(sim.recorder, allBodies(sim.ctx));
 
   const outcome = checkRunEnd(
@@ -197,6 +200,51 @@ export function commitStroke(sim, rawPoints) {
   // Remembered so a death can be explained as "nothing held it up".
   sim.strokeOrigin = { x: body.position.x, y: body.position.y };
   return { ok: true, length: v.length, anchors: sim.anchors.length, shape: classified.shape };
+}
+
+
+/**
+ * A CLOSE CALL: something that could have killed him came within
+ * NEAR_MISS_DIST and was moving fast enough to mean it.
+ *
+ * Fires on ENTRY into the radius, once per approach, not once per step — at
+ * 120 Hz a single boulder would otherwise produce forty "moments" and the word
+ * would stop meaning anything. And it never fires on the step he actually
+ * dies: being hit is not a near miss, it is a miss of the other kind.
+ */
+function detectCloseCalls(sim) {
+  if (sim.run.outcome !== OUTCOME.RUNNING) return;
+  const b = sim.milo.body;
+  const halfW = MILO.width / 2, halfH = MILO.height / 2;
+
+  for (const [id, o] of sim.objects) {
+    if (!isHazardous(o.spec.lethal)) continue;
+    const v = getVelocity(o.body);
+    const speed = Math.hypot(v.x, v.y);
+    const p = o.body.position;
+
+    // Nearest point of Milo's box to the hazard's centre, then back off by the
+    // hazard's own size — a surface-to-surface gap rather than centre-to-centre,
+    // which would call a huge slow boulder "close" while it was still far away.
+    const cx = Math.max(b.position.x - halfW, Math.min(p.x, b.position.x + halfW));
+    const cy = Math.max(b.position.y - halfH, Math.min(p.y, b.position.y + halfH));
+    const reach = o.spec.radius ?? Math.max(o.spec.w ?? 0, o.spec.h ?? 0) / 2;
+    const gap = Math.hypot(p.x - cx, p.y - cy) - reach;
+
+    const inside = gap < NEAR_MISS_DIST && speed > CLOSE_CALL.minSpeed;
+    const was = sim._near.get(id) ?? false;
+    sim._near.set(id, inside);
+
+    if (inside && !was) {
+      const last = sim.closeCalls[sim.closeCalls.length - 1];
+      if (last && sim.simTime - last.t < CLOSE_CALL.cooldownMs) continue;
+      sim.closeCalls.push({
+        id, t: sim.simTime, gap: Math.max(0, gap), speed,
+        x: (p.x + b.position.x) / 2, y: (p.y + b.position.y) / 2,
+      });
+      audio.closeCall(speed);
+    }
+  }
 }
 
 /** What the player's line did, for the death explanation. */

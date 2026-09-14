@@ -16,7 +16,7 @@ import { buildSim, stepSim, commitStroke, abort, destroySim, OUTCOME } from './s
 import { LEVELS } from './levels.js';
 import { starsFor } from './rating.js';
 import { createStroke, begin, extend, end, remaining } from './drawing/capture.js';
-import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME } from './constants.js';
+import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME, CLOSE_CALL } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
 import { createProgress, record, save, isComplete, firstUnclearedIndex } from './progress.js';
@@ -52,12 +52,18 @@ export function createGame(level) {
     progress: createProgress(),
     // Where to return to when the board is closed without choosing.
     selectFrom: null,
+    // Wall-clock deadline for the close-call slow motion, and how many the
+    // sim has reported so far, so the loop can notice a NEW one.
+    slowUntil: 0,
+    seenCalls: 0,
   };
   reset(g);
   return g;
 }
 
 export function reset(g) {
+  g.slowUntil = 0;
+  g.seenCalls = 0;
   if (g.sim) destroySim(g.sim);
   g.sim = buildSim(g.level);
   g.phase = PHASE.LIVE;
@@ -84,6 +90,13 @@ export function tick(g, dtMs) {
 
   if (g.phase === PHASE.SIM) {
     const o = stepSim(g.sim);
+    // A new close call arms the slow motion. The SIM is untouched — it still
+    // steps at a fixed PHYSICS_DT — only the wall-clock rate at which the loop
+    // feeds it changes, so determinism and every headless gate are unaffected.
+    if (g.sim.closeCalls.length > g.seenCalls) {
+      g.seenCalls = g.sim.closeCalls.length;
+      g.slowUntil = performance.now() + CLOSE_CALL.slowMs;
+    }
     if (o !== OUTCOME.RUNNING) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
       if (o === OUTCOME.SUCCESS) {
