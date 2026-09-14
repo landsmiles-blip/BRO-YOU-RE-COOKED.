@@ -34,7 +34,30 @@ export function initView(canvas) {
 export function resize() {
   const cssW = window.innerWidth;
   const cssH = window.innerHeight;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);   // capped at 2
+  // PIXEL BUDGET, not a flat DPR cap.
+  //
+  // This was `Math.min(devicePixelRatio, 2)`, which is a real performance guard
+  // aimed at a real problem — fill rate is this renderer's only meaningful cost
+  // — but a flat cap is the wrong instrument. It blurred a 3x PHONE, where the
+  // full backing store is 2.6M pixels and entirely affordable, in order to
+  // protect a 3x ULTRAWIDE, where it would be 8M+ and genuinely is not.
+  //
+  // "Text legible at 1x / 2x / 3x DPR" is a NAMED rejection cause for
+  // Playables, and a 3x device was getting a 2x buffer upscaled by the
+  // compositor — soft edges on every line of type, on exactly the high-density
+  // phones most of the audience is holding. The conformance gate caught it:
+  // 810 backing pixels where 1215 were asked for.
+  //
+  // Budgeting by AREA gives both: full density wherever the total is
+  // affordable, graceful reduction only where it is not. 3.5M is roughly a
+  // 3x phone (405x720 -> 2.6M, comfortably inside) while a 1280x720 embed at
+  // 3x (8.3M) reduces to ~1.95x rather than blowing the frame budget.
+  const MAX_BACKING_PX = 3_500_000;
+  const wanted = window.devicePixelRatio || 1;
+  const affordable = Math.sqrt(MAX_BACKING_PX / Math.max(1, cssW * cssH));
+  // Never below 1 (that would be worse than any cap), never above 3 (beyond
+  // that the extra pixels are invisible and the cost is not).
+  const dpr = Math.max(1, Math.min(wanted, affordable, 3));
 
   view.cssW = cssW; view.cssH = cssH; view.dpr = dpr;
   view.scale = Math.min(cssW / SAFE_BOX.w, cssH / SAFE_BOX.h);
