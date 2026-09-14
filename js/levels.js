@@ -691,10 +691,30 @@ export const A15 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A7, A8, A9, A10, A11, A12, A13, A14, A15];
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A14, A15];
 
+/**
+ * HELD — built, measured, passing their gates, and NOT SHIPPING.
+ *
+ * A level on this shelf is not deleted and not broken. It is one that does not
+ * yet earn its place, and shipping it would cost more than leaving it out. They
+ * come back when the idea behind them is worth the slot.
+ *
+ * A7 and A13 are here on PLAYTEST evidence rather than on measurement, which is
+ * the whole point of the shelf: both pass every automated gate. The gates
+ * measure whether a level is fair. They cannot measure whether a person knows
+ * what it wants from them.
+ */
 export const HELD = [
   { level: A6, reason: 'only passes with a 47u wall, barely above the 22u step-up — teaches nothing' },
+  { level: A7, reason: 'playtest: the plank reads as scenery, not as the thing you must hold up. '
+    + 'The idea (anchor both ends or it is a see-saw) is good and the physics works; '
+    + 'what is missing is any way to see that it is about to tip. Bring it back when '
+    + 'the tipping is telegraphed before he steps on it.' },
+  { level: A13, reason: 'playtest: "very unclear what the player is supposed to do", and it ends '
+    + 'with Milo dead almost every time. Reframing and a hint helped but did not fix the '
+    + 'root problem — the level asks you to build something you have never been shown is '
+    + 'possible. Bring it back after a level that TEACHES the line can carry him.' },
 ];
 
 export const ALL_LEVELS = [...LEVELS, ...HELD.map((h) => h.level)];

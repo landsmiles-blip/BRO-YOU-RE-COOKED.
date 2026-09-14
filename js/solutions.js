@@ -208,53 +208,6 @@ export const SOLUTIONS = {
       ]
     }
   },
-  "a7-prop": {
-    "id": "a7-prop",
-    "winners": 55,
-    "robust": 12,
-    "anchoredRobust": 12,
-    "handRate": 0.218,
-    "solution": {
-      "family": "span",
-      "length": 278,
-      "parts": 11,
-      "anchors": 6,
-      "points": [
-        {
-          "x": 250,
-          "y": 900
-        },
-        {
-          "x": 288.6,
-          "y": 913
-        },
-        {
-          "x": 327.1,
-          "y": 923.5
-        },
-        {
-          "x": 365.7,
-          "y": 929.2
-        },
-        {
-          "x": 404.3,
-          "y": 929.2
-        },
-        {
-          "x": 442.9,
-          "y": 923.5
-        },
-        {
-          "x": 481.4,
-          "y": 913
-        },
-        {
-          "x": 520,
-          "y": 900
-        }
-      ]
-    }
-  },
   "a8-jam": {
     "id": "a8-jam",
     "winners": 163,
@@ -458,37 +411,6 @@ export const SOLUTIONS = {
         {
           "x": 475,
           "y": 972.7
-        }
-      ]
-    }
-  },
-  "a13-yeet": {
-    "id": "a13-yeet",
-    "winners": 53,
-    "robust": 31,
-    "anchoredRobust": 31,
-    "handRate": 0.585,
-    "solution": {
-      "family": "line",
-      "length": 390,
-      "parts": 12,
-      "anchors": 8,
-      "points": [
-        {
-          "x": 131.1,
-          "y": 636.1
-        },
-        {
-          "x": 243.7,
-          "y": 701.1
-        },
-        {
-          "x": 356.3,
-          "y": 766.1
-        },
-        {
-          "x": 468.9,
-          "y": 831.1
         }
       ]
     }

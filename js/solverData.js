@@ -60,17 +60,6 @@ export const SOLVER = {
     "shortestWin": 110,
     "measuredAt": "2026-09-14"
   },
-  "a7-prop": {
-    "solvable": true,
-    "solutionBreadth": 0.0279,
-    "precisionFloor": 45,
-    "worstJitter": 0,
-    "distinctFamilies": 4,
-    "twoStarLength": 390,
-    "threeStarLength": 230,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-14"
-  },
   "a8-jam": {
     "solvable": true,
     "solutionBreadth": 0.0855,
@@ -124,17 +113,6 @@ export const SOLVER = {
     "twoStarLength": 288,
     "threeStarLength": 183,
     "shortestWin": 110,
-    "measuredAt": "2026-09-14"
-  },
-  "a13-yeet": {
-    "solvable": true,
-    "solutionBreadth": 0.0256,
-    "precisionFloor": 65,
-    "worstJitter": 0,
-    "distinctFamilies": 5,
-    "twoStarLength": 390,
-    "threeStarLength": 288,
-    "shortestWin": 165,
     "measuredAt": "2026-09-14"
   },
   "a14-twojobs": {
