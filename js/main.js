@@ -181,11 +181,20 @@ function render() {
       // level's own one-line hint names what is about to go wrong — it does not
       // hand over the solution, and on a retry it is the more useful half, so
       // it stays while the instruction shrinks to "DRAW AGAIN".
+      // THE PROBLEM LEADS. The instruction follows.
+      //
+      // The first version had this the other way round — "DRAW" large, and the
+      // level's hint under it in 11px grey at 62% opacity. That is a whisper,
+      // and a whisper does not answer "I do not know what I am supposed to do".
+      // Everyone already knows to draw; the screen says so, and they have been
+      // doing it for twelve levels. What they do not know is what is about to
+      // go wrong. So that goes first, and big.
       const lead = g.attempt > 1 ? 'DRAW AGAIN' : 'DRAW';
-      drawText(ctx, lead, 0.5, 0.055, Math.max(17, view.cssH * 0.030), C.ink);
       if (g.level.hint) {
-        drawText(ctx, g.level.hint, 0.5, 0.098,
-                 Math.max(11, view.cssH * 0.019), 'rgba(42,38,34,0.62)');
+        drawText(ctx, g.level.hint, 0.5, 0.062, Math.max(15, view.cssH * 0.029), C.ink);
+        drawText(ctx, lead, 0.5, 0.105, Math.max(11, view.cssH * 0.019), 'rgba(42,38,34,0.55)');
+      } else {
+        drawText(ctx, lead, 0.5, 0.07, Math.max(17, view.cssH * 0.032), C.ink);
       }
     }
     drawInk(ctx, inkUsed(g), inkMax(g));
