@@ -242,7 +242,7 @@ export const A4 = {
 // ─────────────────────────────────────────────────────────────────────────
 export const A5 = {
   id: 'a5-hang',
-  hint: 'STOP IT REACHING HIM', world: 'backyard', verb: 'BLOCK',
+  hint: 'IT DROPS BETWEEN THE POSTS', world: 'backyard', verb: 'BLOCK',
   milo: { start: { x: 130, y: 1152 }, speed: MILO.speed },
   goal: { id: 'goal', x: 630, y: 1152, w: 80, h: 140 },
   freezeAt: 650,
@@ -408,7 +408,7 @@ export const A9 = {
 // ─────────────────────────────────────────────────────────────────────────
 export const A10 = {
   id: 'a10-switch',
-  hint: 'THE PLATE OPENS THE GATE', world: 'backyard', verb: 'TRIGGER',
+  hint: 'ONLY THE ROCK CAN REACH THE PLATE', world: 'backyard', verb: 'TRIGGER',
   milo: { start: { x: 80, y: 1152 }, speed: 190 },
   goal: { id: 'goal', x: 655, y: 1152, w: 70, h: 140 },
   freezeAt: 700,
@@ -473,7 +473,7 @@ export const A10 = {
 // ─────────────────────────────────────────────────────────────────────────
 export const A11 = {
   id: 'a11-deadweight',
-  hint: 'NOTHING CAN REACH THE PLATE', world: 'backyard', verb: 'DROP',
+  hint: 'THE PLATE NEEDS WEIGHT ON IT', world: 'backyard', verb: 'DROP',
   // DECLARED, not inferred. Every other level's certified solution must be
   // anchored, because an anchored stroke is static and therefore reproducible,
   // while an unanchored one falls and settles chaotically. This level inverts
@@ -573,7 +573,7 @@ export const A12 = {
 // ─────────────────────────────────────────────────────────────────────────
 export const A13 = {
   id: 'a13-yeet',
-  hint: 'HE WALKS STRAIGHT OFF THE EDGE', world: 'backyard', verb: 'CARRY',
+  hint: 'THE FAR SIDE IS TOO LOW AND TOO FAR', world: 'backyard', verb: 'CARRY',
   milo: { start: { x: 80, y: 520 }, speed: MILO.speed },
   goal: { id: 'goal', x: 640, y: 940, w: 80, h: 140 },
   freezeAt: 450,
@@ -839,7 +839,183 @@ export const A18 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15];
+// ─────────────────────────────────────────────────────────────────────────
+// A19 — UPDRAFT.  Introduces: AIR. The first thing in this world that acts on
+// it without being solid.
+//
+// The noun is introduced ALONE — the pattern every game in this genre follows
+// and the one the previous attempt broke. Its predecessor put the air beside a
+// falling rock as somewhere to deflect it, and the A14 test killed it in a
+// single run: delete the air, re-run, nothing changed. Decoration.
+//
+// Here the air is load-bearing BY CONSTRUCTION. The plate is at the top of the
+// column and nothing in the world can reach it — no ledge leads there, the ball
+// cannot climb, and Milo is on the floor behind a shut gate. The only lift that
+// exists is the draught. Delete it and the ball sits on the column floor for
+// ever.
+//
+// AND THE AIR ABSORBS THE PRECISION, which is what a good noun is for. The
+// player's job is to roll the ball off its shelf into a 150-unit-wide column —
+// a target you could hit with your elbow. Everything delicate after that is
+// done by the air. Compare A16, held for demanding that a line be threaded
+// between two 31-unit gaps.
+// ─────────────────────────────────────────────────────────────────────────
+export const A19 = {
+  id: 'a19-updraft',
+  hint: 'NOTHING IN HERE CAN CLIMB',
+  world: 'backyard', verb: 'UPDRAFT',
+  milo: { start: { x: 70, y: 1120 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 660, y: 1120, w: 70, h: 140 },
+  freezeAt: 600,
+  // THE BALL FALLS. It was first authored at rest on a shelf, and the trace was
+  // unambiguous: it sat at (185,804) for the entire run, every time. A drawn
+  // line is STATIC once anchored — it cannot shove anything. Everything this
+  // game has ever asked the player to do is REDIRECT something already moving,
+  // and a resource is no different from a hazard in that respect.
+  // A CHIMNEY ON A DECK, ABOVE HIS HEAD. Three traced findings built this
+  // shape, and each one killed the version before it:
+  //
+  //  1. An OPEN column does not work. The ball came off the ramp fast and flew
+  //     STRAIGHT THROUGH the air (x=272 -> 461 -> 600 -> 826) and out of the
+  //     world. An updraft gets a fraction of a second on something moving
+  //     horizontally; it can only lift what is already contained.
+  //  2. A chimney at GROUND LEVEL contains the ball and traps MILO. The plate
+  //     fired at 4550ms and the gate opened — and he had walked in under the
+  //     left wall and was pinned between the two of them at x=441 until the
+  //     clock ran out. The apparatus was standing on his only path.
+  //  3. The ball must arrive ROLLING, not flying. The letterbox under the left
+  //     wall is 70 units and the ball is 52 across; threading that in mid-air
+  //     is the knife-edge that put A16 on the shelf. Resting on the deck its
+  //     centre is pinned at y=854 by the floor under it, so it passes every
+  //     time — the geometry does the precise part, not the player's thumb.
+  //
+  // So the apparatus stands on a deck over Milo's head. He walks beneath it
+  // with 216 units of clearance and never touches it, and the deck is a
+  // 320-unit-wide table. THE PLAYER'S TARGET IS THE TABLE, NOT THE LETTERBOX:
+  // land the ball anywhere on it moving right and the rest is automatic — too
+  // fast and it simply stops against the solid right wall, still inside the air.
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1120, w: 720, h: 160 },
+    { id: 'deck',   type: 'platform', x: 120, y: 880,  w: 400, h: 24  },
+    // Stops 70 units short of the deck. A ball rolling on the deck has its top
+    // at y=828 and goes under; anything still airborne is stopped.
+    { id: 'chimL',  type: 'platform', x: 300, y: 420,  w: 20,  h: 390 },
+    // Solid all the way down, so the far side is a wall and not an exit.
+    { id: 'chimR',  type: 'platform', x: 480, y: 420,  w: 20,  h: 484 },
+  ],
+  objects: [
+    { id: 'ball',  type: 'boulder', x: 200, y: 260, radius: 26,
+      density: 0.02, restitution: 0.1, friction: 0.06,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 320, y: 390, w: 160, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 585, y: 980, w: 34, h: 140 },
+  ],
+  // Gravity is 1800 u/s², so -2400 is a net 600 up: strong enough to carry a
+  // light ball the full height, not so strong it is flung out of the world.
+  zones: [{ id: 'draft', kind: 'updraft', x: 320, y: 420, w: 160, h: 460, accel: -2400 }],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A20 — SPRING.  Introduces: a surface that GIVES ENERGY BACK.
+//
+// Every other surface in this world takes energy away. Statics were built with
+// no restitution at all, so a thing that lands stays landed, and the player has
+// only ever had to deal with hazards that roll or fall ONCE. This one comes
+// back, and it arrives AIRBORNE.
+//
+// THREE DESIGNS DIED TO MEASUREMENT BEFORE THIS ONE:
+//
+//  1. "the line catches the bounce" is geometrically impossible. Any line drawn
+//     above a pad is hit by the FALLING ball before it ever reaches the pad —
+//     the line cannot be the second thing the ball meets if it is in the way of
+//     the first.
+//  2. "a hazard that never stops" is not what a bouncer is. Measured off a
+//     688-unit drop: the first bounce recovers only ~30% of the height and it
+//     is dead in three or four hops. Useful for a few seconds, not for ever —
+//     which is exactly long enough for one crossing.
+//  3. "bounce it over a wall" flings it clean out of a 720-wide world at any
+//     tilt past 35°. The energy a bouncer returns is large and hard to aim.
+//
+// So the spring's job here is the one thing it does that nothing else can: it
+// keeps the hazard OFF THE GROUND. A wall stops a roller wherever you put it.
+// It stops this only where the arc is low, and the player has to read the arc
+// to find that place — a new demand built out of the same old idea that the
+// line is solid matter.
+// ─────────────────────────────────────────────────────────────────────────
+export const A20 = {
+  id: 'a20-spring',
+  hint: 'IT DOES NOT STOP WHEN IT LANDS',
+  world: 'backyard', verb: 'SPRING',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  // FREEZE AT 300, NOT 400. Derived from the idle run, not guessed: the ball's
+  // first contact with the board is at t=425, so 400 froze the world 25ms after
+  // it had already landed and the player never saw it fall. At 300 it is caught
+  // in the air 121 units up, which is the only frame in which the level gets to
+  // say what is about to happen.
+  freezeAt: 300,
+  // ONE SPRINGBOARD, NOT A SPRINGY FLOOR. The first cut made the middle 420
+  // units of the ground springy, and Milo walks over that — he does NOT bounce
+  // (measured: identical outcomes at restitution 0 and 1.0, because his
+  // locomotion overwrites velocity the moment he is grounded), so half the
+  // floor would have been visibly springy and visibly inert under him. A single
+  // board reads as a prop instead of as a broken floor.
+  //
+  // It is also placed where the whole arc is OVER by the time he arrives: the
+  // ball's first contact is at x=549 and it is coming down on him at x=347
+  // while he is still well left of the board, so he never walks on a springy
+  // surface while it matters.
+  //
+  // Flush with the ground on both sides, so there is no step-up to climb.
+  static: [
+    //
+    // THE BOARD STAYED PUT, AND THAT WAS THE FIX FOR THE WRONG BUG. The frozen
+    // frame showed the ball sitting on top of the goal, so the apparatus was
+    // moved 80 units left — which cost half the winning ramps and left the
+    // certified solution passing 5 units from death. It then won in the solver
+    // and LOST in the browser, because a stroke redrawn with a mouse is never
+    // bit-identical and 5 units is not a margin.
+    //
+    // The overlap was never about x. At the old freeze of 400 the ball had
+    // already fallen to y=1103, which is inside the goal's 1012..1152 band.
+    // Freezing at 300 catches it at y=1031 and the overlap goes away on its
+    // own. Measured clearances on winning runs here are 50-74u; 80 units left
+    // of here they were 50-64u and there were half as many of them.
+    { id: 'groundL', type: 'platform', x: 0,   y: 1152, w: 380, h: 128 },
+    // 0.70, NOT 0.85. Measured: at 0.85 the ball arcs 143u up and the only
+    // ramps that turn it away are 39° ones — and Milo's walk limit is 40°, so
+    // every winning stroke sat 1.4° from a cliff. The solver caught it exactly:
+    // jitter a 200u ramp by 20u and its slope swings ~11°, so robustness was
+    // 10u against a 25u thumb. A lower arc is turned away by a SHALLOW ramp,
+    // and the win band then runs unbroken from 11° to 39° with nothing to fall
+    // off. Softer is not easier here; it is the difference between a level and
+    // a knife-edge.
+    //
+    // It is NOT softer than that, either. 0.60 is flatter still and even more
+    // forgiving, but the ball then skips only 39u — less than its own diameter
+    // — and a noun the player cannot SEE is not introduced at all. 0.70 clears
+    // 80u, which reads as a bounce, and keeps a win band that runs 240..440 at
+    // 22° and 240..460 at 28°.
+    { id: 'spring',  type: 'platform', x: 380, y: 1152, w: 240, h: 128,
+      restitution: 0.70, friction: 0.3 },
+    { id: 'groundR', type: 'platform', x: 620, y: 1152, w: 100, h: 128 },
+  ],
+  objects: [
+    // Dropped from y=900 to y=950 for the same reason: less fall in means less
+    // arc out. It still kills on the idle run, which is the only thing the
+    // height was ever load-bearing for.
+    { id: 'hopper', type: 'boulder', x: 660, y: 950, radius: 30,
+      density: 0.04, restitution: 0.1, friction: 0.15, frictionAir: 0, vx: -260,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  zones: [],
+  drawing: { maxLength: 460, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.

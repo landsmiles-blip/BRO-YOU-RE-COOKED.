@@ -39,6 +39,19 @@ A green suite means a level is solvable, fair and stable. It says nothing about
 whether a person knows what it wants from them. Only playtesting says that, and
 playtesting outranks the suite.
 
+**Nor can they measure STAGING.** A20 passed every gate — breadth, precision,
+tension, hand-robustness — while its frozen frame spawned the ball that kills
+Milo directly on top of the goal that saves him, because the freeze landed
+25ms after the ball had already fallen into the goal's y-band. No number moved.
+The screenshot showed it in one second. **Open the frozen frame of every new
+level and ask what a stranger would think it wants.**
+
+And beware of a tension score that is TOO good. A20 measured 5u closest
+approach — a win passing five units from death — and that solution won in the
+solver and LOST in the browser, because a stroke redrawn with a mouse is never
+bit-identical. A filmstrip REGRESSION (certified winner, browser loss) is what
+caught it.
+
 ## MEASURE BEFORE YOU TUNE
 
 The temptation is always to change a number until the thing lights up. Do the
@@ -117,6 +130,21 @@ level failed exactly this, on every stroke tried.
   Air levels must lift an OBJECT, whose exit is geometry, not lift him.
 - **Anchored means STATIC, not constrained.** Eight rigid constraints on a
   28-part compound body produced 177,000 units of jitter and shipped that way.
+- **Matter SILENTLY ZEROES `restitution` on every static body.** `Body.setStatic`
+  runs inside `Bodies.rectangle` and forces `restitution: 0` and `friction: 1`,
+  so passing them in the options is discarded without a word. A pad asked for
+  0.85 reported 0.00 and a ball rebounded 2u instead of 119u. Assign AFTER
+  creation. (Static `friction` has therefore ALWAYS been 1 here, and every
+  measured threshold in `solverData.js` was produced under that — do not
+  "fix" it without re-measuring all fourteen levels.)
+- **A test that re-imports a game module gets a SECOND COPY.** Over http,
+  `import('/js/audio.js')` from inside a page built from `dist/` loads a fresh
+  module with its own uninitialised state. It cost two false alarms in one
+  session: the level board "unreachable at every ratio" (a phantom `view` at
+  0x0, so the test clicked empty space) and "onPause does not suspend audio"
+  (a phantom AudioContext that had never existed). Both were fine. Expose the
+  LIVE object on `globalThis.__byc` and read that — one source of truth, which
+  is the same lesson the stroke renderer and the board already paid for.
 
 ## THE HAND MODEL
 

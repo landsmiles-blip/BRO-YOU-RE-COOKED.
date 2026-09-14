@@ -18,6 +18,11 @@ export const C = {
   // that ACTS on the world without being solid or lethal, so it must not read
   // as either. Nowhere near the danger accent.
   air:        '#7FA3B5',
+  // A surface that gives energy back. Violet because every other role is
+  // already spoken for — tan is a loose part, blue is moving air, green is the
+  // goal, red is death — and a springboard is none of those. A player must be
+  // able to tell at a glance that this piece of ground is not like the ground.
+  spring:     '#9B6FA8',
   danger:     '#E0452B',   // THE accent. Danger only.
   goal:       '#3FA96B',
   goalGlow:   'rgba(63,169,107,0.28)',

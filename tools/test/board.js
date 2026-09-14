@@ -53,11 +53,14 @@ for (const [label, w, h] of [['9:16', 405, 720], ['9:32', 360, 1280], ['1:1', 80
   check(`${label}: the button opens the board`, opened === 'select', opened);
 
   // Every card must be reachable, and land on the level it shows.
-  const last = await page.evaluate(async () => {
-    const { layout } = await import('/js/render/levelselect.js');
-    const B = globalThis.__byc;
-    const box = layout(B.LEVELS.length);
+  // Ask the PAGE where it drew the card. Importing levelselect.js here fetches
+  // a second copy of the module whose `view` is still 0x0, which lays the board
+  // out somewhere the board is not.
+  const last = await page.evaluate(() => {
+    const B = globalThis.__byc, box = B.boardBox;
+    if (!box || !box.cards.length) return null;
     const c = box.cards[B.LEVELS.length - 1];
+    if (!c) return null;
     return { x: c.x + c.w / 2, y: c.y + c.h / 2, id: B.LEVELS[B.LEVELS.length - 1].id, n: B.LEVELS.length };
   }).catch(() => null);
 

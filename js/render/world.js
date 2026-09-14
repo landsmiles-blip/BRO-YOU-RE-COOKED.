@@ -80,6 +80,30 @@ export function drawScene(ctx, sim, opts = {}) {
         ], { now, colour: ink, width: 2.6, salt: (b.x + sx) | 0, passes: 1 });
       }
     }
+
+    // A SPRINGBOARD MUST READ AS ONE BEFORE IT EVER MOVES. The player gets one
+    // look at a frozen world, and "this ground is springy" is not something a
+    // grey slab can say. A coil along the top edge says it in the only language
+    // available at a standstill — and it has to, because the ball's first hop
+    // happens after the freeze is released.
+    if (b.restitution) {
+      // Bigger than it looks like it needs to be. The first pass drew a 9-unit
+      // coil at 3.2 wide, and the frozen frame showed a hairline scribble in
+      // the dirt — a mechanic the player cannot see has not been introduced.
+      const coil = drain(C.spring, freeze * 0.3);
+      const step = 28, amp = 16, y0 = b.y - 4;
+      const zig = [];
+      for (let i = 0, x = b.x + 6; x <= b.x + b.w - 6; x += step / 2, i++) {
+        zig.push({ x, y: y0 - (i % 2 ? amp : 0) });
+      }
+      if (zig.length > 1) {
+        inkPath(ctx, zig, { now, colour: coil, width: 4.0, salt: b.y | 0, passes: 1 });
+        // A solid rail over the coil: this is a BOARD on springs, and a zigzag
+        // on its own reads as damage rather than as a mechanism.
+        inkPath(ctx, [{ x: b.x + 2, y: y0 + 4 }, { x: b.x + b.w - 2, y: y0 + 4 }],
+          { now, colour: coil, width: 5.0, salt: (b.x + 7) | 0, passes: 1 });
+      }
+    }
     ctx.restore();
   }
 

@@ -58,8 +58,23 @@ export function buildSim(level) {
   for (const s of level.static) {
     const body = addRect(ctx, {
       id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h,
-      angle: (s.angle ?? 0) * Math.PI / 180, isStatic: true, friction: 0.7,
+      angle: (s.angle ?? 0) * Math.PI / 180, isStatic: true,
+      friction: s.friction ?? 0.7,
     });
+    // MATTER SILENTLY ZEROES RESTITUTION ON EVERY STATIC BODY. Body.setStatic()
+    // runs inside Bodies.rectangle() and forces restitution=0 and friction=1,
+    // so passing `restitution` in the options above is discarded without a
+    // word. Measured: a pad asked for 0.85 reported 0.00 and a ball dropped
+    // 258u rebounded 2u. Assigning AFTER creation sticks — the same ball then
+    // rebounds 119u — which is the only reason a springy surface can exist.
+    //
+    // ONLY RESTITUTION IS CORRECTED HERE. Static friction has always been 1 in
+    // this game for exactly the same reason, and every measured star threshold
+    // and solver breadth in js/solverData.js was produced under it. "Fixing" it
+    // would silently re-tune thirteen shipped levels. Matter pairs friction
+    // with Math.min(a, b) and every dynamic body here sits far below 1, so the
+    // value is not observable anyway.
+    if (s.restitution) body.restitution = s.restitution;
     sim.statics.push({ body, spec: s });
   }
 

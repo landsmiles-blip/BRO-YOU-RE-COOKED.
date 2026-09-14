@@ -410,6 +410,24 @@ function rejectText(reason) {
 }
 
 // Test hook — lets Playwright drive real strokes through the real pipeline.
-globalThis.__byc = { game, view, PHASE, retry, nextLevel, goToLevel, openSelect, closeSelect, LEVELS, reducedMotion };
+// `boardBox` is exposed as a GETTER, and it is the live hit regions the
+// renderer actually produced this frame — not a recomputation.
+//
+// The board gate used to `import('/js/render/levelselect.js')` and call
+// layout() itself. Over http that fetches a SECOND copy of the module with its
+// own `view` instance, which no one ever resizes, so it laid the board out for
+// a 0x0 viewport and clicked empty space. The test reported the board broken
+// while the board was fine — the same input-vs-rendering disagreement the board
+// was written to catch, this time between the test and the game.
+globalThis.__byc = {
+  game, view, PHASE, retry, nextLevel, goToLevel, openSelect, closeSelect, LEVELS, reducedMotion,
+  get boardBox() { return boardBox; },
+  // The RUNNING audio module, for the same reason boardBox is here. The
+  // certification gate used to `import('/js/audio.js')` and read the state off
+  // that, which over http is a second copy with no AudioContext in it — so it
+  // reported "no context" while the real one was correctly suspended, and the
+  // one platform constraint that is genuinely non-negotiable looked broken.
+  audio,
+};
 
 requestAnimationFrame(frame);
