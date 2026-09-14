@@ -24,7 +24,7 @@
 import Matter from './matter.js';
 import { GRAVITY_Y, PHYSICS_DT, MAX_SPEED, SOLVER_ITER } from '../constants.js';
 
-const { Engine, World, Bodies, Body, Composite, Events } = Matter;
+const { Engine, World, Bodies, Body, Composite, Constraint, Events } = Matter;
 
 const GRAVITY_SCALE = 0.001;
 const BASE_DELTA = 1000 / 60;
@@ -77,10 +77,38 @@ export function addCapsule(ctx, { id, x, y, w, h, chamfer, ...opts }) {
   return body;
 }
 
-// NOTE: there is deliberately no weld/constraint helper here. Anchoring makes
-// a stroke STATIC (see js/physics/anchor.js) because rigid constraints on a
-// many-part compound body oscillate violently. If a springy or breakable
-// anchor is ever wanted, it needs a different mechanism, not this one.
+// NOTE: there is deliberately no WELD helper here. Anchoring makes a stroke
+// STATIC (see js/physics/anchor.js) because rigid constraints on a many-part
+// compound body oscillate violently — eight of them on Milo's 28-part body
+// produced 177,000 units of jitter and shipped that way. If a springy or
+// breakable anchor is ever wanted, it needs a different mechanism, not this.
+//
+// A SINGLE PIVOT ON A SIMPLE BODY IS NOT THAT CASE, and it took a measurement
+// to establish the difference rather than inheriting the fear. One revolute on
+// a plain rectangle measures 0.00u of centre drift over 500 steps with a rock
+// dropped on it. The jitter came from many constraints fighting over a compound
+// body, not from constraints as such.
+//
+// What a pivot DOES do is spin like a propeller — a free plank went 0° to −246°
+// and kept going. Every pivot in this game therefore needs physical end-stops,
+// which is the right kind of constraint: geometry the player can see, not a
+// rule they have to be told.
+
+/**
+ * Pin a body to a fixed point in the world. It keeps its mass and swings freely
+ * about the pin; it cannot translate away from it.
+ */
+export function addPivot(ctx, body, x, y) {
+  const c = Constraint.create({
+    bodyA: body,
+    pointA: { x: x - body.position.x, y: y - body.position.y },
+    pointB: { x, y },
+    length: 0,
+    stiffness: 1,
+  });
+  Composite.add(ctx.world, c);
+  return c;
+}
 
 export function removeBody(ctx, body) {
   Composite.remove(ctx.world, body);

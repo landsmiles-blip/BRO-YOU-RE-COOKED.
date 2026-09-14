@@ -7,7 +7,7 @@
 
 import {
   createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
-  onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel,
+  onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel, addPivot, removeBody,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
@@ -75,6 +75,28 @@ export function buildSim(level) {
     // with Math.min(a, b) and every dynamic body here sits far below 1, so the
     // value is not observable anyway.
     if (s.restitution) body.restitution = s.restitution;
+
+    // A PIVOT MAKES THIS STATIC INTO A MOVING PART. It is authored on `static`
+    // because that is where the level's geometry lives and where the renderer
+    // already looks, but a pinned piece is emphatically NOT static: it is a
+    // dynamic body held at one point, so it must be built dynamic and pinned.
+    //
+    // `pivot` is {x, y} in world units — the point it turns about, usually its
+    // own centre for a see-saw and one end for a swinging arm.
+    if (s.pivot) {
+      removeBody(ctx, body);
+      const moving = addRect(ctx, {
+        id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h,
+        angle: (s.angle ?? 0) * Math.PI / 180,
+        density: s.density ?? 0.008,
+        friction: s.friction ?? 0.4,
+        frictionAir: s.frictionAir ?? 0.01,
+      });
+      if (s.restitution) moving.restitution = s.restitution;
+      addPivot(ctx, moving, s.pivot.x, s.pivot.y);
+      sim.statics.push({ body: moving, spec: s, pivoted: true });
+      continue;
+    }
     sim.statics.push({ body, spec: s });
   }
 

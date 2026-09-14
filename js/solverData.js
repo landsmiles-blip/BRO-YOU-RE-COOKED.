@@ -158,5 +158,27 @@ export const SOLVER = {
     "threeStarLength": 165,
     "shortestWin": 110,
     "measuredAt": "2026-09-14"
+  },
+  "a21-lever": {
+    "solvable": true,
+    "solutionBreadth": 0.1486,
+    "precisionFloor": 65,
+    "worstJitter": 5,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 105,
+    "measuredAt": "2026-09-14"
+  },
+  "a22-tip": {
+    "solvable": true,
+    "solutionBreadth": 0.3416,
+    "precisionFloor": 65,
+    "worstJitter": 4,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 193,
+    "shortestWin": 99,
+    "measuredAt": "2026-09-14"
   }
 };

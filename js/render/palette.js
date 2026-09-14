@@ -23,6 +23,10 @@ export const C = {
   // goal, red is death — and a springboard is none of those. A player must be
   // able to tell at a glance that this piece of ground is not like the ground.
   spring:     '#9B6FA8',
+  // The pin a lever or an arm turns about. Deliberately dark and metallic
+  // rather than coloured: the pin is the one part that does NOT move, and it
+  // must read as hardware holding a moving part, not as another moving part.
+  pivot:      '#6E6257',
   danger:     '#E0452B',   // THE accent. Danger only.
   goal:       '#3FA96B',
   goalGlow:   'rgba(63,169,107,0.28)',

@@ -57,7 +57,19 @@ export function drawScene(ctx, sim, opts = {}) {
   for (const s of sim.statics) {
     const b = s.spec;
     ctx.save();
-    if (b.angle) {
+    if (s.pivoted) {
+      // A PINNED PIECE MUST BE DRAWN FROM ITS BODY, NOT ITS SPEC. Everything
+      // else here is drawn from the authored rectangle because it never moves;
+      // a see-saw that tilts and a pendulum that swings would both be rendered
+      // frozen in their starting pose, which is the exact class of bug that has
+      // shipped twice in this project — a picture that disagrees with the sim.
+      // Put the authored rect's centre at the body's position, turned by the
+      // body's angle: translate to where it now is, rotate, then step back by
+      // the authored centre so the rect draws around it.
+      ctx.translate(s.body.position.x, s.body.position.y);
+      ctx.rotate(s.body.angle);
+      ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
+    } else if (b.angle) {
       ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
       ctx.rotate(b.angle * Math.PI / 180);
       ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
@@ -79,6 +91,23 @@ export function drawScene(ctx, sim, opts = {}) {
           { x: sx + dir * 16, y: b.y + b.h + 20 },
         ], { now, colour: ink, width: 2.6, salt: (b.x + sx) | 0, passes: 1 });
       }
+    }
+
+    // THE PIN ITSELF. A plank lying at an angle with nothing holding it is a
+    // fallen plank; the same plank with a visible pin through it is a lever.
+    // Drawn in the UNROTATED frame, because the pin does not turn with the arm.
+    if (s.pivoted) {
+      ctx.restore();
+      ctx.save();
+      const pv = b.pivot;
+      const ink = drain(C.ink, freeze * 0.35);
+      ctx.beginPath();
+      ctx.arc(pv.x, pv.y, 7, 0, Math.PI * 2);
+      ctx.fillStyle = drain(C.pivot, freeze * 0.3);
+      ctx.fill();
+      ctx.lineWidth = 2.6;
+      ctx.strokeStyle = ink;
+      ctx.stroke();
     }
 
     // A SPRINGBOARD MUST READ AS ONE BEFORE IT EVER MOVES. The player gets one

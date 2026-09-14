@@ -578,5 +578,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a21-lever": {
+    "id": "a21-lever",
+    "winners": 492,
+    "robust": 370,
+    "anchoredRobust": 43,
+    "handRate": 0.752,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 292.6,
+          "y": 661
+        },
+        {
+          "x": 239.8,
+          "y": 656.2
+        },
+        {
+          "x": 193.1,
+          "y": 662
+        },
+        {
+          "x": 152.5,
+          "y": 678.4
+        },
+        {
+          "x": 118,
+          "y": 705.3
+        },
+        {
+          "x": 89.7,
+          "y": 742.9
+        },
+        {
+          "x": 67.4,
+          "y": 791
+        }
+      ]
+    }
   }
 };

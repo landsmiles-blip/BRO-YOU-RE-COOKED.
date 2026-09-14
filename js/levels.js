@@ -1015,7 +1015,212 @@ export const A20 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20];
+// ─────────────────────────────────────────────────────────────────────────
+// A21 — LEVER.  The lever again, with the rule turned into a puzzle.
+//
+// A22 teaches that the loaded arm goes down. This one asks the player to use
+// it: the rock's landing point has to be moved across the pin, and the target
+// is an arm rather than a point. Every other piece of geometry in this game is
+// nailed down; this one turns, and what it does is decided by where the weight
+// lands — the first time anything here produces an effect somewhere other than
+// where the force was applied.
+//
+// WHAT A SEE-SAW CANNOT DO, measured before the level was drawn: it cannot
+// launch. A plank tipping 12° lowers one end; anything sitting on the RISING
+// end rolls inward toward the pin, not up and off. Every "catapult" idea died
+// on that. What it can do is decide a direction — the rock rolls downhill, and
+// the player chooses which way downhill points.
+//
+// A FREE PIVOT SPINS. Measured: an unstopped plank went 0° to -246° and kept
+// going, like a propeller. The two blocks under its ends are what make it a
+// see-saw instead, and they are geometry the player can see rather than a rule
+// they have to be told.
+//
+// THE APPARATUS IS ON A DECK, over Milo's head — the same staging A19 had to
+// learn. A rock that goes the wrong way has to be disposed of somewhere, and
+// the floor is the one place it cannot go, because that is where he is walking.
+// ─────────────────────────────────────────────────────────────────────────
+export const A21 = {
+  id: 'a21-lever',
+  hint: 'IT LEANS THE WRONG WAY',
+  world: 'backyard', verb: 'LEVER',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 500,
+  // WHICHEVER SIDE YOU LAND ON GOES DOWN, AND DROPS YOU OFF THERE. That is the
+  // whole rule, and it took a wrong level to find it. The first version asked
+  // the player to PROP the plank level with a post — and propping a body that
+  // is already moving is fiddly, invisible, and it failed every way it was
+  // tried: the posts either missed the underside entirely or jammed the rock
+  // against the plank at -34°. The lever does not want to be held. It wants to
+  // be FED, and the only question worth asking the player is which side of the
+  // pin the rock comes down on.
+  //
+  // So the rock falls 30 units LEFT of the pin and the level answers itself
+  // wrongly: left goes down, the rock rolls off that end and is gone. The
+  // stroke's job is to move the landing point across the pin — and the target
+  // is the plank's whole right arm, not a point.
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The shaft: the rock's only way down, and wide enough to build a ramp in.
+    //
+    // THE SHAFT IS TALL BECAUSE THE PLAYER NEEDS ROOM TO ACT. At 260 units the
+    // rock had already fallen past its bottom by the time the world stopped —
+    // free fall covers 225 units in the first 500ms — so every ramp drawn in it
+    // was above the rock and did nothing at all. Six completely different
+    // strokes returned byte-identical results to doing nothing, which is what
+    // sent me looking. 480 units leaves it high in the shaft at the freeze.
+    { id: 'shaftL', type: 'platform', x: 200, y: 300, w: 16, h: 480 },
+    // THE RIGHT WALL STOPS SHORT, and that is the door. With both walls running
+    // the full height, a deflected rock rolled down the stroke and wedged in
+    // the corner between ramp and wall at x=334 — every ramp tried, same jam.
+    // Ending this one at y=660 gives the rock somewhere to GO once it has been
+    // sent right, while the left wall still runs full height so a rock nobody
+    // touched has no choice but to drop straight onto the losing arm.
+    { id: 'shaftR', type: 'platform', x: 360, y: 300, w: 16, h: 360 },
+    // THE LEVER. `pivot` makes this a dynamic body held at one point — it is
+    // authored under `static` because that is where geometry lives, but it is
+    // the one piece here that is not.
+    { id: 'plank',  type: 'platform', x: 180, y: 830, w: 240, h: 18,
+      pivot: { x: 300, y: 839 }, angle: -8, density: 0.01 },
+    // The stops. Without these it is a propeller, not a see-saw: a free plank
+    // measured 0deg to -246deg and kept turning.
+    { id: 'stopL',  type: 'platform', x: 186, y: 876, w: 26, h: 20 },
+    { id: 'stopR',  type: 'platform', x: 394, y: 876, w: 26, h: 20 },
+    // Where a rock that went the RIGHT way lands. Ten units from the plank's
+    // end, so a 52-unit rock rolls across the seam instead of down it. Milo
+    // walks underneath with 252 units of clearance and never touches it.
+    { id: 'deck',   type: 'platform', x: 430, y: 880, w: 240, h: 20 },
+    // THE LINTEL, and it is what stops the lever being decoration. Without it a
+    // steep enough ramp throws the rock clean OVER the plank and straight onto
+    // the deck — measured: a win at 2558ms with the plank still sitting at its
+    // starting -8.0deg, never having moved. That is a solution that treats the
+    // level's only new idea as scenery.
+    //
+    // It hangs down to y=790. The plank's raised end reaches y=805, so the
+    // lever still swings free underneath; anything arriving through the air is
+    // stopped and dropped onto the arm where it belongs.
+    { id: 'lintel', type: 'platform', x: 424, y: 560, w: 16, h: 230 },
+  ],
+  objects: [
+    { id: 'rock',  type: 'boulder', x: 270, y: 340, radius: 26,
+      density: 0.03, restitution: 0.05, friction: 0.08,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 470, y: 850, w: 170, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 580, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A22 — TIP.  Introduces: a surface that CHANGES WHICH WAY IT LEANS.
+//
+// THIS TEACHES THE LEVER AND A21 TESTS IT, and that order was decided by
+// measurement rather than by the order they were built in. This one sweeps at
+// 39.4% breadth — the most forgiving level in the game, looser than the
+// tutorial at 12.7% — while A21 comes in at 14.9%. Shipping them the other way
+// round would have introduced the mechanic with the harder of the two.
+//
+// The rule is the whole lesson: whichever arm takes the weight goes down, and
+// drops what it is carrying off that end. Here the two ends are "behind him"
+// and "on top of him", so the rule arrives attached to a consequence rather
+// than to an explanation.
+// ─────────────────────────────────────────────────────────────────────────
+export const A22 = {
+  id: 'a22-tip',
+  hint: 'IT WILL TIP HIS WAY',
+  world: 'backyard', verb: 'TIP',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 400,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // Leaning RIGHT to start: the end that is down is the end ahead of him.
+    // SHIFTED 60 UNITS LEFT, and the number came from a trace rather than a
+    // guess. At x=250 the rock left the right arm and landed at x=571 while he
+    // was still at x=515 — 56 units ahead of him — so it simply rolled away in
+    // front and he strolled after it to the goal. Doing nothing WON, which the
+    // pre-flight caught in about a second.
+    { id: 'plank',  type: 'platform', x: 190, y: 880, w: 240, h: 18,
+      pivot: { x: 310, y: 889 }, angle: 8, density: 0.01 },
+    { id: 'stopL',  type: 'platform', x: 196, y: 926, w: 26, h: 20 },
+    { id: 'stopR',  type: 'platform', x: 404, y: 926, w: 26, h: 20 },
+  ],
+  objects: [
+    // minSpeed 250, NOT 400. At 400 only a rock that landed square on him
+    // counted, so almost any interference at all saved him by accident and the
+    // level swept at 39.4% breadth — the loosest in the game. Worse, with that
+    // many junk strokes winning, the certified "representative" came out an
+    // incoherent snake drawn straight down through his walking path, which then
+    // lost in the browser. A rock still ROLLING at him is lethal at 250, so
+    // perturbing it is no longer enough: it has to end up behind him.
+    // FALLING 40 UNITS RIGHT OF THE PIN, not onto it. At x=310 the rock landed
+    // exactly on the pivot — a balance point, where which way it goes is decided
+    // by noise. That is why the level swept loose AND why its certified stroke
+    // won in the solver and lost twice in the browser on the same geometry: a
+    // stroke redrawn with a mouse is never bit-identical, and on a knife edge
+    // that is the whole difference. A21 works because its rock lands 30 units
+    // off the pin and the wrong answer is decisive; this is the same fix.
+    { id: 'rock',  type: 'boulder', x: 350, y: 430, radius: 28,
+      density: 0.035, restitution: 0.05, friction: 0.1,
+      lethal: { kind: 'impact', minSpeed: 250, graceRadius: 6 } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A23 — RIDE.  The lever, with Milo on it.
+//
+// The combine beat: the rule from A22 and A21 turned on the one body the
+// player cannot steer. His own weight is now the thing that loads the arm, and
+// it loads the wrong one the moment he walks past the pin.
+//
+// MILO CAN WALK A SEE-SAW — measured before this was drawn, because he ignores
+// two things the physics offers him. He does not bounce and he does not care
+// about friction, so a moving surface was a fair question. He crosses one whose
+// near end is level or down, and is stopped dead by one whose near end is
+// raised: at +6deg he stood at x=185 until the clock ran out, because a raised
+// end is a step taller than his 22u limit. A2's rule, applied to a moving part.
+//
+// ONE JOB: HOLD THE FAR ARM UP. The first cut left a 40-unit gap past the
+// plank's end as well, so a single stroke had to prop AND bridge. The solver
+// was blunt about the cost — 0.6% breadth against a 2% floor, the narrowest
+// thing measured in this project. Two jobs in one costume is what shelved A14.
+// The far bank now reaches to within 10 units of the arm, and the prop is the
+// whole answer.
+// ─────────────────────────────────────────────────────────────────────────
+export const A23 = {
+  id: 'a23-ride',
+  hint: 'IT WILL TIP UNDER HIM',
+  world: 'backyard', verb: 'RIDE',
+  milo: { start: { x: 80, y: 1000 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 620, y: 1000, w: 70, h: 140 },
+  freezeAt: 500,
+  static: [
+    { id: 'bankL',  type: 'platform', x: 0,   y: 1000, w: 250, h: 280 },
+    // THE FAR BANK MOVED IN TO 475. At 505 it left a 40-unit gap past the
+    // plank's end, so one stroke had to hold the arm up AND bridge — and the
+    // solver was blunt about what that costs: 0.6% breadth against a 2% floor,
+    // the narrowest thing this project has measured. Two jobs in one costume is
+    // what put A14 on the shelf; asking for only the prop is the whole fix.
+    { id: 'bankR',  type: 'platform', x: 475, y: 1000, w: 245, h: 280 },
+    // Pinned high above the banks, so the arm that goes down goes down a long
+    // way. Stops here would only make it a bridge: two banks at equal height
+    // with a plank between them is something he walks across unaided.
+    { id: 'plank',  type: 'platform', x: 255, y: 921, w: 210, h: 18,
+      pivot: { x: 360, y: 930 }, angle: -20, density: 0.012 },
+  ],
+  objects: [],
+  zones: [{ id: 'pit', kind: 'zone', x: 255, y: 1215, w: 215, h: 65, lethal: true }],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
@@ -1037,6 +1242,29 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A22, reason: 'CAUGHT BETWEEN TWO DEAD ENDS, and the A14 test named the second one. '
+    + 'The rock has to land on the plank for the lever to route it. Land it ON the pin and the '
+    + 'outcome is decided by noise: the level swept at 39.4% breadth, the loosest in the game, and '
+    + 'its certified stroke won in the solver and lost in the browser TWICE on unchanged geometry, '
+    + 'because a stroke redrawn with a mouse is never bit-identical and a balance point has no '
+    + 'margin. Land it OFF the pin, as A21 does, and the pre-flight reports the pivot as decoration '
+    + '— correctly, because a STATIC plank tilted the same way sends the rock to the same end. '
+    + 'A21 needs its pivot precisely because its static lean sends the rock the WRONG way, so the '
+    + 'tipping is what saves it; nothing here has that property. Three attempts, and the mechanic '
+    + 'is fine — it ships in A21. Bring this back only with a shape where a fixed plank and a free '
+    + 'one give different answers.' },
+  { level: A23, reason: 'HOLDING A PIVOTED ARM UP IS NOT A PLAYABLE VERB, and this is the second '
+    + 'time this project has found that out. A7 was held on playtest for the same shape — "the plank '
+    + 'reads as scenery, not as the thing you must hold up" — and A23 puts a number on it: 0.6% '
+    + 'breadth against a 2% floor, the narrowest measurement taken here, unchanged across two '
+    + 'geometries. It was also the failure mode of the first solutions tried on A21, where props '
+    + 'either missed the plank underside entirely or jammed the rock against it at -34deg. '
+    + 'The reason is structural: a drawn line is STATIC and the arm is MOVING, so the player is '
+    + 'asked to guess where a moving thing will be. Every other stroke in this game acts on '
+    + 'something falling or rolling along a path you can read off the frozen frame. '
+    + 'The lever itself is fine and ships twice (A22, A21) — what does not work is being asked '
+    + 'to hold one. Bring this back only with a mechanism that LATCHES, so the player acts on '
+    + 'something stationary and the arm is held by the world rather than by their aim.' },
   { level: A6, reason: 'only passes with a 47u wall, barely above the 22u step-up — teaches nothing' },
   { level: A7, reason: 'playtest: the plank reads as scenery, not as the thing you must hold up. '
     + 'The idea (anchor both ends or it is a see-saw) is good and the physics works; '

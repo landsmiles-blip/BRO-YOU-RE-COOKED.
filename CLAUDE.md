@@ -39,6 +39,12 @@ A green suite means a level is solvable, fair and stable. It says nothing about
 whether a person knows what it wants from them. Only playtesting says that, and
 playtesting outranks the suite.
 
+**Nor can they measure the SHAPE OF THE SET.** Seen one at a time every level
+looked fine; tiled into one contact sheet, eleven of fourteen opening frames
+were the same silhouette — grey ground, red ball, Milo bottom-left, goal
+bottom-right — and levels 2, 4 and 11 were near-identical twins. That is what
+the playtest meant by "too basic", and no per-level gate can see it.
+
 **Nor can they measure STAGING.** A20 passed every gate — breadth, precision,
 tension, hand-robustness — while its frozen frame spawned the ball that kills
 Milo directly on top of the goal that saves him, because the freeze landed
@@ -137,6 +143,31 @@ level failed exactly this, on every stroke tried.
   creation. (Static `friction` has therefore ALWAYS been 1 here, and every
   measured threshold in `solverData.js` was produced under that — do not
   "fix" it without re-measuring all fourteen levels.)
+- **A single PIVOT is stable; the constraint warning above is about COMPOUND
+  bodies.** One revolute on a plain rectangle measures 0.00u of centre drift
+  with a rock dropped on it. Do not inherit the fear without measuring.
+- **A free pivot SPINS** — 0° to −246° and still going. Every pivot needs
+  physical end-stops, which is geometry the player can see rather than a rule.
+- **A see-saw cannot LAUNCH.** Anything sitting on the RISING arm rolls inward
+  toward the pin, not up and off. Its one real property is deciding a
+  direction: the loaded arm goes down and drops what it carries off that end.
+- **HOLDING a pivoted arm up is not a playable verb.** Measured three times:
+  as the first attempted solutions on A21 (props missed the underside or jammed
+  the rock at −34°), as A23's entire premise (0.6% breadth against a 2% floor,
+  unchanged across two geometries), and on playtest as A7. A drawn line is
+  STATIC and the arm is MOVING, so the player must guess where a moving thing
+  will be — unlike every other stroke here, which acts on something falling or
+  rolling along a path readable from the frozen frame.
+- **FRICTION DOES NOTHING in this engine.** A rolling body slid 221u at
+  friction 1.0 and 224u at 0.02; Milo is identical at both. There is no ice and
+  no tar to be had — do not design a level around a slippery surface.
+- **A PENDULUM'S PERIOD IS ~2.8 SECONDS** (a 280u arm at 70°). Levels here run
+  two to four seconds, so a pendulum gives ONE sweep, not a rhythm. Period goes
+  as √length, so a swing fast enough to repeat is too short to threaten
+  anything.
+- **Milo CAN walk a see-saw** whose near end is level or down, and is stopped
+  dead by one whose near end is raised — at +6° he stood at x=185 until the
+  clock ran out. That is A2's 22u step-up rule, applied to a moving part.
 - **A test that re-imports a game module gets a SECOND COPY.** Over http,
   `import('/js/audio.js')` from inside a page built from `dist/` loads a fresh
   module with its own uninitialised state. It cost two false alarms in one
@@ -174,10 +205,12 @@ There must never be a second hand model anywhere in the repo.
 
 ## COMMANDS
 
+    node tools/levelcheck.js      STRUCTURE, in seconds — run BEFORE the solver
     npm test                      level data, physics, levels — fast, run always
     npm run solver                the gates, and writes measured star thresholds
     node tools/solver/representative.js   certifies a hand-robust solution per level
     node tools/test/filmstrip.js  films every level winning — READ THE IMAGES
+    node tools/test/frozen.js     every opening frame in ONE grid — READ IT
     npm run test:audio            renders waveforms; silence throws no error
     npm run test:board            level board hit regions at four ratios
     npm run test:conformance      the automated half of certification
