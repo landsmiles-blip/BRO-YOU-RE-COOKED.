@@ -1,5 +1,12 @@
 // Level data + loader.
 //
+// EVERY LEVEL CARRIES A `hint`: one short line naming the PROBLEM, never the
+// solution. Playtesting was blunt about why this exists — "it is very unclear
+// what the player is supposed to do" and "you finish and you do not even know
+// why that happened". A verb in 45%-opacity 11px type in the corner is not
+// communication. "HE WALKS STRAIGHT OFF THE EDGE" tells you what is about to
+// go wrong and leaves the entire puzzle intact.
+//
 // AUTHORING CONVENTIONS (chosen to match how a designer thinks, not how a
 // physics engine thinks — the loader converts):
 //   static rect : x,y = TOP-LEFT corner,  w,h = size
@@ -37,6 +44,7 @@ const MECHANISM_TYPES = new Set(['switch', 'gate']);
 // ─────────────────────────────────────────────────────────────────────────
 export const A1 = {
   id: 'a1-wall',
+  hint: 'STOP IT REACHING HIM',
   world: 'backyard',
   verb: 'BLOCK',
   milo: { start: { x: 160, y: 1152 }, speed: MILO.speed },
@@ -85,6 +93,7 @@ export const A1 = {
 // ─────────────────────────────────────────────────────────────────────────
 export const A2 = {
   id: 'a2-gap',
+  hint: 'GET HIM ACROSS',
   world: 'backyard',
   verb: 'BRIDGE',
   milo: { start: { x: 120, y: 880 }, speed: MILO.speed },
@@ -141,6 +150,7 @@ export const A2 = {
 // ─────────────────────────────────────────────────────────────────────────
 export const A3 = {
   id: 'a3-redirect',
+  hint: 'SEND IT SOMEWHERE ELSE',
   world: 'backyard',
   verb: 'REDIRECT',
   milo: { start: { x: 105, y: 1152 }, speed: MILO.speed },
@@ -196,6 +206,7 @@ export const A3 = {
 // ─────────────────────────────────────────────────────────────────────────
 export const A4 = {
   id: 'a4-catch',
+  hint: 'HE WALKS STRAIGHT OFF',
   world: 'backyard',
   verb: 'CATCH',
   milo: { start: { x: 100, y: 800 }, speed: MILO.speed },
@@ -230,7 +241,8 @@ export const A4 = {
 // text, lesson delivered by consequence.
 // ─────────────────────────────────────────────────────────────────────────
 export const A5 = {
-  id: 'a5-hang', world: 'backyard', verb: 'BLOCK',
+  id: 'a5-hang',
+  hint: 'STOP IT REACHING HIM', world: 'backyard', verb: 'BLOCK',
   milo: { start: { x: 130, y: 1152 }, speed: MILO.speed },
   goal: { id: 'goal', x: 630, y: 1152, w: 80, h: 140 },
   freezeAt: 650,
@@ -261,7 +273,8 @@ export const A5 = {
 // maxStepUp is 22 units and the wall is far taller. The only answer is a ramp.
 // ─────────────────────────────────────────────────────────────────────────
 export const A6 = {
-  id: 'a6-step', world: 'backyard', verb: 'RAMP',
+  id: 'a6-step',
+  hint: "HE CAN'T CLIMB THAT", world: 'backyard', verb: 'RAMP',
   milo: { start: { x: 90, y: 1152 }, speed: MILO.speed },
   goal: { id: 'goal', x: 620, y: 1030, w: 80, h: 140 },
   freezeAt: 450,
@@ -293,7 +306,8 @@ export const A6 = {
 // barrier or a path.
 // ─────────────────────────────────────────────────────────────────────────
 export const A7 = {
-  id: 'a7-prop', world: 'backyard', verb: 'SUPPORT',
+  id: 'a7-prop',
+  hint: 'THE PLANK TIPS WHEN HE STANDS ON IT', world: 'backyard', verb: 'SUPPORT',
   milo: { start: { x: 90, y: 900 }, speed: MILO.speed },
   goal: { id: 'goal', x: 630, y: 900, w: 80, h: 140 },
   freezeAt: 450,
@@ -325,7 +339,8 @@ export const A7 = {
 // stops for good and leaves the path clear underneath.
 // ─────────────────────────────────────────────────────────────────────────
 export const A8 = {
-  id: 'a8-jam', world: 'backyard', verb: 'WEDGE',
+  id: 'a8-jam',
+  hint: 'STOP THE ROLLER', world: 'backyard', verb: 'WEDGE',
   milo: { start: { x: 80, y: 1152 }, speed: MILO.speed },
   goal: { id: 'goal', x: 660, y: 1152, w: 70, h: 140 },
   freezeAt: 550,
@@ -357,7 +372,8 @@ export const A8 = {
 // the plate, and the gate opens.
 // ─────────────────────────────────────────────────────────────────────────
 export const A9 = {
-  id: 'a9-chute', world: 'backyard', verb: 'FUNNEL',
+  id: 'a9-chute',
+  hint: 'THE PLATE OPENS THE GATE', world: 'backyard', verb: 'FUNNEL',
   milo: { start: { x: 80, y: 1152 }, speed: MILO.speed },
   goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
   freezeAt: 600,
@@ -391,7 +407,8 @@ export const A9 = {
 // only sets up the chain.
 // ─────────────────────────────────────────────────────────────────────────
 export const A10 = {
-  id: 'a10-switch', world: 'backyard', verb: 'TRIGGER',
+  id: 'a10-switch',
+  hint: 'THE PLATE OPENS THE GATE', world: 'backyard', verb: 'TRIGGER',
   milo: { start: { x: 80, y: 1152 }, speed: 190 },
   goal: { id: 'goal', x: 655, y: 1152, w: 70, h: 140 },
   freezeAt: 700,
@@ -455,7 +472,8 @@ export const A10 = {
 // it. The level is won by dropping, not by building.
 // ─────────────────────────────────────────────────────────────────────────
 export const A11 = {
-  id: 'a11-deadweight', world: 'backyard', verb: 'DROP',
+  id: 'a11-deadweight',
+  hint: 'NOTHING CAN REACH THE PLATE', world: 'backyard', verb: 'DROP',
   // DECLARED, not inferred. Every other level's certified solution must be
   // anchored, because an anchored stroke is static and therefore reproducible,
   // while an unanchored one falls and settles chaotically. This level inverts
@@ -495,7 +513,8 @@ export const A11 = {
 // a window, and where you draw decides which side of the window you land on.
 // ─────────────────────────────────────────────────────────────────────────
 export const A12 = {
-  id: 'a12-ontime', world: 'backyard', verb: 'INTERCEPT',
+  id: 'a12-ontime',
+  hint: 'IT WILL DROP ON HIM', world: 'backyard', verb: 'INTERCEPT',
   milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
   goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
   // The freeze lands while the roller is still ON the ledge, which is what
@@ -553,13 +572,19 @@ export const A12 = {
 // transport. That is the new idea, not the specific trajectory.
 // ─────────────────────────────────────────────────────────────────────────
 export const A13 = {
-  id: 'a13-yeet', world: 'backyard', verb: 'CARRY',
-  milo: { start: { x: 80, y: 700 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 640, y: 1080, w: 80, h: 140 },
+  id: 'a13-yeet',
+  hint: 'HE WALKS STRAIGHT OFF THE EDGE', world: 'backyard', verb: 'CARRY',
+  milo: { start: { x: 80, y: 520 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 640, y: 940, w: 80, h: 140 },
   freezeAt: 450,
+  // COMPOSITION. Everything used to sit below y=700, so the top 45% of the
+  // frame was empty sky and Milo was a speck in a corner — playtested as
+  // "very unclear what the player is supposed to do". Raising the start ledge
+  // and deepening the chasm makes the drop the subject of the picture instead
+  // of a detail at the bottom of it, which is the whole point of the level.
   static: [
-    { id: 'ledge', type: 'platform', x: 0,   y: 700,  w: 220, h: 580 },
-    { id: 'far',   type: 'platform', x: 480, y: 1080, w: 240, h: 200 },
+    { id: 'ledge', type: 'platform', x: 0,   y: 520, w: 220, h: 760 },
+    { id: 'far',   type: 'platform', x: 480, y: 940, w: 240, h: 340 },
   ],
   objects: [],
   zones: [{ id: 'pit', kind: 'zone', x: 225, y: 1215, w: 250, h: 65, lethal: true }],
@@ -589,7 +614,8 @@ export const A13 = {
 // 28u radius. It has to come to rest on a floor at a measured depth.)
 // ─────────────────────────────────────────────────────────────────────────
 export const A14 = {
-  id: 'a14-twojobs', world: 'backyard', verb: 'REPURPOSE',
+  id: 'a14-twojobs',
+  hint: 'STOP THE ROCK. MIND THE HOLE.', world: 'backyard', verb: 'REPURPOSE',
   milo: { start: { x: 70, y: 1000 }, speed: MILO.speed },
   goal: { id: 'goal', x: 655, y: 1000, w: 70, h: 140 },
   freezeAt: 520,
@@ -642,7 +668,8 @@ export const A14 = {
 // and a level that promises choice and measures one family is lying.
 // ─────────────────────────────────────────────────────────────────────────
 export const A15 = {
-  id: 'a15-eitherway', world: 'backyard', verb: 'CHOOSE',
+  id: 'a15-eitherway',
+  hint: 'KEEP IT OFF HIM', world: 'backyard', verb: 'CHOOSE',
   milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
   goal: { id: 'goal', x: 660, y: 1152, w: 70, h: 140 },
   freezeAt: 600,

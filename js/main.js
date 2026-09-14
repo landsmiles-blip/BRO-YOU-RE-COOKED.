@@ -174,10 +174,19 @@ function render() {
 
   if (g.phase === PHASE.FROZEN) {
     if (!g.stroke.active && !g.stroke.points.length) {
-      // Clear of Milo — he stands near the bottom of the safe box, so a hint
-      // "near his feet" lands on top of him at most aspect ratios.
-      const hint = g.attempt > 1 ? 'DRAW AGAIN' : 'DRAW';
-      drawText(ctx, hint, 0.5, 0.07, Math.max(18, view.cssH * 0.032), C.ink);
+      // THE PROBLEM, then the instruction.
+      //
+      // This used to say "DRAW" and nothing else, which tells a new player what
+      // to do with their finger and nothing about what the level wants. The
+      // level's own one-line hint names what is about to go wrong — it does not
+      // hand over the solution, and on a retry it is the more useful half, so
+      // it stays while the instruction shrinks to "DRAW AGAIN".
+      const lead = g.attempt > 1 ? 'DRAW AGAIN' : 'DRAW';
+      drawText(ctx, lead, 0.5, 0.055, Math.max(17, view.cssH * 0.030), C.ink);
+      if (g.level.hint) {
+        drawText(ctx, g.level.hint, 0.5, 0.098,
+                 Math.max(11, view.cssH * 0.019), 'rgba(42,38,34,0.62)');
+      }
     }
     drawInk(ctx, inkUsed(g), inkMax(g));
   }

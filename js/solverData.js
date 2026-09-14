@@ -128,13 +128,13 @@ export const SOLVER = {
   },
   "a13-yeet": {
     "solvable": true,
-    "solutionBreadth": 0.0307,
+    "solutionBreadth": 0.0256,
     "precisionFloor": 65,
     "worstJitter": 0,
-    "distinctFamilies": 4,
+    "distinctFamilies": 5,
     "twoStarLength": 390,
     "threeStarLength": 288,
-    "shortestWin": 230,
+    "shortestWin": 165,
     "measuredAt": "2026-09-14"
   },
   "a14-twojobs": {
