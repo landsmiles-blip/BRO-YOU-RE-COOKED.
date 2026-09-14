@@ -9,9 +9,10 @@
 import { initView, view } from './view.js';
 import { attachInput } from './input.js';
 import {
-  createGame, tick, onDown, onMove, onUp, retry, nextLevel, isSteppingPhase,
+  createGame, tick, onDown, onMove, onUp, retry, nextLevel, goToLevel, isSteppingPhase,
   PHASE, inkUsed, inkMax,
 } from './game.js';
+import { load as loadProgress, totalStars, maxStars, perfect, starsOn } from './progress.js';
 import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT } from './constants.js';
 import { clear, drawScene } from './render/world.js';
@@ -29,6 +30,13 @@ const canvas = document.getElementById('stage');
 initView(canvas);
 const ctx = view.ctx;
 const game = createGame(A1);
+
+// Progress loads ASYNCHRONOUSLY and never blocks the first frame. Bundle size
+// is measured page-load → gameReady, so waiting on a platform round-trip here
+// would be charged against the load-time budget for no gain: the only thing
+// the save changes is which level "play again" returns to and what the ending
+// screen totals, neither of which exists at t=0.
+loadProgress().then((p) => { game.progress = p; });
 
 // Walk phase must reset with the sim, or a retry starts mid-stride.
 const _resetPhase = () => { walkPhase = 0; lastMiloX = null; };
@@ -129,6 +137,7 @@ function render() {
   }
 
   if (g.phase === PHASE.RESULT) drawResult(ctx, g);
+  if (g.phase === PHASE.ENDING) drawEnding(ctx, g);
 
   // Tiny progress marker. Deliberately unobtrusive — the puzzle owns the screen.
   if (g.phase === PHASE.FROZEN || g.phase === PHASE.SIM) {
@@ -172,6 +181,46 @@ function drawResult(ctx, g) {
            Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.45)');
 }
 
+/**
+ * THE ENDING. The screen whose absence made this a demo rather than a game.
+ *
+ * It states three things and no more: that it is over, what the player scored
+ * across the whole game, and that there is a reason to come back. The star
+ * total is the 3-star chase made visible — without it, "nothing left to cut" on
+ * an individual level is advice with nowhere to go.
+ */
+function drawEnding(ctx, g) {
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  ctx.fillStyle = 'rgba(42,38,34,0.95)';
+  ctx.fillRect(0, 0, view.cssW, view.cssH);
+
+  const got = totalStars(g.progress), max = maxStars();
+  const all = perfect(g.progress);
+
+  drawText(ctx, all ? 'NOT A SINGLE WASTED LINE.' : 'HE MADE IT. EVERY TIME.',
+           0.5, 0.30, Math.max(19, view.cssH * 0.034), C.paper);
+  drawText(ctx, `${got} / ${max}`, 0.5, 0.44, Math.max(34, view.cssH * 0.072), C.anchor);
+  drawText(ctx, all ? 'stars — all of them' : 'stars', 0.5, 0.51,
+           Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.6)');
+
+  // A per-level star strip: the 3-star chase, made concrete. It shows exactly
+  // WHICH levels still owe the player something, which a bare total cannot.
+  const n = LEVELS.length;
+  const w = Math.min(view.cssW * 0.82, n * Math.max(20, view.cssW * 0.055));
+  const x0 = (view.cssW - w) / 2, y = view.cssH * 0.62, cw = w / n;
+  for (let i = 0; i < n; i++) {
+    const st = starsOn(g.progress, LEVELS[i].id);
+    for (let k = 0; k < 3; k++) {
+      ctx.fillStyle = k < st ? C.anchor : 'rgba(232,226,214,0.16)';
+      ctx.fillRect(x0 + i * cw + cw * 0.18, y + k * 7, cw * 0.64, 4.5);
+    }
+  }
+
+  drawText(ctx,
+    all ? 'tap to play it again' : 'tap to go back for the stars you left',
+    0.5, 0.80, Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.55)');
+}
+
 /** Three ink stars, filled to the rating. Drawn, like everything else. */
 function drawStars(ctx, stars, cyPx) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
@@ -207,6 +256,6 @@ function rejectText(reason) {
 }
 
 // Test hook — lets Playwright drive real strokes through the real pipeline.
-globalThis.__byc = { game, view, PHASE, retry, nextLevel, LEVELS, reducedMotion };
+globalThis.__byc = { game, view, PHASE, retry, nextLevel, goToLevel, LEVELS, reducedMotion };
 
 requestAnimationFrame(frame);

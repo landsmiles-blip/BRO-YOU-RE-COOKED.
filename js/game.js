@@ -19,10 +19,14 @@ import { createStroke, begin, extend, end, remaining } from './drawing/capture.j
 import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
+import { createProgress, record, save, isComplete, firstUnclearedIndex } from './progress.js';
 
 export const PHASE = {
   LIVE: 'live', FROZEN: 'frozen', SIM: 'sim',
   DEATHCAM: 'deathcam', RESULT: 'result',
+  // The run is over and there is no next level. Reached exactly once per
+  // playthrough, and its absence is why the game used to end mid-air.
+  ENDING: 'ending',
 };
 
 export function createGame(level) {
@@ -40,6 +44,7 @@ export function createGame(level) {
     stars: 0,
     rejectReason: null,
     paused: false,
+    progress: createProgress(),
   };
   reset(g);
   return g;
@@ -76,6 +81,9 @@ export function tick(g, dtMs) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
       if (o === OUTCOME.SUCCESS) {
         g.stars = starsFor(g.level.id, g.lastLength);
+        // Only a personal BEST is written, so replaying a cleared level to
+        // experiment can never cost the player stars they already earned.
+        if (record(g.progress, g.level.id, g.stars)) save(g.progress);
         g.phase = PHASE.RESULT;
         g.phaseTime = 0;
       }
@@ -96,13 +104,31 @@ export function retry(g) {
   reset(g);
 }
 
-/** Advance to the next level, wrapping at the end (M0 has no meta shell yet). */
+/**
+ * Advance. The LAST level does NOT wrap.
+ *
+ * `(levelIndex + 1) % LEVELS.length` sent the player who had just finished the
+ * whole game back to level one with no acknowledgement of any kind. That is the
+ * single thing that made the game read as a fragment, and it would have done so
+ * at 24 levels exactly as much as at 9.
+ */
 export function nextLevel(g) {
-  g.levelIndex = (g.levelIndex + 1) % LEVELS.length;
+  if (g.levelIndex >= LEVELS.length - 1) { g.phase = PHASE.ENDING; g.phaseTime = 0; return; }
+  goToLevel(g, g.levelIndex + 1);
+}
+
+/** Jump to a level by index — used by nextLevel, the ending, and level select. */
+export function goToLevel(g, index) {
+  g.levelIndex = Math.max(0, Math.min(LEVELS.length - 1, index));
   g.level = LEVELS[g.levelIndex];
   g.ghostPoints = null;
   g.attempt = 0;
   reset(g);
+}
+
+/** From the ending: back to the first level still missing stars, else level 1. */
+export function playAgain(g) {
+  goToLevel(g, isComplete(g.progress) ? 0 : firstUnclearedIndex(g.progress));
 }
 
 // ── Input handlers ──────────────────────────────────────────────────────
@@ -114,6 +140,9 @@ export function onDown(g, x, y, pointerId) {
     return;
   }
   if (g.phase === PHASE.RESULT) { nextLevel(g); return; }
+  // Hold the ending on screen long enough to be read before a stray tap
+  // dismisses the one screen that says the player finished the game.
+  if (g.phase === PHASE.ENDING) { if (g.phaseTime > 900) playAgain(g); return; }
   if (g.phase === PHASE.FROZEN) begin(g.stroke, x, y, pointerId, performance.now());
 }
 

@@ -40,3 +40,41 @@ export function onResume(fn) {
   document.addEventListener('visibilitychange', () => { if (!document.hidden) fn(); });
   window.addEventListener('focus', fn);
 }
+
+// ── Persistence ─────────────────────────────────────────────────────────
+//
+// These two were named in this file's own header from the beginning and never
+// implemented, so nothing the player did was ever remembered — which is also a
+// certification item, not just a nicety. Outside Playables they fall back to
+// localStorage so progress works in a plain tab during development and in the
+// open-web build, which is a different product on the same code (roadmap §1.1).
+//
+// The SDK's saveData is asynchronous and can reject (quota, signed-out user,
+// transient failure). None of those are worth interrupting a game for, so every
+// path here resolves and failure is silent to the player — but the write is
+// mirrored to localStorage regardless, so a failed cloud save still survives a
+// reload on the same device.
+
+const LOCAL_KEY = 'byc.save.v1';
+
+export function saveData(text) {
+  try { globalThis.localStorage?.setItem(LOCAL_KEY, text); } catch { /* private mode */ }
+  if (!sdk?.game?.saveData) return Promise.resolve(false);
+  try {
+    return Promise.resolve(sdk.game.saveData(text)).then(() => true).catch(() => false);
+  } catch { return Promise.resolve(false); }
+}
+
+export function loadData() {
+  const local = (() => {
+    try { return globalThis.localStorage?.getItem(LOCAL_KEY) ?? null; } catch { return null; }
+  })();
+  if (!sdk?.game?.loadData) return Promise.resolve(local);
+  try {
+    // Prefer the platform's copy — it follows the player across devices — but
+    // fall back rather than lose a local save when the call fails or is empty.
+    return Promise.resolve(sdk.game.loadData())
+      .then((d) => (typeof d === 'string' && d.length ? d : local))
+      .catch(() => local);
+  } catch { return Promise.resolve(local); }
+}

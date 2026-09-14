@@ -93,9 +93,12 @@ const toScreen = (wx, wy) => page.evaluate(([x, y]) => {
 
 for (const id of targets) {
   // Jump to the level and wait for the freeze.
+  // goToLevel, not repeated nextLevel: the last level deliberately no longer
+  // wraps to the first, so walking the list by nextLevel now dead-ends on the
+  // ending screen instead of cycling round.
   await page.evaluate((target) => {
     const B = globalThis.__byc;
-    for (let i = 0; i < B.LEVELS.length && B.game.level.id !== target; i++) B.nextLevel(B.game);
+    B.goToLevel(B.game, B.LEVELS.findIndex((l) => l.id === target));
   }, id);
   await page.waitForFunction(() => globalThis.__byc.game.phase === 'frozen', null, { timeout: 10000 });
 
