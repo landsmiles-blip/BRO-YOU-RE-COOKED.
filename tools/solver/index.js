@@ -45,6 +45,7 @@ for (const level of levels) {
   console.log(`  shortest win    ${a.shortestWin}u (${a.shortestWinFamily})`);
   console.log(`  precision floor ${a.precisionFloor}u   [gate ≥25u]`);
   console.log(`  hand-drawn wobble ${a.worstJitter} (path/net)   [gate ≤8]`);
+  console.log(`  tension         ${a.tension === Infinity ? 'FLAT — nothing comes near him' : a.tension + 'u closest approach on a win'}   [tense <90u]`);
   console.log(`  ★★ / ★★★        ${a.twoStarLength}u / ${a.threeStarLength}u   (60th/20th pct, MEASURED)`);
 
   const issues = gradeLevel(a);

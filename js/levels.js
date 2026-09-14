@@ -691,7 +691,114 @@ export const A15 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15];
+// ─────────────────────────────────────────────────────────────────────────
+// A16 — DON'T.  Teaches: the instinct you spent twelve levels building is
+// sometimes the thing that kills him.
+//
+// THE MOST IMPORTANT LEVEL IN THE SET, and the one most likely to get cut for
+// being awkward. Do not cut it.
+//
+// Every level so far has rewarded BLOCKING the falling thing. Here the falling
+// rock is not the hazard, it is the FLOOR: it drops into a chasm too wide to
+// bridge with the ink allowed, and lands flush with the walking line. Block it
+// — the reflex thirteen levels have trained — and the chasm stays 180 units
+// wide against 210 units of ink that has to reach anchors as well. Unwinnable,
+// by your own hand, using the move that has always worked.
+//
+// THE LOCK IS THAT YOU ONLY GET ONE STROKE — not a starved ink budget. The
+// first version used 210 units of ink to make spanning the chasm impossible,
+// and the solver was blunt: a 10-unit precision floor, well under what a thumb
+// can hit, because a 180-unit span with 30 units left over for anchoring has
+// almost no margin at either end. Starving the ink made the level unfair
+// without making the point.
+//
+// The point does not need ink at all. You get ONE stroke. Spend it stopping the
+// rock and you have nothing left to cross with, and the rock was never the
+// danger — it was the floor.
+// ─────────────────────────────────────────────────────────────────────────
+export const A16 = {
+  id: 'a16-dont',
+  hint: "THAT ROCK IS NOT YOUR PROBLEM",
+  world: 'backyard', verb: 'DON\'T',
+  milo: { start: { x: 70, y: 1120 }, speed: 200 },
+  goal: { id: 'goal', x: 660, y: 1120, w: 70, h: 140 },
+  freezeAt: 520,
+  static: [
+    { id: 'groundL', type: 'platform', x: 0,   y: 1120, w: 380, h: 160 },
+    { id: 'groundR', type: 'platform', x: 560, y: 1120, w: 160, h: 160 },
+    // Depth is the whole design: floor at 1188, rock radius 34, so a rock at
+    // rest sits with its crown exactly on the walking line.
+    { id: 'floor',   type: 'platform', x: 380, y: 1188, w: 180, h: 92  },
+  ],
+  objects: [
+    // A CRATE, NOT A BOULDER, and that is a fairness fix rather than a dressing
+    // change. As a ball it measured a 10-unit precision floor no matter how
+    // much ink it was given, because the winning line had to land on top of a
+    // CURVE — there is one tangent point and everything either side of it
+    // slides. A crate lands flat and presents a surface, so the same idea
+    // stops demanding a thumb the size of a pin.
+    //
+    // CENTRED IN THE CHASM, which is the other half of the fairness fix. At the
+    // near rim it landed HALF ON THE LEDGE, tipped off the corner, and came to
+    // rest somewhere slightly different every run — so no bridge drawn to it
+    // could be robust, and no amount of ink was going to change that. Dropping
+    // it clean makes the landing repeatable, which is what a player is being
+    // asked to plan around.
+    { id: 'crate', type: 'crate', x: 470, y: 300, w: 118, h: 68,
+      density: 0.035, restitution: 0.02, friction: 0.6,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  zones: [{ id: 'spikes', kind: 'zone', x: 386, y: 1158, w: 168, h: 30, lethal: true }],
+  drawing: { maxLength: 300, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A17 — THREAD IT.  Teaches: WHERE you may draw is part of the puzzle.
+//
+// The first level to use denyZones, a mechanic that has been implemented and
+// enforced in drawing/validate.js since M0 and used by nothing. Two forbidden
+// bands leave one horizontal slot, and the only anchors are on the far side of
+// it, so the line has to be threaded through rather than placed.
+//
+// A rejected stroke is a NO-OP, never a spent attempt — so probing the slot
+// costs nothing but the second it takes, which is what keeps a constraint from
+// becoming a punishment.
+// ─────────────────────────────────────────────────────────────────────────
+export const A17 = {
+  id: 'a17-thread',
+  hint: "YOU CANNOT DRAW IN THE RED",
+  world: 'backyard', verb: 'THREAD',
+  milo: { start: { x: 70, y: 1120 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 655, y: 1120, w: 70, h: 140 },
+  freezeAt: 560,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1120, w: 720, h: 160 },
+    { id: 'pillarL', type: 'platform', x: 210, y: 700, w: 40, h: 150 },
+    { id: 'pillarR', type: 'platform', x: 470, y: 700, w: 40, h: 150 },
+  ],
+  objects: [
+    { id: 'rock', type: 'boulder', x: 360, y: 240, radius: 28,
+      density: 0.03, restitution: 0.05, friction: 0.4,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  zones: [],
+  // The slot is the 90 units between these two bands. Anchoring means reaching
+  // the pillars, and the pillars are only reachable through it.
+  drawing: {
+    maxLength: LINE.maxLengthDefault,
+    denyZones: [
+      { x: 250, y: 560, w: 220, h: 230 },
+      // Pushed DOWN from y=880 so the only legal slot sits lower, which forces
+      // the block much closer to his head. Measured 373u of clearance before,
+      // which is five body-heights of safety and reads as nothing happening.
+      { x: 250, y: 950, w: 220, h: 170 },
+    ],
+  },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A17];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
@@ -718,6 +825,14 @@ export const HELD = [
     + 'The idea (anchor both ends or it is a see-saw) is good and the physics works; '
     + 'what is missing is any way to see that it is about to tip. Bring it back when '
     + 'the tipping is telegraphed before he steps on it.' },
+  { level: A16, reason: 'the INVERSION is the best idea in the set and this is the wrong build of '
+    + 'it. Measured 3.3% breadth and a precision floor of 0u — it fails even a 10u nudge — '
+    + 'because winning means covering TWO separate ~31u gaps either side of the crate with '
+    + 'ONE stroke. That is precise by nature: it is A14\'s two-jobs problem wearing a hat, and '
+    + 'no amount of ink, a crate instead of a ball, or a cleaner landing moved it (10u -> 10u '
+    + '-> 0u across three attempts). The fix is not tuning. The crate must plug the chasm '
+    + 'COMPLETELY so the level is purely about the DECISION not to block it, with no bridging '
+    + 'to execute afterwards. Rebuild it that way.' },
   { level: A14, reason: 'playtest: "very unclear what the player is supposed to do", and it ends '
     + 'with Milo dead almost every time. Its hint has to say TWO things — "stop the rock, mind '
     + 'the hole" — which is the tell: it is two puzzles wearing one level. The rock-becomes-the-'

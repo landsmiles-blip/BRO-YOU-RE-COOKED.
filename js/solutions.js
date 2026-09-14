@@ -488,5 +488,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a17-thread": {
+    "id": "a17-thread",
+    "winners": 98,
+    "robust": 49,
+    "anchoredRobust": 38,
+    "handRate": 0.5,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 12,
+      "anchors": 5,
+      "points": [
+        {
+          "x": 290,
+          "y": 831.4
+        },
+        {
+          "x": 333.3,
+          "y": 862
+        },
+        {
+          "x": 376.7,
+          "y": 880.3
+        },
+        {
+          "x": 420,
+          "y": 886.4
+        },
+        {
+          "x": 463.3,
+          "y": 880.3
+        },
+        {
+          "x": 506.7,
+          "y": 862
+        },
+        {
+          "x": 550,
+          "y": 831.4
+        }
+      ]
+    }
   }
 };

@@ -84,6 +84,45 @@ export function drawScene(ctx, sim, opts = {}) {
   }
 
 
+  // ── where you may NOT draw ────────────────────────────────────────────
+  //
+  // denyZones were implemented and enforced in drawing/validate.js from M0 and
+  // drawn by NOTHING. The first level to use them shipped a hint reading "YOU
+  // CANNOT DRAW IN THE RED" over a screen with no red on it — a rule the player
+  // could only discover by breaking it.
+  //
+  // Hatched, not filled: a solid block reads as SOLID, and the one thing these
+  // are not is something your line can rest on. Diagonal bars say "nothing
+  // here" in a way a slab never can.
+  if (showAnchorable) {
+    for (const z of sim.level?.drawing?.denyZones ?? []) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(z.x, z.y, z.w, z.h);
+      ctx.clip();
+      ctx.globalAlpha = 0.13;
+      ctx.fillStyle = C.danger;
+      ctx.fillRect(z.x, z.y, z.w, z.h);
+      ctx.globalAlpha = 0.30;
+      ctx.strokeStyle = C.danger;
+      ctx.lineWidth = 3;
+      for (let x = z.x - z.h; x < z.x + z.w; x += 22) {
+        ctx.beginPath();
+        ctx.moveTo(x, z.y + z.h);
+        ctx.lineTo(x + z.h, z.y);
+        ctx.stroke();
+      }
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = C.danger;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([7, 6]);
+      ctx.strokeRect(z.x, z.y, z.w, z.h);
+      ctx.restore();
+    }
+  }
+
   // ── what you can attach to ────────────────────────────────────────────
   //
   // The anchoring rule decides every single run: a stroke touching static
