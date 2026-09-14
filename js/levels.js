@@ -691,7 +691,7 @@ export const A15 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A14, A15];
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
@@ -700,10 +700,17 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A14, A15];
  * yet earn its place, and shipping it would cost more than leaving it out. They
  * come back when the idea behind them is worth the slot.
  *
- * A7 and A13 are here on PLAYTEST evidence rather than on measurement, which is
+ * A7 and A14 are here on PLAYTEST evidence rather than on measurement, which is
  * the whole point of the shelf: both pass every automated gate. The gates
  * measure whether a level is fair. They cannot measure whether a person knows
  * what it wants from them.
+ *
+ * A NOTE ON NAMES, because it cost a wrong removal. The constant A13 is NOT
+ * level 13. These names are creation order; the number on screen is the level's
+ * position in LEVELS, and holding A6 already shifted everything after it by one.
+ * A7 was level 6. A13 was level 12. A14 was level 13. When a level is discussed
+ * by the number a player saw, resolve it through LEVELS before touching
+ * anything — the code name and the screen number are different things.
  */
 export const HELD = [
   { level: A6, reason: 'only passes with a 47u wall, barely above the 22u step-up — teaches nothing' },
@@ -711,10 +718,10 @@ export const HELD = [
     + 'The idea (anchor both ends or it is a see-saw) is good and the physics works; '
     + 'what is missing is any way to see that it is about to tip. Bring it back when '
     + 'the tipping is telegraphed before he steps on it.' },
-  { level: A13, reason: 'playtest: "very unclear what the player is supposed to do", and it ends '
-    + 'with Milo dead almost every time. Reframing and a hint helped but did not fix the '
-    + 'root problem — the level asks you to build something you have never been shown is '
-    + 'possible. Bring it back after a level that TEACHES the line can carry him.' },
+  { level: A14, reason: 'playtest: "very unclear what the player is supposed to do", and it ends '
+    + 'with Milo dead almost every time. Its hint has to say TWO things — "stop the rock, mind '
+    + 'the hole" — which is the tell: it is two puzzles wearing one level. The rock-becomes-the-'
+    + 'floor idea is worth keeping. Bring it back once the two jobs read as one action.' },
 ];
 
 export const ALL_LEVELS = [...LEVELS, ...HELD.map((h) => h.level)];

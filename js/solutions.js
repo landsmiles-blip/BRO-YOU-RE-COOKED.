@@ -415,33 +415,33 @@ export const SOLUTIONS = {
       ]
     }
   },
-  "a14-twojobs": {
-    "id": "a14-twojobs",
-    "winners": 88,
-    "robust": 29,
-    "anchoredRobust": 1,
-    "handRate": 0.33,
+  "a13-yeet": {
+    "id": "a13-yeet",
+    "winners": 53,
+    "robust": 31,
+    "anchoredRobust": 31,
+    "handRate": 0.585,
     "solution": {
       "family": "line",
       "length": 390,
-      "parts": 13,
+      "parts": 12,
       "anchors": 8,
       "points": [
         {
-          "x": 228.9,
-          "y": 873.6
+          "x": 131.1,
+          "y": 636.1
         },
         {
-          "x": 116.3,
-          "y": 938.6
+          "x": 243.7,
+          "y": 701.1
         },
         {
-          "x": 3.7,
-          "y": 1003.6
+          "x": 356.3,
+          "y": 766.1
         },
         {
-          "x": -108.9,
-          "y": 1068.6
+          "x": 468.9,
+          "y": 831.1
         }
       ]
     }

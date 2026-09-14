@@ -115,17 +115,6 @@ export const SOLVER = {
     "shortestWin": 110,
     "measuredAt": "2026-09-14"
   },
-  "a14-twojobs": {
-    "solvable": true,
-    "solutionBreadth": 0.0419,
-    "precisionFloor": 65,
-    "worstJitter": 2,
-    "distinctFamilies": 5,
-    "twoStarLength": 295,
-    "threeStarLength": 165,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-14"
-  },
   "a15-eitherway": {
     "solvable": true,
     "solutionBreadth": 0.0828,
@@ -135,6 +124,17 @@ export const SOLVER = {
     "twoStarLength": 300,
     "threeStarLength": 184,
     "shortestWin": 110,
+    "measuredAt": "2026-09-14"
+  },
+  "a13-yeet": {
+    "solvable": true,
+    "solutionBreadth": 0.0256,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 5,
+    "twoStarLength": 390,
+    "threeStarLength": 288,
+    "shortestWin": 165,
     "measuredAt": "2026-09-14"
   }
 };
