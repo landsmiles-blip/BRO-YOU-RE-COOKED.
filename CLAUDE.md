@@ -69,6 +69,28 @@ measurement first; the measurement is usually the finding.
 - **A held level is not a deleted one.** `HELD` in js/levels.js keeps the level
   and the reason, so it returns as a better version rather than the same one.
 
+## ADD NOUNS, NOT RULES
+
+Playtest on the THREAD IT level: "the worst idea we have ever had", and right.
+Its constraint was a no-draw zone — a RULE. Every other constraint in this game
+comes out of the physics (gravity, anchoring, the 22u step-up); that one came
+out of the designer. Two red hatched boxes in a backyard read as a debug
+overlay, and beating it teaches "do not draw there", which is not a skill.
+
+The games that own this genre all do the same thing instead. Cut the Rope adds
+bubbles that lift, spiders that steal, wheels that change trajectory; Happy
+Glass adds blades and moving platforms. **Every one is a thing in the world that
+obeys physics**, and its own design guidance is "each new box introduces a
+mechanic, and new mechanics build on the same core idea" — plus the warning
+that object overload creates chaos, not challenge.
+
+So: when the game feels basic, the fix is a new NOUN, introduced alone before it
+is ever combined. Not a new rule about drawing.
+
+**And every new noun must pass the A14 test before it ships: DELETE IT and
+re-run. If the outcome barely changes, it is decoration.** The updraft's first
+level failed exactly this, on every stroke tried.
+
 ## TRAPS THAT HAVE ALREADY BITTEN
 
 - **Constant names are NOT level numbers.** `A13` is not level 13. The names are
@@ -89,6 +111,10 @@ measurement first; the measurement is usually the finding.
 - **Matter has no poly-decomp.** `Bodies.fromVertices` on a concave shape
   silently returns its convex hull. Closed strokes are hollow rings for this
   reason, and because a bowl must be hollow to hold anything.
+- **An updraft plus any ceiling is a TRAP for Milo.** The air pins him against
+  the underside and airborne Milo has no horizontal drive to escape with —
+  measured stuck at x=510 for every lid height and every sideways push tried.
+  Air levels must lift an OBJECT, whose exit is geometry, not lift him.
 - **Anchored means STATIC, not constrained.** Eight rigid constraints on a
   28-part compound body produced 177,000 units of jitter and shipped that way.
 

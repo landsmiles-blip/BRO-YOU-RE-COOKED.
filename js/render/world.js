@@ -159,6 +159,51 @@ export function drawScene(ctx, sim, opts = {}) {
     ctx.restore();
   }
 
+  // ── moving air ────────────────────────────────────────────────────────
+  //
+  // Chevrons climbing the column, on a loop tied to wall-clock time so the
+  // thing is obviously MOVING even in a still frame — the one property that
+  // separates it from a decorative pale rectangle. Never the danger accent:
+  // it does not kill, it lifts, and the player has to be able to trust that
+  // on sight.
+  for (const z of sim.zones ?? []) {
+    if (z.kind !== 'updraft') continue;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
+    ctx.fillStyle = C.air;
+    ctx.globalAlpha = 0.10;
+    ctx.fillRect(z.x, z.y, z.w, z.h);
+
+    const period = 46;
+    const drift = ((now / 9) % period + period) % period;
+    ctx.globalAlpha = 0.5;
+    ctx.strokeStyle = C.air;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    for (let y = z.y + z.h + period - drift; y > z.y - period; y -= period) {
+      for (const f of [0.3, 0.7]) {
+        const cx = z.x + z.w * f;
+        ctx.beginPath();
+        ctx.moveTo(cx - z.w * 0.16, y + 11);
+        ctx.lineTo(cx, y);
+        ctx.lineTo(cx + z.w * 0.16, y + 11);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+    // Edges, so the column has a boundary you can aim at.
+    ctx.save();
+    ctx.globalAlpha = 0.35;
+    ctx.strokeStyle = C.air;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(z.x, z.y); ctx.lineTo(z.x, z.y + z.h);
+    ctx.moveTo(z.x + z.w, z.y); ctx.lineTo(z.x + z.w, z.y + z.h);
+    ctx.stroke();
+    ctx.restore();
+  }
+
   // ── lethal zones ──────────────────────────────────────────────────────
   // These were invisible until now, which is a readability bug, not a polish
   // gap: A2 and A4 both kill you with a zone, and a hazard the player cannot

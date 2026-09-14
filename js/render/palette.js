@@ -14,6 +14,10 @@ export const C = {
   // they read as loose or moving parts, and deliberately NOT the danger accent:
   // they obstruct, they do not kill.
   plank:      '#B79A6E',
+  // Moving air. Cool and pale on purpose: it is the only thing in the game
+  // that ACTS on the world without being solid or lethal, so it must not read
+  // as either. Nowhere near the danger accent.
+  air:        '#7FA3B5',
   danger:     '#E0452B',   // THE accent. Danger only.
   goal:       '#3FA96B',
   goalGlow:   'rgba(63,169,107,0.28)',

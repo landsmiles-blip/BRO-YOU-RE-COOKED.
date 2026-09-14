@@ -136,16 +136,5 @@ export const SOLVER = {
     "threeStarLength": 288,
     "shortestWin": 165,
     "measuredAt": "2026-09-14"
-  },
-  "a17-thread": {
-    "solvable": true,
-    "solutionBreadth": 0.0596,
-    "precisionFloor": 30,
-    "worstJitter": 1,
-    "distinctFamilies": 6,
-    "twoStarLength": 300,
-    "threeStarLength": 220,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-14"
   }
 };

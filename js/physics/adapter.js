@@ -159,6 +159,25 @@ export function queryRegion(ctx, x, y, w, h, filter = null) {
   return filter ? hits.filter(filter) : hits;
 }
 
+/**
+ * Push a body, in units per second squared — an ACCELERATION, not a force.
+ *
+ * Matter's applyForce is mass-dependent, so the same call moves a pebble and
+ * barely nudges a boulder. An updraft in a backyard does roughly the opposite:
+ * it lifts the light thing further. Taking acceleration and multiplying by mass
+ * here means a level author writes "how hard does it blow" and gets the same
+ * answer regardless of what densities get retuned later — the same reasoning
+ * that made lethality use minSpeed instead of minImpulse.
+ */
+export function applyAccel(body, axPerSecSq, ayPerSecSq) {
+  // Derived from how Matter applies GRAVITY, so the numbers are comparable:
+  // it adds mass * gravity.y * gravity.scale, and gravity.y is GRAVITY_Y/1000
+  // with scale 0.001. So an acceleration A in u/s² is mass * A * 1e-6, and a
+  // level author writing 1800 gets exactly one gravity of push.
+  const k = body.mass * 1e-6;
+  Body.applyForce(body, body.position, { x: axPerSecSq * k, y: ayPerSecSq * k });
+}
+
 export function setPosition(body, x, y) { Body.setPosition(body, { x, y }); }
 export function setAngle(body, a) { Body.setAngle(body, a); }
 export function setAngularVelocity(body, w) { Body.setAngularVelocity(body, w); }

@@ -7,7 +7,7 @@
 
 import {
   createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
-  onCollisionStart, allBodies, getSpeed, getVelocity,
+  onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
@@ -165,6 +165,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   sim.simTime += PHYSICS_DT;
 
   const hazardBodies = [...sim.objects.values()].map((o) => o.body);
+  applyUpdrafts(sim);
   audio.setDanger(updateDanger(sim.milo, hazardBodies));
   detectCloseCalls(sim);
   record(sim.recorder, allBodies(sim.ctx));
@@ -202,6 +203,38 @@ export function commitStroke(sim, rawPoints) {
   return { ok: true, length: v.length, anchors: sim.anchors.length, shape: classified.shape };
 }
 
+
+/**
+ * UPDRAFT — a column of moving air that pushes whatever is inside it.
+ *
+ * The first thing in this game that acts on the world without being solid. It
+ * exists because the level vocabulary had five nouns across thirteen levels —
+ * platform, boulder, plate, gate, spikes — and the answer to "the game feels
+ * basic" was being looked for in new RULES (a no-draw zone) rather than new
+ * THINGS. A rule tells the player what they may not do. A thing gives them
+ * something to think with, and it changes what a LINE means: over an updraft a
+ * line is a lid, beside it a deflector, across it a shelf that something can be
+ * parked on.
+ *
+ * Acceleration, not force, so how hard it blows does not silently change when
+ * a density is retuned — the same reasoning that made lethality use minSpeed.
+ * It pushes Milo too: while he is grounded his locomotion sets his velocity
+ * every step and wins, and the moment he is airborne the air has him. That
+ * asymmetry is not a bug, it is the feel — you can walk through a draught, you
+ * cannot fall through one.
+ */
+function applyUpdrafts(sim) {
+  for (const z of sim.zones) {
+    if (z.kind !== 'updraft') continue;
+    const a = z.accel ?? -2600;
+    for (const b of allBodies(sim.ctx)) {
+      if (b.isStatic) continue;
+      const p = b.position;
+      if (p.x < z.x || p.x > z.x + z.w || p.y < z.y || p.y > z.y + z.h) continue;
+      applyAccel(b, z.ax ?? 0, a);
+    }
+  }
+}
 
 /**
  * A CLOSE CALL: something that could have killed him came within

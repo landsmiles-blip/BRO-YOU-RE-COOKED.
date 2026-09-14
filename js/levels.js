@@ -798,7 +798,48 @@ export const A17 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A17];
+// ─────────────────────────────────────────────────────────────────────────
+// A18 — UPDRAFT.  Introduces: air. The first thing in this world that acts
+// without being solid.
+//
+// Built after looking at what the games that own this genre actually do to
+// stay interesting. Cut the Rope adds bubbles that lift, spiders that steal,
+// wheels that change trajectory; Happy Glass adds blades and moving platforms.
+// Every one of them is a THING IN THE WORLD THAT OBEYS PHYSICS. Not one is a
+// rule about where you may draw — which is exactly what the level this
+// replaces was, and why it was wrong.
+//
+// The level introduces the noun and nothing else, which is the pattern those
+// games follow: one new idea, alone, before it is ever combined. The rock is
+// coming for him and there is a column of rising air beside its path. Nudge it
+// across and the air takes it. The verb is REDIRECT, which he already knows —
+// all that is new is somewhere to redirect it TO.
+// ─────────────────────────────────────────────────────────────────────────
+export const A18 = {
+  id: 'a18-updraft',
+  hint: "THE AIR HOLDS THINGS UP",
+  world: 'backyard', verb: 'UPDRAFT',
+  milo: { start: { x: 70, y: 1120 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 660, y: 1120, w: 70, h: 140 },
+  freezeAt: 540,
+  static: [
+    { id: 'ground', type: 'platform', x: 0, y: 1120, w: 720, h: 160 },
+    // Something to anchor a deflector to, over the rock's line of fall.
+    { id: 'eave',  type: 'platform', x: 150, y: 700, w: 110, h: 26 },
+  ],
+  objects: [
+    { id: 'rock', type: 'boulder', x: 300, y: 260, radius: 28,
+      density: 0.03, restitution: 0.05, friction: 0.4,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  // 2600 against 1800 of gravity: it lifts, but not so hard that anything that
+  // touches it is flung off the top and out of the level.
+  zones: [{ id: 'draft', kind: 'updraft', x: 400, y: 300, w: 150, h: 820, accel: -2600 }],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
@@ -825,6 +866,20 @@ export const HELD = [
     + 'The idea (anchor both ends or it is a see-saw) is good and the physics works; '
     + 'what is missing is any way to see that it is about to tip. Bring it back when '
     + 'the tipping is telegraphed before he steps on it.' },
+  { level: A18, reason: 'the MECHANIC is sound and verified; this LEVEL is not. Built to introduce '
+    + 'the updraft and the A14 test killed it in one run — deleting the air changed nothing, on '
+    + 'every stroke tried, so the column was decoration. Two rebuilds where the air lifts MILO '
+    + 'instead both failed on a real property of the mechanic: an updraft plus ANY ceiling pins '
+    + 'him against it (measured: stuck at x=510 for every lid height and every sideways push from '
+    + '280 to 400). A level where the air lifts him needs somewhere for him to LEAVE sideways '
+    + 'under his own power, which airborne Milo does not have. Build it around lifting an OBJECT '
+    + 'whose exit is geometry, not around lifting him.' },
+  { level: A17, reason: 'playtest, and correctly: "the worst idea we have ever had". Its constraint '
+    + 'was a RULE (a no-draw zone) rather than a THING. Every other constraint in this game comes '
+    + 'out of the physics — gravity, anchoring, the 22u step-up — and this one came out of me. Two '
+    + 'red hatched boxes floating in a backyard read as a debug overlay, and beating it teaches '
+    + '"do not draw there", which is not a skill. denyZones stay implemented; they belong on '
+    + 'something diegetic (a hot pipe, a hornet nest), never as a bare forbidden rectangle.' },
   { level: A16, reason: 'the INVERSION is the best idea in the set and this is the wrong build of '
     + 'it. Measured 3.3% breadth and a precision floor of 0u — it fails even a 10u nudge — '
     + 'because winning means covering TWO separate ~31u gaps either side of the crate with '
