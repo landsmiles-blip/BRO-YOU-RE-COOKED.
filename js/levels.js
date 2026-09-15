@@ -902,6 +902,16 @@ export const A19 = {
     { id: 'chimL',  type: 'platform', x: 300, y: 420,  w: 20,  h: 390 },
     // Solid all the way down, so the far side is a wall and not an exit.
     { id: 'chimR',  type: 'platform', x: 480, y: 420,  w: 20,  h: 484 },
+    // A CAP OVER THE PLATE, and it costs this level nothing. The ball rises
+    // INSIDE the chimney and presses the plate from underneath at y=420, so a
+    // lid resting on top of it at 374..390 never touches the ball's path.
+    //
+    // It is here because the level could be won without the air at all: drop an
+    // unanchored line straight onto the plate and the gate opens, with the whole
+    // chimney as scenery. A11 teaches that a falling line is a weight, so every
+    // player eventually tries it. Measured across the shipped set, this level and
+    // two others were open that way.
+    { id: 'cap',    type: 'platform', x: 300, y: 374,  w: 200, h: 16  },
   ],
   objects: [
     { id: 'ball',  type: 'boulder', x: 200, y: 260, radius: 26,
@@ -1091,6 +1101,14 @@ export const A21 = {
     // end, so a 52-unit rock rolls across the seam instead of down it. Milo
     // walks underneath with 252 units of clearance and never touches it.
     { id: 'deck',   type: 'platform', x: 430, y: 880, w: 240, h: 20 },
+    // A LID OVER THE PLATE, flush with the lintel so there is no seam to fall
+    // through. Without it the lever is optional: drop an unanchored line onto
+    // the plate and the gate opens with the see-saw untouched.
+    //
+    // Sized from the rock, not from taste. It arrives ROLLING at y=854, so its
+    // top edge is at 828; the lid hangs to 796 and leaves it 32 units of
+    // headroom. Anything falling from above lands on the lid instead.
+    { id: 'lid',    type: 'platform', x: 440, y: 780, w: 230, h: 16 },
     // THE LINTEL, and it is what stops the lever being decoration. Without it a
     // steep enough ramp throws the rock clean OVER the plank and straight onto
     // the deck — measured: a win at 2558ms with the plank still sitting at its
@@ -1349,6 +1367,78 @@ export const A25 = {
   solver: null,
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// A26 — CASCADE.  Two levers, one decision.
+//
+// No new noun. The rule is the one A21 already taught — the loaded arm goes
+// down and drops what it carries off that end — and the only new thing is that
+// it happens twice, so the player has to follow the rock one step further than
+// they are used to before they know where to draw.
+//
+// BOTH PIVOTS ARE LOAD-BEARING, for the same structural reason A21's is and
+// A22's was not: each plank's STATIC lean sends the rock the wrong way. Nail
+// either of them down and the chain breaks at that link.
+//
+// One stroke sets the whole thing going. Feed the upper lever's right arm and
+// everything after it is the machine's business — which is the difference
+// between a puzzle that makes you think and one that makes you fiddle.
+// ─────────────────────────────────────────────────────────────────────────
+export const A26 = {
+  id: 'a26-cascade',
+  hint: 'BOTH OF THEM LEAN THE WRONG WAY',
+  world: 'backyard', verb: 'CASCADE',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 500,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // THE SHAFT IS TALL AND ENDS WELL CLEAR OF THE LEVER. Both numbers were
+    // paid for. Too short and the rock has already fallen past every ramp worth
+    // drawing by the time the world stops; too low and its wall stands beside
+    // the plank, so the rock wedges between the two and sits there — measured
+    // stuck at (227,535) on every stroke tried, identical to doing nothing.
+    // Its right wall stops short as A21's does: that is the door a deflected
+    // rock leaves by, and without it the rock jams in the corner instead.
+    { id: 'shaftL', type: 'platform', x: 190, y: 240, w: 16, h: 420 },
+    { id: 'shaftR', type: 'platform', x: 350, y: 240, w: 16, h: 300 },
+    // Lever one.
+    { id: 'plankA', type: 'platform', x: 150, y: 751, w: 240, h: 18,
+      pivot: { x: 270, y: 760 }, angle: -8, density: 0.01 },
+    { id: 'stopAL', type: 'platform', x: 156, y: 797, w: 26, h: 20 },
+    { id: 'stopAR', type: 'platform', x: 364, y: 797, w: 26, h: 20 },
+    // THE BAFFLE, and without it lever one is scenery. Measured: a ramp can
+    // throw the rock clean past lever one's right end at x=390 — it crossed the
+    // gap at x=467 and dropped straight onto lever two, and nailing lever one
+    // down left three of four winning strokes still winning.
+    //
+    // It does two jobs with one wall. Anything flying right is stopped, so the
+    // upper lever cannot be skipped; and lever one's own output, which leaves
+    // its right end at about (390,785), meets this ten units later and drops
+    // vertically onto lever two's right arm instead of scattering.
+    { id: 'baffle', type: 'platform', x: 400, y: 690, w: 16, h: 210 },
+    // Lever two, offset right so the first one's right arm feeds its right arm.
+    { id: 'plankB', type: 'platform', x: 250, y: 891, w: 240, h: 18,
+      pivot: { x: 370, y: 900 }, angle: -8, density: 0.01 },
+    { id: 'stopBL', type: 'platform', x: 256, y: 937, w: 26, h: 20 },
+    { id: 'stopBR', type: 'platform', x: 464, y: 937, w: 26, h: 20 },
+    // The landing, over Milo's head with 142 units of clearance.
+    { id: 'deck',   type: 'platform', x: 470, y: 990, w: 230, h: 20 },
+    // The lid that keeps the plate honest — see A19 and A21. It hangs well
+    // above the rock's arrival, which comes off lever two at about y=925.
+    { id: 'lid',    type: 'platform', x: 500, y: 820, w: 200, h: 16 },
+  ],
+  objects: [
+    { id: 'rock',  type: 'boulder', x: 240, y: 280, radius: 26,
+      density: 0.03, restitution: 0.05, friction: 0.08,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 490, y: 960, w: 170, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 600, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21];
 
 /**
@@ -1371,6 +1461,18 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A26, reason: 'TWO LEVERS IN SERIES CANNOT BOTH MATTER, and the reason is geometric rather '
+    + 'than tuning. A see-saw delivers off its END, which is by definition outside its own footprint, '
+    + 'so the second lever has to sit offset from the first — and that offset IS a window to drop the '
+    + 'rock straight onto lever two, skipping lever one. Measured: lever two is fully load-bearing '
+    + '(nail it down and all four winning strokes fail) while lever one is not (nailed down, three of '
+    + 'four still win, because a ramp throws the rock past its right end at x=390 and it crosses the '
+    + 'gap at x=467). A baffle closes the skip and closes the real route with it — three of the four '
+    + 'winners died and lever one was STILL skippable on the survivor. '
+    + 'Widening lever two only widens the window; covering it needs lever one to span the whole of '
+    + 'lever two plus its own arms, which makes it asymmetric and it then tips under its own weight. '
+    + 'A cascade needs a delivery that lands INSIDE the next machine, which a see-saw cannot give. '
+    + 'Pair the lever with something that catches from above instead — a chimney or a funnel.' },
   { level: A25, reason: 'THE SPRING NEEDS A VERTICAL ARRIVAL AND A PLAYER CANNOT GIVE IT ONE. '
     + 'A bounce is made of speed INTO the surface, so every ramp that feeds a board delivers the '
     + 'ball sideways and there is nothing left to bounce with. A tilted board fixes the launch '

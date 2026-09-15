@@ -131,6 +131,16 @@ the board (A20), into the column or not (A19). **If the level needs the input
 delivered in a particular direction, the machine belongs in the scenery, not in
 the puzzle.**
 
+**And a machine can only be chained if the next one CATCHES FROM ABOVE.** Two
+levers in series was held for this: a see-saw delivers off its END, which is
+outside its own footprint, so the second must sit offset — and that offset is a
+window to drop the rock straight onto the second, skipping the first. Measured:
+lever two load-bearing (nailed down, all four winners fail), lever one not
+(nailed down, three of four still win). A baffle closes the skip and the real
+route together. The general form: **a machine placed BEFORE the player's
+delivery point can always be bypassed by delivering directly** — it has to be
+somewhere the object cannot avoid, the way A21's shaft sits over its lever.
+
 And the timing half of the same rule: **Milo crosses a level in about 2.7
 seconds and a machine needs one and a half to two to act.** Three hazard levels
 reported "doing nothing WINS" because by the time the machine delivered he had
@@ -149,10 +159,24 @@ This also inflates the solver: two new levels measured 20.4% and 26.3% breadth,
 and closing the bypass took them to 0.9% and 1.2%. **A plate level's breadth is
 not trustworthy until the drop-on-the-plate solution has been ruled out.**
 
-`js/sim.js` already supports `requires: 'heavy'` with `minMass` on a switch and
-nothing uses it. It is not a free fix: a 300-unit line part masses ~96 against a
-typical rock's ~42, so the rocks have to get heavier first, and that re-tunes
-every level they appear in.
+**FIXED WITH GEOMETRY, NOT MASS.** `js/sim.js` supports `requires: 'heavy'` with
+`minMass`, but the numbers rule it out: `maxLength` is 900, so a one-part line
+can mass **288** against rocks of 42–161. Gating would need rocks ~7× heavier,
+re-tuning every level they appear in.
+
+A lid over the plate costs nothing instead, because the presser and a falling
+line arrive from different directions:
+
+- **Level 13** — the ball rises INSIDE the chimney and presses the plate from
+  underneath, so a cap resting on top of it never touches the ball's path. Free.
+- **Level 15** — the rock arrives ROLLING at y=854 (top edge 828), so a lid
+  hanging to 796 leaves it 32 units of headroom and stops anything dropped.
+- **Level 7 resists it** and is still open: its rock enters at y=771 and a line
+  can be drawn at 748 — the same height, so no lid separates them.
+
+Closing the door costs real breadth, because that breadth was never real:
+level 13 went 11.1% → **4.9%** and level 15 14.9% → **4.3%**. Both still pass.
+**Re-run the drop-on-the-plate audit after touching any plate level.**
 
 ## TRAPS THAT HAVE ALREADY BITTEN
 

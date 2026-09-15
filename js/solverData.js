@@ -139,14 +139,14 @@ export const SOLVER = {
   },
   "a19-updraft": {
     "solvable": true,
-    "solutionBreadth": 0.1109,
+    "solutionBreadth": 0.0488,
     "precisionFloor": 65,
     "worstJitter": 2,
     "distinctFamilies": 5,
     "twoStarLength": 288,
     "threeStarLength": 165,
     "shortestWin": 110,
-    "measuredAt": "2026-09-14"
+    "measuredAt": "2026-09-15"
   },
   "a20-spring": {
     "solvable": true,
@@ -161,24 +161,13 @@ export const SOLVER = {
   },
   "a21-lever": {
     "solvable": true,
-    "solutionBreadth": 0.1486,
-    "precisionFloor": 65,
-    "worstJitter": 5,
-    "distinctFamilies": 6,
-    "twoStarLength": 288,
-    "threeStarLength": 165,
-    "shortestWin": 105,
-    "measuredAt": "2026-09-14"
-  },
-  "a25-vault": {
-    "solvable": true,
-    "solutionBreadth": 0.0339,
+    "solutionBreadth": 0.0433,
     "precisionFloor": 30,
-    "worstJitter": 2,
+    "worstJitter": 0,
     "distinctFamilies": 5,
     "twoStarLength": 288,
-    "threeStarLength": 243,
-    "shortestWin": 110,
+    "threeStarLength": 177,
+    "shortestWin": 105,
     "measuredAt": "2026-09-15"
   }
 };

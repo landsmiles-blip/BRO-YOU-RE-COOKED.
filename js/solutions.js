@@ -491,10 +491,10 @@ export const SOLUTIONS = {
   },
   "a19-updraft": {
     "id": "a19-updraft",
-    "winners": 255,
-    "robust": 201,
+    "winners": 119,
+    "robust": 62,
     "anchoredRobust": 18,
-    "handRate": 0.788,
+    "handRate": 0.521,
     "solution": {
       "family": "arc",
       "length": 288,
@@ -581,86 +581,31 @@ export const SOLUTIONS = {
   },
   "a21-lever": {
     "id": "a21-lever",
-    "winners": 492,
-    "robust": 370,
-    "anchoredRobust": 43,
-    "handRate": 0.752,
+    "winners": 161,
+    "robust": 54,
+    "anchoredRobust": 45,
+    "handRate": 0.335,
     "solution": {
-      "family": "arc",
-      "length": 288,
-      "parts": 11,
-      "anchors": 6,
+      "family": "line",
+      "length": 300,
+      "parts": 12,
+      "anchors": 8,
       "points": [
         {
-          "x": 292.6,
-          "y": 661
+          "x": 105,
+          "y": 448.7
         },
         {
-          "x": 239.8,
-          "y": 656.2
+          "x": 155,
+          "y": 535.3
         },
         {
-          "x": 193.1,
-          "y": 662
+          "x": 205,
+          "y": 621.9
         },
         {
-          "x": 152.5,
-          "y": 678.4
-        },
-        {
-          "x": 118,
-          "y": 705.3
-        },
-        {
-          "x": 89.7,
-          "y": 742.9
-        },
-        {
-          "x": 67.4,
-          "y": 791
-        }
-      ]
-    }
-  },
-  "a25-vault": {
-    "id": "a25-vault",
-    "winners": 593,
-    "robust": 546,
-    "anchoredRobust": 0,
-    "handRate": 0.921,
-    "solution": {
-      "family": "arc",
-      "length": 288,
-      "parts": 11,
-      "anchors": 0,
-      "points": [
-        {
-          "x": 427.4,
-          "y": 487.9
-        },
-        {
-          "x": 480.2,
-          "y": 483.1
-        },
-        {
-          "x": 526.9,
-          "y": 488.9
-        },
-        {
-          "x": 567.5,
-          "y": 505.2
-        },
-        {
-          "x": 602,
-          "y": 532.2
-        },
-        {
-          "x": 630.3,
-          "y": 569.7
-        },
-        {
-          "x": 652.6,
-          "y": 617.9
+          "x": 255,
+          "y": 708.5
         }
       ]
     }
