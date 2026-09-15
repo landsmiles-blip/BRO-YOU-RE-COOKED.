@@ -1575,7 +1575,102 @@ export const A28 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28];
+// ─────────────────────────────────────────────────────────────────────────
+// A29 — THE RAIL. The first level where the stroke is a ROAD.
+//
+// Every other level in this game asks the player to STOP something: block it,
+// catch it, wedge it, redirect it away. Even A28, which was the newest thing
+// here, is won by interrupting a run. That is one verb wearing eleven costumes.
+//
+// This one cannot be won by stopping anything, and that is the whole design.
+// The gate is shut and the only thing that opens it is the plate; neutralising
+// the rock leaves Milo exactly as stuck as doing nothing. **The level demands
+// DELIVERY, and delivery is the one thing a static line cannot do by itself.**
+//
+// Which is what the wind is for. `accel: 0` with a sideways `ax` is a draught
+// that carries rather than lifts — the other half of the noun A28 opened up.
+// The rock is already rolling when the world stops; the rail simply runs out
+// before the plate does, and the player's line is the missing span.
+//
+// The wind is also what stops a lazy catch from working. Anywhere the player
+// puts a floor, the rock keeps going: there is no friction in this engine and
+// the air never lets up, so a shelf is not a resting place, it is more road.
+// The only way to end the journey is to end it ON the plate.
+//
+// The lid is the plate back door, closed the way A21's was: the rock arrives
+// ROLLING at centre y=754, top edge 728, so a lid hanging to 696 leaves it the
+// same 32 units of headroom that worked there and stops anything dropped from
+// above. Gate-and-plate is also what buys the wind its time — Milo crosses in
+// 2.7 seconds and the draught needs longer, so he has to be held.
+// ─────────────────────────────────────────────────────────────────────────
+export const A29 = {
+  id: 'a29-rail',
+  hint: 'THE RAIL RUNS OUT BEFORE THE PLATE',
+  world: 'backyard', verb: 'RAIL',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'rail',   type: 'platform', x: 100, y: 760,  w: 160, h: 20  },
+    // The far bank sits 20 units LOWER than the rail. A draught can only push
+    // a rock up a slope shallower than atan(ax/g) — 18 degrees at ax=600 — so
+    // a road that has to climb is a road that stalls. Downhill is free.
+    // 120 UNITS BELOW THE RAIL, NOT 20. At 20 the level measured a precision
+    // floor of 20u — under the 25u thumb limit, a HARD fail — because a road
+    // that ended a hair too low put the rock under the deck instead of on it.
+    // The margin is not horizontal, it is vertical: give the cargo a long drop
+    // onto a wide bank and any road pointing the right way delivers. Same
+    // finding as A2, where dropping the far bank took it from 1.1% to 7.4%:
+    // descending is free, climbing is what costs.
+    { id: 'deck',   type: 'platform', x: 440, y: 880,  w: 240, h: 20  },
+    // NO LID, AND THE BANK IS WIDE. Four sweeps to find this. A lid hanging to
+    // 796 (the trick that closed A21's back door) raised the precision floor
+    // to 30u by filtering out the knife-edge wins, but took breadth to 1.6%,
+    // under the floor. The weight gate on the plate makes it redundant anyway:
+    // nothing dropped can press this plate at any height, lid or no lid.
+    //
+    // The knife-edge is not really the lid's fault, it is the FALL's: an
+    // untouched rock drops almost straight, crossing the bank's height at
+    // x=414 — measured — only a few units left of where the bank starts. So a
+    // road that barely helps lands the rock right on the lip. The fix is to
+    // make the landing zone big enough that "barely helps" still lands well
+    // inside it, not to filter the fussy wins out afterwards.
+    // The far end of the bank, so the delivered rock stays delivered instead
+    // of coasting off the end — there is no friction here to stop it.
+    { id: 'kerb',   type: 'platform', x: 680, y: 840,  w: 20,  h: 40  },
+  ],
+  objects: [
+    // DENSE, AND IT COSTS NOTHING. The wind is an ACCELERATION and so is
+    // gravity, so this rock's path is identical at any density — the mass is
+    // here purely to be heavier than a line, and it buys the plate below.
+    { id: 'rock',  type: 'boulder', x: 130, y: 734, radius: 26,
+      density: 0.09, restitution: 0.1, friction: 0.06,
+      lethal: { kind: 'none' } },
+    // THE FIRST USE OF `requires: 'heavy'`, and the reason it works HERE when
+    // it was ruled out everywhere else: a line's mass scales with the ink
+    // budget. At the default maxLength of 900 one part can mass 288, which is
+    // why gating by weight would have needed rocks seven times denser. This
+    // level pays 320, and the heaviest DYNAMIC line 320 units buys is 103.4 —
+    // measured, not assumed. The rock masses 189.3.
+    //
+    // (An ANCHORED line cannot press a plate at all, at any weight: it goes
+    // static, and Matter reports no collision between two static bodies. So
+    // the only thing the threshold has to beat is a dropped one.)
+    { id: 'plate', type: 'switch', x: 450, y: 850, w: 230, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 150 },
+    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [
+    // Reaches down over the bank as well as the rail, so the draught walks the
+    // rock the last few units onto the plate rather than leaving it just short.
+    { id: 'draught', kind: 'updraft', x: 100, y: 620, w: 440, h: 260, accel: 0, ax: 600 },
+  ],
+  drawing: { maxLength: 320, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.

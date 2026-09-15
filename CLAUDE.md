@@ -18,12 +18,20 @@ of looking at the game. A vibrating line, a shrinking line and a line that will
 not sit still all satisfy an assertion about positions.
 
     node tools/test/filmstrip.js        # films every level being WON, and READ them
+    FILM_IDLE=1 node tools/test/filmstrip.js   # films it being LOST
 
 **And film the FAILURES too.** Every filmstrip in this project's history filmed
 a win. Nobody had ever looked at what a player sees when they LOSE — which is
 what they see most of the time. One failure capture found a death cam that drew
 the player's own line as a fixed 80-pixel dash, no lethal zones at all, and no
 goal. The screen whose entire job is to explain was explaining nothing.
+
+It happened AGAIN the very next time a loss was filmed, which is why there is
+now a flag for it rather than a heroic one-off. The duct's death cam drew no
+AIR: a roof, two posts and a falling rock, with nothing to say that air was what
+carried it — the replay explained the wrong mechanism. Every new kind of thing
+added to the world has to be added to `deathcam.js` too; it draws its own
+subset, and the default for anything new is INVISIBLE.
 
 ## THE GATES MEASURE FAIR. THEY CANNOT MEASURE MEANINGFUL.
 
@@ -110,6 +118,31 @@ is ever combined. Not a new rule about drawing.
 re-run. If the outcome barely changes, it is decoration.** The updraft's first
 level failed exactly this, on every stroke tried.
 
+## A STATIC LINE CAN BE ANY STATIC GEOMETRY
+
+Which means **no new STATIC noun can ever be a puzzle.** Whatever the thing
+would become, the player can simply draw it: a pillar that topples across a
+chasm to make a bridge is redundant with the stroke by construction, and it
+fails the A14 test before it is built. The same goes for every ramp, shelf,
+wall, funnel and lid that a level might "give" the player.
+
+So the only nouns that can carry a level are the ones that **move or act** —
+air, springs, pivots. That is not a coincidence about what got built; it is the
+reason those three are the only ones that worked. Check a new noun against this
+first. It costs nothing and it has already saved a build.
+
+The corollary, and it is the expensive half: **each of those nouns has exactly
+one question in it.**
+
+- The pivot's is WHICH SIDE OF THE PIN, and A21 already asks it. A27 was built,
+  measured and shelved for asking it a second time with the lean reversed.
+- The updraft's is IN THE COLUMN OR NOT (A19).
+- The spring's is WHERE ON THE BOARD (A20).
+
+A second level on a noun needs a different QUESTION, not a different geometry.
+A28 got one — *interrupt the run* — only because leaning the air changed what
+the noun does, not how it is arranged.
+
 ## A MACHINE THE PLAYER CANNOT AIM IS NOT A LEVEL
 
 Three machine levels died in one session on the same thing, so it is a rule now,
@@ -148,6 +181,22 @@ walked past. That is what the plate-and-gate pattern is FOR — it holds him whi
 a slow machine takes its time. It is not a motif, it is load-bearing.
 
 ## THE PLATE IS A BACK DOOR
+
+**`minMass` DOES work — when the ink budget is small enough.** The dismissal
+below assumed `maxLength` 900, where one part can mass 288. A LINE'S MASS SCALES
+WITH THE BUDGET, so a level that pays 320 can only buy a 103-unit line
+(measured), and a rock at density 0.09 masses 189. A29 gates its plate at
+`minMass: 150` and no stroke it can afford will ever press it. Two other things
+came out of proving it:
+
+- **An ANCHORED line cannot press a plate at all, at any weight.** It goes
+  static, and Matter reports no collision between two static bodies. The
+  threshold only ever has to beat a DROPPED line.
+- **Density is free where the forces are accelerations.** Gravity and the
+  updraft are both accelerations, so making that rock three times denser did not
+  move it by a unit. Weight-gating costs nothing in a level built on air.
+
+## THE PLATE IS A BACK DOOR (the geometry fix)
 
 **Any level whose win condition is a plate can be won by dropping an unanchored
 line on the plate**, skipping the machine entirely. Audited across the shipped
@@ -198,6 +247,19 @@ level 13 went 11.1% → **4.9%** and level 15 14.9% → **4.3%**. Both still pas
 - **Matter has no poly-decomp.** `Bodies.fromVertices` on a concave shape
   silently returns its convex hull. Closed strokes are hollow rings for this
   reason, and because a bowl must be hollow to hold anything.
+- **A VERTICAL UPDRAFT CANNOT DELIVER.** Traced: a rock fired out of a vertical
+  flue coasts up, stops, and falls straight back down the same flue — forever.
+  Nothing pushes it sideways, so a column can only ever hand its cargo back.
+  **Air can only deliver if it LEANS**, which is what `z.ax` is for. It had been
+  in `applyUpdrafts` since updrafts were added and nothing had ever used it.
+- **THE AIR RENDERER IGNORED `ax`**, so the first level to lean its draught
+  would have shipped a picture that lied about the physics — the same class as
+  the stroke angle below, and just as invisible to every assertion. And the
+  chevrons were sized as a FRACTION of the zone's width, which no one could see
+  while the only zone in the game was A19's 160-unit chimney: at 270 wide each
+  mark stretched to 98x11 and the filmstrip came back reading as flat wavy
+  strata. It looked like WATER. A mark that means "flowing" has to keep its
+  shape — fixed size, spread to fit, more of them in a wider flow.
 - **An updraft plus any ceiling is a TRAP for Milo.** The air pins him against
   the underside and airborne Milo has no horizontal drive to escape with —
   measured stuck at x=510 for every lid height and every sideways push tried.
@@ -295,6 +357,7 @@ There must never be a second hand model anywhere in the repo.
     npm run solver                the gates, and writes measured star thresholds
     node tools/solver/representative.js   certifies a hand-robust solution per level
     node tools/test/filmstrip.js  films every level winning — READ THE IMAGES
+    FILM_IDLE=1 node tools/test/filmstrip.js   films it LOSING — read those too
     node tools/test/frozen.js     every opening frame in ONE grid — READ IT
     npm run test:audio            renders waveforms; silence throws no error
     npm run test:board            level board hit regions at four ratios

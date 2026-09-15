@@ -180,5 +180,16 @@ export const SOLVER = {
     "threeStarLength": 110,
     "shortestWin": 110,
     "measuredAt": "2026-09-15"
+  },
+  "a29-rail": {
+    "solvable": true,
+    "solutionBreadth": 0.0386,
+    "precisionFloor": 45,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 300,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
   }
 };

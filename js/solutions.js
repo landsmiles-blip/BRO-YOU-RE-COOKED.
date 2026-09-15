@@ -640,5 +640,40 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a29-rail": {
+    "id": "a29-rail",
+    "winners": 68,
+    "robust": 26,
+    "anchoredRobust": 26,
+    "handRate": 0.382,
+    "solution": {
+      "family": "corner",
+      "length": 260,
+      "parts": 12,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 300,
+          "y": 784.3
+        },
+        {
+          "x": 365,
+          "y": 784.3
+        },
+        {
+          "x": 430,
+          "y": 784.3
+        },
+        {
+          "x": 430,
+          "y": 849.3
+        },
+        {
+          "x": 430,
+          "y": 914.3
+        }
+      ]
+    }
   }
 };

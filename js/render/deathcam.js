@@ -77,7 +77,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     ctx.fillStyle = C.air; ctx.globalAlpha = 0.14;
     ctx.fillRect(z.x, z.y, z.w, z.h);
     ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
-    ctx.rotate(-ang);
+    ctx.rotate(ang);
     ctx.globalAlpha = 0.55;
     ctx.strokeStyle = C.air; ctx.lineWidth = 3;
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';

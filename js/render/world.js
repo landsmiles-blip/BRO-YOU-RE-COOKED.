@@ -265,8 +265,13 @@ export function drawScene(ctx, sim, opts = {}) {
     ctx.fillRect(z.x, z.y, z.w, z.h);
 
     // Work in flow space: local +y is DOWNSTREAM-to-upstream, as before.
+    // ROTATE BY +ang, NOT -ang. The first version had this backwards and the
+    // duct hid it: at a 7-degree lean a chevron pointing up-and-LEFT instead
+    // of up-and-right looks identical to a correct one. The rail leans 90, and
+    // the filmstrip came back with every mark pointing at the wall the air was
+    // blowing away from. Check a new flow at a STEEP angle, not a shallow one.
     ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
-    ctx.rotate(-ang);
+    ctx.rotate(ang);
 
     // A WIDE FLOW GETS MORE CHEVRONS, NOT WIDER ONES.
     //
@@ -305,7 +310,7 @@ export function drawScene(ctx, sim, opts = {}) {
     ctx.save();
     ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
     ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
-    ctx.rotate(-ang);
+    ctx.rotate(ang);
     ctx.globalAlpha = 0.35;
     ctx.strokeStyle = C.air;
     ctx.lineWidth = 2.5;
