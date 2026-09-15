@@ -92,5 +92,57 @@ const figure8 = [
 const f8 = classify(figure8);
 assert('a self-intersecting closed stroke falls back to OPEN', f8.shape === SHAPE.OPEN, f8.shape);
 
+// ── THE LINE ON SCREEN IS THE LINE THEY DREW ────────────────────────────
+//
+// Reported from play: "you draw it flat but instead it stands erect; draw it
+// right and it switches and faces left."
+//
+// `body.strokePath` was stored by subtracting the body position and nothing
+// else, which leaves it in WORLD orientation. Both readers — the live renderer
+// and the death cam — then rotate it by `body.angle` to place it, so the line
+// was drawn at DOUBLE the angle it was drawn at. A compound stroke has angle 0
+// and was always fine; a near-straight drag simplifies to two points and ONE
+// part, and that part carries the segment's own angle. Flat looked perfect,
+// which is exactly why it read as an intermittent glitch.
+//
+// The physics was never wrong. Only the picture was, which is the one kind of
+// bug no assertion about positions can catch — so this asserts the PICTURE.
+console.log('\nWHAT THEY DREW IS WHAT GETS DRAWN\n');
+{
+  // Exactly what js/render/world.js drawStrokeBody() does with strokePath.
+  const asDrawn = (body) => {
+    const cos = Math.cos(body.angle), sin = Math.sin(body.angle);
+    return body.strokePath.map((p) => ({
+      x: body.position.x + p.x * cos - p.y * sin,
+      y: body.position.y + p.x * sin + p.y * cos,
+    }));
+  };
+  const angleOf = (a, b) => Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+
+  for (const deg of [0, 20, 45, 90, 135, 180, -60]) {
+    const r = deg * Math.PI / 180;
+    const a = { x: 360, y: 700 };
+    const b = { x: 360 + Math.cos(r) * 120, y: 700 + Math.sin(r) * 120 };
+    const w = createWorld();
+    const body = buildStrokeBody(w, classify([a, b]));
+    const shown = asDrawn(body);
+    // Compare as a turn, so 180 and -180 are the same direction.
+    let off = Math.abs(((angleOf(shown[0], shown[shown.length - 1]) - deg + 540) % 360) - 180);
+    assert(`a ONE-PART stroke drawn at ${deg}deg is drawn at ${deg}deg`,
+           off < 1, `off by ${off.toFixed(1)}deg`);
+    destroyWorld(w);
+  }
+
+  // And the multi-part path, which was always correct, must stay correct.
+  const w = createWorld();
+  const pts = [{ x: 300, y: 640 }, { x: 350, y: 694 }, { x: 402, y: 742 }, { x: 452, y: 796 }];
+  const body = buildStrokeBody(w, classify(pts));
+  const shown = asDrawn(body);
+  const drift = Math.max(...shown.map((s, i) => Math.hypot(s.x - pts[i].x, s.y - pts[i].y)));
+  assert('a MULTI-PART stroke still lands on the points drawn',
+         drift < 1, `worst point off by ${drift.toFixed(2)}u`);
+  destroyWorld(w);
+}
+
 console.log(failures === 0 ? '\nSHAPES: PASS\n' : `\nSHAPES: ${failures} FAILURE(S)\n`);
 process.exit(failures === 0 ? 0 : 1);

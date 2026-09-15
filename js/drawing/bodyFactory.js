@@ -56,7 +56,24 @@ export function buildStrokeBody(ctx, classified) {
   // drag simplifies to 2 points and 1 part, which hit a third code path again
   // (opposite corners of a rectangle). Three renderings of one object, none of
   // them the thing the player drew.
-  body.strokePath = pts.map((p) => ({ x: p.x - body.position.x, y: p.y - body.position.y }));
+  //
+  // IT MUST BE UN-ROTATED, NOT JUST RE-CENTRED. Subtracting the position alone
+  // leaves the path in WORLD orientation, and both readers then rotate it by
+  // `body.angle` to place it — so any body with a non-zero angle had its line
+  // drawn at DOUBLE the angle it was drawn at.
+  //
+  // A compound stroke has angle 0, so this never showed there. But a near-
+  // straight drag simplifies to two points and ONE part, and a single part is
+  // `Bodies.rectangle(..., { angle })` — the segment's own angle. Measured:
+  // drawn at 45deg it rendered at 90 (flat line standing upright), drawn at
+  // 90 it rendered at 180 (pointing back the way it came), and drawn flat it
+  // was perfect, which is what made it look intermittent. Physics was right the
+  // whole time; only the line the player could see was lying.
+  const cos = Math.cos(-body.angle), sin = Math.sin(-body.angle);
+  body.strokePath = pts.map((p) => {
+    const dx = p.x - body.position.x, dy = p.y - body.position.y;
+    return { x: dx * cos - dy * sin, y: dx * sin + dy * cos };
+  });
 
   Composite.add(ctx.world, body);
   return body;
