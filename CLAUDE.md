@@ -182,22 +182,6 @@ a slow machine takes its time. It is not a motif, it is load-bearing.
 
 ## THE PLATE IS A BACK DOOR
 
-**`minMass` DOES work — when the ink budget is small enough.** The dismissal
-below assumed `maxLength` 900, where one part can mass 288. A LINE'S MASS SCALES
-WITH THE BUDGET, so a level that pays 320 can only buy a 103-unit line
-(measured), and a rock at density 0.09 masses 189. A29 gates its plate at
-`minMass: 150` and no stroke it can afford will ever press it. Two other things
-came out of proving it:
-
-- **An ANCHORED line cannot press a plate at all, at any weight.** It goes
-  static, and Matter reports no collision between two static bodies. The
-  threshold only ever has to beat a DROPPED line.
-- **Density is free where the forces are accelerations.** Gravity and the
-  updraft are both accelerations, so making that rock three times denser did not
-  move it by a unit. Weight-gating costs nothing in a level built on air.
-
-## THE PLATE IS A BACK DOOR (the geometry fix)
-
 **Any level whose win condition is a plate can be won by dropping an unanchored
 line on the plate**, skipping the machine entirely. Audited across the shipped
 set: levels 7 (FUNNEL), 13 (UPDRAFT) and 15 (LEVER) are all bypassable this way.
@@ -226,6 +210,22 @@ line arrive from different directions:
 Closing the door costs real breadth, because that breadth was never real:
 level 13 went 11.1% → **4.9%** and level 15 14.9% → **4.3%**. Both still pass.
 **Re-run the drop-on-the-plate audit after touching any plate level.**
+
+## ...AND A WEIGHT GATE CLOSES IT, IF THE INK BUDGET IS SMALL
+
+**`minMass` DOES work — when the ink budget is small enough.** The dismissal
+above assumed `maxLength` 900, where one part can mass 288. A LINE'S MASS SCALES
+WITH THE BUDGET, so a level that pays 320 can only buy a 103-unit line
+(measured), and a rock at density 0.09 masses 189. A29 gates its plate at
+`minMass: 150` and no stroke it can afford will ever press it. Two other things
+came out of proving it:
+
+- **An ANCHORED line cannot press a plate at all, at any weight.** It goes
+  static, and Matter reports no collision between two static bodies. The
+  threshold only ever has to beat a DROPPED line.
+- **Density is free where the forces are accelerations.** Gravity and the
+  updraft are both accelerations, so making that rock three times denser did not
+  move it by a unit. Weight-gating costs nothing in a level built on air.
 
 ## TRAPS THAT HAVE ALREADY BITTEN
 
