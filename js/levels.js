@@ -1738,7 +1738,83 @@ export const A30 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30];
+// ─────────────────────────────────────────────────────────────────────────
+// A31 — THORNS. The balloon's second question.
+//
+// FLOAT asks where a rising thing GOES. This asks where it STOPS rising, which
+// is a different decision taken with the same one stroke — and it is the half
+// of Cut the Rope's bubble that makes it a mechanic rather than a lift. There
+// a tap pops it; here there is no tap, so the level supplies the thorn and the
+// player decides whether the balloon ever gets to it, and with how much travel
+// left when it does.
+//
+// The run is a safe roof that turns into a spiked one. Under the flat part the
+// balloon parks where it started — measured on FLOAT: a level ceiling holds it
+// at the same x for the rest of the level. Tilt it and the balloon walks right
+// along the underside until the teeth take it, and WHERE IT POPS IS WHERE IT
+// FALLS. Too little slope and it never reaches the thorns at all; too much and
+// it is still travelling when it bursts and overshoots the chute.
+//
+// The plate is weight-gated for the third time and free for the third time:
+// lift is an acceleration, so a balloon at 537 mass rises exactly like one at
+// 36, and no line this level's ink can buy comes close to 200.
+// ─────────────────────────────────────────────────────────────────────────
+export const A31 = {
+  id: 'a31-thorns',
+  hint: 'IT POPS WHERE IT TOUCHES THEM',
+  world: 'backyard', verb: 'THORNS',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'jamb',   type: 'platform', x: 282, y: 520,  w: 18,  h: 160 },
+    // SHARP END TO END, and that is the whole level. The first build split the
+    // ceiling into a safe half and a sharp half, which put the pop point in the
+    // LEVEL's hands rather than the player's: the balloon popped wherever the
+    // safe roof happened to stop, so the only decision left was "make it move
+    // at all". With teeth the whole way the player's line IS the shield, and
+    // where their line ends is where it bursts. That is the decision.
+    { id: 'thorns', type: 'platform', x: 220, y: 520,  w: 380, h: 16, sharp: true },
+    // AND IT STARTS CLOSE. Widening the mouth took breadth from 0.1% to 1.2%
+    // and it was still under the floor, because the other half of the filter is
+    // stroke LENGTH: a shield spanning 300 units is a rare thing for a hand to
+    // draw and it eats the whole ink budget. Starting the balloon 80 units
+    // nearer means a shield of 60 to 220 units does the job, which is the
+    // shape most real strokes already are. The judgement is untouched — it
+    // still pops short of the mouth if the shield stops too soon.
+    //
+    // A WIDE MOUTH, because the first build was unplayable. At 110 units it
+    // swept 0.1% breadth against a 2% floor — two wins in 2400 strokes. Both
+    // halves of that were the same mistake: the shield had to run 300 units
+    // from the jamb AND finish inside a narrow window, so almost nothing a
+    // real hand draws qualified. The balloon now starts 80 units closer and
+    // the mouth is 200 wide, which leaves the judgement intact (too short and
+    // it never arrives, too long and it sails past) without demanding a
+    // draughtsman.
+    { id: 'chuteL', type: 'platform', x: 400, y: 660,  w: 18,  h: 200 },
+    { id: 'chuteR', type: 'platform', x: 620, y: 660,  w: 18,  h: 200 },
+    { id: 'floor',  type: 'platform', x: 400, y: 860,  w: 238, h: 18  },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 340, y: 1000, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 418, y: 830, w: 200, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 300, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  // 400, NOT 320. A shield long enough to matter runs from the jamb to past
+  // x=440, and at 320 three of the four candidate solutions came back REJECTED
+  // too-long — the level was unsolvable by the only route it is built around.
+  // The weight gate is unaffected: 400 units buys a line of about 129 against
+  // a threshold of 200.
+  drawing: { maxLength: 400, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.

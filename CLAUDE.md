@@ -138,6 +138,8 @@ one question in it.**
   measured and shelved for asking it a second time with the lean reversed.
 - The updraft's is IN THE COLUMN OR NOT (A19).
 - The spring's is WHERE ON THE BOARD (A20).
+- The balloon's is WHERE DOES IT LET GO (A31) — its first level, A30, gets the
+  other one, WHERE DOES IT GO, because a ceiling is a new thing to aim it with.
 
 A second level on a noun needs a different QUESTION, not a different geometry.
 A28 got one — *interrupt the run* — only because leaning the air changed what
@@ -260,6 +262,30 @@ came out of proving it:
   mark stretched to 98x11 and the filmstrip came back reading as flat wavy
   strata. It looked like WATER. A mark that means "flowing" has to keep its
   shape — fixed size, spread to fit, more of them in a wider flow.
+- **A CEILING STEERS WHAT FLOATS, the way a ramp steers what falls.** Measured
+  before the balloon's first level was written: under a FLAT roof a rising body
+  meets it and sits at the same x for the rest of the level; tilt that roof 8
+  degrees and it travels 79 units, at 16 it clears the end entirely. That flat
+  case is a gift — it is a failure state that needs no hazard, and it is why
+  doing nothing on a balloon level is a DEAD END rather than a death.
+- **A BALLOON'S SECOND QUESTION IS WHERE IT STOPS RISING.** Cut the Rope pops
+  its bubble with a tap and we have no tap, so the level supplies the thorn and
+  the player's line is the SHIELD: where their line ends is where it bursts,
+  and where it bursts is where it falls. Do not put the pop point in the
+  level's hands — the first build of A31 had a safe roof that became a sharp
+  one, which fixed the burst at the seam and left the player only "make it move
+  at all".
+- **PER-RUN STATE GOES ON THE SIM, NEVER ON THE SPEC.** Level data is shared
+  across every run of a solver sweep, so recording a burst by mutating the
+  object's spec would leak one run's pop into the next 2500. `sim.burst` is a
+  Set on the sim for the same reason `sim.triggered` is.
+- **BREADTH HAS TWO FILTERS, AND WIDENING THE TARGET ONLY FIXES ONE.** A31 swept
+  0.1% — two wins in 2400 strokes. Widening the catch from 110 to 200 units took
+  it to 1.2%, still under the floor. The other half was STROKE LENGTH: the
+  shield had to span 300 units, which is a rare thing for a hand to draw and ate
+  the whole ink budget. Moving the balloon 80 units closer, so a 60–220 unit
+  shield does the job, took it to 2.0%. **Ask how long the winning stroke has to
+  be, not just how big the target is.**
 - **An updraft plus any ceiling is a TRAP for Milo.** The air pins him against
   the underside and airborne Milo has no horizontal drive to escape with —
   measured stuck at x=510 for every lid height and every sideways push tried.

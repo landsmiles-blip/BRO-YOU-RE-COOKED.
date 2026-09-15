@@ -87,6 +87,22 @@ export function drawScene(ctx, sim, opts = {}) {
         now, fill: drain(C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
         width: 3.4, salt: b.x | 0,
       });
+      // THORNS, in the danger accent and drawn as teeth. Shape carries the
+      // meaning: a beam that pops a balloon must not look like the beam next
+      // to it that does not. They point DOWN, at what rises into them.
+      if (b.sharp) {
+        const teeth = Math.max(3, Math.round(b.w / 26));
+        const pts = [{ x: b.x, y: b.y }];
+        for (let t = 0; t < teeth; t++) {
+          const x0 = b.x + (t / teeth) * b.w;
+          pts.push({ x: x0 + b.w / teeth / 2, y: b.y + b.h + 14 });
+          pts.push({ x: x0 + b.w / teeth, y: b.y });
+        }
+        inkShape(ctx, pts, {
+          now, fill: drain(C.danger, freeze * 0.5), ink: drain(C.ink, freeze * 0.35),
+          width: 2.6, salt: (b.x | 0) + 51,
+        });
+      }
     }
     // A thin shelf floating in mid-air reads as an unfinished placeholder.
     // Diagonal brackets cost nothing and make it read as a fixed structure —
@@ -401,9 +417,15 @@ export function drawScene(ctx, sim, opts = {}) {
     // A knot and a tail below it, and the pale air colour rather than stone:
     // shape carries the meaning, colour only reinforces it.
     if (spec.lift) {
-      inkShape(ctx, circlePoints(body.position.x, body.position.y, spec.radius), {
-        now, fill: C.air, ink: C.ink, width: 3.6, salt: 307,
+      // A POPPED BALLOON IS NOT A BALLOON. It keeps its outline so the player
+      // can follow what it used to be, but loses the air colour and the tail —
+      // otherwise the one object in the world that falls upwards would go on
+      // looking buoyant all the way down.
+      const popped = sim.burst?.has(spec.id);
+      inkShape(ctx, circlePoints(body.position.x, body.position.y, spec.radius * (popped ? 0.72 : 1)), {
+        now, fill: popped ? C.staticFill : C.air, ink: C.ink, width: 3.6, salt: 307,
       });
+      if (popped) { moving.push({ body, radius: spec.radius }); continue; }
       const bx = body.position.x, by = body.position.y + spec.radius;
       inkPath(ctx, [
         { x: bx, y: by },

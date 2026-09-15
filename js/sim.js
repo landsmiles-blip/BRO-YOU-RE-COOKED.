@@ -39,6 +39,10 @@ export function buildSim(level) {
     // headline moment — something hits a switch, a gate opens, Milo walks
     // through — was unbuildable. This is that.
     triggered: new Set(),
+    // Which balloons have been burst. On the SIM and never on the spec: level
+    // data is shared across every run in a solver sweep, so mutating a spec
+    // would leak one run's pop into the next 2500.
+    burst: new Set(),
     causality: createCausality(),
     recorder: createRecorder(),
     simTime: 0,
@@ -169,6 +173,21 @@ export function buildSim(level) {
       fireSwitch(sim, entry);
     }
 
+    // SHARP → POP. The other half of the balloon, and the thing that gives it
+    // a second question. FLOAT asks where a rising thing goes; a thorn asks
+    // where it STOPS rising, which is a different decision made with the same
+    // one stroke. Cut the Rope's bubble is defined by being popped; ours has
+    // no tap to pop it with, so the level supplies the thorn and the player
+    // decides whether the balloon ever reaches it.
+    for (const [hit, other] of [[a, b], [b, a]]) {
+      const entry = sim.objects.get(hit.gameId);
+      if (!entry?.spec.lift || sim.burst.has(entry.spec.id)) continue;
+      const spike = sim.statics.find((st) => st.body === other && st.spec.sharp);
+      if (!spike) continue;
+      sim.burst.add(entry.spec.id);
+      audio.impact(220, { heavy: false });
+    }
+
     const miloBody = sim.milo.body;
     if (a !== miloBody && b !== miloBody) return;
     const other = a === miloBody ? b : a;
@@ -297,6 +316,7 @@ export function commitStroke(sim, rawPoints) {
 function applyLift(sim) {
   for (const { body, spec } of sim.objects.values()) {
     if (!spec.lift || body.isStatic) continue;
+    if (sim.burst.has(spec.id)) continue;      // popped: it is just a weight now
     applyAccel(body, 0, -spec.lift);
   }
 }

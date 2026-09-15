@@ -202,5 +202,16 @@ export const SOLVER = {
     "threeStarLength": 229,
     "shortestWin": 110,
     "measuredAt": "2026-09-15"
+  },
+  "a31-thorns": {
+    "solvable": true,
+    "solutionBreadth": 0.0204,
+    "precisionFloor": 45,
+    "worstJitter": 1,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
   }
 };
