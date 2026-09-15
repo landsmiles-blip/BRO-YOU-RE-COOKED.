@@ -1670,7 +1670,75 @@ export const A29 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29];
+// ─────────────────────────────────────────────────────────────────────────
+// A30 — FLOAT. The first thing in this world that falls UP.
+//
+// Borrowed, and the borrowing is the point. Cut the Rope's bubble is the one
+// element from that game that survives this repo's own rules: a rocket is a
+// fixed thrust nobody can aim, a teleport is a rule rather than physics, and
+// an air cushion is the draught levels 13/16/17 already have. A balloon MOVES
+// AND ACTS — which no static noun can, because the player could simply draw it
+// — and its question is none of the three already spent.
+//
+// It is an OBJECT and not a zone, and that is what makes it safe. An updraft
+// plus any ceiling is a measured TRAP for Milo: the air pins him against the
+// underside and airborne Milo has no horizontal drive to escape with. A
+// balloon lifts a thing. Milo is never inside it.
+//
+// WHAT IT DOES TO THE STROKE is the reason to build it. Every line in this
+// game so far has been something to land ON — a shelf, a ramp, a road, a
+// floor. A rising body turns the line over: it is something to slide UNDER.
+// Measured before any of this was written: under a FLAT roof the balloon rises,
+// meets it, and sits at the same x for the rest of the level; tilt that roof 8
+// degrees and it travels 79 units, at 16 it clears the end entirely. A ceiling
+// steers what floats the way a ramp steers what falls.
+//
+// So doing nothing is not a death, it is a DEAD END — it parks in the pocket
+// and stays there, and the gate it was supposed to open never opens. The stroke
+// is the slope that gets it out.
+// ─────────────────────────────────────────────────────────────────────────
+export const A30 = {
+  id: 'a30-float',
+  hint: 'IT ONLY GOES UP',
+  world: 'backyard', verb: 'FLOAT',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // ONE CEILING, END TO END. It was two — a flat pocket and a separate shade
+    // over the plate — and the 20-unit gap between them was a chimney: the
+    // balloon steered out of the pocket rose straight through it and left the
+    // level. A ceiling with a hole in it is not a ceiling.
+    //
+    // Flat, so it holds the balloon exactly where it found it, and so that
+    // every unit of sideways travel has to come from the player.
+    { id: 'roof',   type: 'platform', x: 180, y: 560,  w: 440, h: 18  },
+    // The far wall of the pocket, so the balloon cannot simply drift out.
+    { id: 'jamb',   type: 'platform', x: 162, y: 560,  w: 18,  h: 150 },
+  ],
+  objects: [
+    // DENSE, AND IT COSTS NOTHING — the same finding level 17 paid for. Lift is
+    // an ACCELERATION, so this balloon rises identically at any mass; the
+    // density is here only so it outweighs a line. Without it the plate has a
+    // back door: the roof sits directly on the plate, but a short line drawn in
+    // the band just below is not touching either, so it falls unanchored
+    // straight through the switch and opens the gate with no balloon involved.
+    { id: 'balloon', type: 'boulder', x: 250, y: 1000, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    // Directly under the roof, so the balloon travelling along the underside
+    // runs into it. 300 units of ink cannot buy a line heavier than ~97.
+    { id: 'plate', type: 'switch', x: 440, y: 578, w: 180, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 330, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: 300, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.

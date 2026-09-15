@@ -191,5 +191,16 @@ export const SOLVER = {
     "threeStarLength": 230,
     "shortestWin": 110,
     "measuredAt": "2026-09-15"
+  },
+  "a30-float": {
+    "solvable": true,
+    "solutionBreadth": 0.0238,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 4,
+    "twoStarLength": 288,
+    "threeStarLength": 229,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
   }
 };

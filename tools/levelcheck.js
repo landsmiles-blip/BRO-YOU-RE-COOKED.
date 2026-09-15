@@ -84,6 +84,12 @@ function nounsOf(level) {
     if (s.restitution) out.push({ what: `spring "${s.id}"`, drop: (l) => ({ ...l, static: l.static.map((q) => (q.id === s.id ? { ...q, restitution: 0 } : q)) }) });
     if (s.pivot) out.push({ what: `pivot "${s.id}"`, drop: (l) => ({ ...l, static: l.static.map((q) => (q.id === s.id ? { ...q, pivot: null } : q)) }) });
   }
+  // Buoyancy. A balloon with the lift taken out is just a rock, which is
+  // exactly the comparison the A14 test wants. Added the day `lift` was — a
+  // noun no tool can check is a noun that gets to be decoration unnoticed.
+  for (const o of level.objects ?? []) {
+    if (o.lift) out.push({ what: `lift "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, lift: 0 } : q)) }) });
+  }
   return out;
 }
 

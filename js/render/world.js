@@ -392,6 +392,29 @@ export function drawScene(ctx, sim, opts = {}) {
     const lethal = isHazardous(spec.lethal);
     const opened = sim.triggered?.has(spec.id);
 
+    // A BALLOON MUST NOT LOOK LIKE A ROCK. It is drawn as one circle by the
+    // same code, and this level's balloon masses 537 — heavier than any
+    // boulder in the game — so without its own mark the picture would say
+    // "rock" about the one object in the world that falls upwards. That is the
+    // class of bug that has cost this project more than any other.
+    //
+    // A knot and a tail below it, and the pale air colour rather than stone:
+    // shape carries the meaning, colour only reinforces it.
+    if (spec.lift) {
+      inkShape(ctx, circlePoints(body.position.x, body.position.y, spec.radius), {
+        now, fill: C.air, ink: C.ink, width: 3.6, salt: 307,
+      });
+      const bx = body.position.x, by = body.position.y + spec.radius;
+      inkPath(ctx, [
+        { x: bx, y: by },
+        { x: bx - 5, y: by + 9 },
+        { x: bx + 5, y: by + 18 },
+        { x: bx - 3, y: by + 26 },
+      ], { now, colour: C.ink, width: 2.4, salt: 308, passes: 1 });
+      moving.push({ body, radius: spec.radius });
+      continue;
+    }
+
     if (spec.radius) {
       inkShape(ctx, circlePoints(body.position.x, body.position.y, spec.radius), {
         now, fill: lethal ? C.danger : C.staticFill, ink: C.ink, width: 3.6, salt: 301,

@@ -138,6 +138,20 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
       const spec = sim.objects.get(f.id)?.spec;
       // everything desaturates except the culprit
       ctx.fillStyle = guilty ? C.danger : 'rgba(160,150,140,0.7)';
+      // A BALLOON KEEPS ITS TAIL HERE TOO. Same rule the air just paid for:
+      // deathcam draws its own subset and the default for anything new is
+      // INVISIBLE, so a thing that falls upwards would replay as a grey ball
+      // dropping — the replay explaining the opposite of what happened.
+      if (spec?.lift) {
+        ctx.strokeStyle = guilty ? C.ink : 'rgba(42,38,34,0.4)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, spec.radius);
+        ctx.lineTo(-5, spec.radius + 9);
+        ctx.lineTo(5, spec.radius + 18);
+        ctx.lineTo(-3, spec.radius + 26);
+        ctx.stroke();
+      }
       ctx.strokeStyle = guilty ? C.ink : 'rgba(42,38,34,0.4)';
       ctx.lineWidth = guilty ? 4 : 2;
       // Rectangles were being replayed as radius-20 circles, so a plank or a

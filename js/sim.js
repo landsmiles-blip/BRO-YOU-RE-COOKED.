@@ -216,6 +216,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
 
   const hazardBodies = [...sim.objects.values()].map((o) => o.body);
   applyUpdrafts(sim);
+  applyLift(sim);
   audio.setDanger(updateDanger(sim.milo, hazardBodies));
   detectCloseCalls(sim);
   record(sim.recorder, allBodies(sim.ctx));
@@ -273,6 +274,33 @@ export function commitStroke(sim, rawPoints) {
  * asymmetry is not a bug, it is the feel — you can walk through a draught, you
  * cannot fall through one.
  */
+/**
+ * BUOYANCY — a thing that falls UP.
+ *
+ * The fourth noun, and the first one borrowed from outside: it is Cut the
+ * Rope's bubble. It earns its place by clearing the tests the other borrowings
+ * failed. A rocket is a fixed thrust the player cannot aim; a teleport is a
+ * rule rather than physics; an air cushion is the draught we already have. A
+ * balloon MOVES AND ACTS, which no static noun can, and its question is not one
+ * of the three already spent.
+ *
+ * It is an OBJECT and not a zone, and that distinction is the whole reason it
+ * is safe. An updraft plus any ceiling is a measured TRAP for Milo — the air
+ * pins him against the underside and airborne Milo has no horizontal drive to
+ * get out with. A balloon lifts a THING; Milo is never inside it.
+ *
+ * Acceleration, not force, for the same reason the updraft uses one: how hard
+ * it pulls does not quietly change when a density is retuned. It also makes
+ * lift mass-independent, so a balloon's cargo can be made heavy enough to beat
+ * a plate's weight gate without moving the balloon's behaviour at all.
+ */
+function applyLift(sim) {
+  for (const { body, spec } of sim.objects.values()) {
+    if (!spec.lift || body.isStatic) continue;
+    applyAccel(body, 0, -spec.lift);
+  }
+}
+
 function applyUpdrafts(sim) {
   for (const z of sim.zones) {
     if (z.kind !== 'updraft') continue;
