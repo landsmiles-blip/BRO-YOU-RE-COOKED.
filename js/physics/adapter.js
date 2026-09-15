@@ -95,6 +95,26 @@ export function addCapsule(ctx, { id, x, y, w, h, chamfer, ...opts }) {
 // rule they have to be told.
 
 /**
+ * A PADDLE WHEEL: `blades` bars of the same size through one hub, evenly spaced
+ * over a half turn, welded into one body. Two blades make a cross (four arms).
+ *
+ * It exists because the free spin that makes a pivot useless as a see-saw — a
+ * plank measured 0deg to -246deg and kept turning — is exactly what a wheel
+ * wants. Pin one of these and give it `spin` and the game has its first powered
+ * machine; everything before it was ballistic after release, or a zone.
+ */
+export function addCross(ctx, { id, x, y, w, h, blades = 2, angle = 0, ...opts }) {
+  const parts = [];
+  for (let i = 0; i < blades; i++) {
+    parts.push(Bodies.rectangle(x, y, w, h, { angle: angle + (i * Math.PI) / blades, ...opts }));
+  }
+  const body = blades === 1 ? parts[0] : Body.create({ parts, ...opts });
+  body.gameId = id;
+  Composite.add(ctx.world, body);
+  return body;
+}
+
+/**
  * Pin a body to a fixed point in the world. It keeps its mass and swings freely
  * about the pin; it cannot translate away from it.
  */

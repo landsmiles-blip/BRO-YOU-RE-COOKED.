@@ -7,7 +7,8 @@
 
 import {
   createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
-  onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel, addPivot, removeBody,
+  onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel, addPivot, addCross,
+  removeBody, setAngularVelocity,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
@@ -85,15 +86,27 @@ export function buildSim(level) {
     // own centre for a see-saw and one end for a swinging arm.
     if (s.pivot) {
       removeBody(ctx, body);
-      const moving = addRect(ctx, {
-        id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h,
+      const opts = {
         angle: (s.angle ?? 0) * Math.PI / 180,
         density: s.density ?? 0.008,
         friction: s.friction ?? 0.4,
         frictionAir: s.frictionAir ?? 0.01,
-      });
+      };
+      const geom = { id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h };
+      // `blades` turns one bar into a paddle wheel. One blade is a lever.
+      const moving = s.blades > 1
+        ? addCross(ctx, { ...geom, ...opts, blades: s.blades })
+        : addRect(ctx, { ...geom, ...opts });
       if (s.restitution) moving.restitution = s.restitution;
       addPivot(ctx, moving, s.pivot.x, s.pivot.y);
+
+      // SPIN makes it a powered machine rather than a thing that waits to be
+      // pushed. Raw Matter angular units, which is what the probe measured in:
+      // 0.30 throws a ball 659 units and lands it within 17u from anywhere in
+      // the feed zone; 0.12 is SLOWER and less consistent (228u spread), so do
+      // not assume gentler is tamer here.
+      if (s.spin) setAngularVelocity(moving, s.spin);
+
       sim.statics.push({ body: moving, spec: s, pivoted: true });
       continue;
     }

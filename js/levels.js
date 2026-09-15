@@ -1220,6 +1220,135 @@ export const A23 = {
   solver: null,
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// A24 — MILL.  Introduces: a machine that is ALREADY RUNNING.
+//
+// Everything in this game until now has been ballistic after release, or a zone
+// that sits there. This turns on its own before the player touches anything,
+// and it is the first thing here with power of its own.
+//
+// It exists because of a failure. A free pivot SPINS — a plank went 0deg to
+// -246deg and kept going, which is what makes a see-saw need end-stops and what
+// eventually shelved A23. For a wheel that is not a defect, it is the mechanism.
+//
+// A WHEEL MUST OUTWEIGH WHAT IT THROWS. At density 0.006 it massed 30 against
+// the rock's 36 and the rock stalled it — measured spinning up to 463deg,
+// stopping, and REVERSING to -0.0072 while the rock went out of the world. At
+// 252 against 36 it carries straight through the collision.
+//
+// THE PLAYER DOES NOT AIM IT, AND THAT IS THE WHOLE DESIGN. Four attempts asked
+// them to feed the mill so it would throw a rock somewhere useful, and the
+// honest version of that swept at 0.9% breadth against a 2% floor: a nudge into
+// a narrow feed band, times the right blade phase, times threading the landing.
+// Three conditions in series is the A14 trap with extra steps.
+//
+// So the mill is a MENACE instead. It is already turning, it will throw the
+// rock at him, and the answer is the oldest verb in the game — keep the rock
+// out of the machine. Nothing to aim, and the thing to understand is visible
+// from the frozen frame: that wheel is going to hit that rock.
+// ─────────────────────────────────────────────────────────────────────────
+export const A24 = {
+  id: 'a24-mill',
+  hint: 'THE MILL WILL THROW IT AT HIM',
+  world: 'backyard', verb: 'MILL',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 450,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // NEGATIVE spin: counter-clockwise, so the top of the wheel travels LEFT
+    // and a rock dropped into it is thrown back down the level at Milo. The
+    // hub sits 280 units above his head; he never touches the machine itself.
+    { id: 'wheel',  type: 'platform', x: 330, y: 793,  w: 180, h: 14,
+      pivot: { x: 420, y: 800 }, blades: 2, spin: -0.20, density: 0.05 },
+  ],
+  objects: [
+    { id: 'rock',  type: 'boulder', x: 420, y: 300, radius: 24,
+      density: 0.02, restitution: 0.05, friction: 0.05,
+      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A25 — VAULT.  The springboard again, used to CLIMB.
+//
+// A20 taught that a hopping thing keeps its speed where a rolling thing spends
+// it on friction. The other half of that is height: a rolling ball cannot get
+// onto a ledge, and a bouncing one can. So the plate goes somewhere only a
+// bounce reaches, and the board is the only way up.
+//
+// WHY THIS AND NOT A HAZARD. Three hazard levels died today on the same
+// arithmetic: Milo crosses the level in about 2.7 seconds and a machine needs
+// one and a half to two to act, so by the time it delivers he has walked past
+// and "doing nothing" WINS. The levels that work hold him at a gate while the
+// machine takes its time. That is why the plate-and-gate pattern keeps earning
+// its place — it is not a motif, it is what makes a slow machine legible.
+//
+// The stroke does the same job as A20: decide where the ball meets the board.
+// Everything after that is the board's business.
+// ─────────────────────────────────────────────────────────────────────────
+export const A25 = {
+  id: 'a25-vault',
+  hint: 'IT CANNOT CLIMB UP THERE',
+  world: 'backyard', verb: 'VAULT',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 450,
+  static: [
+    { id: 'ground',  type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // A TILTED board, and the tilt is the whole point. A flat springboard set
+    // into the floor was useless: every ramp that fed it delivered the ball
+    // travelling sideways, and a sideways arrival has almost no speed into the
+    // surface, so there is nothing to bounce. A ball dropped straight onto a
+    // flat board goes straight back up and lands on the board again.
+    // Measured at 10deg and 0.8: a straight fall comes off rising 115 units and
+    // travelling 255 to the right, which is a launch rather than a rebound.
+    // At 20deg it leaves the world entirely.
+    { id: 'board',   type: 'platform', x: 290, y: 990,  w: 180, h: 20,
+      angle: 10, restitution: 0.8, friction: 0.3 },
+    // The plate's ledge, with 130 units of clearance beneath it so Milo walks
+    // under and the only thing that ever gets up there is the ball.
+    { id: 'ledge',   type: 'platform', x: 470, y: 900,  w: 200, h: 20 },
+    // A ROOF OVER THE PLATE, for the same reason the mill needed one. Left open
+    // the level is solved by dropping an unanchored line straight onto the
+    // plate — measured, it wins from any height — and the board never matters.
+    // A11 teaches that a falling line is a weight, so of course it gets tried.
+    // The ball comes in under this on a flat arc (it crosses the ledge edge at
+    // about y=860 and lands at 547); anything falling from above lands on top.
+    { id: 'roof',    type: 'platform', x: 450, y: 780,  w: 240, h: 16 },
+    // A FUNNEL, because the board wants a vertical arrival and a player cannot
+    // give it one. Any ramp that moves the ball sideways robs it of the speed
+    // INTO the surface that the bounce is made of, so the honest solution was
+    // a knife edge: 1.2% breadth once the plate was roofed. The funnel mouth is
+    // 320 units wide and its throat is 78, so the stroke only has to get the
+    // ball into a barn door and the geometry does the precise part — the same
+    // trade A19 makes with its chimney.
+    // The left wall reaches out to x=130. At its first size its upper lip sat at
+    // x=219 and the ball arrives at x=221 — landing ON the tip, falling off the
+    // outside as often as the inside, and every failure traced the same way:
+    // 221 -> 165 -> 102 -> off to the left. A funnel you can miss by two units
+    // is not a funnel.
+    { id: 'funnelL', type: 'platform', x: 109, y: 873,  w: 254, h: 16, angle:  34 },
+    { id: 'funnelR', type: 'platform', x: 400, y: 892,  w: 160, h: 16, angle: -40 },
+  ],
+  objects: [
+    // Falls straight down onto dead ground and stays there. A drawn line is
+    // STATIC once anchored and cannot shove anything, so the ball has to arrive
+    // already moving — every level here redirects something, none starts it.
+    { id: 'ball',  type: 'boulder', x: 170, y: 260, radius: 26,
+      density: 0.02, restitution: 0.1, friction: 0.06,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 490, y: 870, w: 160, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 590, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21];
 
 /**
@@ -1242,6 +1371,33 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A25, reason: 'THE SPRING NEEDS A VERTICAL ARRIVAL AND A PLAYER CANNOT GIVE IT ONE. '
+    + 'A bounce is made of speed INTO the surface, so every ramp that feeds a board delivers the '
+    + 'ball sideways and there is nothing left to bounce with. A tilted board fixes the launch '
+    + '(measured 10deg at 0.8: rises 115u, travels 255u right — 20deg leaves the world) but not '
+    + 'the arrival. A funnel to verticalise it got breadth from 1.2% to 3.4%, and then the throat '
+    + 'started catching the ball: with the board dead and the board springy the run ends identically, '
+    + 'jammed at (398,967). Five shapes, and the noun ends up decoration. '
+    + 'The real lesson is bigger than this level and is written up in CLAUDE.md: a machine that '
+    + 'needs its input delivered in a particular DIRECTION cannot be driven by one static stroke. '
+    + 'The spring works when the player only chooses WHERE something lands (A20) and fails whenever '
+    + 'the level also needs to choose HOW it arrives.' },
+  { level: A24, reason: 'THE MACHINE WORKS; THE WORLD IS TOO SMALL FOR IT. Five designs, and the '
+    + 'physics was never the problem. Findings, so none of this is paid for twice: a wheel must '
+    + 'OUTWEIGH what it throws — at mass 30 against a 36 rock it stalled, reversed to -0.0072 and '
+    + 'flung the rock out of the world, while at 252 it carried through cleanly; the free spin that '
+    + 'ruins a see-saw is exactly what a wheel wants; and a heavy enough wheel throws EVERYTHING '
+    + 'far, so the throw distance cannot be the puzzle. '
+    + 'Asking the player to AIM it — nudge the rock into a feed band, catch the right blade phase, '
+    + 'land it somewhere — is three conditions in series and swept at 0.9% breadth against a 2% '
+    + 'floor. (An earlier cut measured 20.4%, but that was the bypass: the certified solution came '
+    + 'back anchors=0, an unanchored line dropped straight on the plate, with the mill as scenery.) '
+    + 'Turned round as a HAZARD it throws too fast and too flat to catch a walking man: eight '
+    + 'combinations of spin and hub position, and the closest it ever came to Milo was 51 units. '
+    + 'The engine support (addCross, spin, bladed rendering) is sound and stays. Bring the wheel '
+    + 'back for something that does NOT need aiming and does not need it to hit a moving target — '
+    + 'a mill that turns something, or a hazard that sweeps a place he must cross rather than one '
+    + 'that has to intercept him.' },
   { level: A22, reason: 'CAUGHT BETWEEN TWO DEAD ENDS, and the A14 test named the second one. '
     + 'The rock has to land on the plank for the lever to route it. Land it ON the pin and the '
     + 'outcome is decided by noise: the level swept at 39.4% breadth, the loosest in the game, and '

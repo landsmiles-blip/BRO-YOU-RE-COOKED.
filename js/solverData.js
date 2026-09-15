@@ -170,15 +170,15 @@ export const SOLVER = {
     "shortestWin": 105,
     "measuredAt": "2026-09-14"
   },
-  "a22-tip": {
+  "a25-vault": {
     "solvable": true,
-    "solutionBreadth": 0.3416,
-    "precisionFloor": 65,
-    "worstJitter": 4,
-    "distinctFamilies": 6,
+    "solutionBreadth": 0.0339,
+    "precisionFloor": 30,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
     "twoStarLength": 288,
-    "threeStarLength": 193,
-    "shortestWin": 99,
-    "measuredAt": "2026-09-14"
+    "threeStarLength": 243,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
   }
 };

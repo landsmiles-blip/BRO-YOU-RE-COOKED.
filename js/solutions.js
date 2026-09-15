@@ -621,5 +621,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a25-vault": {
+    "id": "a25-vault",
+    "winners": 593,
+    "robust": 546,
+    "anchoredRobust": 0,
+    "handRate": 0.921,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 0,
+      "points": [
+        {
+          "x": 427.4,
+          "y": 487.9
+        },
+        {
+          "x": 480.2,
+          "y": 483.1
+        },
+        {
+          "x": 526.9,
+          "y": 488.9
+        },
+        {
+          "x": 567.5,
+          "y": 505.2
+        },
+        {
+          "x": 602,
+          "y": 532.2
+        },
+        {
+          "x": 630.3,
+          "y": 569.7
+        },
+        {
+          "x": 652.6,
+          "y": 617.9
+        }
+      ]
+    }
   }
 };

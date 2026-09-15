@@ -110,6 +110,50 @@ is ever combined. Not a new rule about drawing.
 re-run. If the outcome barely changes, it is decoration.** The updraft's first
 level failed exactly this, on every stroke tried.
 
+## A MACHINE THE PLAYER CANNOT AIM IS NOT A LEVEL
+
+Three machine levels died in one session on the same thing, so it is a rule now,
+not a coincidence. **One static stroke can choose WHERE something goes. It
+cannot choose HOW that thing ARRIVES.**
+
+- The **wheel** throws whatever falls into it — but which way depends on the
+  quadrant it meets and the blade phase. Asking the player to feed it was three
+  conditions in series: 0.9% breadth against a 2% floor.
+- The **spring** needs speed INTO the surface. Every ramp that feeds a board
+  delivers the ball sideways, which is exactly the component a bounce is made
+  of, so the honest solution was 1.2%.
+- Both "fixed" it with funnels and chambers, and both then had the geometry do
+  so much of the work that the noun became decoration — which the A14 test said
+  out loud.
+
+The levels that DO work ask for one thing: which side of the pin (A21), where on
+the board (A20), into the column or not (A19). **If the level needs the input
+delivered in a particular direction, the machine belongs in the scenery, not in
+the puzzle.**
+
+And the timing half of the same rule: **Milo crosses a level in about 2.7
+seconds and a machine needs one and a half to two to act.** Three hazard levels
+reported "doing nothing WINS" because by the time the machine delivered he had
+walked past. That is what the plate-and-gate pattern is FOR — it holds him while
+a slow machine takes its time. It is not a motif, it is load-bearing.
+
+## THE PLATE IS A BACK DOOR
+
+**Any level whose win condition is a plate can be won by dropping an unanchored
+line on the plate**, skipping the machine entirely. Audited across the shipped
+set: levels 7 (FUNNEL), 13 (UPDRAFT) and 15 (LEVER) are all bypassable this way.
+(Level 9 DROP is not a bug — that IS its solution, and it is what teaches every
+player the trick.)
+
+This also inflates the solver: two new levels measured 20.4% and 26.3% breadth,
+and closing the bypass took them to 0.9% and 1.2%. **A plate level's breadth is
+not trustworthy until the drop-on-the-plate solution has been ruled out.**
+
+`js/sim.js` already supports `requires: 'heavy'` with `minMass` on a switch and
+nothing uses it. It is not a free fix: a 300-unit line part masses ~96 against a
+typical rock's ~42, so the rocks have to get heavier first, and that re-tunes
+every level they appear in.
+
 ## TRAPS THAT HAVE ALREADY BITTEN
 
 - **Constant names are NOT level numbers.** `A13` is not level 13. The names are
@@ -165,6 +209,11 @@ level failed exactly this, on every stroke tried.
   two to four seconds, so a pendulum gives ONE sweep, not a rhythm. Period goes
   as √length, so a swing fast enough to repeat is too short to threaten
   anything.
+- **A WHEEL MUST OUTWEIGH WHAT IT THROWS.** At mass 30 against a 36 rock it
+  stalled, reversed to an angular velocity of -0.0072, and flung the rock out of
+  the world; at 252 it carried straight through. The free spin that ruins a
+  see-saw is exactly what a wheel wants — and a wheel heavy enough to throw at
+  all throws EVERYTHING far, so throw distance cannot be the puzzle.
 - **Milo CAN walk a see-saw** whose near end is level or down, and is stopped
   dead by one whose near end is raised — at +6° he stood at x=185 until the
   clock ran out. That is A2's 22u step-up rule, applied to a moving part.

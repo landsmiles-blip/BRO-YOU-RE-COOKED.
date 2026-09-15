@@ -74,10 +74,20 @@ export function drawScene(ctx, sim, opts = {}) {
       ctx.rotate(b.angle * Math.PI / 180);
       ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
     }
-    inkShape(ctx, rectPoints(b.x, b.y, b.w, b.h), {
-      now, fill: drain(C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
-      width: 3.4, salt: b.x | 0,
-    });
+    // A BLADED PIECE IS DRAWN ONCE PER BLADE. The spec carries ONE rectangle
+    // because that is what the author writes; the body is `blades` of them
+    // welded through a hub. Drawing the spec alone rendered a four-armed mill
+    // as a single leaning stick — it turned correctly, collided correctly, and
+    // looked like a fallen plank.
+    const blades = (s.pivoted && b.blades > 1) ? b.blades : 1;
+    const cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+    for (let k = 0; k < blades; k++) {
+      if (k) { ctx.translate(cx, cy); ctx.rotate(Math.PI / blades); ctx.translate(-cx, -cy); }
+      inkShape(ctx, rectPoints(b.x, b.y, b.w, b.h), {
+        now, fill: drain(C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
+        width: 3.4, salt: b.x | 0,
+      });
+    }
     // A thin shelf floating in mid-air reads as an unfinished placeholder.
     // Diagonal brackets cost nothing and make it read as a fixed structure —
     // which also tells the player, truthfully, that it is something solid to
@@ -101,8 +111,20 @@ export function drawScene(ctx, sim, opts = {}) {
       ctx.save();
       const pv = b.pivot;
       const ink = drain(C.ink, freeze * 0.35);
+      // A wheel gets a bigger hub and a rim, so a frozen mill still says "this
+      // turns" rather than "these sticks happen to cross".
+      const hubR = b.blades > 1 ? 13 : 7;
+      if (b.blades > 1) {
+        ctx.beginPath();
+        ctx.arc(pv.x, pv.y, b.w / 2, 0, Math.PI * 2);
+        ctx.strokeStyle = drain(C.pivot, 0.45 + freeze * 0.3);
+        ctx.lineWidth = 2.2;
+        ctx.setLineDash([9, 11]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
       ctx.beginPath();
-      ctx.arc(pv.x, pv.y, 7, 0, Math.PI * 2);
+      ctx.arc(pv.x, pv.y, hubR, 0, Math.PI * 2);
       ctx.fillStyle = drain(C.pivot, freeze * 0.3);
       ctx.fill();
       ctx.lineWidth = 2.6;
