@@ -169,5 +169,16 @@ export const SOLVER = {
     "threeStarLength": 177,
     "shortestWin": 105,
     "measuredAt": "2026-09-15"
+  },
+  "a28-duct": {
+    "solvable": true,
+    "solutionBreadth": 0.2107,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 3,
+    "twoStarLength": 181,
+    "threeStarLength": 110,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
   }
 };

@@ -58,6 +58,41 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     ctx.fill();
   }
 
+  // MOVING AIR. Same omission as the spikes above, found the same way — by
+  // finally filming a LOSS instead of a win. On the duct level the replay
+  // showed a roof, two posts and a falling rock, with no hint that AIR is what
+  // carried it up and along. The one screen whose job is to explain was
+  // explaining the wrong mechanism: it looked like the rock had simply fallen.
+  //
+  // Drawn flat rather than animated, because the replay is scrubbed by frame
+  // and a wall-clock animation would slide around underneath it. The chevrons
+  // still point along the real flow vector, for the reason world.js does.
+  for (const z of sim.level?.zones ?? []) {
+    if (z.kind !== 'updraft') continue;
+    const ang = Math.atan2(z.ax ?? 0, -(z.accel ?? -2600));
+    const across = z.w * Math.abs(Math.cos(ang)) + z.h * Math.abs(Math.sin(ang));
+    const along = z.w * Math.abs(Math.sin(ang)) + z.h * Math.abs(Math.cos(ang));
+    ctx.save();
+    ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
+    ctx.fillStyle = C.air; ctx.globalAlpha = 0.14;
+    ctx.fillRect(z.x, z.y, z.w, z.h);
+    ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
+    ctx.rotate(-ang);
+    ctx.globalAlpha = 0.55;
+    ctx.strokeStyle = C.air; ctx.lineWidth = 3;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const cols = Math.max(2, Math.round(across / 76));
+    for (let y = along / 2; y > -along / 2 - 46; y -= 46) {
+      for (let i = 0; i < cols; i++) {
+        const cx = across * ((i + 0.5) / cols - 0.5);
+        ctx.beginPath();
+        ctx.moveTo(cx - 22, y + 11); ctx.lineTo(cx, y); ctx.lineTo(cx + 22, y + 11);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
   // WHERE HE WAS TRYING TO GET TO. Without it there is no sense of direction
   // or of how close he came.
   const g = sim.level?.goal;

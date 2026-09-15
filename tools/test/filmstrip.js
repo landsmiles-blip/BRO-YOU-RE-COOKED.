@@ -66,7 +66,19 @@ mkdirSync(OUT, { recursive: true });
  * These filmstrips therefore show the game being WON. A level that does not
  * reach its goal in one of them is a real regression, not a bad guess by me.
  */
+/**
+ * FILM_IDLE=1 films the LOSS instead of the win.
+ *
+ * Every filmstrip in this project's history filmed a win, and the losing screen
+ * is what a player sees most of the time. The one failure capture anybody ever
+ * took found a death cam drawing the player's own line as a fixed 80-pixel dash
+ * with no lethal zones and no goal — the screen whose whole job is to explain,
+ * explaining nothing. There was no way to ask for that capture; now there is.
+ */
+const IDLE = process.env.FILM_IDLE === '1';
+
 function strokeFor(id) {
+  if (IDLE) return null;
   const sol = SOLUTIONS[id]?.solution;
   if (!sol) return null;
   // Same hand model the solver used to certify it — see tools/test/lib/hand.js.
@@ -107,14 +119,28 @@ for (const id of targets) {
 
   // Draw it the way a finger would.
   const world = strokeFor(id);
-  if (!world) { console.log(`${id.padEnd(12)} SKIPPED — no verified solution; run tools/solver/representative.js`); continue; }
+  if (!world && !IDLE) { console.log(`${id.padEnd(12)} SKIPPED — no verified solution; run tools/solver/representative.js`); continue; }
+  if (IDLE) {
+    // The idle run has no stroke to release, and `release()` in game.js is the
+    // commit path — it cannot run without one. PHASE is already exported on
+    // __byc for the board gate, so the same LIVE object does it here: this is
+    // the real frozen-to-running transition, not a simulation of one.
+    await page.evaluate(() => {
+      const b = globalThis.__byc;
+      b.game.phase = b.PHASE.SIM;
+      b.game.phaseTime = 0;
+    });
+    shots.push({ label: 'released', buf: await page.screenshot() });
+  }
   const pts = [];
-  for (const w of world) pts.push(await toScreen(w.x, w.y));
-  await page.mouse.move(pts[0].x, pts[0].y);
-  await page.mouse.down();
-  for (let i = 1; i < pts.length; i++) { await page.mouse.move(pts[i].x, pts[i].y); await page.waitForTimeout(10); }
-  shots.push({ label: 'drawing', buf: await page.screenshot() });
-  await page.mouse.up();
+  if (world) {
+    for (const w of world) pts.push(await toScreen(w.x, w.y));
+    await page.mouse.move(pts[0].x, pts[0].y);
+    await page.mouse.down();
+    for (let i = 1; i < pts.length; i++) { await page.mouse.move(pts[i].x, pts[i].y); await page.waitForTimeout(10); }
+    shots.push({ label: 'drawing', buf: await page.screenshot() });
+    await page.mouse.up();
+  }
 
   const info = await page.evaluate(() => {
     const g = globalThis.__byc.game;
@@ -176,7 +202,7 @@ for (const id of targets) {
   await sheet.close();
 
   const won = outcome.outcome === 'success';
-  if (!won) regressions.push(`${id} -> ${outcome.outcome}${outcome.death ? ' "' + outcome.death + '"' : ''}`);
+  if (!won && !IDLE) regressions.push(`${id} -> ${outcome.outcome}${outcome.death ? ' "' + outcome.death + '"' : ''}`);
   console.log(
     `${won ? 'WIN ' : 'FAIL'} ${id.padEnd(12)} parts=${String(info.parts).padStart(2)} ` +
     `anchors=${String(info.anchors).padStart(2)} static=${String(info.isStatic).padEnd(5)} ` +

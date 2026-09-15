@@ -1439,7 +1439,143 @@ export const A26 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21];
+// ─────────────────────────────────────────────────────────────────────────
+// A27 — BLOCKED.  The lever again, and this time there is no plate at all.
+//
+// Every plate level in this game has the same back door: drop an unanchored
+// line on the plate and the gate opens with the machine untouched. Levels 13
+// and 15 needed lids to close it. This one has nothing to press — the rock
+// itself is the lock, and the only question is where it ends up.
+//
+// THE SHAFT SITS OVER THE LEVER, WALL TO WALL. A machine placed before the
+// player's delivery point can always be bypassed by delivering directly — that
+// is what held the two-lever cascade, where a ramp threw the rock clean past
+// the first plank. Here the rock has nowhere else to go: both walls run the
+// full height and the only floor beneath them is the plank.
+//
+// So the whole level is one decision, made in a 144-unit-wide shaft: which side
+// of the pin does it come down on.
+// ─────────────────────────────────────────────────────────────────────────
+export const A27 = {
+  id: 'a27-blocked',
+  hint: 'HE CANNOT CLIMB OVER THAT',
+  world: 'backyard', verb: 'BLOCKED',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 686, y: 1152, w: 60, h: 140 },
+  freezeAt: 500,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // 184 units of interior, not 144. The narrow version left only a 48-unit
+    // band left of the pin once the rock's own radius was taken off, and a ramp
+    // reaching into it wedged the rock against the wall — measured resting at
+    // (372,576), never falling at all. A decision needs somewhere to be made.
+    { id: 'shaftL', type: 'platform', x: 300, y: 300, w: 16, h: 400 },
+    { id: 'shaftR', type: 'platform', x: 500, y: 300, w: 16, h: 400 },
+    // Leaning RIGHT, so the untouched rock goes the way that blocks him.
+    { id: 'plank',  type: 'platform', x: 300, y: 751, w: 240, h: 18,
+      pivot: { x: 420, y: 760 }, angle: 8, density: 0.01 },
+    { id: 'stopL',  type: 'platform', x: 306, y: 797, w: 26, h: 20 },
+    { id: 'stopR',  type: 'platform', x: 514, y: 797, w: 26, h: 20 },
+    // NO DOORWAY, NO JAMBS, NO PLATE. The first build put two pillars in his
+    // path with a gap between them, which blocks him whether the rock is there
+    // or not — he walks into the first pillar at x=542 and stops. The rock does
+    // not need help: it is 52 units tall against his 22-unit step-up, so a rock
+    // at rest anywhere on the floor is already a wall he cannot climb.
+    // WHERE THE ROCK GOES WHEN IT GOES THE RIGHT WAY. Without this the level
+    // has two losing answers and no winning one: send it right and it plugs the
+    // doorway, send it left and it lands at x=122 — measured — square in the
+    // walk he has not started yet, and blocks him there instead. The shelf
+    // catches the left-hand drop and holds it over his head, 132 units clear.
+    // It runs all the way to x=40 because the rock leaves the lever's left end
+    // travelling, not dropping: a 150-unit shelf under the arm was overshot
+    // every time, out to x=-266 on one run and down to x=72 — where he starts —
+    // on another.
+    { id: 'shelf',  type: 'platform', x: 40,  y: 1000, w: 340, h: 20 },
+
+  ],
+  objects: [
+    // Not lethal. It does not have to kill him — it only has to be in the way.
+    { id: 'rock',  type: 'boulder', x: 460, y: 340, radius: 26,
+      density: 0.03, restitution: 0.05, friction: 0.3,
+      lethal: { kind: 'none' } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A28 — THE DUCT. Air that goes somewhere, rather than air that only lifts.
+//
+// A19 taught one thing about air and it only has one question: nothing in a
+// column can climb out of it, so put something IN and the air does the rest.
+// In, or not in. That is the whole level, and a second one asking it again
+// would be A27's mistake with a different noun.
+//
+// This is the other half of the same thing. The zone has ALWAYS had a sideways
+// component — `z.ax`, read by applyUpdrafts since the day updrafts were added
+// — and nothing had ever used it, because a flue that only blows up can only
+// ever hand its cargo back. Traced it: a rock fired out of a vertical column
+// coasts up, stops, and falls straight back down the same column, forever.
+// AIR CAN ONLY DELIVER IF IT LEANS.
+//
+// So the flue turns. The rock rides up the column, meets the roof, and is
+// driven ALONG the underside of it — pinned there, because the lift beats
+// gravity — until the roof runs out, directly over the walk.
+//
+// What that does to the STROKE is the point. In every other level the line
+// catches, blocks or routes something that is falling past it once. Here the
+// air holds the rock against whatever it meets, so the line does not have to
+// catch anything: it only has to INTERRUPT. Stop the rock anywhere in the run
+// and the draught pins it there and keeps it pinned.
+// ─────────────────────────────────────────────────────────────────────────
+export const A28 = {
+  id: 'a28-duct',
+  hint: 'THE AIR IS TAKING IT SOMEWHERE',
+  world: 'backyard', verb: 'DUCT',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 600,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The column is closed on the right only as far as the bend. Above y=700
+    // the rock is free to go where the air is pushing it.
+    { id: 'colL',   type: 'platform', x: 260, y: 800,  w: 20,  h: 260 },
+    { id: 'colR',   type: 'platform', x: 420, y: 920,  w: 20,  h: 140 },
+    // Reaches all the way to the lip. At w=300 it stopped 20 units short and
+    // the frozen sheet showed the lip as a free-floating post beside the duct
+    // rather than its mouth — two objects where there is one machine.
+    { id: 'roof',   type: 'platform', x: 260, y: 740,  w: 340, h: 20  },
+    // THE LIP IS THE CLOCK. Without it the rock leaves the roof still moving
+    // sideways and throws itself 98 units downrange — measured — which lands
+    // it at x=648, on top of the goal, the exact staging fault A20 shipped.
+    // Stopped dead at the mouth it falls straight, and a straight fall from
+    // the roof takes 630ms, which is the walk from x=550 to the goal. The
+    // duct is not timed by tuning; it is timed by where it ends.
+    { id: 'lip',    type: 'platform', x: 580, y: 740,  w: 20,  h: 180 },
+  ],
+  objects: [
+    { id: 'rock',  type: 'boulder', x: 310, y: 1020, radius: 26,
+      density: 0.03, restitution: 0.1, friction: 0.06,
+      lethal: { kind: 'impact', minSpeed: 380, graceRadius: 6 } },
+  ],
+  zones: [
+    { id: 'duct', kind: 'updraft', x: 280, y: 760, w: 270, h: 300, accel: -2400, ax: 300 },
+  ],
+  // A TIGHT BUDGET, because the first measurement said the level was too kind.
+  // At the default it swept 26.0% breadth — six times A19's and A21's, and
+  // the easiest level in the game sitting at the end of it. The reason is the
+  // duct's own generosity: the air pins ANYTHING that is not static, so a
+  // scribble dropped in the run gets held against the roof and plugs it.
+  // That is not a back door — it does not skip the machine, it IS the machine,
+  // and it is the thing the level is teaching. It just must not be free.
+  // 220 units still spans the column (140) and still walls the run (160). It
+  // does not pay for a bowl, a ring, or a fence across the whole thing.
+  drawing: { maxLength: 220, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
@@ -1461,6 +1597,9 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A27, reason: 'A27 IS A21 MIRRORED, which is the one fault no per-level gate can see. The same shaft, the same pivoted plank, the same pair of end-stops, the same 26-unit rock, and the same single question — which side of the pin does it come down on. Only the lean is reversed. Tiled beside A21 on the frozen sheet they are one level twice, which is exactly what the playtest meant by "too basic". '
+    + 'It never got its failure to hold either. The untouched rock leaves the right arm with 800 units of drop behind it and FRICTION DOES NOTHING in this engine, so nothing stops it: it rolled to x=700, past the goal, and doing nothing WON. Measured kerbs — 14u and 18u were rolled straight over, 22u launched the rock out of the world at y=9711. A rock arriving that fast cannot be parked in a walkway by any obstacle low enough for Milo to step over. '
+    + 'The finding worth keeping is the general one: WHICH SIDE OF THE PIN is the pivot\'s only question, and A21 already asks it. A second pivot level needs a different question, not a different lean.' },
   { level: A26, reason: 'TWO LEVERS IN SERIES CANNOT BOTH MATTER, and the reason is geometric rather '
     + 'than tuning. A see-saw delivers off its END, which is by definition outside its own footprint, '
     + 'so the second lever has to sit offset from the first — and that offset IS a window to drop the '

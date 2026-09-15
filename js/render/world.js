@@ -236,45 +236,82 @@ export function drawScene(ctx, sim, opts = {}) {
 
   // ── moving air ────────────────────────────────────────────────────────
   //
-  // Chevrons climbing the column, on a loop tied to wall-clock time so the
-  // thing is obviously MOVING even in a still frame — the one property that
+  // Chevrons riding the flow, on a loop tied to wall-clock time so the thing
+  // is obviously MOVING even in a still frame — the one property that
   // separates it from a decorative pale rectangle. Never the danger accent:
-  // it does not kill, it lifts, and the player has to be able to trust that
+  // it does not kill, it pushes, and the player has to be able to trust that
   // on sight.
+  //
+  // THEY POINT WHERE THE AIR ACTUALLY PUSHES. `applyUpdrafts` has read a
+  // horizontal component (`z.ax`) since updrafts were added, and this drew
+  // straight up regardless — so the first level to lean its draught would
+  // have shipped a picture that lied about the physics, which is the one
+  // class of bug no assertion about positions can catch. The stroke renderer
+  // already cost a session proving that. Everything here is derived from the
+  // flow vector, so a zone that turns LOOKS like one.
   for (const z of sim.zones ?? []) {
     if (z.kind !== 'updraft') continue;
+    // Screen angle of the flow, measured from "straight up".
+    const ang = Math.atan2(z.ax ?? 0, -(z.accel ?? -2600));
+    const cos = Math.abs(Math.cos(ang)), sin = Math.abs(Math.sin(ang));
+    // How wide the zone is ACROSS the flow, and how far along it reaches.
+    const across = z.w * cos + z.h * sin;
+    const along = z.w * sin + z.h * cos;
+
     ctx.save();
     ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
     ctx.fillStyle = C.air;
     ctx.globalAlpha = 0.10;
     ctx.fillRect(z.x, z.y, z.w, z.h);
 
+    // Work in flow space: local +y is DOWNSTREAM-to-upstream, as before.
+    ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
+    ctx.rotate(-ang);
+
+    // A WIDE FLOW GETS MORE CHEVRONS, NOT WIDER ONES.
+    //
+    // The chevron used to be sized as a FRACTION of the zone's width, which was
+    // invisible while the only zone in the game was A19's 160-unit chimney. The
+    // duct is 270 wide and 300 tall, so the same fraction stretched each mark to
+    // 98 units across by 11 deep — and the filmstrip came back reading as flat
+    // wavy strata. It looked like WATER. A player has to be able to tell at a
+    // glance that the thing is blowing, not filling.
+    //
+    // Fixed size, spread to fit. A19 still gets its two marks; a wide duct gets
+    // four of the same shape.
     const period = 46;
+    const HALF = 22, DEPTH = 11;              // the mark, in world units, always
+    const cols = Math.max(2, Math.round(across / 76));
     const drift = ((now / 9) % period + period) % period;
     ctx.globalAlpha = 0.5;
     ctx.strokeStyle = C.air;
     ctx.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    for (let y = z.y + z.h + period - drift; y > z.y - period; y -= period) {
-      for (const f of [0.3, 0.7]) {
-        const cx = z.x + z.w * f;
+    for (let y = along / 2 + period - drift; y > -along / 2 - period; y -= period) {
+      for (let i = 0; i < cols; i++) {
+        const cx = across * ((i + 0.5) / cols - 0.5);
         ctx.beginPath();
-        ctx.moveTo(cx - z.w * 0.16, y + 11);
+        ctx.moveTo(cx - HALF, y + DEPTH);
         ctx.lineTo(cx, y);
-        ctx.lineTo(cx + z.w * 0.16, y + 11);
+        ctx.lineTo(cx + HALF, y + DEPTH);
         ctx.stroke();
       }
     }
     ctx.restore();
-    // Edges, so the column has a boundary you can aim at.
+    // Edges, so the flow has a boundary you can aim at. Drawn along the flow
+    // and clipped to the zone, not down the zone's own sides — in a duct that
+    // turns, the sides are not the thing the cargo runs along.
     ctx.save();
+    ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
+    ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
+    ctx.rotate(-ang);
     ctx.globalAlpha = 0.35;
     ctx.strokeStyle = C.air;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.moveTo(z.x, z.y); ctx.lineTo(z.x, z.y + z.h);
-    ctx.moveTo(z.x + z.w, z.y); ctx.lineTo(z.x + z.w, z.y + z.h);
+    ctx.moveTo(-across / 2, -along / 2); ctx.lineTo(-across / 2, along / 2);
+    ctx.moveTo(across / 2, -along / 2); ctx.lineTo(across / 2, along / 2);
     ctx.stroke();
     ctx.restore();
   }

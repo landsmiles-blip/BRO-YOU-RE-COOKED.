@@ -609,5 +609,36 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a28-duct": {
+    "id": "a28-duct",
+    "winners": 126,
+    "robust": 97,
+    "anchoredRobust": 87,
+    "handRate": 0.77,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 378.8,
+          "y": 705.4
+        },
+        {
+          "x": 406.3,
+          "y": 753
+        },
+        {
+          "x": 433.8,
+          "y": 800.7
+        },
+        {
+          "x": 461.3,
+          "y": 848.3
+        }
+      ]
+    }
   }
 };
