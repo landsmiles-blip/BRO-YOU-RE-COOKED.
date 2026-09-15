@@ -168,6 +168,18 @@ level failed exactly this, on every stroke tried.
 - **Milo CAN walk a see-saw** whose near end is level or down, and is stopped
   dead by one whose near end is raised — at +6° he stood at x=185 until the
   clock ran out. That is A2's 22u step-up rule, applied to a moving part.
+- **A LOCAL-SPACE PATH MUST BE UN-ROTATED, NOT JUST RE-CENTRED.**
+  `body.strokePath` was stored as `point − body.position`, which leaves it in
+  WORLD orientation. Both readers then rotate it by `body.angle` to place it,
+  so the line was drawn at DOUBLE the angle it was drawn at: 45° rendered as
+  90° (a flat line standing upright), 90° as 180° (pointing back the way it
+  came), and 0° perfectly — which is why it was reported as an intermittent
+  glitch rather than a constant one. A compound stroke has angle 0 and was
+  always fine; only a near-straight drag, which simplifies to two points and
+  ONE part carrying the segment's own angle, could show it.
+  The PHYSICS was correct throughout — only the picture lied, which is the one
+  class of bug no assertion about positions can catch. `tools/test/shapes.js`
+  now asserts the picture: what they drew is what gets drawn.
 - **A test that re-imports a game module gets a SECOND COPY.** Over http,
   `import('/js/audio.js')` from inside a page built from `dist/` loads a fresh
   module with its own uninitialised state. It cost two false alarms in one
