@@ -286,6 +286,23 @@ came out of proving it:
   the whole ink budget. Moving the balloon 80 units closer, so a 60–220 unit
   shield does the job, took it to 2.0%. **Ask how long the winning stroke has to
   be, not just how big the target is.**
+- **A POP IS NOT A VERTICAL DELIVERY.** A burst balloon keeps every unit of
+  horizontal speed its shield gave it and carries up to 330 units after
+  bursting — measured. So it cannot feed a see-saw: a ball that lands still
+  moving rolls ACROSS the pin, and a see-saw AMPLIFIES the roll rather than
+  resisting it. Pops at x=319, 404 and 502, two of them left of a pin at 420,
+  all tipped the plank RIGHT and all delivered to the same place. **A28's lip is
+  the only true vertical delivery in this game** — it works by stopping the
+  cargo dead against a wall — and it is fixed in place by construction, so the
+  player can never choose where it happens. Until something delivers FROM REST
+  at a point the player picks, a see-saw cannot be the second machine in a
+  chain, and the combine tier stays limited to machine → container.
+- **A WIND ROAD CANNOT BE ASKED TO CLIMB.** A draught pushes a rock uphill only
+  while tan(angle) < ax/g — about 18 degrees at ax=600 against gravity 1800,
+  with no friction to help. **Every unit of drop costs three units of run to pay
+  back**, and the world is 720 wide. Forcing a dip and then asking for a 70-unit
+  climb needed 215 units of clear run and the geometry had 130. Same shape as
+  A24: the machine works, the world is too small for it.
 - **An updraft plus any ceiling is a TRAP for Milo.** The air pins him against
   the underside and airborne Milo has no horizontal drive to escape with —
   measured stuck at x=510 for every lid height and every sideways push tried.

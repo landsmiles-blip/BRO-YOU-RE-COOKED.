@@ -1814,6 +1814,109 @@ export const A31 = {
   solver: null,
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// A32 — TIP. The first COMBINE in the game.
+//
+// introduce -> practise -> combine is the structure this project took from Cut
+// the Rope and had never got to the third step. Two attempts died on the same
+// geometry: A26's two levers in series, held with the note "a cascade needs a
+// delivery that lands INSIDE the next machine, which a see-saw cannot give —
+// pair the lever with something that catches from above". That note has been
+// sitting there waiting for a machine that drops things straight down.
+//
+// The pop is that machine. A burst balloon falls DEAD VERTICAL from wherever
+// it burst, and where it bursts is where the player's shield ends. So the
+// balloon's question (where does it let go) feeds the pivot's question (which
+// side of the pin) and both machines are load-bearing off ONE stroke.
+//
+// Measured before building: a ball dropped vertically on the LEFT arm leaves
+// the plank at -8 degrees and ends at x=114; on the RIGHT arm, +13 degrees and
+// x=674. Clean and binary, and near enough mass-independent — which is why this
+// balloon can be light where A30's had to be heavy.
+// ─────────────────────────────────────────────────────────────────────────
+export const A32 = {
+  id: 'a32-tip',
+  hint: 'WHICH ARM CATCHES IT',
+  world: 'backyard', verb: 'TIP',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // THE RISE COLUMN MUST BE CLEAR OF THE MACHINE. First build started the
+    // balloon at x=290 against a plank starting at 300: it grazed the plank's
+    // left corner on the way up, got knocked sideways, missed the thorn
+    // ceiling entirely and left through the top of the world. A balloon rises
+    // through everything the level owns, so its column has to be empty.
+    { id: 'jamb',   type: 'platform', x: 182, y: 470,  w: 18,  h: 150 },
+    { id: 'thorns', type: 'platform', x: 200, y: 470,  w: 380, h: 16, sharp: true },
+    // The see-saw, directly under the run so a burst anywhere along it lands
+    // on one arm or the other. Pin at 420: left arm 300..420, right 420..540.
+    { id: 'plank',  type: 'platform', x: 300, y: 820,  w: 240, h: 18,
+      pivot: { x: 420, y: 829 }, angle: 0, density: 0.01 },
+    { id: 'stopL',  type: 'platform', x: 306, y: 866,  w: 26, h: 20 },
+    { id: 'stopR',  type: 'platform', x: 514, y: 866,  w: 26, h: 20 },
+    // The pen under the RIGHT end. Loaded right, the plank drops its cargo in.
+    { id: 'penL',   type: 'platform', x: 556, y: 960,  w: 18,  h: 120 },
+    { id: 'penR',   type: 'platform', x: 672, y: 960,  w: 18,  h: 120 },
+    { id: 'penF',   type: 'platform', x: 556, y: 1080, w: 134, h: 18  },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 230, y: 1000, radius: 24,
+      density: 0.05, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 574, y: 1050, w: 98, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 330, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: 360, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A33 — DIP. The road that has to climb back out.
+//
+// Level 17 asked how FAR to build. This asks whether what you build can be
+// climbed, which is a different question and it comes straight out of the
+// physics rather than out of a rule: a draught can only push a rock up a slope
+// shallower than atan(ax/g). At ax=600 against gravity 1800 that is about 18
+// degrees, and there is no friction here to help.
+//
+// So the beam is not an obstacle in the decorative sense. It forces the road
+// DOWN, and every unit of drop has to be paid back at 18 degrees or the rock
+// sits in the dip for the rest of the level with the wind blowing uselessly
+// against it. Duck too deep and it never comes out; hug the beam and it does.
+// ─────────────────────────────────────────────────────────────────────────
+export const A33 = {
+  id: 'a33-dip',
+  hint: 'THE WIND CANNOT PUSH IT UPHILL',
+  world: 'backyard', verb: 'DIP',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'rail',   type: 'platform', x: 100, y: 700,  w: 130, h: 20  },
+    // THE BEAM. Hangs into the run, so a flat road cannot pass.
+    { id: 'beam',   type: 'platform', x: 300, y: 620,  w: 40,  h: 130 },
+    { id: 'deck',   type: 'platform', x: 470, y: 820,  w: 170, h: 20  },
+    { id: 'kerb',   type: 'platform', x: 640, y: 780,  w: 20,  h: 40  },
+  ],
+  objects: [
+    { id: 'rock',  type: 'boulder', x: 130, y: 674, radius: 26,
+      density: 0.09, restitution: 0.1, friction: 0.06,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 480, y: 790, w: 150, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 150 },
+    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [
+    { id: 'draught', kind: 'updraft', x: 100, y: 560, w: 480, h: 300, accel: 0, ax: 600 },
+  ],
+  drawing: { maxLength: 380, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31];
 
 /**
@@ -1836,6 +1939,24 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A33, reason: 'A WIND ROAD CANNOT BE ASKED TO CLIMB, and the arithmetic says so before any '
+    + 'sweep does. A draught pushes a rock up a slope only while tan(angle) < ax/g, which at ax=600 '
+    + 'against gravity 1800 is about 18 degrees — and there is no friction here to help. So every unit '
+    + 'of drop costs THREE units of run to pay back, and the world is 720 wide. Forcing a dip with a '
+    + 'hanging beam and then asking for a 70-unit climb needs 215 units of clear run after the beam; '
+    + 'the geometry left 130. Widening it enough to be possible makes it a knife edge, which is the '
+    + 'same shape of failure as A24 — the machine works, the world is too small for it. '
+    + 'The build also had the beam as decoration and the trace said so: an untouched rock leaves the '
+    + 'rail at x=217 and is already below y=750 by x=275, so it passes UNDER the beam without the beam '
+    + 'doing anything. A hanging obstacle only obstructs if it reaches into the path the cargo actually '
+    + 'takes, and in this engine a rock leaving a rail falls almost straight — measured, twice now. '
+    + 'If this returns, the climb has to be the whole level rather than a complication added to one: '
+    + 'a long shallow run with nothing else in it, and the question being whether the player can keep '
+    + 'under 18 degrees for its whole length.' },
+  { level: A32, reason: 'A POP IS NOT A VERTICAL DELIVERY, and that kills the whole idea of feeding a machine with one. A burst balloon keeps every unit of horizontal speed the shield gave it, and the faster the shield made it travel the further it carries after bursting — measured at 330 units. So it cannot feed a see-saw. A ball that lands still moving rolls ACROSS the pin, and a see-saw amplifies the roll rather than resisting it: pops at x=319, x=404 and x=502 — two of them LEFT of a pin at 420 — all three tipped the plank RIGHT and all three delivered to the same pen. The landing side stopped deciding anything. '
+    + 'The A14 test said it out loud when run by hand: nail the plank down and two of the four strokes are completely unchanged. A lever that half the solutions do not need is decoration, which is exactly the fraud A14 was written to catch. '
+    + 'The general finding is worth more than the level. A28 LIP is the only true vertical delivery in this game — it works by stopping the cargo dead against a wall — and it is fixed in place by construction, so the player can never choose WHERE it happens. Until something can deliver from rest at a point the player picks, a see-saw cannot be the second machine in a chain. '
+    + 'It also hid a staging fault worth remembering: the catch pen was walled from y=960 to 1080 and Milo stands 72 tall on ground at 1152, so its walls hung exactly into his headroom and blocked the goal. Every winning run reported timeout, not success.' },
   { level: A27, reason: 'A27 IS A21 MIRRORED, which is the one fault no per-level gate can see. The same shaft, the same pivoted plank, the same pair of end-stops, the same 26-unit rock, and the same single question — which side of the pin does it come down on. Only the lean is reversed. Tiled beside A21 on the frozen sheet they are one level twice, which is exactly what the playtest meant by "too basic". '
     + 'It never got its failure to hold either. The untouched rock leaves the right arm with 800 units of drop behind it and FRICTION DOES NOTHING in this engine, so nothing stops it: it rolled to x=700, past the goal, and doing nothing WON. Measured kerbs — 14u and 18u were rolled straight over, 22u launched the rock out of the world at y=9711. A rock arriving that fast cannot be parked in a walkway by any obstacle low enough for Milo to step over. '
     + 'The finding worth keeping is the general one: WHICH SIDE OF THE PIN is the pivot\'s only question, and A21 already asks it. A second pivot level needs a different question, not a different lean.' },
