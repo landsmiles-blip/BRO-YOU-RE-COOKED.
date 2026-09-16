@@ -327,6 +327,14 @@ came out of proving it:
   the precision floor from 45u to 20u — the extra area was all knife-edge. What
   cleared the gate was shortening the PAN from 200 units to 160, so the winning
   tilt is a short ordinary stroke. Length, again.
+- **A DOWNDRAFT ONLY EARNS ITS PLACE WHEN THE CARGO WOULD OTHERWISE LEAVE.**
+  A34 SINK works because without the column the balloon floats straight off the
+  pan — the column is what makes the pan a pan. A39 HATCH put the same column
+  over a pan with a hole in it and passed every number (3.3% breadth, 45u floor,
+  four families) while being a ball rolling into a hole: strip the lift AND the
+  air and it plays identically, because gravity already holds a ball on a pan
+  and a tilt already slides it. **Ask what the machine is preventing, not what
+  it is doing.**
 - **A DOWNDRAFT HOLDS WELL AND BLOCKS BADLY.** A34 SINK works because the column
   presses its cargo onto a surface and the player tilts that surface — a clean
   decision. Three levels tried to use one as a WALL instead and all three died:

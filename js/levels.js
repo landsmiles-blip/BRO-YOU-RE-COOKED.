@@ -2137,6 +2137,97 @@ export const A37 = {
   solver: null,
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// A38 — FORK. Level 19 with a second chute, and the far one is the live one.
+//
+// THORNS punishes overbuilding: build too much shield and the balloon sails
+// past the chute. This asks the opposite. The near opening is a dead end and
+// the plate is in the far one, so stopping short is the mistake. Same thorn
+// ceiling, same shield, same measured pop lag of roughly 50 units past wherever
+// the line ends.
+// ─────────────────────────────────────────────────────────────────────────
+export const A38 = {
+  id: 'a38-fork',
+  hint: 'THE NEAR ONE IS A DEAD END',
+  world: 'backyard', verb: 'FORK',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // EVERYTHING PULLED RIGHT, so the shield is short. First build put the jamb
+    // at 262 and the balloon at 320, which meant a winning shield had to span
+    // 220 units AND ride close to the thorns AND anchor — it swept 0.0%, one
+    // win in the whole space. The decision is unchanged; only the distance is.
+    { id: 'jamb',   type: 'platform', x: 360, y: 520, w: 18,  h: 160 },
+    { id: 'thorns', type: 'platform', x: 378, y: 520, w: 282, h: 16, sharp: true },
+    // Near chute — a bin with nothing in it.
+    { id: 'binL',   type: 'platform', x: 430, y: 660, w: 18,  h: 200 },
+    { id: 'binR',   type: 'platform', x: 540, y: 660, w: 18,  h: 200 },
+    { id: 'binF',   type: 'platform', x: 430, y: 860, w: 128, h: 18  },
+    // Far chute — the live one.
+    { id: 'penL',   type: 'platform', x: 580, y: 660, w: 18,  h: 200 },
+    { id: 'penR',   type: 'platform', x: 672, y: 660, w: 18,  h: 200 },
+    { id: 'penF',   type: 'platform', x: 580, y: 860, w: 110, h: 18  },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 410, y: 1000, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 598, y: 830, w: 74, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: 400, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A39 — HATCH. Level 20 with a hole in the pan.
+//
+// SINK asks which end of the pan to spill off. This one has a gap in the middle
+// of it, and the column runs on BELOW the pan, so anything that goes through
+// the gap keeps getting pushed down instead of floating back up. Spill off the
+// left and the balloon leaves the column and rises away; drop it through the
+// hatch and the air walks it down onto the plate.
+//
+// Same column strength (1500 against 2400 of lift) and the same 160 units of
+// pan that made A34 pass.
+// ─────────────────────────────────────────────────────────────────────────
+export const A39 = {
+  id: 'a39-hatch',
+  hint: 'THERE IS A WAY THROUGH IT',
+  world: 'backyard', verb: 'HATCH',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'panL',   type: 'platform', x: 300, y: 820, w: 82,  h: 18 },
+    { id: 'panR',   type: 'platform', x: 458, y: 820, w: 60,  h: 18 },
+    // Catch walls under the hatch, so what drops through stays dropped.
+    { id: 'wellL',  type: 'platform', x: 364, y: 900, w: 18,  h: 150 },
+    { id: 'wellR',  type: 'platform', x: 460, y: 900, w: 18,  h: 150 },
+    { id: 'wellF',  type: 'platform', x: 364, y: 1050, w: 114, h: 18 },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 350, y: 700, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 382, y: 1020, w: 78, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [
+    // Runs PAST the pan, so the hatch leads somewhere instead of handing the
+    // balloon straight back up through the hole it fell down.
+    { id: 'down', kind: 'updraft', x: 310, y: 400, w: 140, h: 660, accel: 1500, ax: 0 },
+  ],
+  drawing: { maxLength: 320, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34];
 
 /**
@@ -2159,6 +2250,28 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A39, reason: 'NO MACHINE IN IT. Strip the lift AND the downdraft and the level plays exactly '
+    + 'the same — idle stuck, solved success — so it is a ball rolling into a hole, which level 3 '
+    + 'already is. It passed every number first (3.3% breadth, 45u precision floor, wobble 2, four '
+    + 'families, 38 of 75 winners hand-robust) and the A14 test is the only thing that saw it. '
+    + 'The distinction worth keeping, because A34 SINK is nearly the same picture and DOES work: a '
+    + 'downdraft only earns its place when the cargo would otherwise LEAVE. In SINK the balloon would '
+    + 'float straight off the pan without the column, so the column is what makes the pan a pan. Here '
+    + 'the hatch does all the work — gravity alone holds a ball on a pan and a tilt alone slides it '
+    + 'into a hole — so both the air and the buoyancy are along for the ride.' },
+  { level: A38, reason: 'A SECOND CHUTE DOES NOT SURVIVE THE SHIELD BEING SHORT ENOUGH TO DRAW. The idea '
+    + 'was A31 inverted — the near opening a dead end and the plate in the far one, so stopping short '
+    + 'is the mistake rather than overshooting — and it works by hand: a shield to x=430 drops the '
+    + 'balloon in the bin, to 500 or 560 it makes the pen. It swept 0.0% anyway, one win in the whole '
+    + 'space, because a winning shield had to span 220 units AND ride close to the thorns AND anchor to '
+    + 'the jamb, and almost nothing in the plausible set does all three. Pulling the whole apparatus '
+    + 'right to shorten the shield made it UNSOLVABLE instead: the balloon then starts so near the bin '
+    + 'that every shield long enough to clear it is also long enough to overshoot the pen. '
+    + 'The two chutes are the problem. A31 ships because its single chute is a wide target with slack '
+    + 'on both sides; splitting that width in two leaves neither half big enough for the pop lag, which '
+    + 'is roughly 50 units and varies with how fast the shield made the balloon travel. If it returns, '
+    + 'it needs ONE chute and a different second outcome — a shelf, a drop, anything that does not eat '
+    + 'half the landing zone.' },
   { level: A37, reason: 'A DOWNDRAFT IS GOOD AT HOLDING AND BAD AT BLOCKING, and this is the second '
     + 'level to prove it. Two columns with a gap make a doorway only floating things can feel, which '
     + 'reads well and does not work: the balloon arrives at the gap with the horizontal momentum the '
