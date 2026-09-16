@@ -777,5 +777,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a34-sink": {
+    "id": "a34-sink",
+    "winners": 35,
+    "robust": 19,
+    "anchoredRobust": 19,
+    "handRate": 0.543,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 290,
+          "y": 776
+        },
+        {
+          "x": 333.3,
+          "y": 806.6
+        },
+        {
+          "x": 376.7,
+          "y": 824.9
+        },
+        {
+          "x": 420,
+          "y": 831
+        },
+        {
+          "x": 463.3,
+          "y": 824.9
+        },
+        {
+          "x": 506.7,
+          "y": 806.6
+        },
+        {
+          "x": 550,
+          "y": 776
+        }
+      ]
+    }
   }
 };

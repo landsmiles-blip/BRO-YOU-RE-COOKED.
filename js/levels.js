@@ -1917,7 +1917,66 @@ export const A33 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31];
+// ─────────────────────────────────────────────────────────────────────────
+// A34 — SINK. A floor steers what sinks, the way a ceiling steers what floats.
+//
+// The exact mirror of level 18, and free: `applyUpdrafts` reads
+// `z.accel ?? -2600`, so a POSITIVE accel pushes DOWN with no code change, and
+// both renderers derive their chevrons from the flow vector, so the column
+// draws itself pointing the right way in play and in the replay.
+//
+// A downdraft of 1500 beats a lift of 2400 once gravity's 1800 is on its side,
+// so the balloon is held on the pan instead of rising off it. Measured before
+// any geometry was written: on a FLAT pan it sinks to (370,796) and sits there
+// for the rest of the level; tilt the pan 8 degrees and it slides out at x=498
+// and floats free; tilt it -12 and it leaves at the other end. The slope
+// chooses the side, and the column does the rest.
+//
+// So doing nothing is a DEAD END rather than a death, the same shape level 18
+// uses, and the stroke is the tilted floor underneath.
+//
+// The plate is weight-gated rather than lidded because the gap under a lid is
+// wide enough to draw a line in and drop it — the fault A30 caught. Density is
+// free here for the third time running: the column and gravity are both
+// ACCELERATIONS, so a balloon at 543 mass sinks exactly like one at 90.
+// ─────────────────────────────────────────────────────────────────────────
+export const A34 = {
+  id: 'a34-sink',
+  hint: 'THE AIR IS HOLDING IT DOWN',
+  world: 'backyard', verb: 'SINK',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The pan. FLAT, so every unit of sideways travel is the player's.
+    // A SHORT PAN AND A BIG PLATE. Three sweeps to settle, and the finding is
+    // the one A31 paid for: breadth has two filters and stroke LENGTH is the
+    // one that bites. 260-unit pan = 1.3%. 200-unit pan and a wider plate =
+    // 1.8%. Deepening the plate instead ADDED knife-edge wins and dropped the
+    // precision floor to 20u, under the thumb limit — a bigger target is not
+    // automatically a better one. 160 is where a short, ordinary stroke does
+    // the job.
+    { id: 'pan',    type: 'platform', x: 300, y: 820, w: 160, h: 18 },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 380, y: 700, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    // Off to the right and high, so it is only reachable by a balloon that got
+    // out of the column on that side and then floated up.
+    { id: 'plate', type: 'switch', x: 470, y: 500, w: 220, h: 100, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 300, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [
+    { id: 'down', kind: 'updraft', x: 310, y: 400, w: 140, h: 420, accel: 1500, ax: 0 },
+  ],
+  drawing: { maxLength: 320, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.

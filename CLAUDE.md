@@ -303,6 +303,19 @@ came out of proving it:
   back**, and the world is 720 wide. Forcing a dip and then asking for a 70-unit
   climb needed 215 units of clear run and the geometry had 130. Same shape as
   A24: the machine works, the world is too small for it.
+- **A FLOOR STEERS WHAT SINKS, the way a ceiling steers what floats.** A
+  DOWNDRAFT is free: `applyUpdrafts` reads `z.accel ?? -2600`, so a POSITIVE
+  accel pushes down with no code change, and both renderers derive their
+  chevrons from the flow vector, so the column already draws itself pointing
+  the right way in play AND in the replay. At 1500 it beats a lift of 2400 once
+  gravity is on its side. Measured: on a FLAT pan the balloon sinks to (370,796)
+  and sits there for the rest of the level; tilt the pan 8 degrees and it slides
+  out at x=498 and floats free; -12 and it leaves the other end.
+- **A BIGGER TARGET IS NOT AUTOMATICALLY A BETTER ONE.** A34 at 1.8% breadth,
+  deepening its plate from 100 to 220 units added exactly one win and dropped
+  the precision floor from 45u to 20u — the extra area was all knife-edge. What
+  cleared the gate was shortening the PAN from 200 units to 160, so the winning
+  tilt is a short ordinary stroke. Length, again.
 - **An updraft plus any ceiling is a TRAP for Milo.** The air pins him against
   the underside and airborne Milo has no horizontal drive to escape with —
   measured stuck at x=510 for every lid height and every sideways push tried.

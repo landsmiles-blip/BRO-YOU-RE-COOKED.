@@ -213,5 +213,16 @@ export const SOLVER = {
     "threeStarLength": 165,
     "shortestWin": 110,
     "measuredAt": "2026-09-15"
+  },
+  "a34-sink": {
+    "solvable": true,
+    "solutionBreadth": 0.0204,
+    "precisionFloor": 30,
+    "worstJitter": 1,
+    "distinctFamilies": 4,
+    "twoStarLength": 288,
+    "threeStarLength": 230,
+    "shortestWin": 102,
+    "measuredAt": "2026-09-16"
   }
 };
