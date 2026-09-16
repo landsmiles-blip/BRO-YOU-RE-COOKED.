@@ -1976,6 +1976,61 @@ export const A34 = {
   solver: null,
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// A35 — BARRIER. The downdraft's second question.
+//
+// SINK asks which way to tip a floor. This asks how to get PAST a column of
+// falling air — because a downdraft is the one thing in this world a balloon
+// cannot push through. It rises into the underside of the column and is shoved
+// straight back down, forever, and no amount of lift changes that: 1500 of
+// downforce plus 1800 of gravity against 2400 of lift is 900 down, whatever
+// the thing weighs.
+//
+// So the column is a wall that only floating things can feel, and the level is
+// a detour. The stroke is a ceiling BELOW the column that walks the balloon
+// sideways until it is clear of the edge, after which it climbs on its own.
+// Nothing is blocked, nothing is caught — the line just has to get it out from
+// underneath before it tries to go up.
+// ─────────────────────────────────────────────────────────────────────────
+export const A35 = {
+  id: 'a35-barrier',
+  hint: 'IT CANNOT GET THROUGH THAT',
+  world: 'backyard', verb: 'BARRIER',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The column hangs from this, so it reads as something with a source.
+    { id: 'hood',   type: 'platform', x: 222, y: 420, w: 156, h: 18 },
+    // A NARROW COLUMN. At 242 units wide the level swept 0.2% — one win in
+    // five hundred strokes — and that is structural, not tuning: to escape,
+    // the balloon has to be dragged the full width of the column SIDEWAYS
+    // while the air pushes it down the whole way. At 138 the escape is 60
+    // units from where it starts, which a short ramp can do.
+    //
+    // THE POST RUNS THE FULL HEIGHT OF THE COLUMN. At 120 it stopped at y=558
+    // and there was nothing at the balloon's level to anchor to — every probe
+    // stroke came back "NOTHING HELD IT UP", because a line touching no static
+    // geometry is not a ledge, it is a falling object. A level whose answer is
+    // a ramp has to give the ramp somewhere to start.
+    { id: 'post',   type: 'platform', x: 222, y: 438, w: 18,  h: 520 },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 340, y: 1000, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 400, y: 560, w: 290, h: 340, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [
+    { id: 'down', kind: 'updraft', x: 240, y: 438, w: 138, h: 480, accel: 1500, ax: 0 },
+  ],
+  drawing: { maxLength: 340, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34];
 
 /**
@@ -1998,6 +2053,20 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A35, reason: 'BREADTH TUNING HOLLOWED IT OUT, and only the A14 test could see it. This level '
+    + 'passes every number — 2.4% breadth, 45u precision floor, wobble 1, four families, 26 of 42 '
+    + 'winners hand-robust at 61.9% — and its downdraft column is DECORATION. Delete the zone and '
+    + 'NOTHING changes: not the idle run, not the solved run. '
+    + 'The way it got there is the lesson. Honest, the column was a wall a balloon cannot push through '
+    + 'and the level was a detour around it — and it swept 0.2%, one win in five hundred strokes, '
+    + 'because escaping meant being dragged the full 242-unit width of the column sideways while the '
+    + 'air pushed down the whole way. Narrowing it to 138 gave 0.6%. Dropping the plate to meet the '
+    + 'escape gave 1.3%. Moving the balloon to 40 units from the column edge gave 2.4% and a pass — '
+    + 'and by then the balloon barely entered the column at all, so the column had stopped mattering. '
+    + 'EVERY STEP THAT BOUGHT BREADTH SPENT MEANING, and the breadth gate cannot tell the difference. '
+    + 'If it returns, the escape has to be short WITHOUT the column being easy to avoid — which '
+    + 'probably means the balloon starts dead centre under a narrow column and the ramp is the only '
+    + 'way out in either direction, rather than a nudge toward an edge it was already near.' },
   { level: A33, reason: 'A WIND ROAD CANNOT BE ASKED TO CLIMB, and the arithmetic says so before any '
     + 'sweep does. A draught pushes a rock up a slope only while tan(angle) < ax/g, which at ax=600 '
     + 'against gravity 1800 is about 18 degrees — and there is no friction here to help. So every unit '

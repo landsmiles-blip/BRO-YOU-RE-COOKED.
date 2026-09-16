@@ -47,6 +47,17 @@ A green suite means a level is solvable, fair and stable. It says nothing about
 whether a person knows what it wants from them. Only playtesting says that, and
 playtesting outranks the suite.
 
+**And TUNING FOR BREADTH CAN SPEND THE MEANING.** A35 was a balloon trapped
+under a column of falling air, with the stroke as the detour around it. Honest,
+it swept 0.2%. Narrowing the column gave 0.6%; dropping the plate to meet the
+escape gave 1.3%; starting the balloon 40 units from the column's edge gave
+2.4% and a pass on every gate — 45u floor, 61.9% hand-robust, four families —
+at which point the balloon barely entered the column at all and **the A14 test
+said the column was decoration: delete it and neither the idle run nor the
+solved run changes.** Every step that bought breadth spent meaning, and the
+breadth gate cannot see the difference. **Re-run the A14 test after tuning, not
+just after building.**
+
 **Nor can they measure the SHAPE OF THE SET.** Seen one at a time every level
 looked fine; tiled into one contact sheet, eleven of fourteen opening frames
 were the same silhouette — grey ground, red ball, Milo bottom-left, goal
