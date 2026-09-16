@@ -327,6 +327,20 @@ came out of proving it:
   the precision floor from 45u to 20u — the extra area was all knife-edge. What
   cleared the gate was shortening the PAN from 200 units to 160, so the winning
   tilt is a short ordinary stroke. Length, again.
+- **A DOWNDRAFT HOLDS WELL AND BLOCKS BADLY.** A34 SINK works because the column
+  presses its cargo onto a surface and the player tilts that surface — a clean
+  decision. Three levels tried to use one as a WALL instead and all three died:
+  escaping a column sideways is nearly impossible (A35, 0.2% breadth), a column
+  cannot threaten Milo because outside it the balloon just rises away (A36,
+  doing nothing won in three builds), and a gap between two columns is crossed
+  SIDEWAYS rather than climbed (A37 — x went 333→490 while y moved only
+  818→763). **Stop building walls out of air.**
+- **A RISING BALLOON MEETS YOUR LINE FROM BELOW**, so the stroke is a CEILING,
+  not a floor, and a slope that would steer a falling thing right steers a
+  floating thing LEFT. Four probes in a row were drawn upside down before this
+  was noticed. Related: a line touching no static geometry is not a ledge, it is
+  a falling object — a level whose answer is a ramp must give the ramp something
+  to start from, at the height the cargo actually sits.
 - **An updraft plus any ceiling is a TRAP for Milo.** The air pins him against
   the underside and airborne Milo has no horizontal drive to escape with —
   measured stuck at x=510 for every lid height and every sideways push tried.

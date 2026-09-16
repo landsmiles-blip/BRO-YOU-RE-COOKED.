@@ -2031,6 +2031,112 @@ export const A35 = {
   solver: null,
 };
 
+// ─────────────────────────────────────────────────────────────────────────
+// A36 — SPILL. The pan already leans, and this time it kills him.
+//
+// SINK asks which way to tip a flat pan. This one is tipped ALREADY, toward a
+// hole over the walk, and the balloon is on its way to that hole from the
+// moment the world starts. The decision is not "pick a side", it is "undo a
+// lean that is already losing" — the same relationship A21 has to A15.
+//
+// It is also the first level since 16 whose failure is a DEATH rather than a
+// stall. Levels 17 through 20 all end in HE'S STUCK, and the tension gate has
+// warned FLAT on every one of them: nothing dangerous ever goes near him on a
+// win. A downdraft makes that easy to fix, because it drives its cargo DOWN,
+// which is where Milo is.
+// ─────────────────────────────────────────────────────────────────────────
+export const A36 = {
+  id: 'a36-spill',
+  hint: 'IT IS ALREADY LEANING AT HIM',
+  world: 'backyard', verb: 'SPILL',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // TIPPED RIGHT, AND THE COLUMN PUSHES HARD. Both numbers came out of the
+    // clock rather than out of taste. At accel 1500 the balloon is only 900
+    // units-per-second-squared down once its own lift is subtracted, so it
+    // drifted to the floor at 2558ms — by which time Milo had already reached
+    // the goal, and doing nothing WON. At 3000 it falls faster than a rock.
+    // And it has to lean RIGHT, not left: he passes x=240 at 0.78s and x=460
+    // at 1.78s, so only the right-hand end of the pan drops its cargo in
+    // front of him instead of behind him.
+    { id: 'pan',    type: 'platform', x: 300, y: 820, w: 160, h: 18, angle: 9 },
+    // No lip and no shelf: the SAFE side is simply outside the column, where
+    // the balloon's own lift takes it up and away. Both were in the first
+    // build and both were in the way of that.
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 380, y: 740, radius: 24,
+      density: 0.10, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'impact', minSpeed: 300, graceRadius: 6 } },
+  ],
+  zones: [
+    // THE COLUMN HAS TO REACH THE GROUND. First build stopped it at y=820 and
+    // doing nothing WON: the balloon spilled off the left of the pan, left the
+    // column, and its own lift carried it up and away from Milo entirely. A
+    // downdraft only threatens him for as long as it is still pushing.
+    // ASYMMETRIC ON PURPOSE. It starts at the pan's LEFT edge and runs 60 units
+    // past its right one, so the two ends of the pan are not equivalent: spill
+    // right and the balloon is still in the air that is pushing it down, spill
+    // left and it is out of the column and its own lift takes it away. With
+    // the column centred, BOTH ends dropped it straight out and it floated off
+    // the top of the world either way — doing nothing won twice.
+    { id: 'down', kind: 'updraft', x: 300, y: 420, w: 220, h: 700, accel: 3000, ax: 0 },
+  ],
+  drawing: { maxLength: 300, denyZones: [] },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A37 — THREAD. Two columns, and the only way up is between them.
+//
+// The downdraft's third property: a balloon cannot cross one, so two of them
+// with a gap make a doorway that only exists for floating things. Nothing is
+// blocked to look at — Milo walks under all of it — but the balloon has one
+// route and it is not the one it is on.
+//
+// A35 died proving that ESCAPING a column sideways is nearly impossible once
+// the air is pushing down on you, so this does not ask for that. The balloon
+// starts in clear air BELOW the gap and rises; the stroke is the ramp that
+// lines it up before it gets there, which is a job done at the bottom where
+// there is no downforce at all.
+// ─────────────────────────────────────────────────────────────────────────
+export const A37 = {
+  id: 'a37-thread',
+  hint: 'ONLY ONE WAY UP',
+  world: 'backyard', verb: 'THREAD',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  freezeAt: 300,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'hoodL',  type: 'platform', x: 180, y: 400, w: 160, h: 18 },
+    { id: 'hoodR',  type: 'platform', x: 460, y: 400, w: 160, h: 18 },
+    // FULL-HEIGHT POSTS. At 300 they stopped at y=718 and there was nothing
+    // down at the balloon's level to build from — every probe came back
+    // "NOTHING HELD IT UP", which is a line touching no static geometry, i.e.
+    // a falling object rather than a ramp. A35 died of the same thing.
+    { id: 'postL',  type: 'platform', x: 180, y: 418, w: 18,  h: 560 },
+    { id: 'postR',  type: 'platform', x: 602, y: 418, w: 18,  h: 560 },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 250, y: 1000, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 330, y: 280, w: 200, h: 110, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 300, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [
+    { id: 'downL', kind: 'updraft', x: 198, y: 418, w: 142, h: 400, accel: 1500, ax: 0 },
+    { id: 'downR', kind: 'updraft', x: 460, y: 418, w: 142, h: 400, accel: 1500, ax: 0 },
+  ],
+  drawing: { maxLength: 320, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34];
 
 /**
@@ -2053,6 +2159,31 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A37, reason: 'A DOWNDRAFT IS GOOD AT HOLDING AND BAD AT BLOCKING, and this is the second '
+    + 'level to prove it. Two columns with a gap make a doorway only floating things can feel, which '
+    + 'reads well and does not work: the balloon arrives at the gap with the horizontal momentum the '
+    + 'ceiling gave it, and it climbs far too slowly to get up through the gap before drifting into the '
+    + 'next column. Traced at an 80-unit gap and again at 120 — x went 333, 360, 402, 450, 490 while y '
+    + 'moved only 818 to 763. It crosses the doorway sideways instead of going up it. '
+    + 'Two diagnostics worth keeping. A rising balloon meets the player line from BELOW, so the stroke '
+    + 'is a CEILING, not a floor: the first four probes all steered it the wrong way because they were '
+    + 'drawn as ramps. And a line touching no static geometry is not a ledge but a falling object — '
+    + 'the posts had to run the full height of the column before any stroke could anchor at all. '
+    + 'Put beside A34 SINK, which works, the rule is clear: a downdraft that HOLDS its cargo against a '
+    + 'surface gives a clean decision, and a downdraft used as a WALL does not. Stop building walls '
+    + 'out of air.' },
+  { level: A36, reason: 'A DOWNDRAFT CANNOT THREATEN MILO, and three builds say so. Outside the column a '
+    + 'balloon rises, so the moment it spills off either end of the pan its own lift carries it up and '
+    + 'away from him — doing nothing WON every time. The fixes each moved the failure rather than '
+    + 'removing it: extending the column to the ground made the balloon drift down at only 900 net and '
+    + 'reach the floor at 2558ms, by which point Milo was already at the goal; tripling the column to '
+    + '3000 made it fall fast but it spilled out of the right edge and floated off the top of the world; '
+    + 'making the column asymmetric so one end stays inside it did not help either. '
+    + 'The general shape: a downdraft only acts on its cargo INSIDE the column, and a column wide '
+    + 'enough to hold the cargo all the way down to Milo is a column with no safe side left in it. '
+    + 'That is the mirror of the trap already in the file — an updraft plus a ceiling pins MILO — and '
+    + 'it means air levels stay non-lethal: a draught is a delivery mechanism, not a weapon. '
+    + 'If it returns it needs the hazard to be something the column DROPS onto, not the cargo itself.' },
   { level: A35, reason: 'BREADTH TUNING HOLLOWED IT OUT, and only the A14 test could see it. This level '
     + 'passes every number — 2.4% breadth, 45u precision floor, wobble 1, four families, 26 of 42 '
     + 'winners hand-robust at 61.9% — and its downdraft column is DECORATION. Delete the zone and '
