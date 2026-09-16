@@ -224,16 +224,5 @@ export const SOLVER = {
     "threeStarLength": 230,
     "shortestWin": 102,
     "measuredAt": "2026-09-16"
-  },
-  "a35-barrier": {
-    "solvable": true,
-    "solutionBreadth": 0.024,
-    "precisionFloor": 45,
-    "worstJitter": 1,
-    "distinctFamilies": 4,
-    "twoStarLength": 288,
-    "threeStarLength": 165,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-16"
   }
 };

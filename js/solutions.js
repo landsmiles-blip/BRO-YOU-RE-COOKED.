@@ -820,48 +820,5 @@ export const SOLUTIONS = {
         }
       ]
     }
-  },
-  "a35-barrier": {
-    "id": "a35-barrier",
-    "winners": 42,
-    "robust": 26,
-    "anchoredRobust": 21,
-    "handRate": 0.619,
-    "solution": {
-      "family": "arc",
-      "length": 288,
-      "parts": 11,
-      "anchors": 6,
-      "points": [
-        {
-          "x": 50,
-          "y": 916.3
-        },
-        {
-          "x": 93.3,
-          "y": 946.8
-        },
-        {
-          "x": 136.7,
-          "y": 965.2
-        },
-        {
-          "x": 180,
-          "y": 971.3
-        },
-        {
-          "x": 223.3,
-          "y": 965.2
-        },
-        {
-          "x": 266.7,
-          "y": 946.8
-        },
-        {
-          "x": 310,
-          "y": 916.3
-        }
-      ]
-    }
   }
 };
