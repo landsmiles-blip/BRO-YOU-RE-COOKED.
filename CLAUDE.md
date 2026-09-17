@@ -58,6 +58,25 @@ solved run changes.** Every step that bought breadth spent meaning, and the
 breadth gate cannot see the difference. **Re-run the A14 test after tuning, not
 just after building.**
 
+**THE MACHINE LEVELS ARE NEEDLES, NOT FAMILIES — measured across 200
+generated candidates.** The generator works: 61 of 120 cleared the fair funnel,
+against roughly one in four for levels designed by hand. But all 61 had NO
+MACHINE in them and every verb already shipped, because its five archetypes were
+distilled before any machine existed. Two more were then written from levels
+that DO have machines, and both failed in their own way:
+
+- **`tilt`, from A34 SINK: 0 keepers in 40.** 17 unsolvable, 23 unfair, none
+  self-solving. The shape is sound and its fair window is a needle — which
+  matches what A34 cost by hand (260-unit pan 1.3%, 200 1.8%, 160 a pass).
+- **`shield`, from A31 THORNS: 5 keepers in 40**, all fair, all with a real
+  machine — and all NEAR-IDENTICAL to A31. Widest difference across the five
+  was 40 units of ceiling height.
+
+So a generator can search the numbers inside a shape, and for these shapes the
+fair region is either empty or it is the level you already shipped. **More
+levels need a new NOUN, not more search.** Twenty is where this vocabulary
+lands; going further is a second wave with a new thing in it, not a grind.
+
 **Nor can they measure the SHAPE OF THE SET.** Seen one at a time every level
 looked fine; tiled into one contact sheet, eleven of fourteen opening frames
 were the same silhouette — grey ground, red ball, Milo bottom-left, goal
