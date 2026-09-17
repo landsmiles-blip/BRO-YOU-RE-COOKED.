@@ -2228,7 +2228,120 @@ export const A39 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34];
+// ─────────────────────────────────────────────────────────────────────────
+// A40, A41, A42 — the shield family, finished.
+//
+// These three start from generated candidates. The generator found the fair
+// window for this shape after 40 samples — 5 kept, all measuring 2.1-2.6%
+// breadth with healthy precision floors — and it found it far faster than I
+// did by hand, where A31 took three sweeps to land on the same numbers.
+//
+// What it could NOT do is make them different from each other. All five
+// keepers were A31 with the furniture nudged: the widest spread across them
+// was 40 units of ceiling height. So the numbers here are the machine's and
+// the ARRANGEMENTS are not — each of the three asks the shield for something
+// the other two do not, which is the half of the job the file's own header
+// reserves for a person: "a shortlist for a person to choose from and finish,
+// not content to ship".
+// ─────────────────────────────────────────────────────────────────────────
+
+/** A40 — REACH. The catch is far and the ceiling is high: build long. */
+export const A40 = {
+  id: 'a40-reach',
+  hint: 'THE CATCH IS A LONG WAY OVER',
+  world: 'backyard', verb: 'REACH',
+  milo: { start: { x: 100, y: 1136 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 660, y: 1136, w: 70, h: 140 },
+  freezeAt: 900,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
+    { id: 'jamb',   type: 'platform', x: 300, y: 560,  w: 18,  h: 160 },
+    { id: 'thorns', type: 'platform', x: 318, y: 560,  w: 342, h: 16, sharp: true },
+    { id: 'chuteL', type: 'platform', x: 410, y: 700,  w: 18,  h: 170 },
+    { id: 'chuteR', type: 'platform', x: 668, y: 700,  w: 18,  h: 170 },
+    { id: 'floor',  type: 'platform', x: 410, y: 870,  w: 276, h: 18 },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 340, y: 986, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 428, y: 840, w: 240, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 260, y: 996, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: 380, denyZones: [] },
+  solver: null,
+};
+
+/** A41 — PINCH. Same machine, low ceiling: the shield has no headroom. */
+export const A41 = {
+  id: 'a41-pinch',
+  hint: 'NOT MUCH ROOM UNDER THERE',
+  world: 'backyard', verb: 'PINCH',
+  milo: { start: { x: 100, y: 1136 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 660, y: 1136, w: 70, h: 140 },
+  freezeAt: 900,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
+    // THE CATCH SITS BEYOND THE POP'S OWN CARRY. First build put it at x=410
+    // against a balloon starting at 330, and the level delivered itself: a
+    // burst balloon keeps the sideways speed it had, and the trace showed it
+    // drift 330 -> 459 on its own and land on the plate with no stroke at all.
+    // The rule is already in the file — a pop is not a vertical delivery — and
+    // this is the first time it bit from the other direction.
+    { id: 'jamb',   type: 'platform', x: 270, y: 780,  w: 18,  h: 150 },
+    { id: 'thorns', type: 'platform', x: 288, y: 780,  w: 372, h: 16, sharp: true },
+    { id: 'chuteL', type: 'platform', x: 480, y: 900,  w: 18,  h: 120 },
+    { id: 'chuteR', type: 'platform', x: 688, y: 900,  w: 18,  h: 120 },
+    { id: 'floor',  type: 'platform', x: 480, y: 1020, w: 226, h: 18 },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 310, y: 1090, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 498, y: 990, w: 190, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 240, y: 996, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: 380, denyZones: [] },
+  solver: null,
+};
+
+/** A42 — BACK. Mirrored: the catch is BEHIND where it starts. */
+export const A42 = {
+  id: 'a42-back',
+  hint: 'IT HAS TO GO THE OTHER WAY',
+  world: 'backyard', verb: 'BACK',
+  milo: { start: { x: 70, y: 1136 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 665, y: 1136, w: 70, h: 140 },
+  freezeAt: 900,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
+    // Jamb on the RIGHT, so the shield has to slope the other way. A rising
+    // balloon travels to the HIGH end of whatever it meets, which is the one
+    // thing about this mechanic a player has to un-learn from level 19.
+    { id: 'jamb',   type: 'platform', x: 600, y: 560,  w: 18,  h: 160 },
+    { id: 'thorns', type: 'platform', x: 260, y: 560,  w: 340, h: 16, sharp: true },
+    { id: 'chuteL', type: 'platform', x: 268, y: 700,  w: 18,  h: 170 },
+    { id: 'chuteR', type: 'platform', x: 506, y: 700,  w: 18,  h: 170 },
+    { id: 'floor',  type: 'platform', x: 268, y: 870,  w: 256, h: 18 },
+  ],
+  objects: [
+    { id: 'balloon', type: 'boulder', x: 570, y: 986, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 286, y: 840, w: 220, h: 30, triggers: ['gate'],
+      requires: 'heavy', minMass: 200 },
+    { id: 'gate',  type: 'gate',   x: 190, y: 996, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: 380, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A40];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
