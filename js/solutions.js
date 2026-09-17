@@ -208,53 +208,6 @@ export const SOLUTIONS = {
       ]
     }
   },
-  "a7-prop": {
-    "id": "a7-prop",
-    "winners": 55,
-    "robust": 12,
-    "anchoredRobust": 12,
-    "handRate": 0.218,
-    "solution": {
-      "family": "span",
-      "length": 278,
-      "parts": 11,
-      "anchors": 6,
-      "points": [
-        {
-          "x": 250,
-          "y": 900
-        },
-        {
-          "x": 288.6,
-          "y": 913
-        },
-        {
-          "x": 327.1,
-          "y": 923.5
-        },
-        {
-          "x": 365.7,
-          "y": 929.2
-        },
-        {
-          "x": 404.3,
-          "y": 929.2
-        },
-        {
-          "x": 442.9,
-          "y": 923.5
-        },
-        {
-          "x": 481.4,
-          "y": 913
-        },
-        {
-          "x": 520,
-          "y": 900
-        }
-      ]
-    }
-  },
   "a8-jam": {
     "id": "a8-jam",
     "winners": 163,
@@ -464,62 +417,31 @@ export const SOLUTIONS = {
   },
   "a13-yeet": {
     "id": "a13-yeet",
-    "winners": 62,
-    "robust": 42,
-    "anchoredRobust": 42,
-    "handRate": 0.677,
+    "winners": 53,
+    "robust": 31,
+    "anchoredRobust": 31,
+    "handRate": 0.585,
     "solution": {
       "family": "line",
       "length": 390,
-      "parts": 11,
+      "parts": 12,
       "anchors": 8,
       "points": [
         {
           "x": 131.1,
-          "y": 847.5
+          "y": 636.1
         },
         {
           "x": 243.7,
-          "y": 912.5
+          "y": 701.1
         },
         {
           "x": 356.3,
-          "y": 977.5
+          "y": 766.1
         },
         {
           "x": 468.9,
-          "y": 1042.5
-        }
-      ]
-    }
-  },
-  "a14-twojobs": {
-    "id": "a14-twojobs",
-    "winners": 88,
-    "robust": 29,
-    "anchoredRobust": 1,
-    "handRate": 0.33,
-    "solution": {
-      "family": "line",
-      "length": 390,
-      "parts": 13,
-      "anchors": 8,
-      "points": [
-        {
-          "x": 228.9,
-          "y": 873.6
-        },
-        {
-          "x": 116.3,
-          "y": 938.6
-        },
-        {
-          "x": 3.7,
-          "y": 1003.6
-        },
-        {
-          "x": -108.9,
-          "y": 1068.6
+          "y": 831.1
         }
       ]
     }
@@ -563,6 +485,389 @@ export const SOLUTIONS = {
         {
           "x": 365,
           "y": 1014.6
+        }
+      ]
+    }
+  },
+  "a19-updraft": {
+    "id": "a19-updraft",
+    "winners": 119,
+    "robust": 62,
+    "anchoredRobust": 18,
+    "handRate": 0.521,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 10,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 170,
+          "y": 838.6
+        },
+        {
+          "x": 213.3,
+          "y": 869.1
+        },
+        {
+          "x": 256.7,
+          "y": 887.5
+        },
+        {
+          "x": 300,
+          "y": 893.6
+        },
+        {
+          "x": 343.3,
+          "y": 887.5
+        },
+        {
+          "x": 386.7,
+          "y": 869.1
+        },
+        {
+          "x": 430,
+          "y": 838.6
+        }
+      ]
+    }
+  },
+  "a20-spring": {
+    "id": "a20-spring",
+    "winners": 542,
+    "robust": 288,
+    "anchoredRobust": 54,
+    "handRate": 0.531,
+    "solution": {
+      "family": "span",
+      "length": 284,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 380,
+          "y": 1152
+        },
+        {
+          "x": 414.3,
+          "y": 1182.4
+        },
+        {
+          "x": 448.6,
+          "y": 1206.7
+        },
+        {
+          "x": 482.9,
+          "y": 1220.2
+        },
+        {
+          "x": 517.1,
+          "y": 1220.2
+        },
+        {
+          "x": 551.4,
+          "y": 1206.7
+        },
+        {
+          "x": 585.7,
+          "y": 1182.4
+        },
+        {
+          "x": 620,
+          "y": 1152
+        }
+      ]
+    }
+  },
+  "a21-lever": {
+    "id": "a21-lever",
+    "winners": 161,
+    "robust": 54,
+    "anchoredRobust": 45,
+    "handRate": 0.335,
+    "solution": {
+      "family": "line",
+      "length": 300,
+      "parts": 12,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 105,
+          "y": 448.7
+        },
+        {
+          "x": 155,
+          "y": 535.3
+        },
+        {
+          "x": 205,
+          "y": 621.9
+        },
+        {
+          "x": 255,
+          "y": 708.5
+        }
+      ]
+    }
+  },
+  "a28-duct": {
+    "id": "a28-duct",
+    "winners": 126,
+    "robust": 97,
+    "anchoredRobust": 87,
+    "handRate": 0.77,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 378.8,
+          "y": 705.4
+        },
+        {
+          "x": 406.3,
+          "y": 753
+        },
+        {
+          "x": 433.8,
+          "y": 800.7
+        },
+        {
+          "x": 461.3,
+          "y": 848.3
+        }
+      ]
+    }
+  },
+  "a29-rail": {
+    "id": "a29-rail",
+    "winners": 68,
+    "robust": 26,
+    "anchoredRobust": 26,
+    "handRate": 0.382,
+    "solution": {
+      "family": "corner",
+      "length": 260,
+      "parts": 12,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 300,
+          "y": 784.3
+        },
+        {
+          "x": 365,
+          "y": 784.3
+        },
+        {
+          "x": 430,
+          "y": 784.3
+        },
+        {
+          "x": 430,
+          "y": 849.3
+        },
+        {
+          "x": 430,
+          "y": 914.3
+        }
+      ]
+    }
+  },
+  "a30-float": {
+    "id": "a30-float",
+    "winners": 39,
+    "robust": 27,
+    "anchoredRobust": 27,
+    "handRate": 0.692,
+    "solution": {
+      "family": "bowl",
+      "length": 243,
+      "parts": 9,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 75,
+          "y": 635.4
+        },
+        {
+          "x": 101.3,
+          "y": 659.5
+        },
+        {
+          "x": 127.5,
+          "y": 676.7
+        },
+        {
+          "x": 153.8,
+          "y": 687
+        },
+        {
+          "x": 180,
+          "y": 690.4
+        },
+        {
+          "x": 206.3,
+          "y": 687
+        },
+        {
+          "x": 232.5,
+          "y": 676.7
+        },
+        {
+          "x": 258.8,
+          "y": 659.5
+        },
+        {
+          "x": 285,
+          "y": 635.4
+        }
+      ]
+    }
+  },
+  "a31-thorns": {
+    "id": "a31-thorns",
+    "winners": 51,
+    "robust": 28,
+    "anchoredRobust": 28,
+    "handRate": 0.549,
+    "solution": {
+      "family": "bowl",
+      "length": 295,
+      "parts": 13,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 195,
+          "y": 488
+        },
+        {
+          "x": 221.3,
+          "y": 529.6
+        },
+        {
+          "x": 247.5,
+          "y": 559.3
+        },
+        {
+          "x": 273.8,
+          "y": 577.1
+        },
+        {
+          "x": 300,
+          "y": 583
+        },
+        {
+          "x": 326.3,
+          "y": 577.1
+        },
+        {
+          "x": 352.5,
+          "y": 559.3
+        },
+        {
+          "x": 378.8,
+          "y": 529.6
+        },
+        {
+          "x": 405,
+          "y": 488
+        }
+      ]
+    }
+  },
+  "a34-sink": {
+    "id": "a34-sink",
+    "winners": 35,
+    "robust": 19,
+    "anchoredRobust": 19,
+    "handRate": 0.543,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 290,
+          "y": 776
+        },
+        {
+          "x": 333.3,
+          "y": 806.6
+        },
+        {
+          "x": 376.7,
+          "y": 824.9
+        },
+        {
+          "x": 420,
+          "y": 831
+        },
+        {
+          "x": 463.3,
+          "y": 824.9
+        },
+        {
+          "x": 506.7,
+          "y": 806.6
+        },
+        {
+          "x": 550,
+          "y": 776
+        }
+      ]
+    }
+  },
+  "a40-reach": {
+    "id": "a40-reach",
+    "winners": 45,
+    "robust": 28,
+    "anchoredRobust": 25,
+    "handRate": 0.622,
+    "solution": {
+      "family": "bowl",
+      "length": 246,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 230,
+          "y": 632
+        },
+        {
+          "x": 247.5,
+          "y": 673.6
+        },
+        {
+          "x": 265,
+          "y": 703.3
+        },
+        {
+          "x": 282.5,
+          "y": 721.1
+        },
+        {
+          "x": 300,
+          "y": 727
+        },
+        {
+          "x": 317.5,
+          "y": 721.1
+        },
+        {
+          "x": 335,
+          "y": 703.3
+        },
+        {
+          "x": 352.5,
+          "y": 673.6
+        },
+        {
+          "x": 370,
+          "y": 632
         }
       ]
     }

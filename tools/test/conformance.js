@@ -127,7 +127,7 @@ const browser = await chromium.launch({
     B.goToLevel(B.game, 0);
     await new Promise((r) => setTimeout(r, 60));
     globalThis.__pause();
-    const audioMod = await import('/js/audio.js');
+    const audioMod = B.audio;   // the running module, never a re-imported copy
     const before = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
     await new Promise((r) => setTimeout(r, 450));
     const after = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
