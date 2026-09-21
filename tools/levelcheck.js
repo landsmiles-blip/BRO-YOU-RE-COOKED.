@@ -83,6 +83,11 @@ function nounsOf(level) {
   for (const s of level.static ?? []) {
     if (s.restitution) out.push({ what: `spring "${s.id}"`, drop: (l) => ({ ...l, static: l.static.map((q) => (q.id === s.id ? { ...q, restitution: 0 } : q)) }) });
     if (s.pivot) out.push({ what: `pivot "${s.id}"`, drop: (l) => ({ ...l, static: l.static.map((q) => (q.id === s.id ? { ...q, pivot: null } : q)) }) });
+    // Brittleness. Taking the threshold out leaves a pane nothing can break,
+    // which is the right comparison: if the level plays the same when the
+    // floor always holds, then breaking it was never the puzzle. A noun no
+    // tool can check is a noun that gets to be decoration unnoticed.
+    if (s.brittle) out.push({ what: `brittle "${s.id}"`, drop: (l) => ({ ...l, static: l.static.map((q) => (q.id === s.id ? { ...q, brittle: 0 } : q)) }) });
   }
   // Buoyancy. A balloon with the lift taken out is just a rock, which is
   // exactly the comparison the A14 test wants. Added the day `lift` was — a

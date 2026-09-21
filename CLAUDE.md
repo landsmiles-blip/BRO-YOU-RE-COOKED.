@@ -372,6 +372,49 @@ came out of proving it:
   the underside and airborne Milo has no horizontal drive to escape with —
   measured stuck at x=510 for every lid height and every sideways push tried.
   Air levels must lift an OBJECT, whose exit is geometry, not lift him.
+- **A BRITTLE SURFACE ASKS THE ONE QUESTION THAT IS NOT SPATIAL.** Every verb
+  here asks WHERE — which side of the pin, in the column or not, where on the
+  board, where it lets go. A pane with a `brittle` normal-speed threshold asks
+  HOW HARD IT ARRIVES, and the player answers with a WHERE anyway: the height
+  they catch it at. Measured before any level was built — a body caught on a
+  shelf and released again lands at normal speed 267/289/317 from y=880,
+  464/473/500 from y=830 and 879/882/892 from y=500, the three figures being
+  shelf angles of 12, 20 and 30 degrees. **The landing speed tracks the HEIGHT
+  of the catch across a 3.3x range and barely moves with its ANGLE**, which is
+  what makes it drawable: it depends on what the player chooses and ignores
+  what a shaky hand gets wrong. Catching high measures the same as not catching
+  at all, so the mistake reads honestly. Use `normalSpeed`, not |v|: a ramp
+  trades vertical speed for horizontal and the component INTO the surface is
+  the honest one.
+- **A ROCK FALLING STRAIGHT DOWN CAN ALWAYS BE PARKED ON A STATIC LINE**, so a
+  level asking how hard something lands can always be answered with "it does not
+  land at all". Two builds of A43 passed every gate while being exactly that
+  fraud: the certified winner caught the rock on the stroke at (568,975) and it
+  sat there for the whole level, the pane never touched, its brittleness pure
+  decoration in the solved run. **The A14 test cannot see this** — it compares
+  outcomes, not mechanisms, and the outcomes differ because the IDLE run still
+  changes. Trace the certified solution and ask whether the noun is in it.
+  **MILO IS THE ONLY BODY HERE THAT CANNOT BE PARKED.** He walks off whatever
+  you give him, and a line that stops him dead is a stuck timeout, which is a
+  loss and not a bypass. That is what makes him the honest cargo for this
+  question, and it is a general tool: when a noun can be dodged by holding its
+  cargo still, make the cargo the one thing that will not hold still.
+- **A CLEAN DROP TOPS OUT NEAR 950.** Raising the rock does not make it land
+  harder — measured identical at start heights 640, 440, 300 and 200, because
+  `frictionAir` caps it. So that is the ceiling on any brittle threshold, and
+  the soft band it buys is about 195 units of catch height.
+- **`frictionAir` IS NOT THE "FRICTION DOES NOTHING" FINDING.** That one is
+  about SURFACE friction. Air drag is a separate 0.01 per base frame, which
+  over two seconds is a factor of four: a rock rolled along a flat shelf at
+  vx 200 ground to a halt 140 units later, and a runway tilted 7 degrees only
+  reached a terminal 90 u/s. **A rolling delivery over any distance needs
+  gravity doing the work, and even then it is slow.**
+- **A BRITTLE FLOOR FLUSH WITH ITS HAZARD READS AS THE HAZARD'S RIM.** A43's
+  plank sat directly on the spike zone and the filmstrip showed the cost: the
+  hint named a plank a stranger could not find in the frozen frame. Sixty units
+  of daylight under it makes it a bridge. And a shattered pane must leave a
+  GHOST rather than nothing — drawing nothing shows a level that never had a
+  floor instead of one the player just broke.
 - **Anchored means STATIC, not constrained.** Eight rigid constraints on a
   28-part compound body produced 177,000 units of jitter and shipped that way.
 - **Matter SILENTLY ZEROES `restitution` on every static body.** `Body.setStatic`

@@ -56,6 +56,22 @@ export function drawScene(ctx, sim, opts = {}) {
   // ── static geometry ───────────────────────────────────────────────────
   for (const s of sim.statics) {
     const b = s.spec;
+    // A SHATTERED PANE IS GONE — but leaving a GHOST of it, rather than
+    // nothing at all. Drawing it solid would be a picture that says the floor
+    // is still there while the physics says it is not, which is the one class
+    // of bug no assertion about positions catches. Drawing nothing is almost
+    // as bad the other way: the filmstrip showed the plank simply ceasing to
+    // exist between two frames, so what a player sees is a level that never
+    // had a floor rather than one they just broke. The outline says which.
+    if (b.brittle && sim.shattered?.has(b.id)) {
+      ctx.save();
+      ctx.setLineDash([9, 8]);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = drain(C.ink, 0.75);
+      ctx.strokeRect(b.x, b.y, b.w, b.h);
+      ctx.restore();
+      continue;
+    }
     ctx.save();
     if (s.pivoted) {
       // A PINNED PIECE MUST BE DRAWN FROM ITS BODY, NOT ITS SPEC. Everything
@@ -102,6 +118,28 @@ export function drawScene(ctx, sim, opts = {}) {
           now, fill: drain(C.danger, freeze * 0.5), ink: drain(C.ink, freeze * 0.35),
           width: 2.6, salt: (b.x | 0) + 51,
         });
+      }
+      // BRITTLE, drawn as cracks. A pane that breaks must not look like the
+      // shelf beside it that does not — the shape has to carry the meaning,
+      // the same reason thorns are teeth. Hairline forks across the span,
+      // spaced by a fixed size rather than a fraction of the width, because a
+      // mark scaled to its zone is what made the first leaning draught read as
+      // water.
+      if (b.brittle) {
+        // Drawn BOLD and running past both faces. The first version was a
+        // 1.8-wide hairline inside the slab and the filmstrip could not see it
+        // at all — a mark that means "this one breaks" has to survive being
+        // looked at from across the level.
+        const n = Math.max(3, Math.round(b.w / 46));
+        const ink = drain(C.ink, 0.7 + freeze * 0.25);
+        for (let c = 0; c < n; c++) {
+          const x0 = b.x + ((c + 0.5) / n) * b.w;
+          inkPath(ctx, [
+            { x: x0 - 9, y: b.y - 5 },
+            { x: x0 + 3, y: b.y + b.h * 0.5 },
+            { x: x0 - 5, y: b.y + b.h + 5 },
+          ], { now, colour: ink, width: 2.8, salt: (x0 | 0) + 17, passes: 1 });
+        }
       }
     }
     // A thin shelf floating in mid-air reads as an unfinished placeholder.

@@ -37,8 +37,31 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(42,38,34,0.35)';
   ctx.fillStyle = 'rgba(198,188,169,0.5)';
   for (const s of sim.statics) {
+    // EVERY NEW KIND OF THING HAS TO BE ADDED HERE TOO. The default for
+    // anything new is INVISIBLE, and that has now cost two replays that
+    // explained the wrong mechanism — a death cam with no air in it, and one
+    // that drew the player's own line as a fixed dash. A pane that broke must
+    // read as broken, or the replay says the floor held.
+    const gone = s.spec.brittle && sim.shattered?.has(s.spec.id);
+    if (gone) {
+      ctx.setLineDash([7, 9]);
+      ctx.strokeRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
+      ctx.setLineDash([]);
+      continue;
+    }
     ctx.fillRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
     ctx.strokeRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
+    if (s.spec.brittle) {
+      const n = Math.max(2, Math.round(s.spec.w / 58));
+      for (let c = 0; c < n; c++) {
+        const x0 = s.spec.x + ((c + 0.5) / n) * s.spec.w;
+        ctx.beginPath();
+        ctx.moveTo(x0 - 7, s.spec.y);
+        ctx.lineTo(x0 + 2, s.spec.y + s.spec.h * 0.5);
+        ctx.lineTo(x0 - 4, s.spec.y + s.spec.h);
+        ctx.stroke();
+      }
+    }
   }
 
   // THE HAZARD HE DIED IN. Spikes, in the danger accent, drawn as spikes —

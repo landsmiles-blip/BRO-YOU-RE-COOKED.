@@ -2341,7 +2341,64 @@ export const A42 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A40];
+/**
+ * A43 — CRACK. The first question in this game that is not spatial.
+ *
+ * Every verb so far asks WHERE: which side of the pin, in the column or not,
+ * where on the board, where it lets go. This one asks HOW HARD HE LANDS.
+ *
+ * MEASURED BEFORE A LINE OF IT WAS BUILT. A body caught on a shelf and let go
+ * again lands at normal speed 267/289/317 from y=880, 464/473/500 from y=830
+ * and 879/882/892 from y=500 — the three numbers in each group being shelf
+ * angles of 12, 20 and 30 degrees. The landing speed tracks the HEIGHT of the
+ * catch across a 3.3x range and barely moves with its ANGLE, which is the
+ * property that makes it drawable: it depends on what the player chooses and
+ * ignores what a shaky hand gets wrong. Catching high measures the same as not
+ * catching at all, so the mistake reads honestly.
+ *
+ * WHY MILO IS THE CARGO, AND NOT A ROCK. The first two builds dropped a rock
+ * down a chute onto this plank and BOTH passed every gate while being a fraud:
+ * the certified winner caught the rock on the stroke at (568,975) and it sat
+ * there for the rest of the level, so the plank was never touched and its
+ * brittleness was decoration in the solved run. That is the A14 fraud the gates
+ * cannot see, because they compare outcomes and not mechanisms.
+ *
+ * The cause is structural and worth keeping: A ROCK FALLING STRAIGHT DOWN CAN
+ * ALWAYS BE PARKED ON A STATIC LINE, so any level that asks how hard it lands
+ * can be answered with "it does not land at all". Milo cannot be parked — he
+ * walks off whatever you give him, and a line that stops him dead is a stuck
+ * timeout, which is a loss and not a bypass. He is the only body in this game
+ * with that property.
+ */
+export const A43 = {
+  id: 'a43-crack',
+  hint: 'THAT PLANK WILL NOT TAKE A HARD LANDING',
+  world: 'backyard', verb: 'CRACK',
+  milo: { start: { x: 60, y: 700 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 646, y: 1136, w: 70, h: 140 },
+  freezeAt: 900,
+  static: [
+    // The ledge he walks off. Nothing here stops him doing it.
+    { id: 'ledge',   type: 'platform', x: 0,   y: 700,  w: 340, h: 60 },
+    { id: 'groundR', type: 'platform', x: 640, y: 1136, w: 80,  h: 144 },
+    // The plank over the pit, and the only way across. It takes a soft landing
+    // and not a hard one, and 436 units of free fall is not a soft landing.
+    { id: 'plank',   type: 'platform', x: 340, y: 1136, w: 300, h: 20, brittle: 600 },
+  ],
+  objects: [],
+  zones: [
+    // THE SPIKES SIT LOW ON PURPOSE. At y=1160 they touched the underside of
+    // the plank and the filmstrip showed why that is wrong: with no daylight
+    // under it the plank read as the RIM of the pit, so the hint named a thing
+    // a stranger could not find in the frozen frame. Dropping them 60 units
+    // puts air under the plank and makes it a bridge.
+    { id: 'pit', kind: 'zone', x: 340, y: 1200, w: 300, h: 80, lethal: true },
+  ],
+  drawing: { maxLength: 220, denyZones: [] },
+  solver: null,
+};
+
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A40, A43];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
@@ -2363,6 +2420,20 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A42, reason: 'THE A27 MISTAKE, WITH A BALLOON IN IT. This is A40 REACH with the jamb moved '
+    + 'from x=300 to x=600 and the whole apparatus mirrored around it, which is the same question — how '
+    + 'far does the pop carry — asked a second time with the lean reversed. That is precisely what '
+    + 'shelved A27, and the rule is already in this file: a second level on a noun needs a different '
+    + 'QUESTION, not a different geometry. It also failed its gates (1.7% breadth against a 2% floor, '
+    + '20u precision floor against the 25u thumb limit) but the numbers are not why it is here. Tuning '
+    + 'it to a pass would have bought a level that passes and is a mirror.' },
+  { level: A41, reason: 'TWO ATTEMPTS SPENT AND THE SECOND QUESTION NEVER ARRIVED. A low ceiling over '
+    + 'A40 REACH is less headroom for the same shield answering the same question. Build one delivered '
+    + 'itself — the burst balloon drifted 330 to 459 and pressed the plate with no stroke at all, which '
+    + 'is the pop-is-not-a-vertical-delivery rule biting from the other side. Build two moved the catch '
+    + 'beyond that carry and swept 0.9% against a 2% floor. The guardrail is two attempts, then hold. '
+    + 'The shield noun is DONE at two levels: A31 asks where the balloon bursts, A40 asks how far that '
+    + 'burst carries. A third wants a third question, and neither of these has one.' },
   { level: A39, reason: 'NO MACHINE IN IT. Strip the lift AND the downdraft and the level plays exactly '
     + 'the same — idle stuck, solved success — so it is a ball rolling into a hole, which level 3 '
     + 'already is. It passed every number first (3.3% breadth, 45u precision floor, wobble 2, four '

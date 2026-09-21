@@ -43,6 +43,11 @@ export function buildSim(level) {
     // data is shared across every run in a solver sweep, so mutating a spec
     // would leak one run's pop into the next 2500.
     burst: new Set(),
+    // Which brittle panes have shattered. Same reasoning as `burst` above, and
+    // the same trap avoided: a sweep shares one level object across 2,500 runs,
+    // so a pane that recorded its own break on the spec would arrive already
+    // broken for every run after the first.
+    shattered: new Set(),
     causality: createCausality(),
     recorder: createRecorder(),
     simTime: 0,
@@ -186,6 +191,36 @@ export function buildSim(level) {
       if (!spike) continue;
       sim.burst.add(entry.spec.id);
       audio.impact(220, { heavy: false });
+    }
+
+    // BRITTLE → SHATTER. The noun's whole question is HOW HARD IT ARRIVES,
+    // which is the first question in this game that is not spatial. Measured
+    // before it was built: a rock caught at y=880 lands at normal speed ~290
+    // and one caught at y=500 lands at ~880, while the ANGLE of the catch moves
+    // that number by under 55 across an 18-degree spread. So the outcome tracks
+    // the thing the player chooses — where the line goes — and ignores the
+    // thing a shaky hand gets wrong.
+    //
+    // `normalSpeed` and not |v| on purpose: a ramp trades vertical speed for
+    // horizontal, and the component INTO the surface is the honest one. It is
+    // also the same number that decides lethality and drives the impact sound,
+    // so what the player hears is what broke it.
+    for (const [hit, other] of [[a, b], [b, a]]) {
+      // MILO COUNTS. He is the only body here that cannot be parked on a
+      // static line — he walks off whatever you give him — which is what makes
+      // him the honest cargo for this question. His footfalls are nowhere near
+      // any sane threshold: a step is 220 u/s of TANGENTIAL motion and the
+      // normal component of it is small.
+      if (other.isSensor) continue;
+      const pane = sim.statics.find((st) => st.body === hit && st.spec.brittle);
+      if (!pane || sim.shattered.has(pane.spec.id)) continue;
+      if (speed <= pane.spec.brittle) continue;
+      sim.shattered.add(pane.spec.id);
+      // Stops existing physically, exactly as an opened gate does, rather than
+      // being removed — the renderers still need it to draw the break.
+      hit.collisionFilter.mask = 0;
+      hit.collisionFilter.category = 0;
+      audio.impact(speed, { heavy: true });
     }
 
     const miloBody = sim.milo.body;
