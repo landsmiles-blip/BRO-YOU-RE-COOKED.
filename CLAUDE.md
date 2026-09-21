@@ -489,6 +489,60 @@ It got this wrong twice:
 Tremor is perpendicular to travel, wavelength at least 6× the sample spacing.
 There must never be a second hand model anywhere in the repo.
 
+## MONETIZATION
+
+**A DOCUMENTED SURFACE THAT DOES NOT EXIST IS INVISIBLE TO EVERY GATE.**
+`js/platform/sdk.js` listed `requestRewardedAd(id)` in its own header as part of
+the "verified SDK surface" from the day it was written, and never implemented
+it. `saveData`/`loadData` were named in that same header and were also missing,
+which meant nothing a player did was ever remembered. Twice is a pattern: a
+header is a claim, and nothing in this repo checked the claims. **`tools/test/ads.js`
+now does**, and it runs in `npm test`.
+
+The surface is `ytgame.ads.requestInterstitialAd()` and
+`ytgame.ads.requestRewardedAd(id)`, both Promise-returning, and the platform
+documents that a request **makes no guarantee the ad was shown** — so every call
+here resolves rather than rejects and never blocks a frame. None of them trip
+the build's banned-primitive gate; they are not `fetch` or `XHR`. YouTube fires
+its own pause/resume around an ad, which `onPause` already handles.
+
+**THE INTERSTITIAL FIRES EVERY THIRD LEVEL, NOT EVERY LEVEL.** A level here is
+about forty seconds. The counter starts so the first two are never interrupted
+and the first ad lands after level 3, and the ENDING — the one screen that tells
+a player they finished the game — is never covered, because `nextLevel` returns
+before the counter. All four of those are asserted.
+
+**THIS GAME CANNOT HAVE A REWARDED AD, and the reason is the premise.** One
+line, one shot. A paid *undo* sells the exact tension every level is built on,
+and a paid *hint* cannot exist here: the rule is that a hint names the PROBLEM
+and never the solution, so a hint that obeys the rule is worth nothing to buy
+and one worth buying breaks it. The function is wired so the header stops lying;
+it has no call site on purpose, and the ads gate fails if one appears quietly.
+
+**AND DO NOT IMPORT A "YOUTUBE MONEY FORMULA" FROM ANOTHER PROJECT.** One was
+brought in proposing that deceptive difficulty drives comment velocity, which
+drives the algorithm, which pays. Checked rather than adopted:
+
+- Its tier table computes `DAU x ARPDAU` and labels the result MONTHLY. ARPDAU
+  is a daily rate: 200,000 x $0.0411 = $8,220 is one day. A 30x error in every
+  row, and an "adversarial audit" of it caught none of them.
+- It calls a cumulative click-through cohort "Daily Active Users".
+- Its headline 822x multiplier divides dollars-per-user-per-day by
+  dollars-per-view and is never used by its own arithmetic.
+- **Its engine has no surface in Playables at all** — there is no creator, no
+  video and no comment section inside the player. It describes marketing for
+  videos ABOUT a game.
+- Its 9:16 "safe zone" work contradicts nine aspect ratios, never lock
+  orientation.
+
+The part that survived is one sentence — easy games have no suspense,
+impossible ones get abandoned — and **this project already measures both ends
+better than the formula does**: breadth 2-40% locates the line it calls critical
+and cannot find, and `tension` is its near-miss idea with a number on it. The
+deeper objection is that it optimises for the SPECTATOR and not the player, and
+A7 and A14 already proved those are different people: both passed every gate and
+were shelved because a real person could not tell what they wanted.
+
 ## PLATFORM CONSTRAINTS (non-negotiable)
 
 - **Zero external network calls.** `tools/build.js` fails the build on `fetch`,

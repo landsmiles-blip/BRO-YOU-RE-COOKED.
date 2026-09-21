@@ -21,6 +21,7 @@ import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
 import { createProgress, record, save, isComplete, firstUnclearedIndex } from './progress.js';
 import * as audio from './audio.js';
+import * as sdk from './platform/sdk.js';
 
 export const PHASE = {
   LIVE: 'live', FROZEN: 'frozen', SIM: 'sim',
@@ -137,8 +138,27 @@ export function nextLevel(g) {
   if (g.levelIndex >= LEVELS.length - 1) {
     g.phase = PHASE.ENDING; g.phaseTime = 0; audio.ending(); return;
   }
+  // AN AD AT A LEVEL BOUNDARY, AND NOT AT EVERY ONE.
+  //
+  // This is the only breakpoint in the game that is a real pause rather than
+  // an interruption: the player has already read RESCUED and tapped to move
+  // on. The platform's own guidance is logical pauses between levels.
+  //
+  // The cap matters more than the call. A level here is about forty seconds,
+  // so an ad after each one would be the fastest way to lose a player we paid
+  // nothing to get, and the counter starts such that the first ad lands after
+  // level THREE — a new player's first two levels are never interrupted.
+  //
+  // The counter lives on `g` rather than in this module on purpose: per-run
+  // state in module scope is the same shape of bug as recording a balloon's
+  // burst on its shared level spec.
+  g.sinceAd = (g.sinceAd ?? 0) + 1;
+  if (g.sinceAd >= LEVELS_PER_AD) { g.sinceAd = 0; sdk.requestInterstitialAd(); }
   goToLevel(g, g.levelIndex + 1);
 }
+
+/** Level boundaries between interstitials. See nextLevel. */
+const LEVELS_PER_AD = 3;
 
 /** Jump to a level by index — used by nextLevel, the ending, and level select. */
 export function goToLevel(g, index) {
