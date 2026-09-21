@@ -415,6 +415,35 @@ came out of proving it:
   of daylight under it makes it a bridge. And a shattered pane must leave a
   GHOST rather than nothing — drawing nothing shows a level that never had a
   floor instead of one the player just broke.
+- **MILO AND A ROCK HE PUSHES ARE RIGIDLY COUPLED — there is no level in it.**
+  He is velocity-driven (`js/milo.js` calls `setVelocity` every frame), so he
+  pushes regardless of mass: ~26 against rocks of 137-163. "Too heavy to push"
+  does not exist. What killed it is that the rock goes nowhere he does not go.
+  Five probes, and every one closes a door:
+  - The push itself is excellent — contact settles at a **40u gap** and holds it
+    for the whole run at ~215 u/s against his 220. It is the most reliable
+    horizontal delivery in this game, which is exactly what the spring and the
+    wheel never had.
+  - **A ramp lifts them equally.** Rock rise vs MILO rise: 49/59 at 8 degrees,
+    106/111 at 20, 156/161 at 30. He walks up whatever ramp he built, so "lift
+    it out of his reach" is not available. Above ~30-35 degrees the push stalls
+    and he stops dead, which is a stuck timeout and a legitimate loss.
+  - **A wall stops both** (he parks 40u behind his own rock) and **a gap
+    swallows both** — even a 60u gap takes a 44u rock and then takes him.
+  - **A rock cannot climb ANY lip.** Measured 20, 30, 40, 50 and 60 units at
+    189 and 236 u/s: it stops dead against the face every time. So even a 20u
+    step, which Milo himself can climb, leaves him blocked BEHIND his own rock.
+  - **A ramp does not launch it.** It lands 10-24u ahead of where Milo lands
+    across every length and angle, and steeper ramps separate them LESS. There
+    is no projectile and no aim.
+  The one real separation is a **descent over ~20 degrees**, which lets the rock
+  outrun him and opens the gap to ~180-200u (at 10 degrees he overtakes it
+  instead). Nothing in this game needs a rock that arrives 0.8s early, because a
+  gate opens instantly and a 40u lead already covers it.
+  The general form, and it is the same shape as the vertical updraft: **a
+  delivery the player cannot aim is not a mechanic.** Milo is a perfect conveyor
+  and the player has no steering wheel.
+
 - **Anchored means STATIC, not constrained.** Eight rigid constraints on a
   28-part compound body produced 177,000 units of jitter and shipped that way.
 - **Matter SILENTLY ZEROES `restitution` on every static body.** `Body.setStatic`
