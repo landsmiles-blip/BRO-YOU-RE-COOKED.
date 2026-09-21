@@ -225,17 +225,6 @@ export const SOLVER = {
     "shortestWin": 102,
     "measuredAt": "2026-09-16"
   },
-  "a40-reach": {
-    "solvable": true,
-    "solutionBreadth": 0.0207,
-    "precisionFloor": 45,
-    "worstJitter": 1,
-    "distinctFamilies": 6,
-    "twoStarLength": 288,
-    "threeStarLength": 165,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-17"
-  },
   "a43-crack": {
     "solvable": true,
     "solutionBreadth": 0.0407,
