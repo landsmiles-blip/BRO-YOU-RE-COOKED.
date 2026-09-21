@@ -2398,7 +2398,7 @@ export const A43 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A40, A43];
+export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A43];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.
@@ -2420,6 +2420,21 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A40, reason: 'A TWIN OF A31, AND I SHIPPED IT — the contact sheet caught what the '
+    + 'gates could not. Tiled beside level 19 THORNS it is the same picture: toothed ceiling, '
+    + 'two-post bin with an arrowed plate, balloon low, Milo behind a gate. The numbers say the '
+    + 'same thing louder — jamb 282 vs 300, thorns y 520 vs 560, chute 400/620 vs 410/668, floor '
+    + 'y 860 vs 870, plate 418 vs 428, and the balloon starts at x=340 in BOTH. It is A31 shifted '
+    + 'by ten to forty units. '
+    + 'And it PLAYS the same, which is the part that settles it: the certified winners are both '
+    + 'the bowl family, both horizontal at 0 degrees, both a shield slung under the thorns — 295u '
+    + 'at y=488 against 246u at y=632. The claimed second question, how far the pop carries, is '
+    + 'not asked: A31 starts its balloon 78 units from the chute mouth and this one 88. '
+    + 'The warning was already in CLAUDE.md before it shipped, in my own words: the shield '
+    + 'archetype produced five keepers and all five were NEAR-IDENTICAL to A31. I took one of '
+    + 'those five, hand-finished it, and it passed every gate at 2.1% breadth and 62.2% '
+    + 'hand-robust. The gates measure fair. They cannot measure whether the set already has this '
+    + 'level in it. If it returns it needs a different QUESTION, not a shorter shield.' },
   { level: A42, reason: 'THE A27 MISTAKE, WITH A BALLOON IN IT. This is A40 REACH with the jamb moved '
     + 'from x=300 to x=600 and the whole apparatus mirrored around it, which is the same question — how '
     + 'far does the pop carry — asked a second time with the lean reversed. That is precisely what '
