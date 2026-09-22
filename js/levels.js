@@ -2398,6 +2398,140 @@ export const A43 = {
   solver: null,
 };
 
+/**
+ * A44 — BURST. The balloon's pop height decides whether the bridge survives.
+ *
+ * Combines two nouns that are each already measured: A31's shield, which puts
+ * the pop where the player chooses, and A43's brittle threshold, which turns a
+ * fall into a yes or no. Neither asks this question alone — the shield asks
+ * WHERE it lets go, the plank asks HOW HARD it lands, and putting them
+ * together asks how high you dare let it climb.
+ *
+ * Two thorn banks at different heights, and the plank is the only way across
+ * the pit. Untouched the balloon climbs to the HIGH bank and the 474-unit fall
+ * shatters it. A shield slung under the high bank slides it left — a rising
+ * balloon travels to the HIGH end of whatever it meets — to pop under the low
+ * bank instead, 84 units up, which the plank takes.
+ */
+export const A44 = {
+  id: 'a44-burst',
+  hint: 'THE HIGHER IT POPS THE HARDER IT LANDS',
+  world: 'backyard', verb: 'BURST',
+  milo: { start: { x: 60, y: 1136 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 650, y: 1136, w: 70, h: 140 },
+  freezeAt: 600,
+  static: [
+    { id: 'groundL',   type: 'platform', x: 0,   y: 1136, w: 340, h: 144 },
+    // NO ESCAPE ROUTE. The first build left 80 units of solid ground past the
+    // pit and the certified winner used it: pop the balloon and fling it RIGHT,
+    // landing at x=616 on the far side, plank never touched, brittleness pure
+    // decoration in the solved run. A brittle floor can always be saved by not
+    // hitting it, so it has to be the only floor there is.
+    { id: 'plank',     type: 'platform', x: 340, y: 1136, w: 380, h: 18, brittle: 600 },
+    { id: 'lowThorn',  type: 'platform', x: 250, y: 990,  w: 170, h: 16, sharp: true },
+    // The shield has to start somewhere. A line touching no static geometry is
+    // a falling object, not a ledge.
+    { id: 'jamb',      type: 'platform', x: 404, y: 1006, w: 16,  h: 56 },
+    { id: 'highThorn', type: 'platform', x: 440, y: 600,  w: 240, h: 16, sharp: true },
+  ],
+  objects: [
+    // MOVED IN FROM x=520. Breadth has two filters and the one that bites here
+    // is STROKE LENGTH: the shield has to reach from the jamb out past the
+    // balloon, and at 520 that was 126 units for a 20u precision floor. At 470
+    // a 76-unit shield does the same job.
+    { id: 'balloon', type: 'boulder', x: 470, y: 1080, radius: 24,
+      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
+      lethal: { kind: 'none' } },
+  ],
+  zones: [
+    { id: 'pit', kind: 'zone', x: 346, y: 1200, w: 368, h: 80, lethal: true },
+  ],
+  drawing: { maxLength: 260, denyZones: [] },
+  solver: null,
+};
+
+/**
+ * A45 — BRAKE. Air is the only thing here that makes a fall gentler.
+ *
+ * A19 asks IN THE COLUMN OR NOT and answers it with a plate. The same question
+ * against a brittle floor gets a different answer, because a column of rising
+ * air is a brake: the rock that falls beside it arrives at terminal speed and
+ * takes the bridge out from under him, and the one nudged into it arrives slow
+ * enough that the bridge holds.
+ */
+export const A45 = {
+  id: 'a45-brake',
+  hint: 'IT IS COMING DOWN TOO FAST',
+  world: 'backyard', verb: 'BRAKE',
+  milo: { start: { x: 60, y: 1136 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 655, y: 1136, w: 65, h: 140 },
+  freezeAt: 500,
+  static: [
+    { id: 'groundL', type: 'platform', x: 0,   y: 1136, w: 300, h: 144 },
+    { id: 'groundR', type: 'platform', x: 640, y: 1136, w: 80,  h: 144 },
+    { id: 'plank',   type: 'platform', x: 300, y: 1136, w: 340, h: 18, brittle: 600 },
+    { id: 'post',    type: 'platform', x: 480, y: 700,  w: 16,  h: 200 },
+  ],
+  objects: [
+    { id: 'rock', type: 'boulder', x: 600, y: 300, radius: 22,
+      density: 0.09, restitution: 0.05, friction: 0.4,
+      lethal: { kind: 'none' } },
+  ],
+  zones: [
+    { id: 'lift', kind: 'updraft', x: 330, y: 700, w: 150, h: 436, accel: -2400 },
+    { id: 'pit',  kind: 'zone',    x: 306, y: 1200, w: 328, h: 80, lethal: true },
+  ],
+  drawing: { maxLength: 300, denyZones: [] },
+  solver: null,
+};
+
+/**
+ * A46 — HAMMER. The mirror of BRAKE, and the reason a downdraft earns its keep.
+ *
+ * A34 uses falling air to HOLD its cargo on a pan. Here it does the other thing
+ * air can do to a fall: with gravity on its side the column drives the rock
+ * hard enough to go through a lid that a plain drop cannot touch. Untouched the
+ * rock lands beside the column, the lid takes it, the plate is never pressed
+ * and the gate never opens — a dead end, not a death.
+ *
+ * It also closes the door it is built on. This file's own fix for the
+ * drop-on-the-plate back door is a lid; making the lid BRITTLE turns the
+ * anti-bypass furniture into the mechanic, and a dropped line is far too light
+ * to break it.
+ */
+export const A46 = {
+  id: 'a46-hammer',
+  hint: 'NOTHING FALLING THAT SLOWLY WILL GET THROUGH',
+  world: 'backyard', verb: 'HAMMER',
+  milo: { start: { x: 60, y: 1136 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 655, y: 1136, w: 65, h: 140 },
+  freezeAt: 400,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
+    // THE THRESHOLD CANNOT EXCEED MAX_SPEED, which is LOCKED at 900. The first
+    // build asked for 1100 and was unsolvable: every dynamic body is clamped,
+    // so a downdraft cannot make anything land HARDER than a long drop already
+    // does — it can only reach the ceiling SOONER. That is the whole design
+    // here: the fall is deliberately SHORT, so free it arrives slow and inside
+    // the column it arrives clamped.
+    { id: 'lid',    type: 'platform', x: 500, y: 1040, w: 150, h: 16, brittle: 720 },
+    { id: 'pierL',  type: 'platform', x: 500, y: 1056, w: 14,  h: 80 },
+    { id: 'pierR',  type: 'platform', x: 636, y: 1056, w: 14,  h: 80 },
+  ],
+  objects: [
+    { id: 'rock',  type: 'boulder', x: 610, y: 900, radius: 22,
+      density: 0.09, restitution: 0.05, friction: 0.4,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 516, y: 1106, w: 118, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 430, y: 996,  w: 34,  h: 140 },
+  ],
+  zones: [
+    { id: 'down', kind: 'updraft', x: 500, y: 860, w: 70, h: 180, accel: 1500, ax: 0 },
+  ],
+  drawing: { maxLength: 300, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A43];
 
 /**
@@ -2420,6 +2554,44 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A44, reason: 'THE WINNING SHIELD HAS A 50-UNIT BAND TO LIVE IN, AND THAT IS THE 20u '
+    + 'PRECISION FLOOR. It must sit BELOW the low thorn bank (bottom 1006) so the balloon can still '
+    + 'reach the bank, and ABOVE the balloon top (1056) so the balloon meets it at all. Fifty units '
+    + 'is not a band a thumb can find, and no amount of tuning moves it because both walls are what '
+    + 'the level IS. '
+    + 'Three attempts, all measured. The first build shipped a different bug and it is the one worth '
+    + 'keeping: the certified winner popped the balloon and flung it RIGHT onto 80 units of solid '
+    + 'ground past the pit, landing at x=616 with the plank never touched — 6.9% breadth, four '
+    + 'families, 45u floor, and the brittleness pure decoration in the solved run. Removing the '
+    + 'escape fixed the honesty and exposed the band. Shortening the required stroke (balloon 520 to '
+    + '470) did not move the floor; widening the anchor made it UNSOLVABLE, because a jamb wide '
+    + 'enough to grab is wide enough to block the route. '
+    + 'If it returns, the two banks have to be much further apart vertically so the shield has real '
+    + 'room — which probably means the low bank is a floor the balloon rests under, not a ceiling it '
+    + 'squeezes below.' },
+  { level: A45, reason: 'THE COLUMN HOLDS THE ROCK UP FOR EVER, SO THE LEVEL IS BLOCK IN A COSTUME. '
+    + 'An updraft at -2400 against gravity 1800 is net 600 UP, so a rock steered into it never comes '
+    + 'down: the certified winner ends at y=723, floating inside the column, and the plank survives '
+    + 'because nothing ever touches it. Brittleness is decoration in the solved run, which the A14 '
+    + 'test cannot see because it compares outcomes and the IDLE run still changes. '
+    + 'It swept well first — 5.0% breadth, four families, 45u floor, 48.8% hand-robust — which is '
+    + 'exactly why tracing the certified winner is not optional. '
+    + 'A column weak enough to let the rock through (|accel| under 1800) does not brake it either, '
+    + 'because MAX_SPEED is locked at 900 and a long drop is already AT the clamp before it enters. '
+    + 'If it returns it needs a column that reaches the plank and is too short to stop anything.' },
+  { level: A46, reason: 'MAX_SPEED IS LOCKED AT 900, SO "LAND HARDER" IS NOT A MECHANIC. Every dynamic '
+    + 'body is clamped — the constant is locked because at 120Hz, 900 u/s is 7.5 units of travel per '
+    + 'step against a 16-unit line, so raising it lets things tunnel through the player stroke. The '
+    + 'first build asked a downdraft to drive a rock through a lid at 1100 and swept 0.0%: measured, '
+    + 'a drop beside the column and a drop inside it BOTH arrived at exactly 900. A downdraft cannot '
+    + 'make a fall harder than the ceiling, only reach the ceiling SOONER. '
+    + 'That salvage works and was measured — shorten the drop to 138 units and free-fall arrives at '
+    + '582 while the column arrives at 781, which a 720 threshold separates cleanly. It swept 0.0% '
+    + 'anyway, 1276 stuck, because THE TWO REQUIREMENTS FIGHT: the fall has to be short for the '
+    + 'column to matter, and a short fall leaves no room to steer the rock sideways into it. Two '
+    + 'conditions in series, which is what killed the wheel. '
+    + 'The general form is worth more than the level: in this engine a brittle threshold can only '
+    + 'ever ask to land SOFTER, never harder, because the hard end is a locked constant.' },
   { level: A40, reason: 'A TWIN OF A31, AND I SHIPPED IT — the contact sheet caught what the '
     + 'gates could not. Tiled beside level 19 THORNS it is the same picture: toothed ceiling, '
     + 'two-post bin with an arrowed plate, balloon low, Milo behind a gate. The numbers say the '

@@ -444,6 +444,43 @@ came out of proving it:
   delivery the player cannot aim is not a mechanic.** Milo is a perfect conveyor
   and the player has no steering wheel.
 
+- **A BRITTLE FLOOR CAN ALWAYS BE SAVED BY NOT HITTING IT.** This is why CRACK
+  works and why three combination levels built on it died in one session. The
+  brittle question is "how hard does it arrive", and the player's answer is
+  always allowed to be "it does not arrive". Measured, and every one passed
+  gates first:
+  - **A44 BURST** swept 6.9% with four families and a 45u floor, and its
+    certified winner popped the balloon and flung it RIGHT onto 80 units of
+    solid ground past the pit — landing at x=616, plank never touched.
+  - **A45 BRAKE** swept 5.0%, four families, 45u floor, 48.8% hand-robust, and
+    its winner parked the rock at y=723 floating inside the updraft for ever.
+  **The cargo has to be unable to go anywhere else.** Milo is that cargo because
+  he must cross; a rock or a balloon is not, unless the brittle surface is
+  literally the only floor in reach. Removing A44's escape fixed the honesty in
+  one edit — and then exposed the real fault underneath, which is next.
+- **MAX_SPEED IS LOCKED AT 900, SO "LAND HARDER" IS NOT A MECHANIC.** Every
+  dynamic body is clamped in `js/physics/adapter.js`, and the constant is LOCKED
+  because at 120Hz 900 u/s is 7.5 units of travel per step against a 16-unit
+  line — raise it and things tunnel through the player's own stroke. A46 asked a
+  downdraft to drive a rock through a lid at 1100 and swept 0.0%: a drop beside
+  the column and a drop inside it **both arrived at exactly 900**. A downdraft
+  can only reach the ceiling SOONER, never pass it. Shortening the fall does
+  separate them — 582 free against 781 in the column over 138 units — but then
+  the two requirements fight, because a fall short enough for the column to
+  matter is too short to steer the cargo into it. **A brittle threshold can only
+  ever ask for a SOFTER landing.**
+- **AN UPDRAFT STRONG ENOUGH TO BRAKE IS STRONG ENOUGH TO HOLD FOR EVER.** At
+  -2400 against gravity 1800 the net is 600 UP, so anything steered in never
+  comes down and the level is BLOCK in a costume. Weaker than 1800 does not
+  brake at all, because a long drop is already AT the clamp before it enters.
+  The only shape left is a column that reaches the floor and is too short to
+  stop anything — untested.
+- **A GATE PASSING AND A LEVEL BEING HONEST ARE DIFFERENT QUESTIONS, and only
+  one of them is automated.** Both frauds above cleared breadth, families,
+  precision and hand-robustness. What caught them was tracing the certified
+  winner and asking whether the noun is in it. **Do that for every new level**,
+  not just the ones that look suspicious.
+
 - **Anchored means STATIC, not constrained.** Eight rigid constraints on a
   28-part compound body produced 177,000 units of jitter and shipped that way.
 - **Matter SILENTLY ZEROES `restitution` on every static body.** `Body.setStatic`

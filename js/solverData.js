@@ -234,6 +234,6 @@ export const SOLVER = {
     "twoStarLength": 165,
     "threeStarLength": 110,
     "shortestWin": 110,
-    "measuredAt": "2026-09-21"
+    "measuredAt": "2026-09-22"
   }
 };
