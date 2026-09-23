@@ -2605,6 +2605,84 @@ export const A48 = {
   solver: null,
 };
 
+/**
+ * A49 — CLIMB. The first level in this game that asks him to go UP.
+ *
+ * Every shipped level runs along flat ground or descends, and the contact sheet
+ * shows it: twenty-one frames, all bottom-heavy. Climbing has been core physics
+ * since A2 — descending is free, climbing is gated by the 22u step-up — and has
+ * never been the puzzle. `MILO.maxWalkSlope` is 40 degrees, so a ramp under
+ * that is walkable and a ramp over it is a wall.
+ *
+ * Doing nothing walks him into the face of the ledge and stops him dead, which
+ * is a stuck timeout and reads as exactly what it is.
+ */
+export const A49 = {
+  id: 'a49-climb',
+  hint: 'HE CANNOT GET UP THERE',
+  world: 'backyard', verb: 'CLIMB',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  // THE GOAL SITS AT THE FAR END OF THE SHELF, NOT WHERE THE RAMP LANDS. At
+  // x=600 its box covered the arrival point and the solver rejected almost
+  // every stroke with "overlaps-goal" before simulating it — breadth 0.0% with
+  // nothing actually wrong with the level. The same class as the frozen frame
+  // that spawned a killing ball on top of the goal.
+  goal: { id: 'goal', x: 620, y: 1060, w: 70, h: 140 },
+  freezeAt: 400,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 520, h: 128 },
+    // THE SHELF IS 152 UNITS UP, WHICH IS WHAT A RAMP CAN ACTUALLY DELIVER.
+    // Measured before this was rebuilt: he climbs 93u at 16 degrees, 139u at
+    // 25 and 187u at 35. The first build put the goal 392 units up behind a
+    // stub at 1010 — a stub he could not step onto, since the step-up is 22 —
+    // and it swept 0.0% because there was nothing to draw.
+    // CLOSER AND LOWER, BECAUSE LENGTH IS WHAT KILLS BREADTH. At a shelf 152u
+    // up and 130 across, the winning ramp had to span 265 units and only 4
+    // strokes in the plausible space managed it — 0.2%. At 92u up and 90
+    // across it is a 163-unit ramp, an ordinary thing for a hand to draw.
+    { id: 'shelf',  type: 'platform', x: 520, y: 1060, w: 200, h: 220 },
+  ],
+  objects: [],
+  // NO PIT. With a gap to span AND a shelf to reach AND a slope limit AND a
+  // goal box to miss, the winning ramp had four conditions to satisfy at once
+  // and five strokes in the whole space managed it — 0.3%, twice. Conditions
+  // in series is what killed the wheel. Take the gap away and the ledge is
+  // simply too tall to climb: the ramp's foot can go anywhere on the ground
+  // and its top anywhere on the face, and walking into the wall is a stuck
+  // timeout that reads as exactly what it is.
+  zones: [],
+  drawing: { maxLength: 420, denyZones: [] },
+  solver: null,
+};
+
+/**
+ * A50 — OVERHANG. The way up is not the way a ramp wants to go.
+ *
+ * CLIMB asks whether he can get up at all. This asks WHICH SIDE the ramp has to
+ * start from, because the ledge hangs out over the approach: a ramp built
+ * straight at it meets the underside, and the only line that works comes up
+ * behind it. Same locomotion rule, different question.
+ */
+export const A50 = {
+  id: 'a50-overhang',
+  hint: 'THAT ROOF IS IN THE WAY OF THE CLIMB',
+  world: 'backyard', verb: 'OVERHANG',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 250, y: 700, w: 70, h: 140 },
+  freezeAt: 400,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // The perch, and the lip that hangs out over the approach to it.
+    { id: 'perch',  type: 'platform', x: 210, y: 700,  w: 150, h: 20 },
+    { id: 'eave',   type: 'platform', x: 360, y: 700,  w: 200, h: 20 },
+    { id: 'pillar', type: 'platform', x: 544, y: 720,  w: 20,  h: 432 },
+  ],
+  objects: [],
+  zones: [],
+  drawing: { maxLength: 460, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A43];
 
 /**
@@ -2627,6 +2705,23 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A50, reason: 'Held unbuilt with A49 — the overhang needs the approach blocked on the side '
+    + 'Milo actually walks in from, and he only ever walks right, so the eave has nothing to block.' },
+  { level: A49, reason: 'A CLIMB IS STRUCTURALLY NARROW, AND THIS FILE ALREADY SAID SO. It is '
+    + 'solvable and clean — three hand-drawn ramps win, 30-45u precision floor, wobble 0 — and it '
+    + 'swept 0.2%, then 0.3%, then 0.3% again across three geometries. Five wins in 1820 plausible '
+    + 'strokes every time. '
+    + 'The reason is already recorded under A2, which was the hardest level in the game at position '
+    + 'TWO on 1.1% breadth: descending is free, climbing is gated by the 22u step-up, and what fixed '
+    + 'A2 was DROPPING the far bank so the crossing became a descent. A ramp that has to meet the '
+    + 'ground at one end and a ledge at the other inside a 20-38 degree window is a needle in the '
+    + 'stroke space, and neither shortening it (265u to 163u) nor removing the pit moved the number '
+    + 'by a single win. '
+    + 'Two real bugs were found on the way and are worth keeping. The first build put the goal 392 '
+    + 'units up behind a stub at y=1010 that Milo could not step onto at all. The second had the '
+    + 'goal box sitting exactly where the ramp lands, so the solver threw out nearly every candidate '
+    + 'with "overlaps-goal" BEFORE simulating it — a level can sweep 0.0%% with nothing whatever '
+    + 'wrong with its physics. Check the rejection reason before believing an unsolvable verdict.' },
   { level: A48, reason: 'UNSOLVABLE — 0.0%. An angled bounce buys only 84 units of height, which is '
     + 'not enough to lob anything over a wall worth having. Held with A47, whose reason explains '
     + 'why no spring level works.' },

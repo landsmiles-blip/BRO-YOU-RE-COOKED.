@@ -498,6 +498,32 @@ came out of proving it:
   the same rule that says no static noun can be a puzzle, arriving from the
   other side. Springs are scenery here.
 
+- **A CLIMB IS STRUCTURALLY NARROW — A2 ALREADY PROVED IT AND I REBUILT IT.**
+  A49 asked the player to draw a ramp up to a ledge. Solvable, clean, three
+  hand-drawn ramps win, 30-45u precision floor, wobble 0 — and 0.2%, 0.3%, 0.3%
+  across three geometries, five wins in 1820 strokes every time. Shortening the
+  required ramp from 265u to 163u moved it by nothing; removing the pit moved it
+  by nothing. **A ramp that must meet the ground at one end and a ledge at the
+  other inside a 20-38 degree window is a needle in the stroke space.** This is
+  the same finding as A2 — the hardest level in the game at position two, 1.1%,
+  fixed by DROPPING the far bank so the crossing became a descent. Climbing is
+  gated by the 22u step-up; descending is free. Do not design a level whose
+  answer is a ramp UP.
+  Two bugs found on the way, both worth keeping:
+  - **A stub the ramp starts from must be within 22 units of where Milo is.**
+    The first build anchored it 142u up, which he can never reach.
+  - **A GOAL BOX SITTING WHERE THE STROKE MUST GO MAKES A LEVEL READ AS
+    UNSOLVABLE.** The solver rejected nearly every candidate with
+    `overlaps-goal` before simulating it: 0.0% breadth with nothing whatever
+    wrong with the physics. **Check the rejection reason before believing an
+    unsolvable verdict.**
+- **AND THE GENERATOR CANNOT PRODUCE A NEW-LOOKING LEVEL — confirmed a second
+  time, by eye.** 24 fresh candidates through the cheap funnel, rendered as one
+  contact sheet: nine `crossing` were level 2, five `drop` were level 3, four
+  `trigger` were levels 7-9, three `chimney` were level 5, three `roller` were
+  level 6. Its five archetypes were distilled FROM levels 1-12, so rebuilding
+  them is all it can do. Stop going back to it.
+
 - **Anchored means STATIC, not constrained.** Eight rigid constraints on a
   28-part compound body produced 177,000 units of jitter and shipped that way.
 - **Matter SILENTLY ZEROES `restitution` on every static body.** `Body.setStatic`
