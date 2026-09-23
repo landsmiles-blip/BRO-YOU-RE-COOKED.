@@ -56,16 +56,92 @@ export function drawScene(ctx, sim, opts = {}) {
   // ── static geometry ───────────────────────────────────────────────────
   for (const s of sim.statics) {
     const b = s.spec;
+    // A SHATTERED PANE IS GONE — but leaving a GHOST of it, rather than
+    // nothing at all. Drawing it solid would be a picture that says the floor
+    // is still there while the physics says it is not, which is the one class
+    // of bug no assertion about positions catches. Drawing nothing is almost
+    // as bad the other way: the filmstrip showed the plank simply ceasing to
+    // exist between two frames, so what a player sees is a level that never
+    // had a floor rather than one they just broke. The outline says which.
+    if (b.brittle && sim.shattered?.has(b.id)) {
+      ctx.save();
+      ctx.setLineDash([9, 8]);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = drain(C.ink, 0.75);
+      ctx.strokeRect(b.x, b.y, b.w, b.h);
+      ctx.restore();
+      continue;
+    }
     ctx.save();
-    if (b.angle) {
+    if (s.pivoted) {
+      // A PINNED PIECE MUST BE DRAWN FROM ITS BODY, NOT ITS SPEC. Everything
+      // else here is drawn from the authored rectangle because it never moves;
+      // a see-saw that tilts and a pendulum that swings would both be rendered
+      // frozen in their starting pose, which is the exact class of bug that has
+      // shipped twice in this project — a picture that disagrees with the sim.
+      // Put the authored rect's centre at the body's position, turned by the
+      // body's angle: translate to where it now is, rotate, then step back by
+      // the authored centre so the rect draws around it.
+      ctx.translate(s.body.position.x, s.body.position.y);
+      ctx.rotate(s.body.angle);
+      ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
+    } else if (b.angle) {
       ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
       ctx.rotate(b.angle * Math.PI / 180);
       ctx.translate(-(b.x + b.w / 2), -(b.y + b.h / 2));
     }
-    inkShape(ctx, rectPoints(b.x, b.y, b.w, b.h), {
-      now, fill: drain(C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
-      width: 3.4, salt: b.x | 0,
-    });
+    // A BLADED PIECE IS DRAWN ONCE PER BLADE. The spec carries ONE rectangle
+    // because that is what the author writes; the body is `blades` of them
+    // welded through a hub. Drawing the spec alone rendered a four-armed mill
+    // as a single leaning stick — it turned correctly, collided correctly, and
+    // looked like a fallen plank.
+    const blades = (s.pivoted && b.blades > 1) ? b.blades : 1;
+    const cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+    for (let k = 0; k < blades; k++) {
+      if (k) { ctx.translate(cx, cy); ctx.rotate(Math.PI / blades); ctx.translate(-cx, -cy); }
+      inkShape(ctx, rectPoints(b.x, b.y, b.w, b.h), {
+        now, fill: drain(C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
+        width: 3.4, salt: b.x | 0,
+      });
+      // THORNS, in the danger accent and drawn as teeth. Shape carries the
+      // meaning: a beam that pops a balloon must not look like the beam next
+      // to it that does not. They point DOWN, at what rises into them.
+      if (b.sharp) {
+        const teeth = Math.max(3, Math.round(b.w / 26));
+        const pts = [{ x: b.x, y: b.y }];
+        for (let t = 0; t < teeth; t++) {
+          const x0 = b.x + (t / teeth) * b.w;
+          pts.push({ x: x0 + b.w / teeth / 2, y: b.y + b.h + 14 });
+          pts.push({ x: x0 + b.w / teeth, y: b.y });
+        }
+        inkShape(ctx, pts, {
+          now, fill: drain(C.danger, freeze * 0.5), ink: drain(C.ink, freeze * 0.35),
+          width: 2.6, salt: (b.x | 0) + 51,
+        });
+      }
+      // BRITTLE, drawn as cracks. A pane that breaks must not look like the
+      // shelf beside it that does not — the shape has to carry the meaning,
+      // the same reason thorns are teeth. Hairline forks across the span,
+      // spaced by a fixed size rather than a fraction of the width, because a
+      // mark scaled to its zone is what made the first leaning draught read as
+      // water.
+      if (b.brittle) {
+        // Drawn BOLD and running past both faces. The first version was a
+        // 1.8-wide hairline inside the slab and the filmstrip could not see it
+        // at all — a mark that means "this one breaks" has to survive being
+        // looked at from across the level.
+        const n = Math.max(3, Math.round(b.w / 46));
+        const ink = drain(C.ink, 0.7 + freeze * 0.25);
+        for (let c = 0; c < n; c++) {
+          const x0 = b.x + ((c + 0.5) / n) * b.w;
+          inkPath(ctx, [
+            { x: x0 - 9, y: b.y - 5 },
+            { x: x0 + 3, y: b.y + b.h * 0.5 },
+            { x: x0 - 5, y: b.y + b.h + 5 },
+          ], { now, colour: ink, width: 2.8, salt: (x0 | 0) + 17, passes: 1 });
+        }
+      }
+    }
     // A thin shelf floating in mid-air reads as an unfinished placeholder.
     // Diagonal brackets cost nothing and make it read as a fixed structure —
     // which also tells the player, truthfully, that it is something solid to
@@ -80,9 +156,101 @@ export function drawScene(ctx, sim, opts = {}) {
         ], { now, colour: ink, width: 2.6, salt: (b.x + sx) | 0, passes: 1 });
       }
     }
+
+    // THE PIN ITSELF. A plank lying at an angle with nothing holding it is a
+    // fallen plank; the same plank with a visible pin through it is a lever.
+    // Drawn in the UNROTATED frame, because the pin does not turn with the arm.
+    if (s.pivoted) {
+      ctx.restore();
+      ctx.save();
+      const pv = b.pivot;
+      const ink = drain(C.ink, freeze * 0.35);
+      // A wheel gets a bigger hub and a rim, so a frozen mill still says "this
+      // turns" rather than "these sticks happen to cross".
+      const hubR = b.blades > 1 ? 13 : 7;
+      if (b.blades > 1) {
+        ctx.beginPath();
+        ctx.arc(pv.x, pv.y, b.w / 2, 0, Math.PI * 2);
+        ctx.strokeStyle = drain(C.pivot, 0.45 + freeze * 0.3);
+        ctx.lineWidth = 2.2;
+        ctx.setLineDash([9, 11]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      ctx.beginPath();
+      ctx.arc(pv.x, pv.y, hubR, 0, Math.PI * 2);
+      ctx.fillStyle = drain(C.pivot, freeze * 0.3);
+      ctx.fill();
+      ctx.lineWidth = 2.6;
+      ctx.strokeStyle = ink;
+      ctx.stroke();
+    }
+
+    // A SPRINGBOARD MUST READ AS ONE BEFORE IT EVER MOVES. The player gets one
+    // look at a frozen world, and "this ground is springy" is not something a
+    // grey slab can say. A coil along the top edge says it in the only language
+    // available at a standstill — and it has to, because the ball's first hop
+    // happens after the freeze is released.
+    if (b.restitution) {
+      // Bigger than it looks like it needs to be. The first pass drew a 9-unit
+      // coil at 3.2 wide, and the frozen frame showed a hairline scribble in
+      // the dirt — a mechanic the player cannot see has not been introduced.
+      const coil = drain(C.spring, freeze * 0.3);
+      const step = 28, amp = 16, y0 = b.y - 4;
+      const zig = [];
+      for (let i = 0, x = b.x + 6; x <= b.x + b.w - 6; x += step / 2, i++) {
+        zig.push({ x, y: y0 - (i % 2 ? amp : 0) });
+      }
+      if (zig.length > 1) {
+        inkPath(ctx, zig, { now, colour: coil, width: 4.0, salt: b.y | 0, passes: 1 });
+        // A solid rail over the coil: this is a BOARD on springs, and a zigzag
+        // on its own reads as damage rather than as a mechanism.
+        inkPath(ctx, [{ x: b.x + 2, y: y0 + 4 }, { x: b.x + b.w - 2, y: y0 + 4 }],
+          { now, colour: coil, width: 5.0, salt: (b.x + 7) | 0, passes: 1 });
+      }
+    }
     ctx.restore();
   }
 
+
+  // ── where you may NOT draw ────────────────────────────────────────────
+  //
+  // denyZones were implemented and enforced in drawing/validate.js from M0 and
+  // drawn by NOTHING. The first level to use them shipped a hint reading "YOU
+  // CANNOT DRAW IN THE RED" over a screen with no red on it — a rule the player
+  // could only discover by breaking it.
+  //
+  // Hatched, not filled: a solid block reads as SOLID, and the one thing these
+  // are not is something your line can rest on. Diagonal bars say "nothing
+  // here" in a way a slab never can.
+  if (showAnchorable) {
+    for (const z of sim.level?.drawing?.denyZones ?? []) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(z.x, z.y, z.w, z.h);
+      ctx.clip();
+      ctx.globalAlpha = 0.13;
+      ctx.fillStyle = C.danger;
+      ctx.fillRect(z.x, z.y, z.w, z.h);
+      ctx.globalAlpha = 0.30;
+      ctx.strokeStyle = C.danger;
+      ctx.lineWidth = 3;
+      for (let x = z.x - z.h; x < z.x + z.w; x += 22) {
+        ctx.beginPath();
+        ctx.moveTo(x, z.y + z.h);
+        ctx.lineTo(x + z.h, z.y);
+        ctx.stroke();
+      }
+      ctx.restore();
+      ctx.save();
+      ctx.globalAlpha = 0.45;
+      ctx.strokeStyle = C.danger;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([7, 6]);
+      ctx.strokeRect(z.x, z.y, z.w, z.h);
+      ctx.restore();
+    }
+  }
 
   // ── what you can attach to ────────────────────────────────────────────
   //
@@ -117,6 +285,93 @@ export function drawScene(ctx, sim, opts = {}) {
         ctx.stroke();
       }
     }
+    ctx.restore();
+  }
+
+  // ── moving air ────────────────────────────────────────────────────────
+  //
+  // Chevrons riding the flow, on a loop tied to wall-clock time so the thing
+  // is obviously MOVING even in a still frame — the one property that
+  // separates it from a decorative pale rectangle. Never the danger accent:
+  // it does not kill, it pushes, and the player has to be able to trust that
+  // on sight.
+  //
+  // THEY POINT WHERE THE AIR ACTUALLY PUSHES. `applyUpdrafts` has read a
+  // horizontal component (`z.ax`) since updrafts were added, and this drew
+  // straight up regardless — so the first level to lean its draught would
+  // have shipped a picture that lied about the physics, which is the one
+  // class of bug no assertion about positions can catch. The stroke renderer
+  // already cost a session proving that. Everything here is derived from the
+  // flow vector, so a zone that turns LOOKS like one.
+  for (const z of sim.zones ?? []) {
+    if (z.kind !== 'updraft') continue;
+    // Screen angle of the flow, measured from "straight up".
+    const ang = Math.atan2(z.ax ?? 0, -(z.accel ?? -2600));
+    const cos = Math.abs(Math.cos(ang)), sin = Math.abs(Math.sin(ang));
+    // How wide the zone is ACROSS the flow, and how far along it reaches.
+    const across = z.w * cos + z.h * sin;
+    const along = z.w * sin + z.h * cos;
+
+    ctx.save();
+    ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
+    ctx.fillStyle = C.air;
+    ctx.globalAlpha = 0.10;
+    ctx.fillRect(z.x, z.y, z.w, z.h);
+
+    // Work in flow space: local +y is DOWNSTREAM-to-upstream, as before.
+    // ROTATE BY +ang, NOT -ang. The first version had this backwards and the
+    // duct hid it: at a 7-degree lean a chevron pointing up-and-LEFT instead
+    // of up-and-right looks identical to a correct one. The rail leans 90, and
+    // the filmstrip came back with every mark pointing at the wall the air was
+    // blowing away from. Check a new flow at a STEEP angle, not a shallow one.
+    ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
+    ctx.rotate(ang);
+
+    // A WIDE FLOW GETS MORE CHEVRONS, NOT WIDER ONES.
+    //
+    // The chevron used to be sized as a FRACTION of the zone's width, which was
+    // invisible while the only zone in the game was A19's 160-unit chimney. The
+    // duct is 270 wide and 300 tall, so the same fraction stretched each mark to
+    // 98 units across by 11 deep — and the filmstrip came back reading as flat
+    // wavy strata. It looked like WATER. A player has to be able to tell at a
+    // glance that the thing is blowing, not filling.
+    //
+    // Fixed size, spread to fit. A19 still gets its two marks; a wide duct gets
+    // four of the same shape.
+    const period = 46;
+    const HALF = 22, DEPTH = 11;              // the mark, in world units, always
+    const cols = Math.max(2, Math.round(across / 76));
+    const drift = ((now / 9) % period + period) % period;
+    ctx.globalAlpha = 0.5;
+    ctx.strokeStyle = C.air;
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    for (let y = along / 2 + period - drift; y > -along / 2 - period; y -= period) {
+      for (let i = 0; i < cols; i++) {
+        const cx = across * ((i + 0.5) / cols - 0.5);
+        ctx.beginPath();
+        ctx.moveTo(cx - HALF, y + DEPTH);
+        ctx.lineTo(cx, y);
+        ctx.lineTo(cx + HALF, y + DEPTH);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+    // Edges, so the flow has a boundary you can aim at. Drawn along the flow
+    // and clipped to the zone, not down the zone's own sides — in a duct that
+    // turns, the sides are not the thing the cargo runs along.
+    ctx.save();
+    ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
+    ctx.translate(z.x + z.w / 2, z.y + z.h / 2);
+    ctx.rotate(ang);
+    ctx.globalAlpha = 0.35;
+    ctx.strokeStyle = C.air;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-across / 2, -along / 2); ctx.lineTo(-across / 2, along / 2);
+    ctx.moveTo(across / 2, -along / 2); ctx.lineTo(across / 2, along / 2);
+    ctx.stroke();
     ctx.restore();
   }
 
@@ -190,6 +445,35 @@ export function drawScene(ctx, sim, opts = {}) {
     // `kind: 'none'` — it would have painted the safe plank red again.
     const lethal = isHazardous(spec.lethal);
     const opened = sim.triggered?.has(spec.id);
+
+    // A BALLOON MUST NOT LOOK LIKE A ROCK. It is drawn as one circle by the
+    // same code, and this level's balloon masses 537 — heavier than any
+    // boulder in the game — so without its own mark the picture would say
+    // "rock" about the one object in the world that falls upwards. That is the
+    // class of bug that has cost this project more than any other.
+    //
+    // A knot and a tail below it, and the pale air colour rather than stone:
+    // shape carries the meaning, colour only reinforces it.
+    if (spec.lift) {
+      // A POPPED BALLOON IS NOT A BALLOON. It keeps its outline so the player
+      // can follow what it used to be, but loses the air colour and the tail —
+      // otherwise the one object in the world that falls upwards would go on
+      // looking buoyant all the way down.
+      const popped = sim.burst?.has(spec.id);
+      inkShape(ctx, circlePoints(body.position.x, body.position.y, spec.radius * (popped ? 0.72 : 1)), {
+        now, fill: popped ? C.staticFill : C.air, ink: C.ink, width: 3.6, salt: 307,
+      });
+      if (popped) { moving.push({ body, radius: spec.radius }); continue; }
+      const bx = body.position.x, by = body.position.y + spec.radius;
+      inkPath(ctx, [
+        { x: bx, y: by },
+        { x: bx - 5, y: by + 9 },
+        { x: bx + 5, y: by + 18 },
+        { x: bx - 3, y: by + 26 },
+      ], { now, colour: C.ink, width: 2.4, salt: 308, passes: 1 });
+      moving.push({ body, radius: spec.radius });
+      continue;
+    }
 
     if (spec.radius) {
       inkShape(ctx, circlePoints(body.position.x, body.position.y, spec.radius), {

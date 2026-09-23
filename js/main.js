@@ -6,7 +6,7 @@
 // catch-up. Fabricating 400ms of physics in one frame to hide a stutter nobody
 // was watching breaks determinism for nothing.
 
-import { initView, view } from './view.js';
+import { initView, view, applyTransform } from './view.js';
 import { attachInput } from './input.js';
 import {
   createGame, tick, onDown, onMove, onUp, retry, nextLevel, goToLevel, isSteppingPhase,
@@ -15,7 +15,7 @@ import {
 import { drawBoard, hitTest } from './render/levelselect.js';
 import { load as loadProgress, totalStars, maxStars, perfect, starsOn } from './progress.js';
 import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
-import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT } from './constants.js';
+import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT, CLOSE_CALL, NEAR_MISS_DIST } from './constants.js';
 import { clear, drawScene } from './render/world.js';
 import { wouldAnchor } from './physics/anchor.js';
 import { freezeAmount, reducedMotion } from './render/freeze.js';
@@ -101,7 +101,12 @@ function frame(now) {
   if (game.paused) return;             // nothing steps, nothing renders
 
   if (isSteppingPhase(game)) {
-    acc += dt;
+    // TIME DILATION. The sim keeps its fixed PHYSICS_DT; only the rate at which
+    // wall-clock time is handed to it changes. Determinism is untouched, the
+    // solver and every headless gate are unaffected, and the player gets to
+    // actually SEE the boulder miss instead of it being over in three frames.
+    const slow = now < game.slowUntil;
+    acc += slow ? dt * CLOSE_CALL.slowRate : dt;
     let steps = 0;
     while (acc >= PHYSICS_DT) {
       if (steps >= MAX_STEPS_PER_FRAME) { acc = 0; break; }   // resume-from-pause
@@ -174,14 +179,33 @@ function render() {
 
   if (g.phase === PHASE.FROZEN) {
     if (!g.stroke.active && !g.stroke.points.length) {
-      // Clear of Milo — he stands near the bottom of the safe box, so a hint
-      // "near his feet" lands on top of him at most aspect ratios.
-      const hint = g.attempt > 1 ? 'DRAW AGAIN' : 'DRAW';
-      drawText(ctx, hint, 0.5, 0.07, Math.max(18, view.cssH * 0.032), C.ink);
+      // THE PROBLEM, then the instruction.
+      //
+      // This used to say "DRAW" and nothing else, which tells a new player what
+      // to do with their finger and nothing about what the level wants. The
+      // level's own one-line hint names what is about to go wrong — it does not
+      // hand over the solution, and on a retry it is the more useful half, so
+      // it stays while the instruction shrinks to "DRAW AGAIN".
+      // THE PROBLEM LEADS. The instruction follows.
+      //
+      // The first version had this the other way round — "DRAW" large, and the
+      // level's hint under it in 11px grey at 62% opacity. That is a whisper,
+      // and a whisper does not answer "I do not know what I am supposed to do".
+      // Everyone already knows to draw; the screen says so, and they have been
+      // doing it for twelve levels. What they do not know is what is about to
+      // go wrong. So that goes first, and big.
+      const lead = g.attempt > 1 ? 'DRAW AGAIN' : 'DRAW';
+      if (g.level.hint) {
+        drawText(ctx, g.level.hint, 0.5, 0.062, Math.max(15, view.cssH * 0.029), C.ink);
+        drawText(ctx, lead, 0.5, 0.105, Math.max(11, view.cssH * 0.019), 'rgba(42,38,34,0.55)');
+      } else {
+        drawText(ctx, lead, 0.5, 0.07, Math.max(17, view.cssH * 0.032), C.ink);
+      }
     }
     drawInk(ctx, inkUsed(g), inkMax(g));
   }
 
+  if (g.phase === PHASE.SIM || g.phase === PHASE.RESULT) drawCloseCall(ctx, g, now);
   if (g.phase === PHASE.RESULT) drawResult(ctx, g);
   if (g.phase === PHASE.ENDING) drawEnding(ctx, g);
   if (g.phase === PHASE.FROZEN || g.phase === PHASE.RESULT || g.phase === PHASE.ENDING) {
@@ -224,10 +248,65 @@ function drawResult(ctx, g) {
   const next = g.stars < 3
     ? `${g.stars === 1 ? th.two : th.three}u for the next star`
     : 'nothing left to cut';
-  drawText(ctx, `${Math.round(g.lastLength)}u of ink · ${next}`, 0.5, (top + h * 0.74) / view.cssH,
-           Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.72)');
+  const calls = g.sim.closeCalls.length;
+  const line = calls
+    ? `${Math.round(g.lastLength)}u of ink · ${calls} close call${calls > 1 ? 's' : ''}`
+    : `${Math.round(g.lastLength)}u of ink · ${next}`;
+  drawText(ctx, line, 0.5, (top + h * 0.74) / view.cssH,
+           Math.max(11, view.cssH * 0.018),
+           calls ? C.danger : 'rgba(232,226,214,0.72)');
   drawText(ctx, 'tap for the next one', 0.5, (top + h * 0.90) / view.cssH,
            Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.45)');
+}
+
+/**
+ * THE CLOSE CALL — the moment this game is named after.
+ *
+ * A ring blows out from the point where it nearly happened, the frame edges
+ * flush with the danger accent, and one word lands. It reads in a quarter of a
+ * second, which is all it gets, and it is the only time the accent is allowed
+ * anywhere but on a hazard — because for that quarter second the near miss IS
+ * the hazard.
+ */
+function drawCloseCall(ctx, g, now) {
+  const calls = g.sim.closeCalls;
+  if (!calls.length) return;
+  const last = calls[calls.length - 1];
+  const age = CLOSE_CALL.slowMs - (g.slowUntil - now);
+  if (age < 0 || age > CLOSE_CALL.slowMs) return;
+  const t = age / CLOSE_CALL.slowMs;            // 0 -> 1 across the moment
+
+  applyTransform(ctx);
+  ctx.save();
+  // The ring: fast out, fading.
+  const r = NEAR_MISS_DIST + t * 150;
+  ctx.globalAlpha = (1 - t) * 0.85;
+  ctx.strokeStyle = C.danger;
+  ctx.lineWidth = 7 * (1 - t) + 1.5;
+  ctx.beginPath(); ctx.arc(last.x, last.y, r, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = (1 - t) * 0.35;
+  ctx.beginPath(); ctx.arc(last.x, last.y, r * 0.55, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
+
+  // Frame flush — screen space, so it hugs the viewport at every ratio.
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const edge = Math.min(view.cssW, view.cssH) * 0.16;
+  const grad = ctx.createLinearGradient(0, 0, 0, view.cssH);
+  const a = (1 - t) * 0.5;
+  grad.addColorStop(0, `rgba(224,69,43,${a})`);
+  grad.addColorStop(edge / view.cssH, 'rgba(224,69,43,0)');
+  grad.addColorStop(1 - edge / view.cssH, 'rgba(224,69,43,0)');
+  grad.addColorStop(1, `rgba(224,69,43,${a})`);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, view.cssW, view.cssH);
+
+  // The word. Rises and fades — it must never outstay the moment.
+  if (t < 0.85) {
+    ctx.globalAlpha = Math.min(1, (1 - t) * 1.6);
+    drawText(ctx, last.gap < 8 ? 'THAT close' : 'CLOSE', 0.5, 0.30 - t * 0.04,
+             Math.max(22, view.cssH * 0.052), C.danger);
+    ctx.globalAlpha = 1;
+  }
 }
 
 /**
@@ -331,6 +410,24 @@ function rejectText(reason) {
 }
 
 // Test hook — lets Playwright drive real strokes through the real pipeline.
-globalThis.__byc = { game, view, PHASE, retry, nextLevel, goToLevel, openSelect, closeSelect, LEVELS, reducedMotion };
+// `boardBox` is exposed as a GETTER, and it is the live hit regions the
+// renderer actually produced this frame — not a recomputation.
+//
+// The board gate used to `import('/js/render/levelselect.js')` and call
+// layout() itself. Over http that fetches a SECOND copy of the module with its
+// own `view` instance, which no one ever resizes, so it laid the board out for
+// a 0x0 viewport and clicked empty space. The test reported the board broken
+// while the board was fine — the same input-vs-rendering disagreement the board
+// was written to catch, this time between the test and the game.
+globalThis.__byc = {
+  game, view, PHASE, retry, nextLevel, goToLevel, openSelect, closeSelect, LEVELS, reducedMotion,
+  get boardBox() { return boardBox; },
+  // The RUNNING audio module, for the same reason boardBox is here. The
+  // certification gate used to `import('/js/audio.js')` and read the state off
+  // that, which over http is a second copy with no AudioContext in it — so it
+  // reported "no context" while the real one was correctly suspended, and the
+  // one platform constraint that is genuinely non-negotiable looked broken.
+  audio,
+};
 
 requestAnimationFrame(frame);

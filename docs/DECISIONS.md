@@ -187,3 +187,56 @@ which a licensed loop could never do.
 **Verified by measurement, not by inspection** (`npm run test:audio`): every
 sound is rendered through an OfflineAudioContext and its waveform measured.
 Silence throws no error, so "the function was called" proves nothing.
+
+---
+
+## D8 — Procedural levels · **LOCKED: generation is a SEARCH tool and an endless mode. It is not the campaign.**
+
+Asked directly: can the game generate its own levels forever, instead of us
+hand-building them? Built the generator, ran it, and answered with evidence
+rather than opinion.
+
+**Payload is not the constraint, and it is not close.** A level costs 321 bytes
+gzipped. 2,000 levels would be 0.61 MB against a 15 MiB recommendation. "How
+many levels can it hold" is the wrong question.
+
+**The oracle already existed, which is the unusual part.** What normally kills
+procedural puzzle generation is not making layouts, it is judging them. This
+project already had that: an idle gate (doing nothing must fail), a
+2,100-stroke solvability sweep, hand-robustness under three tremors plus pixel
+quantization, a 2–40% breadth band, and a 25u precision floor.
+
+**Runtime generate-and-test is impossible.** One full validation is 7–50
+seconds of CPU. That cannot run on a phone at 60fps inside YouTube. So
+generation is OFFLINE, and what ships is the surviving data.
+
+**And then the result that settles it.** The generator's three best candidates
+out of fifteen were: level 1, level 1 again with different numbers, and level
+9. Filming the top one showed exactly what the numbers could not — the line is
+drawn in mid-air, falls to the ground, the rock glances off it, and Milo walks
+over. 14.5% breadth, six stroke families, every gate green, and **no decision
+anywhere in it.** It is level 1 with the interesting constraint removed.
+
+That is the whole finding: **the gates measure whether a level is FAIR. Nothing
+measures whether it MEANS anything.** A14 proved the same thing from the other
+direction by passing at 1.6% while its rock was decoration.
+
+**So the split is:**
+
+- **Generation searches NUMBERS inside a shape that already carries an idea.**
+  The archetypes in tools/levelgen/archetypes.js are distilled from levels that
+  work and have been filmed being won. The machine finds where the ledge goes
+  and how fast the roller rolls — a search problem, which is what machines are
+  for. It cannot invent "the rock that is trying to kill you becomes the floor
+  you walk across", and it never will.
+- **Endless mode is where generated levels belong**, after the hand-built
+  campaign. Fair-but-derivative is exactly right for infinite content and
+  exactly wrong for the teaching ladder. Post-launch, and gated on whether
+  players actually finish the campaign — building infinite content for an
+  ending nobody reaches is the classic way these projects die at 70%.
+- **No generated level ships in levels 1–24.**
+
+**Also: no AI sub-agents.** The "assistant" here is a script. Parallel agents
+would start with no memory of this project and re-derive the physics, the gates
+and why A14 was a fraud, turning build time into coordination time. One owner,
+one tool.

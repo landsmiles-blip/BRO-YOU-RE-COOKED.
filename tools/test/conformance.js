@@ -127,7 +127,7 @@ const browser = await chromium.launch({
     B.goToLevel(B.game, 0);
     await new Promise((r) => setTimeout(r, 60));
     globalThis.__pause();
-    const audioMod = await import('/js/audio.js');
+    const audioMod = B.audio;   // the running module, never a re-imported copy
     const before = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
     await new Promise((r) => setTimeout(r, 450));
     const after = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
@@ -364,7 +364,11 @@ await browser.close();
 console.log('\nSTILL REQUIRES A HUMAN (no machine can sign these off):');
 for (const line of [
   '§2  60 fps on a real mid-range Android, and the physical device matrix',
-  '§4  rewarded-ad flow — NOT IMPLEMENTED YET, and must fire only on explicit request',
+  '§4  ads — interstitial WIRED at level boundaries (3-level cadence, gated by',
+  '     tools/test/ads.js). Rewarded is wired and has NO call site by design:',
+  '     see requestRewardedAd in js/platform/sdk.js. A human decides whether',
+  '     this game ever wants one — it cannot have an undo or a hint.',
+  '§4  revenue share is a LIMITED PILOT with undisclosed terms — portal onboarding',
   '§6  trademark clearance for the title (decision D4 — still outside my authority)',
   '§6  Community Guidelines / 13+ content review',
   '§7  channel onboarding, Partner Manager contact, portal "Verify and test"',

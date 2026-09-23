@@ -16,11 +16,12 @@ import { buildSim, stepSim, commitStroke, abort, destroySim, OUTCOME } from './s
 import { LEVELS } from './levels.js';
 import { starsFor } from './rating.js';
 import { createStroke, begin, extend, end, remaining } from './drawing/capture.js';
-import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME } from './constants.js';
+import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME, CLOSE_CALL } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
 import { createProgress, record, save, isComplete, firstUnclearedIndex } from './progress.js';
 import * as audio from './audio.js';
+import * as sdk from './platform/sdk.js';
 
 export const PHASE = {
   LIVE: 'live', FROZEN: 'frozen', SIM: 'sim',
@@ -52,12 +53,18 @@ export function createGame(level) {
     progress: createProgress(),
     // Where to return to when the board is closed without choosing.
     selectFrom: null,
+    // Wall-clock deadline for the close-call slow motion, and how many the
+    // sim has reported so far, so the loop can notice a NEW one.
+    slowUntil: 0,
+    seenCalls: 0,
   };
   reset(g);
   return g;
 }
 
 export function reset(g) {
+  g.slowUntil = 0;
+  g.seenCalls = 0;
   if (g.sim) destroySim(g.sim);
   g.sim = buildSim(g.level);
   g.phase = PHASE.LIVE;
@@ -84,6 +91,13 @@ export function tick(g, dtMs) {
 
   if (g.phase === PHASE.SIM) {
     const o = stepSim(g.sim);
+    // A new close call arms the slow motion. The SIM is untouched — it still
+    // steps at a fixed PHYSICS_DT — only the wall-clock rate at which the loop
+    // feeds it changes, so determinism and every headless gate are unaffected.
+    if (g.sim.closeCalls.length > g.seenCalls) {
+      g.seenCalls = g.sim.closeCalls.length;
+      g.slowUntil = performance.now() + CLOSE_CALL.slowMs;
+    }
     if (o !== OUTCOME.RUNNING) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
       if (o === OUTCOME.SUCCESS) {
@@ -124,8 +138,27 @@ export function nextLevel(g) {
   if (g.levelIndex >= LEVELS.length - 1) {
     g.phase = PHASE.ENDING; g.phaseTime = 0; audio.ending(); return;
   }
+  // AN AD AT A LEVEL BOUNDARY, AND NOT AT EVERY ONE.
+  //
+  // This is the only breakpoint in the game that is a real pause rather than
+  // an interruption: the player has already read RESCUED and tapped to move
+  // on. The platform's own guidance is logical pauses between levels.
+  //
+  // The cap matters more than the call. A level here is about forty seconds,
+  // so an ad after each one would be the fastest way to lose a player we paid
+  // nothing to get, and the counter starts such that the first ad lands after
+  // level THREE — a new player's first two levels are never interrupted.
+  //
+  // The counter lives on `g` rather than in this module on purpose: per-run
+  // state in module scope is the same shape of bug as recording a balloon's
+  // burst on its shared level spec.
+  g.sinceAd = (g.sinceAd ?? 0) + 1;
+  if (g.sinceAd >= LEVELS_PER_AD) { g.sinceAd = 0; sdk.requestInterstitialAd(); }
   goToLevel(g, g.levelIndex + 1);
 }
+
+/** Level boundaries between interstitials. See nextLevel. */
+const LEVELS_PER_AD = 3;
 
 /** Jump to a level by index — used by nextLevel, the ending, and level select. */
 export function goToLevel(g, index) {
