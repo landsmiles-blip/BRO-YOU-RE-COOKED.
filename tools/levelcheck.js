@@ -94,6 +94,12 @@ function nounsOf(level) {
   // noun no tool can check is a noun that gets to be decoration unnoticed.
   for (const o of level.objects ?? []) {
     if (o.lift) out.push({ what: `lift "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, lift: 0 } : q)) }) });
+    // BOUNCE. Measured the hard way: a pad set to 0.85 rebounds a ball with
+    // restitution 0.1 by ONE unit, and the same ball at 0.85 rebounds 150. The
+    // number that moves the ball is the one on the BALL, so that is the one a
+    // level can be built on — and a noun no tool can check is a noun that gets
+    // to be decoration unnoticed.
+    if ((o.restitution ?? 0) >= 0.4) out.push({ what: `bounce "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, restitution: 0 } : q)) }) });
   }
   return out;
 }

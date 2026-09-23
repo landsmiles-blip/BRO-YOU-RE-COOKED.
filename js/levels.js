@@ -2532,6 +2532,79 @@ export const A46 = {
   solver: null,
 };
 
+/** A47 — VOLLEY. The bounce goes up. The plate is sideways. */
+export const A47 = {
+  id: 'a47-volley',
+  hint: 'IT COMES STRAIGHT BACK UP EVERY TIME',
+  world: 'backyard', verb: 'VOLLEY',
+  // Milo's route is SHORT and on the left, so the apparatus on the right is
+  // never something he has to walk under.
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 205, y: 1152, w: 70, h: 140 },
+  freezeAt: 400,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // NO SPRING PAD. It was decoration and levelcheck said so: the bounce lives
+    // on the BALL's restitution, and zeroing the pad's changes nothing at all.
+    // The ball bounces off plain ground, and off the player's line, at 0.85.
+    { id: 'shelf',  type: 'platform', x: 480, y: 1040, w: 240, h: 16 },
+    // A kerb, not a wall — the bounce peaks at a centre of y=976 and has to
+    // clear this to land on the shelf.
+    { id: 'lip',    type: 'platform', x: 480, y: 1010, w: 16,  h: 30 },
+    // THE LID CLOSES THE PLATE BACK DOOR. The first build swept 19.3% with
+    // 86.4% hand-robust and the certified winner was an UNANCHORED bowl with
+    // zero anchors: dropped straight onto the plate, ball never leaving x=360.
+    // The ball arrives ROLLING along the shelf and a dropped line arrives from
+    // above, so a cap 92 units over its head separates them for free.
+    { id: 'lid',    type: 'platform', x: 494, y: 880,  w: 222, h: 16 },
+  ],
+  objects: [
+    // THE BALL CARRIES THE BOUNCE, NOT THE PAD. Measured: with the ball at
+    // restitution 0.1 it rebounds ONE unit off a pad set to 0.85, and at 0.85
+    // it rebounds 150. Whatever Matter is doing with the pair, the number that
+    // moves the ball is the one on the ball.
+    { id: 'ball',  type: 'boulder', x: 360, y: 600, radius: 26,
+      density: 0.04, restitution: 0.85, friction: 0.15, frictionAir: 0,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 500, y: 1010, w: 200, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 150, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  // 130 OF INK, AND THAT IS THE LEVEL. At 320 the A14 test said the bounce was
+  // decoration, because a ramp from the ground to the shelf is affordable and
+  // a rolled ball needs no bounce at all. A budget too small to build that ramp
+  // leaves only a short bank board — which is a thing a bouncing ball needs and
+  // a rolling one cannot use.
+  drawing: { maxLength: 130, denyZones: [] },
+  solver: null,
+};
+
+/** A48 — LOB. It has the height. It does not have the distance. */
+export const A48 = {
+  id: 'a48-lob',
+  hint: 'IT CANNOT GET OVER THAT ON ITS OWN',
+  world: 'backyard', verb: 'LOB',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  goal: { id: 'goal', x: 650, y: 1152, w: 70, h: 140 },
+  freezeAt: 400,
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'spring', type: 'platform', x: 180, y: 1152, w: 170, h: 128,
+      restitution: 0.85, friction: 0.3 },
+    { id: 'wall',   type: 'platform', x: 470, y: 1074, w: 18,  h: 78 },
+  ],
+  objects: [
+    { id: 'ball',  type: 'boulder', x: 120, y: 700, radius: 26,
+      density: 0.04, restitution: 0.85, friction: 0.15, frictionAir: 0, vx: 260,
+      lethal: { kind: 'none' } },
+    { id: 'plate', type: 'switch', x: 510, y: 1122, w: 180, h: 30, triggers: ['gate'] },
+    { id: 'gate',  type: 'gate',   x: 120, y: 1012, w: 34, h: 140 },
+  ],
+  zones: [],
+  drawing: { maxLength: 320, denyZones: [] },
+  solver: null,
+};
+
 export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A43];
 
 /**
@@ -2554,6 +2627,25 @@ export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19,
  * anything — the code name and the screen number are different things.
  */
 export const HELD = [
+  { level: A48, reason: 'UNSOLVABLE — 0.0%. An angled bounce buys only 84 units of height, which is '
+    + 'not enough to lob anything over a wall worth having. Held with A47, whose reason explains '
+    + 'why no spring level works.' },
+  { level: A47, reason: 'THE SPRING PAD IS NOT A NOUN IN THIS ENGINE, AND THE BOUNCE IS REDUNDANT '
+    + 'WITH THE STROKE. Two findings, both measured, and between them they close the whole idea. '
+    + 'FIRST: the bounce is on the BALL, not the pad. A pad at restitution 0.85 rebounds a ball of '
+    + '0.1 by ONE unit; the same ball at 0.85 rebounds 150, off any surface at all. Measured across '
+    + 'drop heights 1090 to 600 — a vertical drop never bounces, at any speed, because the number '
+    + 'that matters is the one on the object. So a spring PAD cannot carry a level, and levelcheck '
+    + 'said the pad was decoration the moment it was asked. '
+    + 'SECOND, and fatal: with the pad gone and the bounce on the ball, the A14 test says the BOUNCE '
+    + 'is decoration too — a drawn ramp rolls the ball to the same shelf and no bouncing is needed. '
+    + 'Cutting the ink from 320 to 130 to make that ramp unaffordable did not change it: still '
+    + 'decoration, and the families collapsed from five to one. A bounce gets a ball UP and ACROSS, '
+    + 'and those are the two things a static line already does. '
+    + 'It also ate the plate back door in passing: the first build swept 19.3% at 86.4% hand-robust '
+    + 'and its certified winner was an UNANCHORED bowl with zero anchors, dropped straight onto the '
+    + 'plate while the ball never left x=360. A lid fixed that and took breadth to 3.6%, which is '
+    + 'what the file already says closing that door costs.' },
   { level: A44, reason: 'THE WINNING SHIELD HAS A 50-UNIT BAND TO LIVE IN, AND THAT IS THE 20u '
     + 'PRECISION FLOOR. It must sit BELOW the low thorn bank (bottom 1006) so the balloon can still '
     + 'reach the bank, and ABOVE the balloon top (1056) so the balloon meets it at all. Fifty units '

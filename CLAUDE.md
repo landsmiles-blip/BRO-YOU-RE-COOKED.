@@ -481,6 +481,23 @@ came out of proving it:
   winner and asking whether the noun is in it. **Do that for every new level**,
   not just the ones that look suspicious.
 
+- **A SPRING PAD IS NOT A NOUN. THE BOUNCE IS ON THE OBJECT.** Measured: a pad
+  at `restitution: 0.85` rebounds a ball of 0.1 by **one unit**; the same ball
+  at 0.85 rebounds **150**, off any surface. A vertical drop never bounces at
+  any height — 1090, 1040, 980, 900, 800, 700 and 600 all gave 0-2u — because
+  the number Matter moves the ball with is the one on the BALL. So the pad in
+  A20 SPRING is doing something other than springing, and no new level can be
+  built on a bouncy floor. `tools/levelcheck.js` now A14-tests object
+  restitution, because a noun no tool can check gets to be decoration unnoticed.
+- **AND A BOUNCE IS REDUNDANT WITH THE STROKE ANYWAY.** With the bounce moved
+  onto the ball and working, the A14 test still called it decoration: a drawn
+  ramp rolls the ball to the same shelf and no bouncing happens. Cutting the ink
+  from 320 to 130 so that ramp was unaffordable did not change the verdict and
+  collapsed the families from five to one. **A bounce gets a thing UP and
+  ACROSS, and those are precisely the two things a static line already does** —
+  the same rule that says no static noun can be a puzzle, arriving from the
+  other side. Springs are scenery here.
+
 - **Anchored means STATIC, not constrained.** Eight rigid constraints on a
   28-part compound body produced 177,000 units of jitter and shipped that way.
 - **Matter SILENTLY ZEROES `restitution` on every static body.** `Body.setStatic`
