@@ -16,12 +16,14 @@
 //   node tools/serve.js &
 //   node tools/test/filmstrip.js            # all shipping levels
 //   node tools/test/filmstrip.js a1-wall    # just one
+//   FILM_POOL=1 node tools/test/filmstrip.js   # the DAILY POOL instead
 //
 // Output: /tmp/film-<level>.png
 
 import { existsSync, mkdirSync } from 'node:fs';
 import { handDrawn } from './lib/hand.js';
 import { SOLUTIONS } from '../../js/solutions.js';
+import { DAILY_SOLUTIONS } from '../../js/dailySolutions.js';
 
 const OUT = process.env.FILM_DIR ?? '/tmp';
 const BASE = process.env.BASE_URL ?? 'file:///home/user/BRO-YOU-RE-COOKED./dist/byc.html';
@@ -66,8 +68,29 @@ mkdirSync(OUT, { recursive: true });
  * These filmstrips therefore show the game being WON. A level that does not
  * reach its goal in one of them is a real regression, not a bad guess by me.
  */
+/**
+ * FILM_IDLE=1 films the LOSS instead of the win.
+ *
+ * Every filmstrip in this project's history filmed a win, and the losing screen
+ * is what a player sees most of the time. The one failure capture anybody ever
+ * took found a death cam drawing the player's own line as a fixed 80-pixel dash
+ * with no lethal zones and no goal — the screen whose whole job is to explain,
+ * explaining nothing. There was no way to ask for that capture; now there is.
+ */
+const IDLE = process.env.FILM_IDLE === '1';
+
+/**
+ * FILM_POOL=1 films the DAILY POOL — generated levels that are not in LEVELS,
+ * dealt only by the daily. Forty levels nobody built by hand are exactly the
+ * ones that must be looked at, not trusted. They are filmed ON THE DAILY
+ * BUDGET, because that is the only one a pool level is ever played at, and
+ * their certified strokes were certified inside it.
+ */
+const POOL_MODE = process.env.FILM_POOL === '1';
+
 function strokeFor(id) {
-  const sol = SOLUTIONS[id]?.solution;
+  if (IDLE) return null;
+  const sol = (POOL_MODE ? DAILY_SOLUTIONS : SOLUTIONS)[id]?.solution;
   if (!sol) return null;
   // Same hand model the solver used to certify it — see tools/test/lib/hand.js.
   return handDrawn(sol.points, 8, 5.5);
@@ -83,7 +106,8 @@ page.on('pageerror', (e) => errors.push(e.message));
 await page.goto(BASE, { waitUntil: 'load' });
 await page.waitForFunction(() => globalThis.__byc?.game, null, { timeout: 10000 });
 
-const levelIds = await page.evaluate(() => globalThis.__byc.LEVELS.map((l) => l.id));
+const levelIds = await page.evaluate((pool) =>
+  (pool ? globalThis.__byc.POOL : globalThis.__byc.LEVELS).map((l) => l.id), POOL_MODE);
 const targets = only ? levelIds.filter((id) => id === only) : levelIds;
 
 const toScreen = (wx, wy) => page.evaluate(([x, y]) => {
@@ -96,10 +120,11 @@ for (const id of targets) {
   // goToLevel, not repeated nextLevel: the last level deliberately no longer
   // wraps to the first, so walking the list by nextLevel now dead-ends on the
   // ending screen instead of cycling round.
-  await page.evaluate((target) => {
+  await page.evaluate(([target, pool]) => {
     const B = globalThis.__byc;
-    B.goToLevel(B.game, B.LEVELS.findIndex((l) => l.id === target));
-  }, id);
+    if (pool) B.loadLevel(B.game, B.asDaily(B.POOL.find((l) => l.id === target)));
+    else B.goToLevel(B.game, B.LEVELS.findIndex((l) => l.id === target));
+  }, [id, POOL_MODE]);
   await page.waitForFunction(() => globalThis.__byc.game.phase === 'frozen', null, { timeout: 10000 });
 
   const shots = [];
@@ -107,14 +132,28 @@ for (const id of targets) {
 
   // Draw it the way a finger would.
   const world = strokeFor(id);
-  if (!world) { console.log(`${id.padEnd(12)} SKIPPED — no verified solution; run tools/solver/representative.js`); continue; }
+  if (!world && !IDLE) { console.log(`${id.padEnd(12)} SKIPPED — no verified solution; run tools/solver/representative.js`); continue; }
+  if (IDLE) {
+    // The idle run has no stroke to release, and `release()` in game.js is the
+    // commit path — it cannot run without one. PHASE is already exported on
+    // __byc for the board gate, so the same LIVE object does it here: this is
+    // the real frozen-to-running transition, not a simulation of one.
+    await page.evaluate(() => {
+      const b = globalThis.__byc;
+      b.game.phase = b.PHASE.SIM;
+      b.game.phaseTime = 0;
+    });
+    shots.push({ label: 'released', buf: await page.screenshot() });
+  }
   const pts = [];
-  for (const w of world) pts.push(await toScreen(w.x, w.y));
-  await page.mouse.move(pts[0].x, pts[0].y);
-  await page.mouse.down();
-  for (let i = 1; i < pts.length; i++) { await page.mouse.move(pts[i].x, pts[i].y); await page.waitForTimeout(10); }
-  shots.push({ label: 'drawing', buf: await page.screenshot() });
-  await page.mouse.up();
+  if (world) {
+    for (const w of world) pts.push(await toScreen(w.x, w.y));
+    await page.mouse.move(pts[0].x, pts[0].y);
+    await page.mouse.down();
+    for (let i = 1; i < pts.length; i++) { await page.mouse.move(pts[i].x, pts[i].y); await page.waitForTimeout(10); }
+    shots.push({ label: 'drawing', buf: await page.screenshot() });
+    await page.mouse.up();
+  }
 
   const info = await page.evaluate(() => {
     const g = globalThis.__byc.game;
@@ -176,7 +215,10 @@ for (const id of targets) {
   await sheet.close();
 
   const won = outcome.outcome === 'success';
-  if (!won) regressions.push(`${id} -> ${outcome.outcome}${outcome.death ? ' "' + outcome.death + '"' : ''}`);
+  if (!won && !IDLE) regressions.push(`${id} -> ${outcome.outcome}${outcome.death ? ' "' + outcome.death + '"' : ''}`);
+  // Filming the LOSS, the regression is the opposite one: a level that wins
+  // with nothing drawn is not a level.
+  if (won && IDLE) regressions.push(`${id} -> WON with nothing drawn`);
   console.log(
     `${won ? 'WIN ' : 'FAIL'} ${id.padEnd(12)} parts=${String(info.parts).padStart(2)} ` +
     `anchors=${String(info.anchors).padStart(2)} static=${String(info.isStatic).padEnd(5)} ` +
@@ -190,8 +232,10 @@ if (regressions.length) {
   // Every stroke filmed here is a CERTIFIED winner: the sweep found it and it
   // survived three independent hand tremors. Losing one in the real browser
   // means the browser build and the simulation have diverged.
-  console.log('\nREGRESSIONS (certified winners that lost in the browser):');
+  console.log(IDLE ? '\nREGRESSIONS (levels that won with nothing drawn):'
+                   : '\nREGRESSIONS (certified winners that lost in the browser):');
   for (const r of regressions) console.log('  ' + r);
   process.exit(1);
 }
-console.log(`\nall ${targets.length} filmed levels WON`);
+console.log(IDLE ? `\nall ${targets.length} filmed levels LOST with nothing drawn, as they must`
+                 : `\nall ${targets.length} filmed levels WON`);

@@ -7,11 +7,12 @@
 
 import {
   createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
-  onCollisionStart, allBodies, getSpeed,
+  onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel, addPivot, addCross,
+  removeBody, setAngularVelocity,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
-import { isFatal, normalSpeed } from './hazards.js';
+import { isFatal, normalSpeed, isHazardous } from './hazards.js';
 import { createCausality, noteContact, explain } from './physics/causality.js';
 import { createRecorder, record, reset as resetRec } from './physics/recorder.js';
 import { validate } from './drawing/validate.js';
@@ -20,7 +21,7 @@ import { buildStrokeBody } from './drawing/bodyFactory.js';
 import { anchorStroke } from './physics/anchor.js';
 import * as audio from './audio.js';
 import { simplify } from './drawing/simplify.js';
-import { PHYSICS_DT, LINE, MILO, SAFE_BOX } from './constants.js';
+import { PHYSICS_DT, LINE, MILO, SAFE_BOX, NEAR_MISS_DIST, CLOSE_CALL } from './constants.js';
 
 export function buildSim(level) {
   const ctx = createWorld();
@@ -38,10 +39,21 @@ export function buildSim(level) {
     // headline moment — something hits a switch, a gate opens, Milo walks
     // through — was unbuildable. This is that.
     triggered: new Set(),
+    // Which balloons have been burst. On the SIM and never on the spec: level
+    // data is shared across every run in a solver sweep, so mutating a spec
+    // would leak one run's pop into the next 2500.
+    burst: new Set(),
+    // Which brittle panes have shattered. Same reasoning as `burst` above, and
+    // the same trap avoided: a sweep shares one level object across 2,500 runs,
+    // so a pane that recorded its own break on the spec would arrive already
+    // broken for every run after the first.
+    shattered: new Set(),
     causality: createCausality(),
     recorder: createRecorder(),
     simTime: 0,
     death: null,
+    closeCalls: [],      // near misses this run — the game's whole personality
+    _near: new Map(),    // per-hazard: is it currently inside the radius?
   };
 
   // ONE COORDINATE RULE, no exceptions:
@@ -56,8 +68,57 @@ export function buildSim(level) {
   for (const s of level.static) {
     const body = addRect(ctx, {
       id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h,
-      angle: (s.angle ?? 0) * Math.PI / 180, isStatic: true, friction: 0.7,
+      angle: (s.angle ?? 0) * Math.PI / 180, isStatic: true,
+      friction: s.friction ?? 0.7,
     });
+    // MATTER SILENTLY ZEROES RESTITUTION ON EVERY STATIC BODY. Body.setStatic()
+    // runs inside Bodies.rectangle() and forces restitution=0 and friction=1,
+    // so passing `restitution` in the options above is discarded without a
+    // word. Measured: a pad asked for 0.85 reported 0.00 and a ball dropped
+    // 258u rebounded 2u. Assigning AFTER creation sticks — the same ball then
+    // rebounds 119u — which is the only reason a springy surface can exist.
+    //
+    // ONLY RESTITUTION IS CORRECTED HERE. Static friction has always been 1 in
+    // this game for exactly the same reason, and every measured star threshold
+    // and solver breadth in js/solverData.js was produced under it. "Fixing" it
+    // would silently re-tune thirteen shipped levels. Matter pairs friction
+    // with Math.min(a, b) and every dynamic body here sits far below 1, so the
+    // value is not observable anyway.
+    if (s.restitution) body.restitution = s.restitution;
+
+    // A PIVOT MAKES THIS STATIC INTO A MOVING PART. It is authored on `static`
+    // because that is where the level's geometry lives and where the renderer
+    // already looks, but a pinned piece is emphatically NOT static: it is a
+    // dynamic body held at one point, so it must be built dynamic and pinned.
+    //
+    // `pivot` is {x, y} in world units — the point it turns about, usually its
+    // own centre for a see-saw and one end for a swinging arm.
+    if (s.pivot) {
+      removeBody(ctx, body);
+      const opts = {
+        angle: (s.angle ?? 0) * Math.PI / 180,
+        density: s.density ?? 0.008,
+        friction: s.friction ?? 0.4,
+        frictionAir: s.frictionAir ?? 0.01,
+      };
+      const geom = { id: s.id, x: s.x + s.w / 2, y: s.y + s.h / 2, w: s.w, h: s.h };
+      // `blades` turns one bar into a paddle wheel. One blade is a lever.
+      const moving = s.blades > 1
+        ? addCross(ctx, { ...geom, ...opts, blades: s.blades })
+        : addRect(ctx, { ...geom, ...opts });
+      if (s.restitution) moving.restitution = s.restitution;
+      addPivot(ctx, moving, s.pivot.x, s.pivot.y);
+
+      // SPIN makes it a powered machine rather than a thing that waits to be
+      // pushed. Raw Matter angular units, which is what the probe measured in:
+      // 0.30 throws a ball 659 units and lands it within 17u from anywhere in
+      // the feed zone; 0.12 is SLOWER and less consistent (228u spread), so do
+      // not assume gentler is tamer here.
+      if (s.spin) setAngularVelocity(moving, s.spin);
+
+      sim.statics.push({ body: moving, spec: s, pivoted: true });
+      continue;
+    }
     sim.statics.push({ body, spec: s });
   }
 
@@ -117,6 +178,51 @@ export function buildSim(level) {
       fireSwitch(sim, entry);
     }
 
+    // SHARP → POP. The other half of the balloon, and the thing that gives it
+    // a second question. FLOAT asks where a rising thing goes; a thorn asks
+    // where it STOPS rising, which is a different decision made with the same
+    // one stroke. Cut the Rope's bubble is defined by being popped; ours has
+    // no tap to pop it with, so the level supplies the thorn and the player
+    // decides whether the balloon ever reaches it.
+    for (const [hit, other] of [[a, b], [b, a]]) {
+      const entry = sim.objects.get(hit.gameId);
+      if (!entry?.spec.lift || sim.burst.has(entry.spec.id)) continue;
+      const spike = sim.statics.find((st) => st.body === other && st.spec.sharp);
+      if (!spike) continue;
+      sim.burst.add(entry.spec.id);
+      audio.impact(220, { heavy: false });
+    }
+
+    // BRITTLE → SHATTER. The noun's whole question is HOW HARD IT ARRIVES,
+    // which is the first question in this game that is not spatial. Measured
+    // before it was built: a rock caught at y=880 lands at normal speed ~290
+    // and one caught at y=500 lands at ~880, while the ANGLE of the catch moves
+    // that number by under 55 across an 18-degree spread. So the outcome tracks
+    // the thing the player chooses — where the line goes — and ignores the
+    // thing a shaky hand gets wrong.
+    //
+    // `normalSpeed` and not |v| on purpose: a ramp trades vertical speed for
+    // horizontal, and the component INTO the surface is the honest one. It is
+    // also the same number that decides lethality and drives the impact sound,
+    // so what the player hears is what broke it.
+    for (const [hit, other] of [[a, b], [b, a]]) {
+      // MILO COUNTS. He is the only body here that cannot be parked on a
+      // static line — he walks off whatever you give him — which is what makes
+      // him the honest cargo for this question. His footfalls are nowhere near
+      // any sane threshold: a step is 220 u/s of TANGENTIAL motion and the
+      // normal component of it is small.
+      if (other.isSensor) continue;
+      const pane = sim.statics.find((st) => st.body === hit && st.spec.brittle);
+      if (!pane || sim.shattered.has(pane.spec.id)) continue;
+      if (speed <= pane.spec.brittle) continue;
+      sim.shattered.add(pane.spec.id);
+      // Stops existing physically, exactly as an opened gate does, rather than
+      // being removed — the renderers still need it to draw the break.
+      hit.collisionFilter.mask = 0;
+      hit.collisionFilter.category = 0;
+      audio.impact(speed, { heavy: true });
+    }
+
     const miloBody = sim.milo.body;
     if (a !== miloBody && b !== miloBody) return;
     const other = a === miloBody ? b : a;
@@ -163,7 +269,10 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   sim.simTime += PHYSICS_DT;
 
   const hazardBodies = [...sim.objects.values()].map((o) => o.body);
+  applyUpdrafts(sim);
+  applyLift(sim);
   audio.setDanger(updateDanger(sim.milo, hazardBodies));
+  detectCloseCalls(sim);
   record(sim.recorder, allBodies(sim.ctx));
 
   const outcome = checkRunEnd(
@@ -197,6 +306,111 @@ export function commitStroke(sim, rawPoints) {
   // Remembered so a death can be explained as "nothing held it up".
   sim.strokeOrigin = { x: body.position.x, y: body.position.y };
   return { ok: true, length: v.length, anchors: sim.anchors.length, shape: classified.shape };
+}
+
+
+/**
+ * UPDRAFT — a column of moving air that pushes whatever is inside it.
+ *
+ * The first thing in this game that acts on the world without being solid. It
+ * exists because the level vocabulary had five nouns across thirteen levels —
+ * platform, boulder, plate, gate, spikes — and the answer to "the game feels
+ * basic" was being looked for in new RULES (a no-draw zone) rather than new
+ * THINGS. A rule tells the player what they may not do. A thing gives them
+ * something to think with, and it changes what a LINE means: over an updraft a
+ * line is a lid, beside it a deflector, across it a shelf that something can be
+ * parked on.
+ *
+ * Acceleration, not force, so how hard it blows does not silently change when
+ * a density is retuned — the same reasoning that made lethality use minSpeed.
+ * It pushes Milo too: while he is grounded his locomotion sets his velocity
+ * every step and wins, and the moment he is airborne the air has him. That
+ * asymmetry is not a bug, it is the feel — you can walk through a draught, you
+ * cannot fall through one.
+ */
+/**
+ * BUOYANCY — a thing that falls UP.
+ *
+ * The fourth noun, and the first one borrowed from outside: it is Cut the
+ * Rope's bubble. It earns its place by clearing the tests the other borrowings
+ * failed. A rocket is a fixed thrust the player cannot aim; a teleport is a
+ * rule rather than physics; an air cushion is the draught we already have. A
+ * balloon MOVES AND ACTS, which no static noun can, and its question is not one
+ * of the three already spent.
+ *
+ * It is an OBJECT and not a zone, and that distinction is the whole reason it
+ * is safe. An updraft plus any ceiling is a measured TRAP for Milo — the air
+ * pins him against the underside and airborne Milo has no horizontal drive to
+ * get out with. A balloon lifts a THING; Milo is never inside it.
+ *
+ * Acceleration, not force, for the same reason the updraft uses one: how hard
+ * it pulls does not quietly change when a density is retuned. It also makes
+ * lift mass-independent, so a balloon's cargo can be made heavy enough to beat
+ * a plate's weight gate without moving the balloon's behaviour at all.
+ */
+function applyLift(sim) {
+  for (const { body, spec } of sim.objects.values()) {
+    if (!spec.lift || body.isStatic) continue;
+    if (sim.burst.has(spec.id)) continue;      // popped: it is just a weight now
+    applyAccel(body, 0, -spec.lift);
+  }
+}
+
+function applyUpdrafts(sim) {
+  for (const z of sim.zones) {
+    if (z.kind !== 'updraft') continue;
+    const a = z.accel ?? -2600;
+    for (const b of allBodies(sim.ctx)) {
+      if (b.isStatic) continue;
+      const p = b.position;
+      if (p.x < z.x || p.x > z.x + z.w || p.y < z.y || p.y > z.y + z.h) continue;
+      applyAccel(b, z.ax ?? 0, a);
+    }
+  }
+}
+
+/**
+ * A CLOSE CALL: something that could have killed him came within
+ * NEAR_MISS_DIST and was moving fast enough to mean it.
+ *
+ * Fires on ENTRY into the radius, once per approach, not once per step — at
+ * 120 Hz a single boulder would otherwise produce forty "moments" and the word
+ * would stop meaning anything. And it never fires on the step he actually
+ * dies: being hit is not a near miss, it is a miss of the other kind.
+ */
+function detectCloseCalls(sim) {
+  if (sim.run.outcome !== OUTCOME.RUNNING) return;
+  const b = sim.milo.body;
+  const halfW = MILO.width / 2, halfH = MILO.height / 2;
+
+  for (const [id, o] of sim.objects) {
+    if (!isHazardous(o.spec.lethal)) continue;
+    const v = getVelocity(o.body);
+    const speed = Math.hypot(v.x, v.y);
+    const p = o.body.position;
+
+    // Nearest point of Milo's box to the hazard's centre, then back off by the
+    // hazard's own size — a surface-to-surface gap rather than centre-to-centre,
+    // which would call a huge slow boulder "close" while it was still far away.
+    const cx = Math.max(b.position.x - halfW, Math.min(p.x, b.position.x + halfW));
+    const cy = Math.max(b.position.y - halfH, Math.min(p.y, b.position.y + halfH));
+    const reach = o.spec.radius ?? Math.max(o.spec.w ?? 0, o.spec.h ?? 0) / 2;
+    const gap = Math.hypot(p.x - cx, p.y - cy) - reach;
+
+    const inside = gap < NEAR_MISS_DIST && speed > CLOSE_CALL.minSpeed;
+    const was = sim._near.get(id) ?? false;
+    sim._near.set(id, inside);
+
+    if (inside && !was) {
+      const last = sim.closeCalls[sim.closeCalls.length - 1];
+      if (last && sim.simTime - last.t < CLOSE_CALL.cooldownMs) continue;
+      sim.closeCalls.push({
+        id, t: sim.simTime, gap: Math.max(0, gap), speed,
+        x: (p.x + b.position.x) / 2, y: (p.y + b.position.y) / 2,
+      });
+      audio.closeCall(speed);
+    }
+  }
 }
 
 /** What the player's line did, for the death explanation. */

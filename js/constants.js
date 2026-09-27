@@ -53,6 +53,16 @@ export const MILO = {
 // ── Run-end detection ───────────────────────────────────────────────────
 export const STUCK = { speedUnder: 12, forMs: 3000, sinceContactMs: 500 };  // TUNE
 export const NEAR_MISS_DIST = 30;   // TUNE — less than Milo's 36u width
+
+// THE CLOSE CALL. The game is called BRO, YOU'RE COOKED and it is about nearly
+// dying — and until now nearly dying looked and sounded EXACTLY like winning
+// comfortably. NEAR_MISS_DIST sat in this file, declared and read by nothing.
+export const CLOSE_CALL = {
+  minSpeed: 240,     // TUNE — a resting boulder beside him is furniture, not a scare
+  slowRate: 0.22,    // TUNE — wall-clock rate during the moment; the sim's dt never changes
+  slowMs: 420,       // TUNE — long enough to register, short enough not to drag
+  cooldownMs: 260,   // TUNE — one approach is one moment, not forty
+};
 export const GOAL_MAX_SPEED = 400;  // LOCKED — faster than this through the goal is not a rescue
 
 // ── Presentation ────────────────────────────────────────────────────────

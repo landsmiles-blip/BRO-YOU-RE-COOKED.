@@ -29,7 +29,23 @@ import { drawText } from './hud.js';
 export function layout(count) {
   const W = view.cssW, H = view.cssH;
   const pad = Math.max(10, Math.min(W, H) * 0.03);
-  const top = H * 0.17;
+  // THE DAILY IS A STRIP, NOT A CARD IN THE GRID. As a card it would be one
+  // tile among twenty-one, which is exactly how much attention it would get;
+  // the whole point of the thing is that it is the reason you opened the game
+  // today. A full-width band reads first and is the easiest target on the
+  // board at every one of the nine ratios.
+  const dailyH = Math.max(34, Math.min(H * 0.085, 66));
+  const dailyY = H * 0.155;
+  // AT THE WIDE RATIOS THE VIEWPORT IS SHORT AND THE STRIP RIDES UP INTO THE
+  // CLOSE BUTTON. Measured across all nine: at 16:9, 21:9 and 32:9 the band
+  // and the X shared space, and since hitTest checks close first, the strip's
+  // top-right corner was simply dead. Stop the band short of the X whenever
+  // they overlap vertically — full width everywhere it is safe.
+  const closeX = W - pad - 36, closeBottom = pad * 0.6 + 36;
+  const clashes = dailyY < closeBottom;
+  const dailyW = (clashes ? closeX - pad - pad : W - pad * 2);
+  const daily = { x: pad, y: dailyY, w: dailyW, h: dailyH };
+  const top = dailyY + dailyH + pad;
   const bottom = H * 0.92;
   const availW = W - pad * 2;
   const availH = bottom - top;
@@ -60,19 +76,20 @@ export function layout(count) {
   }
   // The close affordance is a real rectangle, not a guess at where the text is.
   const close = { x: W - pad - 36, y: pad * 0.6, w: 36, h: 36 };
-  return { cards, close, pad, rows };
+  return { cards, close, daily, pad, rows };
 }
 
 /** Which card is under this point? null for none. */
 export function hitTest(box, x, y) {
   if (inside(box.close, x, y)) return { close: true };
+  if (box.daily && inside(box.daily, x, y)) return { daily: true };
   for (const c of box.cards) if (inside(c, x, y)) return { index: c.i };
   return null;
 }
 
 const inside = (r, x, y) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
 
-export function drawBoard(ctx, { levels, starsOf, current, total, max }) {
+export function drawBoard(ctx, { levels, starsOf, current, total, max, daily }) {
   const box = layout(levels.length);
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
 
@@ -90,6 +107,42 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max }) {
   ctx.moveTo(cx - r, cy - r); ctx.lineTo(cx + r, cy + r);
   ctx.moveTo(cx + r, cy - r); ctx.lineTo(cx - r, cy + r);
   ctx.stroke();
+
+  // ── the daily strip ────────────────────────────────────────────────────
+  if (daily && box.daily) {
+    const d = box.daily;
+    ctx.fillStyle = daily.done ? 'rgba(232,226,214,0.08)' : 'rgba(214,138,58,0.20)';
+    ctx.fillRect(d.x, d.y, d.w, d.h);
+    ctx.strokeStyle = daily.done ? 'rgba(232,226,214,0.22)' : C.anchor;
+    ctx.lineWidth = daily.done ? 1.2 : 2.4;
+    ctx.strokeRect(d.x, d.y, d.w, d.h);
+
+    const tSize = Math.max(11, Math.min(d.h * 0.32, 20));
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+    ctx.fillStyle = daily.done ? 'rgba(232,226,214,0.55)' : C.paper;
+    ctx.fillText('DAILY', d.x + d.h * 0.32, d.y + d.h * 0.36);
+
+    ctx.font = `600 ${tSize * 0.72}px ui-sans-serif, system-ui, sans-serif`;
+    ctx.fillStyle = 'rgba(232,226,214,0.58)';
+    // Done or not, the line says what the challenge IS: which level, and the
+    // budget. A daily whose difficulty is invisible until you start it cannot
+    // be the thing that makes someone open the game.
+    ctx.fillText(daily.done ? 'done — come back tomorrow'
+                            : `${daily.verb} in ${daily.ink} of ink`,
+      d.x + d.h * 0.32, d.y + d.h * 0.70);
+
+    if (daily.streak > 0) {
+      ctx.textAlign = 'right';
+      ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = C.anchor;
+      ctx.fillText(`${daily.streak}`, d.x + d.w - d.h * 0.34, d.y + d.h * 0.36);
+      ctx.font = `600 ${tSize * 0.55}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = 'rgba(232,226,214,0.5)';
+      ctx.fillText('day streak', d.x + d.w - d.h * 0.34, d.y + d.h * 0.72);
+    }
+  }
 
   for (const card of box.cards) {
     const lvl = levels[card.i];

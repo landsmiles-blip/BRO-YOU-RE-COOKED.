@@ -16,11 +16,13 @@ import { buildSim, stepSim, commitStroke, abort, destroySim, OUTCOME } from './s
 import { LEVELS } from './levels.js';
 import { starsFor } from './rating.js';
 import { createStroke, begin, extend, end, remaining } from './drawing/capture.js';
-import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME } from './constants.js';
+import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME, CLOSE_CALL } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
-import { createProgress, record, save, isComplete, firstUnclearedIndex } from './progress.js';
+import { createProgress, record, save, isComplete, firstUnclearedIndex, recordDaily } from './progress.js';
+import { dayNumber, dailyLevel } from './daily.js';
 import * as audio from './audio.js';
+import * as sdk from './platform/sdk.js';
 
 export const PHASE = {
   LIVE: 'live', FROZEN: 'frozen', SIM: 'sim',
@@ -52,12 +54,18 @@ export function createGame(level) {
     progress: createProgress(),
     // Where to return to when the board is closed without choosing.
     selectFrom: null,
+    // Wall-clock deadline for the close-call slow motion, and how many the
+    // sim has reported so far, so the loop can notice a NEW one.
+    slowUntil: 0,
+    seenCalls: 0,
   };
   reset(g);
   return g;
 }
 
 export function reset(g) {
+  g.slowUntil = 0;
+  g.seenCalls = 0;
   if (g.sim) destroySim(g.sim);
   g.sim = buildSim(g.level);
   g.phase = PHASE.LIVE;
@@ -84,13 +92,27 @@ export function tick(g, dtMs) {
 
   if (g.phase === PHASE.SIM) {
     const o = stepSim(g.sim);
+    // A new close call arms the slow motion. The SIM is untouched — it still
+    // steps at a fixed PHYSICS_DT — only the wall-clock rate at which the loop
+    // feeds it changes, so determinism and every headless gate are unaffected.
+    if (g.sim.closeCalls.length > g.seenCalls) {
+      g.seenCalls = g.sim.closeCalls.length;
+      g.slowUntil = performance.now() + CLOSE_CALL.slowMs;
+    }
     if (o !== OUTCOME.RUNNING) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
       if (o === OUTCOME.SUCCESS) {
         g.stars = starsFor(g.level.id, g.lastLength);
+        // A DAILY WIN EXTENDS THE STREAK, and only a daily win. The budget is
+        // already the three-star length, so clearing it at all is a three-star
+        // run by definition — the streak is the thing being earned here.
+        if (g.isDaily && recordDaily(g.progress, g.dailyDay)) save(g.progress);
         // Only a personal BEST is written, so replaying a cleared level to
         // experiment can never cost the player stars they already earned.
-        if (record(g.progress, g.level.id, g.stars)) save(g.progress);
+        // A daily-pool level is not on the board, so it has no best to keep:
+        // recording one would only fill the save with an id that deserialise
+        // throws away on the next load.
+        if (g.levelIndex >= 0 && record(g.progress, g.level.id, g.stars)) save(g.progress);
         audio.success(g.stars);
         g.phase = PHASE.RESULT;
         g.phaseTime = 0;
@@ -121,14 +143,86 @@ export function retry(g) {
  * at 24 levels exactly as much as at 9.
  */
 export function nextLevel(g) {
+  // A DAILY IS NOT A RUNG ON THE LADDER, so "next" cannot mean levelIndex + 1.
+  // For a pool level that index is -1, which would have sent a daily winner to
+  // level 1; for a daily that happened to be the LAST level it put up the
+  // ENDING — "you finished the game" — for one daily challenge. The daily was
+  // opened from the board, so the board is where it returns: the strip now
+  // says done and shows the streak that just went up, and closing it resumes
+  // the campaign where the player actually is.
+  if (g.isDaily) {
+    adBreak(g);
+    goToLevel(g, isComplete(g.progress) ? 0 : firstUnclearedIndex(g.progress));
+    openSelect(g);
+    return;
+  }
   if (g.levelIndex >= LEVELS.length - 1) {
     g.phase = PHASE.ENDING; g.phaseTime = 0; audio.ending(); return;
   }
+  adBreak(g);
   goToLevel(g, g.levelIndex + 1);
+}
+
+function adBreak(g) {
+  // AN AD AT A LEVEL BOUNDARY, AND NOT AT EVERY ONE.
+  //
+  // This is the only breakpoint in the game that is a real pause rather than
+  // an interruption: the player has already read RESCUED and tapped to move
+  // on. The platform's own guidance is logical pauses between levels.
+  //
+  // The cap matters more than the call. A level here is about forty seconds,
+  // so an ad after each one would be the fastest way to lose a player we paid
+  // nothing to get, and the counter starts such that the first ad lands after
+  // level THREE — a new player's first two levels are never interrupted.
+  //
+  // The counter lives on `g` rather than in this module on purpose: per-run
+  // state in module scope is the same shape of bug as recording a balloon's
+  // burst on its shared level spec.
+  //
+  // A finished daily is a boundary like any other, so it counts too.
+  g.sinceAd = (g.sinceAd ?? 0) + 1;
+  if (g.sinceAd >= LEVELS_PER_AD) { g.sinceAd = 0; sdk.requestInterstitialAd(); }
+}
+
+/** Level boundaries between interstitials. See nextLevel. */
+const LEVELS_PER_AD = 3;
+
+/**
+ * Start today's daily challenge.
+ *
+ * It is an ORDINARY RUN with a tighter ink budget, which is the whole reason
+ * this costs almost nothing: no new phase, no new loop, no new physics. The
+ * level is a copy with `drawing.maxLength` overridden, so nothing mutates the
+ * shipped level data — the same rule that keeps a solver sweep from leaking one
+ * run's state into the next 2,500.
+ */
+export function startDaily(g, day = dayNumber()) {
+  loadLevel(g, dailyLevel(day));
+  g.isDaily = true;
+  g.dailyDay = day;
+}
+
+/**
+ * Play any level object, at whatever budget it carries.
+ *
+ * A daily-pool level is not in LEVELS, so it has no index: levelIndex is -1,
+ * which keeps it out of everything that belongs to the campaign — its stars,
+ * and the board's highlight. The pool's filmstrips come through here too, which
+ * is why it is exported rather than folded into startDaily.
+ */
+export function loadLevel(g, level) {
+  g.isDaily = false;
+  g.level = level;
+  g.levelIndex = LEVELS.findIndex((l) => l.id === level.id);
+  g.ghostPoints = null;
+  g.attempt = 0;
+  reset(g);
 }
 
 /** Jump to a level by index — used by nextLevel, the ending, and level select. */
 export function goToLevel(g, index) {
+  // Leaving the daily by any route puts the normal budget back.
+  g.isDaily = false;
   g.levelIndex = Math.max(0, Math.min(LEVELS.length - 1, index));
   g.level = LEVELS[g.levelIndex];
   g.ghostPoints = null;

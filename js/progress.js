@@ -19,11 +19,20 @@
 import { LEVELS } from './levels.js';
 import { saveData, loadData } from './platform/sdk.js';
 
-const SCHEMA = 1;
+const SCHEMA = 2;
 
-/** Best stars per level id. Unplayed levels are simply absent. */
+/**
+ * Best stars per level id, plus the daily streak.
+ *
+ * SCHEMA 2 ADDS THE DAILY AND MIGRATES 1 RATHER THAN DISCARDING IT. The rule
+ * above — anything unrecognised is thrown away rather than half-trusted — is
+ * about saves this build cannot understand. A version 1 save is one this build
+ * understands completely; it simply has no streak yet, which is indisputably
+ * zero. Discarding it would take a player's stars away to avoid a risk that
+ * does not exist.
+ */
 export function createProgress() {
-  return { v: SCHEMA, best: {}, finishedAt: 0 };
+  return { v: SCHEMA, best: {}, finishedAt: 0, streak: 0, lastDailyDay: 0 };
 }
 
 export function starsOn(p, levelId) {
@@ -52,7 +61,31 @@ export function firstUnclearedIndex(p) {
 // ── persistence ───────────────────────────────────────────────────────────
 
 export function serialise(p) {
-  return JSON.stringify({ v: SCHEMA, best: p.best, finishedAt: p.finishedAt || 0 });
+  return JSON.stringify({
+    v: SCHEMA, best: p.best, finishedAt: p.finishedAt || 0,
+    streak: p.streak || 0, lastDailyDay: p.lastDailyDay || 0,
+  });
+}
+
+// ── the daily ─────────────────────────────────────────────────────────────
+
+/** Has today's challenge already been completed? */
+export function dailyDone(p, day) {
+  return (p.lastDailyDay || 0) === day;
+}
+
+/**
+ * Record a daily completion. Returns true if anything changed.
+ *
+ * A streak counts CONSECUTIVE days: finishing yesterday's and then today's
+ * extends it, and a gap of even one day starts again at one. Finishing the same
+ * day twice does nothing, because the second run is a replay, not a second day.
+ */
+export function recordDaily(p, day) {
+  if (!Number.isFinite(day) || dailyDone(p, day)) return false;
+  p.streak = (p.lastDailyDay === day - 1) ? (p.streak || 0) + 1 : 1;
+  p.lastDailyDay = day;
+  return true;
 }
 
 /**
@@ -67,7 +100,9 @@ export function deserialise(text) {
   if (!text) return fresh;
   let raw;
   try { raw = JSON.parse(text); } catch { return fresh; }
-  if (!raw || typeof raw !== 'object' || raw.v !== SCHEMA) return fresh;
+  if (!raw || typeof raw !== 'object') return fresh;
+  // Version 1 is readable: same `best`, no daily fields, which default to zero.
+  if (raw.v !== SCHEMA && raw.v !== 1) return fresh;
   if (!raw.best || typeof raw.best !== 'object') return fresh;
 
   const known = new Set(LEVELS.map((l) => l.id));
@@ -80,6 +115,13 @@ export function deserialise(text) {
     if (Number.isFinite(n) && n >= 1 && n <= 3) fresh.best[id] = n;
   }
   fresh.finishedAt = Number.isFinite(raw.finishedAt) ? raw.finishedAt : 0;
+  // Same reasoning as the star range above: a nonsensical streak is DROPPED to
+  // zero rather than clamped, so corrupt data cannot hand out a record.
+  const st = Math.floor(Number(raw.streak));
+  const ld = Math.floor(Number(raw.lastDailyDay));
+  fresh.streak = (Number.isFinite(st) && st >= 0 && st < 100000) ? st : 0;
+  fresh.lastDailyDay = (Number.isFinite(ld) && ld > 0) ? ld : 0;
+  if (!fresh.lastDailyDay) fresh.streak = 0;
   return fresh;
 }
 
