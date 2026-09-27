@@ -126,6 +126,19 @@ if (keepers.length) {
         handRate: k.rep.handRate,
         idleDeath: k.idle.death.label,
         score: +score(k).toFixed(2),
+        // THE STAR THRESHOLDS TRAVEL WITH THE CANDIDATE. They used to be
+        // measured here and then thrown away, and they are the one number the
+        // daily challenge is made of: its budget is threeStarLength. A
+        // candidate without them could only be budgeted with an invented
+        // figure, which is the thing js/rating.js exists to forbid.
+        worstJitter: k.full.worstJitter,
+        twoStarLength: k.full.twoStarLength,
+        threeStarLength: k.full.threeStarLength,
+        shortestWin: k.full.shortestWin,
+        winners: k.rep.winners,
+        robust: k.rep.robust,
+        anchoredRobust: k.rep.anchoredRobust,
+        measuredAt: new Date().toISOString().slice(0, 10),
       },
       // The certified winning stroke travels WITH the candidate. Without it a
       // candidate cannot be filmed, and an unfilmed level is one whose only

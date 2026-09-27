@@ -64,6 +64,55 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     }
   }
 
+  // PLATES AND GATES. Both are STATIC bodies, and the recorder keeps only what
+  // moves — so neither was ever drawn here, on any level. Found by filming a
+  // LOSS on a trigger level: Milo walked into a shut gate and the replay showed
+  // him stopped by empty air, with no plate to say what would have opened it.
+  // The same shapes as live play — arrows on a plate that has not fired, a lit
+  // and sunken plate that has, bars on a shut gate, a ghost of an open one —
+  // drawn flat, because the replay is scrubbed by frame.
+  for (const { spec } of sim.objects.values()) {
+    if (spec.type !== 'switch' && spec.type !== 'gate') continue;
+    const fired = sim.triggered?.has(spec.id);
+    ctx.save();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(42,38,34,0.55)';
+    ctx.fillStyle = C.plank;
+    if (spec.type === 'switch') {
+      const y = spec.y + (fired ? 8 : 0), h = spec.h - (fired ? 8 : 0);
+      if (fired) ctx.fillStyle = C.anchor;
+      ctx.globalAlpha = 0.8;
+      ctx.fillRect(spec.x, y, spec.w, h);
+      ctx.strokeRect(spec.x, y, spec.w, h);
+      if (!fired) {
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        for (const fx of [0.3, 0.7]) {
+          const x = spec.x + spec.w * fx;
+          ctx.beginPath();
+          ctx.moveTo(x, y - 30); ctx.lineTo(x, y - 8);
+          ctx.moveTo(x - 7, y - 16); ctx.lineTo(x, y - 6); ctx.lineTo(x + 7, y - 16);
+          ctx.stroke();
+        }
+      }
+    } else {
+      ctx.globalAlpha = fired ? 0.22 : 0.8;
+      if (fired) {
+        ctx.translate(spec.x + spec.w / 2, spec.y);
+        ctx.rotate(-1.1);
+        ctx.translate(-(spec.x + spec.w / 2), -spec.y);
+      }
+      ctx.fillRect(spec.x, spec.y, spec.w, spec.h);
+      ctx.strokeRect(spec.x, spec.y, spec.w, spec.h);
+      ctx.beginPath();
+      for (let i = 1; i <= 3; i++) {
+        const y = spec.y + (spec.h * i) / 4;
+        ctx.moveTo(spec.x, y); ctx.lineTo(spec.x + spec.w, y);
+      }
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   // THE HAZARD HE DIED IN. Spikes, in the danger accent, drawn as spikes —
   // the same silhouette as during play, so the replay reads as the same place.
   for (const z of sim.level?.zones ?? []) {

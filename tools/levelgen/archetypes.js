@@ -48,6 +48,7 @@ function drop(r) {
   const leftX = rockX - shelfGap / 2 - shelfW;
   return {
     verb: 'BLOCK',
+    hint: 'IT WILL DROP ON HIM',
     milo: { start: { x: step(r, 70, 150, 10), y: groundY }, speed: MILO.speed },
     goal: { id: 'goal', x: step(r, 600, 660, 10), y: groundY, w: 70, h: 140 },
     static: [
@@ -79,6 +80,7 @@ function crossing(r) {
   const farX = nearW + gap;
   return {
     verb: 'BRIDGE',
+    hint: 'GET HIM ACROSS',
     milo: { start: { x: step(r, 70, 140, 10), y: nearY }, speed: MILO.speed },
     goal: { id: 'goal', x: Math.min(670, farX + 130), y: farY, w: 70, h: 140 },
     static: [
@@ -105,6 +107,7 @@ function chimney(r) {
   const shelfX = Math.min(560, chimX + chimW + step(r, 60, 140, 10));
   return {
     verb: 'CHOOSE',
+    hint: 'KEEP IT OFF HIM',
     milo: { start: { x: step(r, 60, 110, 10), y: groundY }, speed: MILO.speed },
     goal: { id: 'goal', x: 660, y: groundY, w: 70, h: 140 },
     static: [
@@ -139,6 +142,7 @@ function roller(r) {
   const speed = -step(r, 180, 380, 20);
   return {
     verb: 'INTERCEPT',
+    hint: 'STOP THE ROLLER',
     milo: { start: { x: step(r, 60, 110, 10), y: groundY }, speed: MILO.speed },
     goal: { id: 'goal', x: 665, y: groundY, w: 70, h: 140 },
     static: [
@@ -183,6 +187,7 @@ function trigger(r) {
   }
   return {
     verb: 'TRIGGER',
+    hint: 'THE PLATE OPENS THE GATE',
     milo: { start: { x: step(r, 60, 110, 10), y: groundY }, speed: step(r, 180, 220, 10) },
     goal: { id: 'goal', x: 665, y: groundY, w: 70, h: 140 },
     static: statics,
@@ -216,6 +221,7 @@ function tilt(r) {
   const colW = panW - colInset * 2;
   return {
     verb: 'SINK',
+    hint: 'THE AIR IS HOLDING IT DOWN',
     milo: { start: { x: step(r, 70, 120, 10), y: groundY }, speed: MILO.speed },
     goal: { id: 'goal', x: step(r, 640, 680, 10), y: groundY, w: 70, h: 140 },
     static: [
@@ -259,6 +265,7 @@ function shield(r) {
   const floorY = step(r, 840, 890, 10);
   return {
     verb: 'THORNS',
+    hint: 'IT POPS WHERE IT TOUCHES THEM',
     milo: { start: { x: step(r, 70, 120, 10), y: groundY }, speed: MILO.speed },
     goal: { id: 'goal', x: step(r, 640, 680, 10), y: groundY, w: 70, h: 140 },
     static: [
@@ -284,6 +291,11 @@ function shield(r) {
   };
 }
 
+// EVERY ARCHETYPE CARRIES A HINT, and each one is borrowed word for word from a
+// shipped level the archetype was distilled from. Those lines have already been
+// through playtests and already obey the rule — they name the PROBLEM, never
+// the solution. A generated level with no hint is not a level: the HUD's
+// problem line is the only thing that tells a stranger what it wants.
 export const ARCHETYPES = { drop, crossing, chimney, roller, trigger, tilt, shield };
 
 /** Build one candidate. freezeAt is filled in later, from its own idle run. */

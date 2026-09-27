@@ -109,7 +109,10 @@ export function tick(g, dtMs) {
         if (g.isDaily && recordDaily(g.progress, g.dailyDay)) save(g.progress);
         // Only a personal BEST is written, so replaying a cleared level to
         // experiment can never cost the player stars they already earned.
-        if (record(g.progress, g.level.id, g.stars)) save(g.progress);
+        // A daily-pool level is not on the board, so it has no best to keep:
+        // recording one would only fill the save with an id that deserialise
+        // throws away on the next load.
+        if (g.levelIndex >= 0 && record(g.progress, g.level.id, g.stars)) save(g.progress);
         audio.success(g.stars);
         g.phase = PHASE.RESULT;
         g.phaseTime = 0;
@@ -140,9 +143,27 @@ export function retry(g) {
  * at 24 levels exactly as much as at 9.
  */
 export function nextLevel(g) {
+  // A DAILY IS NOT A RUNG ON THE LADDER, so "next" cannot mean levelIndex + 1.
+  // For a pool level that index is -1, which would have sent a daily winner to
+  // level 1; for a daily that happened to be the LAST level it put up the
+  // ENDING — "you finished the game" — for one daily challenge. The daily was
+  // opened from the board, so the board is where it returns: the strip now
+  // says done and shows the streak that just went up, and closing it resumes
+  // the campaign where the player actually is.
+  if (g.isDaily) {
+    adBreak(g);
+    goToLevel(g, isComplete(g.progress) ? 0 : firstUnclearedIndex(g.progress));
+    openSelect(g);
+    return;
+  }
   if (g.levelIndex >= LEVELS.length - 1) {
     g.phase = PHASE.ENDING; g.phaseTime = 0; audio.ending(); return;
   }
+  adBreak(g);
+  goToLevel(g, g.levelIndex + 1);
+}
+
+function adBreak(g) {
   // AN AD AT A LEVEL BOUNDARY, AND NOT AT EVERY ONE.
   //
   // This is the only breakpoint in the game that is a real pause rather than
@@ -157,9 +178,10 @@ export function nextLevel(g) {
   // The counter lives on `g` rather than in this module on purpose: per-run
   // state in module scope is the same shape of bug as recording a balloon's
   // burst on its shared level spec.
+  //
+  // A finished daily is a boundary like any other, so it counts too.
   g.sinceAd = (g.sinceAd ?? 0) + 1;
   if (g.sinceAd >= LEVELS_PER_AD) { g.sinceAd = 0; sdk.requestInterstitialAd(); }
-  goToLevel(g, g.levelIndex + 1);
 }
 
 /** Level boundaries between interstitials. See nextLevel. */
@@ -175,10 +197,23 @@ const LEVELS_PER_AD = 3;
  * run's state into the next 2,500.
  */
 export function startDaily(g, day = dayNumber()) {
+  loadLevel(g, dailyLevel(day));
   g.isDaily = true;
   g.dailyDay = day;
-  g.level = dailyLevel(day);
-  g.levelIndex = LEVELS.findIndex((l) => l.id === g.level.id);
+}
+
+/**
+ * Play any level object, at whatever budget it carries.
+ *
+ * A daily-pool level is not in LEVELS, so it has no index: levelIndex is -1,
+ * which keeps it out of everything that belongs to the campaign — its stars,
+ * and the board's highlight. The pool's filmstrips come through here too, which
+ * is why it is exported rather than folded into startDaily.
+ */
+export function loadLevel(g, level) {
+  g.isDaily = false;
+  g.level = level;
+  g.levelIndex = LEVELS.findIndex((l) => l.id === level.id);
   g.ghostPoints = null;
   g.attempt = 0;
   reset(g);

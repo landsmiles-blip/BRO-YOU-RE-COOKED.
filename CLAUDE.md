@@ -33,6 +33,14 @@ carried it — the replay explained the wrong mechanism. Every new kind of thing
 added to the world has to be added to `deathcam.js` too; it draws its own
 subset, and the default for anything new is INVISIBLE.
 
+A THIRD time, filming the daily pool's losses: **no death cam in this game had
+ever drawn a plate or a gate.** Both are STATIC bodies, and the recorder keeps
+only what moves, so every plate-and-gate level replayed Milo "HE'S STUCK"
+against empty air, with nothing to say what shut him out or what would have
+opened it. It was invisible in every capture until a loss was filmed on a level
+whose whole puzzle is the gate. Anything STATIC that is not in `sim.statics` —
+a switch, a gate — must be drawn from its spec.
+
 ## THE GATES MEASURE FAIR. THEY CANNOT MEASURE MEANINGFUL.
 
 Proved twice, from both directions:
@@ -666,9 +674,10 @@ sessions, persist progress, and **add a new challenge each day**.
 levels at its measured THREE-STAR length from `js/solverData.js` — the 20th
 percentile of real winning strokes, so a winner provably fits, while the line
 that normally clears the level does not. Measured on day one: the certified
-winner for that level is 288u against a 226u budget, and the budget truncates
-the stroke as it is drawn rather than rejecting it, so the player watches
-themselves run out of ink. No new physics, no new tuning, no new gates.
+winner for that level is 288u against a 226u budget. A stroke over the budget
+is REJECTED at release — "TOO MUCH INK", a no-op rather than a spent attempt —
+and the ink meter is what shows the player they are over; nothing cuts the
+stroke short. No new physics, no new tuning, no new gates.
 
 - **UTC, not local midnight.** Local time would give Auckland and Los Angeles
   different challenges for most of the day, which defeats the point.
@@ -687,6 +696,45 @@ themselves run out of ink. No new physics, no new tuning, no new gates.
   `hitTest` checks close first the strip's corner was dead. Caught by checking
   the geometry at all nine ratios, not by looking at one. **Check a new HUD
   element at every ratio, not at the one you developed on.**
+
+**THE POOL — forty generated levels, dealt only by the daily.** Twenty-one
+levels meant the daily came round every three weeks. The generator's levels are
+twins of 1-12, which keeps them out of the campaign and costs nothing in a
+challenge whose twist is the ink, so `js/dailyPool.js` holds forty of them and
+`LEVELS` never sees them: not the board, not the stars, not `nextLevel`.
+
+- **The generator measured the star thresholds and threw them away.** The daily
+  budget IS `threeStarLength`, so every baked level would have fallen back to
+  an invented 540u. `generate.js` keeps them now.
+- **THE FIRST FAIRNESS PROOF WAS WRONG, AND THE SHIPPED DAILY HAD IMPOSSIBLE
+  DAYS.** "The shortest winning stroke fits the budget" is satisfied by an
+  idealised three-point stroke no finger reproduces. Measured with the hand
+  model at the daily budget: DUCT and CRACK had 110 units and not one winner
+  that survives a hand, 0 of 23 and 0 of 5. JAM's only survivors at 165u are
+  dropped lines a hand lands 32% of the time, under the 50% an unanchored
+  solution needs. On those days the daily looked merely hard, was impossible,
+  and broke the streak of everyone who tried. **The daily now deals only what
+  `tools/levelgen/bake.js` can certify**: a hand-robust win inside the daily
+  budget, by the campaign's own reproducibility rule. The three are in
+  `HELD_FROM_DAILY` with the measurement and stay in the campaign untouched.
+- **An over-budget stroke is REJECTED, not cut short** — "TOO MUCH INK". Every
+  generator certificate was 288-346u against a 230u budget, so certified at 900u
+  they said nothing about the daily. A pool level is only ever played as a
+  daily; the daily budget is the only place its certificate means anything.
+- **One shuffle over both halves got the ratio right and the spread wrong.**
+  Campaign levels came up 31% of days — and sixteen days running with none: two
+  weeks of basic verbs and no air, balloons or brittle floor. Two decks
+  interleaved make it exact: one campaign day in every three, never more than
+  two days without one. Repeats widened too — 12 days for a pool level, 18 for
+  a campaign level.
+- **Most daily budgets are 230u**, because the sweep's stroke lengths come in
+  steps. The strip says "in 230 of ink" most days. Not fixed.
+- **Re-bake after ANY campaign, solverData or physics change** — `bake.js` with
+  no arguments keeps the pool and re-certifies the deck. `tools/test/daily-deck.js`
+  replays every certificate at the budget it is dealt at and fails when one goes
+  stale; it cannot re-certify (minutes), only notice.
+- **Any change to the deck reshuffles every future day.** Before launch, not
+  after.
 
 ## PLATFORM CONSTRAINTS (non-negotiable)
 
@@ -713,6 +761,9 @@ themselves run out of ink. No new physics, no new tuning, no new gates.
     npm run test:board            level board hit regions at four ratios
     npm run test:conformance      the automated half of certification
     node tools/levelgen/generate.js       proposes level candidates
+    node tools/levelgen/bake.js <candidates.js ...>   bakes the DAILY DECK; no args
+                                  re-certifies it — after ANY campaign/solver/physics change
+    FILM_POOL=1 node tools/test/filmstrip.js   (and frozen.js) the daily pool, on its budget
 
 Browser tests need `node tools/serve.js` running.
 

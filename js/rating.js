@@ -11,10 +11,21 @@
 // measured, only argued about. Length is honest, legible, and measurable.
 
 import { SOLVER } from './solverData.js';
+import { POOL_SOLVER } from './dailyPool.js';
 import { LINE } from './constants.js';
 
+/**
+ * The measured numbers for any level the game can play: a campaign level, or a
+ * daily-pool level whose numbers were measured by the same sweep at bake time.
+ *
+ * ONE LOOKUP, because there used to be none for the pool, and the fallback it
+ * would have hit is a flat 1 star — a daily won inside its three-star budget
+ * would have been rated RESCUED, the lowest grade, for the best line of the day.
+ */
+export const measured = (levelId) => SOLVER[levelId] ?? POOL_SOLVER[levelId];
+
 export function starsFor(levelId, strokeLength) {
-  const s = SOLVER[levelId];
+  const s = measured(levelId);
   if (!s || !strokeLength) return 1;
   if (strokeLength <= s.threeStarLength) return 3;
   if (strokeLength <= s.twoStarLength) return 2;
@@ -22,7 +33,7 @@ export function starsFor(levelId, strokeLength) {
 }
 
 export function thresholds(levelId) {
-  const s = SOLVER[levelId];
+  const s = measured(levelId);
   return {
     two: s?.twoStarLength ?? LINE.maxLengthDefault,
     three: s?.threeStarLength ?? LINE.maxLengthDefault * 0.6,

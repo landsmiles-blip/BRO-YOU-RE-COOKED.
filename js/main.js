@@ -10,13 +10,14 @@ import { initView, view, applyTransform } from './view.js';
 import { attachInput } from './input.js';
 import {
   createGame, tick, onDown, onMove, onUp, retry, nextLevel, goToLevel, isSteppingPhase,
-  openSelect, closeSelect, PHASE, inkUsed, inkMax, startDaily,
+  openSelect, closeSelect, PHASE, inkUsed, inkMax, startDaily, loadLevel,
 } from './game.js';
-import { dayNumber, dailyFor } from './daily.js';
+import { dayNumber, dailyFor, asDaily } from './daily.js';
 import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
 import { load as loadProgress, totalStars, maxStars, perfect, starsOn } from './progress.js';
 import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
+import { POOL } from './dailyPool.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT, CLOSE_CALL, NEAR_MISS_DIST } from './constants.js';
 import { clear, drawScene } from './render/world.js';
 import { wouldAnchor } from './physics/anchor.js';
@@ -28,7 +29,9 @@ import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
 import * as audio from './audio.js';
 
-for (const lvl of ALL_LEVELS) assertLevel(lvl);
+// The daily pool too: a malformed pool level would otherwise surface only on
+// the one day it is dealt, as a blank page for everybody at once.
+for (const lvl of [...ALL_LEVELS, ...POOL]) assertLevel(lvl);
 
 const canvas = document.getElementById('stage');
 initView(canvas);
@@ -223,7 +226,12 @@ function render() {
 
   // Tiny progress marker. Deliberately unobtrusive — the puzzle owns the screen.
   if (g.phase === PHASE.FROZEN || g.phase === PHASE.SIM) {
-    drawText(ctx, `${g.levelIndex + 1}/${LEVELS.length}  ${g.level.verb}`,
+    // A daily is not a position in the campaign — a pool level has none, and
+    // "0/21" is what it printed — so it says what it is instead. Keyed on the
+    // index as well as the flag: a level with no campaign index can only ever
+    // be a daily, however it was loaded.
+    const daily = g.isDaily || g.levelIndex < 0;
+    drawText(ctx, daily ? `DAILY  ${g.level.verb}` : `${g.levelIndex + 1}/${LEVELS.length}  ${g.level.verb}`,
              0.06, 0.035, Math.max(11, view.cssH * 0.016), 'rgba(42,38,34,0.45)', 'left');
   }
 
@@ -264,7 +272,12 @@ function drawResult(ctx, g) {
   drawText(ctx, line, 0.5, (top + h * 0.74) / view.cssH,
            Math.max(11, view.cssH * 0.018),
            calls ? C.danger : 'rgba(232,226,214,0.72)');
-  drawText(ctx, 'tap for the next one', 0.5, (top + h * 0.90) / view.cssH,
+  // After a daily there is no "next one" — the tap goes back to the board — and
+  // this card is the moment the streak went up, so it says that instead.
+  const onward = g.isDaily
+    ? `daily done · ${g.progress.streak || 1}-day streak · tap for the board`
+    : 'tap for the next one';
+  drawText(ctx, onward, 0.5, (top + h * 0.90) / view.cssH,
            Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.45)');
 }
 
@@ -430,6 +443,8 @@ function rejectText(reason) {
 // was written to catch, this time between the test and the game.
 globalThis.__byc = {
   game, view, PHASE, retry, nextLevel, goToLevel, openSelect, closeSelect, LEVELS, reducedMotion,
+  // The daily pool is not in LEVELS, so films and gates reach it through these.
+  POOL, loadLevel, startDaily, asDaily,
   get boardBox() { return boardBox; },
   // The RUNNING audio module, for the same reason boardBox is here. The
   // certification gate used to `import('/js/audio.js')` and read the state off

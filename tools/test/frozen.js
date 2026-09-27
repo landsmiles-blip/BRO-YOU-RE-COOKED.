@@ -16,6 +16,7 @@
 // is obvious in a way it never is one level at a time.
 //
 //   node tools/test/frozen.js         (needs: node tools/serve.js)
+//   FILM_POOL=1 node tools/test/frozen.js   the DAILY POOL -> frozen-pool-sheet.png
 //
 // READ THE IMAGE. That is the whole point of the tool.
 
@@ -27,6 +28,9 @@ const VIEW = { width: 405, height: 720 };
 const COLS = 5;
 const CELL = { w: 264, h: 469 };   // scaled down; 5 across stays legible
 const LABEL = 24;
+// The daily pool is forty generated levels that are not in LEVELS. They get
+// the same look, in their own sheet, because nobody placed them by hand.
+const POOL_MODE = process.env.FILM_POOL === '1';
 
 const CANDIDATES = [
   '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
@@ -53,8 +57,9 @@ page.on('pageerror', (e) => errors.push(e.message));
 await page.goto(BASE, { waitUntil: 'load' });
 await page.waitForFunction(() => globalThis.__byc?.game, null, { timeout: 10000 });
 
-const levels = await page.evaluate(() =>
-  globalThis.__byc.LEVELS.map((l) => ({ id: l.id, verb: l.verb, hint: l.hint })));
+const levels = await page.evaluate((pool) =>
+  (pool ? globalThis.__byc.POOL : globalThis.__byc.LEVELS)
+    .map((l) => ({ id: l.id, verb: l.verb, hint: l.hint })), POOL_MODE);
 
 console.log(`\nFROZEN TABLEAUX — ${levels.length} levels\n`);
 
@@ -62,7 +67,11 @@ const shots = [];
 for (let i = 0; i < levels.length; i++) {
   // goToLevel by index, not repeated nextLevel: the last level deliberately
   // ends the run rather than wrapping round to the first.
-  await page.evaluate((n) => globalThis.__byc.goToLevel(globalThis.__byc.game, n), i);
+  await page.evaluate(([n, pool]) => {
+    const B = globalThis.__byc;
+    if (pool) B.loadLevel(B.game, B.asDaily(B.POOL[n]));
+    else B.goToLevel(B.game, n);
+  }, [i, POOL_MODE]);
   await page.waitForFunction(() => globalThis.__byc.game.phase === 'frozen', null, { timeout: 10000 });
   await page.waitForTimeout(90);   // let the freeze settle so the frame is the real one
   shots.push({ label: `${i + 1}. ${levels[i].verb}`, buf: await page.screenshot() });
@@ -96,7 +105,7 @@ await sheet.evaluate(async ({ frames, cols, cell, label }) => {
   }
 }, { frames: shots.map((s) => ({ label: s.label, b64: s.buf.toString('base64') })), cols: COLS, cell: CELL, label: LABEL });
 
-const file = `${OUT}/frozen-sheet.png`;
+const file = `${OUT}/${POOL_MODE ? 'frozen-pool-sheet' : 'frozen-sheet'}.png`;
 await sheet.locator('#c').screenshot({ path: file });
 await browser.close();
 
