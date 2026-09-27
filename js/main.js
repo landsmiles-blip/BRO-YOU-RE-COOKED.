@@ -10,8 +10,10 @@ import { initView, view, applyTransform } from './view.js';
 import { attachInput } from './input.js';
 import {
   createGame, tick, onDown, onMove, onUp, retry, nextLevel, goToLevel, isSteppingPhase,
-  openSelect, closeSelect, PHASE, inkUsed, inkMax,
+  openSelect, closeSelect, PHASE, inkUsed, inkMax, startDaily,
 } from './game.js';
+import { dayNumber, dailyFor } from './daily.js';
+import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
 import { load as loadProgress, totalStars, maxStars, perfect, starsOn } from './progress.js';
 import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
@@ -59,6 +61,7 @@ attachInput(canvas, {
     if (game.phase === PHASE.SELECT) {
       const hit = boardBox && hitTest(boardBox, pt.cssX, pt.cssY);
       if (hit?.close) closeSelect(game);
+      else if (hit?.daily) { startDaily(game); game.selectFrom = null; }
       else if (hit && hit.index != null) { goToLevel(game, hit.index); game.selectFrom = null; }
       _resetPhase();
       return;
@@ -157,6 +160,12 @@ function render() {
       current: g.levelIndex,
       total: totalStars(g.progress),
       max: maxStars(),
+      daily: (() => {
+        const day = dayNumber();
+        const d = dailyFor(day);
+        return { verb: d.level.verb, ink: d.ink,
+                 done: dailyDone(g.progress, day), streak: g.progress.streak || 0 };
+      })(),
     });
     return;
   }

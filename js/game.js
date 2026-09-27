@@ -19,7 +19,8 @@ import { createStroke, begin, extend, end, remaining } from './drawing/capture.j
 import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME, CLOSE_CALL } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
-import { createProgress, record, save, isComplete, firstUnclearedIndex } from './progress.js';
+import { createProgress, record, save, isComplete, firstUnclearedIndex, recordDaily } from './progress.js';
+import { dayNumber, dailyLevel } from './daily.js';
 import * as audio from './audio.js';
 import * as sdk from './platform/sdk.js';
 
@@ -102,6 +103,10 @@ export function tick(g, dtMs) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
       if (o === OUTCOME.SUCCESS) {
         g.stars = starsFor(g.level.id, g.lastLength);
+        // A DAILY WIN EXTENDS THE STREAK, and only a daily win. The budget is
+        // already the three-star length, so clearing it at all is a three-star
+        // run by definition — the streak is the thing being earned here.
+        if (g.isDaily && recordDaily(g.progress, g.dailyDay)) save(g.progress);
         // Only a personal BEST is written, so replaying a cleared level to
         // experiment can never cost the player stars they already earned.
         if (record(g.progress, g.level.id, g.stars)) save(g.progress);
@@ -160,8 +165,29 @@ export function nextLevel(g) {
 /** Level boundaries between interstitials. See nextLevel. */
 const LEVELS_PER_AD = 3;
 
+/**
+ * Start today's daily challenge.
+ *
+ * It is an ORDINARY RUN with a tighter ink budget, which is the whole reason
+ * this costs almost nothing: no new phase, no new loop, no new physics. The
+ * level is a copy with `drawing.maxLength` overridden, so nothing mutates the
+ * shipped level data — the same rule that keeps a solver sweep from leaking one
+ * run's state into the next 2,500.
+ */
+export function startDaily(g, day = dayNumber()) {
+  g.isDaily = true;
+  g.dailyDay = day;
+  g.level = dailyLevel(day);
+  g.levelIndex = LEVELS.findIndex((l) => l.id === g.level.id);
+  g.ghostPoints = null;
+  g.attempt = 0;
+  reset(g);
+}
+
 /** Jump to a level by index — used by nextLevel, the ending, and level select. */
 export function goToLevel(g, index) {
+  // Leaving the daily by any route puts the normal budget back.
+  g.isDaily = false;
   g.levelIndex = Math.max(0, Math.min(LEVELS.length - 1, index));
   g.level = LEVELS[g.levelIndex];
   g.ghostPoints = null;

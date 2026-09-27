@@ -652,6 +652,42 @@ deeper objection is that it optimises for the SPECTATOR and not the player, and
 A7 and A14 already proved those are different people: both passed every gate and
 were shelved because a real person could not tell what they wanted.
 
+## THE DAILY — WHY CONTENT WAS NEVER THE BOTTLENECK
+
+**Twenty-one levels is fourteen minutes, played once.** Revenue here is daily
+actives x sessions x ad impressions, so with nothing to come back FOR the
+audience decays to zero after day one no matter how many levels exist. Four
+sessions of chasing level 22 did not move that number, because three more
+minutes of content in a game nobody reopens is worth nothing. Google's own
+Playables guidance says the same thing from the other end: aim for ~10 minute
+sessions, persist progress, and **add a new challenge each day**.
+
+**THE TWIST IS THE INK, NOT A NEW LEVEL.** The daily runs one of the shipped
+levels at its measured THREE-STAR length from `js/solverData.js` — the 20th
+percentile of real winning strokes, so a winner provably fits, while the line
+that normally clears the level does not. Measured on day one: the certified
+winner for that level is 288u against a 226u budget, and the budget truncates
+the stroke as it is drawn rather than rejecting it, so the player watches
+themselves run out of ink. No new physics, no new tuning, no new gates.
+
+- **UTC, not local midnight.** Local time would give Auckland and Los Angeles
+  different challenges for most of the day, which defeats the point.
+- **A shuffle bag, not `hash(day) % n`.** Random picking repeats by birthday
+  collision — roughly once a fortnight — and yesterday's level again is what
+  makes a daily feel worthless. Measured over 1000 days: never the same level
+  two days running, and **no level returns inside 8 days**. The worst rolling
+  21-day window holds 14 distinct levels, not 21, which no pair of independent
+  permutations can fix; 8 days of separation is the number a player feels.
+- **Schema 2 MIGRATES version 1 rather than discarding it.** The discard rule is
+  for saves this build cannot understand. A v1 save is understood completely —
+  it simply has no streak, which is indisputably zero. Throwing it away would
+  cost a player their stars to avoid a risk that does not exist.
+- **The strip clashed with the close button at the three widest ratios.** 16:9,
+  21:9 and 32:9 are short enough that the band rode up into the X, and since
+  `hitTest` checks close first the strip's corner was dead. Caught by checking
+  the geometry at all nine ratios, not by looking at one. **Check a new HUD
+  element at every ratio, not at the one you developed on.**
+
 ## PLATFORM CONSTRAINTS (non-negotiable)
 
 - **Zero external network calls.** `tools/build.js` fails the build on `fetch`,
