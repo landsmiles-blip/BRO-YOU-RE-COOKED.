@@ -2683,7 +2683,23 @@ export const A50 = {
   solver: null,
 };
 
-export const LEVELS = [A1, A2, A3, A4, A5, A8, A9, A10, A11, A12, A13, A15, A19, A20, A21, A28, A29, A30, A31, A34, A43];
+// THE ORDER IS MEASURED, and tools/test/curve.js holds it there. It used to be
+// creation order, and creation order put CATCH (56 tries) at level 4 among
+// levels of about 11, and introduced air with UPDRAFT (39) while DUCT (6)
+// waited behind it. Now: a gentle line chapter, then each new noun met at its
+// easiest — plate (FUNNEL), air (DUCT), balloon (FLOAT) — rising in waves to
+// the two hardest levels in the game at the end. Move a level and the curve
+// gate says whether the move is allowed.
+//
+// The numbers cannot see silhouettes, so the contact sheet still has a vote:
+// the first pass put HANG and CHOOSE side by side — two tall posts with a ball
+// between them, twice — and neither number moved. Keep look-alikes apart.
+export const LEVELS = [
+  A1, A5, A20, A3, A12, A15, A8, A2,    // the line:      BLOCK HANG SPRING REDIRECT INTERCEPT CHOOSE WEDGE BRIDGE
+  A9, A10, A11, A4,                     // plate & gate:  FUNNEL TRIGGER DROP, then CATCH
+  A28, A19, A13, A29, A21,              // air:           DUCT UPDRAFT, CARRY, RAIL, LEVER
+  A30, A43, A31, A34,                   // the finale:    FLOAT CRACK THORNS SINK
+];
 
 /**
  * HELD — built, measured, passing their gates, and NOT SHIPPING.

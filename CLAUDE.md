@@ -224,8 +224,8 @@ a slow machine takes its time. It is not a motif, it is load-bearing.
 
 **Any level whose win condition is a plate can be won by dropping an unanchored
 line on the plate**, skipping the machine entirely. Audited across the shipped
-set: levels 7 (FUNNEL), 13 (UPDRAFT) and 15 (LEVER) are all bypassable this way.
-(Level 9 DROP is not a bug — that IS its solution, and it is what teaches every
+set: A9 FUNNEL, A19 UPDRAFT and A21 LEVER are all bypassable this way.
+(A11 DROP is not a bug — that IS its solution, and it is what teaches every
 player the trick.)
 
 This also inflates the solver: two new levels measured 20.4% and 26.3% breadth,
@@ -240,15 +240,15 @@ re-tuning every level they appear in.
 A lid over the plate costs nothing instead, because the presser and a falling
 line arrive from different directions:
 
-- **Level 13** — the ball rises INSIDE the chimney and presses the plate from
+- **A19 UPDRAFT** — the ball rises INSIDE the chimney and presses the plate from
   underneath, so a cap resting on top of it never touches the ball's path. Free.
-- **Level 15** — the rock arrives ROLLING at y=854 (top edge 828), so a lid
+- **A21 LEVER** — the rock arrives ROLLING at y=854 (top edge 828), so a lid
   hanging to 796 leaves it 32 units of headroom and stops anything dropped.
-- **Level 7 resists it** and is still open: its rock enters at y=771 and a line
+- **A9 FUNNEL resists it** and is still open: its rock enters at y=771 and a line
   can be drawn at 748 — the same height, so no lid separates them.
 
 Closing the door costs real breadth, because that breadth was never real:
-level 13 went 11.1% → **4.9%** and level 15 14.9% → **4.3%**. Both still pass.
+A19 went 11.1% → **4.9%** and A21 14.9% → **4.3%**. Both still pass.
 **Re-run the drop-on-the-plate audit after touching any plate level.**
 
 ## ...AND A WEIGHT GATE CLOSES IT, IF THE INK BUDGET IS SMALL
@@ -274,6 +274,9 @@ came out of proving it:
   A6 shifted everything after it. A7 was level 6; A13 was level 12. Acting on a
   reported level number without resolving it through `LEVELS` removed the wrong
   level once. **Always confirm with the number AND the verb on screen.**
+  And the numbers are not stable: the measured re-order of 2026-10-12 moved
+  most of them (see THE DIFFICULTY CURVE). A level number elsewhere in this file
+  means the order at the time it was written; the id is the only stable name.
 - **`inkPath` sets `globalAlpha` itself.** Wrapping a call in `ctx.save();
   globalAlpha = 0.4` does nothing, silently. Use its `alpha` option.
 - **Input reports world coordinates AND css coordinates.** The game world is
@@ -735,6 +738,38 @@ challenge whose twist is the ink, so `js/dailyPool.js` holds forty of them and
   stale; it cannot re-certify (minutes), only notice.
 - **Any change to the deck reshuffles every future day.** Before launch, not
   after.
+
+## THE DIFFICULTY CURVE — MEASURED, NOT REMEMBERED
+
+**The order of LEVELS was creation order, and it showed.** Every level carries
+two measured numbers — breadth (the share of plausible strokes that win) and
+hand rate (the share of those a shaky hand still lands) — and one over their
+product is TRIES: how many plausible hand-drawn strokes a player would expect
+to need. It is relative, not a prediction, and it measures search and
+execution, not comprehension. Measured on 2026-10-12, the shipped order had:
+
+- **CATCH at level 4 taking 56 tries** among levels of about 11 — a wall in the
+  first minute, which is where a new player decides whether to stay.
+- **Air introduced by UPDRAFT (39) while DUCT (6) waited three levels behind.**
+- **BRIDGE at level 2 (28)** above the two levels after it.
+
+`tools/test/curve.js` now holds the order to four rules, each a principle and
+not a fitted number: levels 1-3 in the easiest band (<=15); every noun first
+met at its EASIEST level (nouns detected from the data — a new level is held to
+it the moment it uses one); no level over 3x the median of the four before it;
+each third harder than the last. The re-order passes all four with no level's
+ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
+
+- **Any moving air is AIR.** A29's draught is purely sideways (accel 0, ax
+  600); a detector that asked "up or down" missed it entirely.
+- **Ink is NOT a reliable difficulty dial — measured.** Breadth is wins over
+  PLAUSIBLE strokes, and an over-budget stroke is rejected before it counts, so
+  cutting the ink shrinks the numerator and the denominator together. A20
+  SPRING at ink 460 / 300 / 200 / 140 swept 35.4% / 32.7% / 23.4% / 26.7%: a
+  70% cut bought 1.3x the difficulty, and not even monotonically. To make a
+  level harder, change what it asks, not what it pays.
+- **A new level must fit the curve, not just pass its own gates.** Place it,
+  run the curve gate, and move it until it passes.
 
 ## PLATFORM CONSTRAINTS (non-negotiable)
 
