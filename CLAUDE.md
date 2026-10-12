@@ -775,3 +775,13 @@ Browser tests need `node tools/serve.js` running.
   problem for one minute.
 - Report failures plainly, with the output. Never claim something works without
   having looked at it.
+- **Commit and push at every checkpoint, never only at the end.** A cloud
+  session's machine is reclaimed when it goes idle, and the next one starts
+  fresh. The whole TNT engine — fuse, blast, breakable fence, its renderer, its
+  death cam and level A51 — was lost that way, uncommitted when the machine was
+  replaced. Work on the branch is safe; work only on the machine is a loan.
+- **A skipped browser gate exits 0.** Without playwright-core every visual test
+  prints SKIPPED and passes, so on a fresh machine the gates read green while
+  looking at nothing. `.claude/hooks/session-start.sh` installs it (pinned to
+  1.56, the release that drives the preinstalled Chromium 1194). If a gate says
+  SKIPPED, it did not look.
