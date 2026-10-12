@@ -57,6 +57,26 @@ check('1', 'SDK slot exists and precedes all game code',
       sdkSlot !== -1 && (firstModule === -1 || sdkSlot < firstModule),
       sdkSlot === -1 ? 'slot missing' : `slot@${sdkSlot} before module@${firstModule}`);
 
+// THE FILE THAT IS UPLOADED, not the dev page. The check above passed for
+// months while the built bundle carried only a COMMENTED slot — the YouTube
+// build did not exist. Google: the game "MUST load the YouTube Playables SDK
+// before any of the game code", and the upload is a ZIP with index.html at
+// its root.
+const yt = read('dist/playables/index.html');
+const scripts = [...yt.matchAll(/<script\b[^>]*>/g)].map((m) => m[0]);
+check('1', 'the YOUTUBE build loads the SDK as its FIRST script',
+      /^<script src="https:\/\/www\.youtube\.com\/game_api\/v1">$/.test(scripts[0] ?? ''),
+      scripts.length ? `first: ${scripts[0]}` : 'dist/playables/index.html missing — run tools/build.js');
+check('1', 'and the SDK is the ONLY script that loads from anywhere',
+      scripts.filter((t) => /\bsrc=/.test(t)).length === 1, `${scripts.length} scripts`);
+{
+  const { spawnSync } = await import('node:child_process');
+  const ls = spawnSync('unzip', ['-Z1', ROOT + 'dist/byc-playables.zip'], { encoding: 'utf8' });
+  const names = ls.status === 0 ? ls.stdout.trim().split('\n') : [];
+  check('7', 'the upload ZIP holds index.html at its root and nothing else',
+        names.length === 1 && names[0] === 'index.html', names.join(', ') || 'no zip');
+}
+
 const bundle = read('dist/byc.html');
 check('1', 'a built bundle exists to audit', bundle.length > 1000, `${(bundle.length / 1024).toFixed(0)} KB raw`);
 
