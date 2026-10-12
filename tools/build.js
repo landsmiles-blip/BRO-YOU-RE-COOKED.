@@ -130,19 +130,29 @@ html, body {
 let zipNote = '';
 if (!process.argv.includes('--check')) {
   mkdirSync(new URL('dist/playables/', root), { recursive: true });
+  mkdirSync(new URL('dist/web/', root), { recursive: true });
   writeFileSync(new URL('dist/byc.html', root), html);
   writeFileSync(new URL('dist/artifact.html', root), artifact);
   writeFileSync(new URL('dist/playables/index.html', root), playables);
+  // The open web (itch.io, any static host): the standalone page, named the
+  // way every HTML5 host expects. No SDK — off YouTube it would only be a
+  // request to a page that has no ytgame to give.
+  writeFileSync(new URL('dist/web/index.html', root), html);
 
-  // index.html at the ROOT of the archive, nothing else in it: the whole game
+  // index.html at the ROOT of each archive, nothing else in it: the whole game
   // is one file. -j drops the directory, -X drops platform metadata so the
   // same build always produces the same archive.
-  const zip = new URL('dist/byc-playables.zip', root).pathname;
-  if (existsSync(zip)) rmSync(zip);
-  const z = spawnSync('zip', ['-q', '-X', '-j', zip, new URL('dist/playables/index.html', root).pathname]);
-  zipNote = z.status === 0
-    ? '  → dist/byc-playables.zip (YouTube upload: index.html at the root)\n'
-    : '  !! zip not found — dist/playables/ is built but NOT archived\n';
+  for (const [name, dir, what] of [
+    ['byc-playables.zip', 'playables', 'YouTube upload'],
+    ['byc-web.zip', 'web', 'open web: itch.io or any static host'],
+  ]) {
+    const zip = new URL(`dist/${name}`, root).pathname;
+    if (existsSync(zip)) rmSync(zip);
+    const z = spawnSync('zip', ['-q', '-X', '-j', zip, new URL(`dist/${dir}/index.html`, root).pathname]);
+    zipNote += z.status === 0
+      ? `  → dist/${name} (${what}: index.html at the root)\n`
+      : `  !! zip not found — dist/${dir}/ is built but NOT archived\n`;
+  }
 }
 
 console.log(`\nsingle-file build`);
