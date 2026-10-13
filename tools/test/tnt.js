@@ -10,7 +10,11 @@
 //   - it kills Milo inside the kill radius, with its own label, and spares him
 //     outside it;
 //   - it shoves loose bodies away from itself;
-//   - it never moves the player's anchored line.
+//   - it never moves the player's anchored line;
+//   - anything solid between it and a target shields that target — a wall or
+//     the player's line saves Milo and saves a board — and the flash the
+//     renderers draw stops at the wall too;
+//   - it lights any other barrel it reaches, which goes off a beat later.
 
 import { buildSim, stepSim, commitStroke, destroySim, OUTCOME } from '../../js/sim.js';
 import { getVelocity } from '../../js/physics/adapter.js';
@@ -136,8 +140,94 @@ console.log('\nTNT — fuse, blast, boards, kill radius, shove, the line');
   destroySim(sim);
 }
 
-check('the default radii are the ones the levels are built on', TNT.radius === 130 && TNT.kill === 90 && TNT.push === 600,
-  JSON.stringify(TNT));
+// 6. Cover: something solid between the barrel and Milo saves him.
+{
+  // He stands still 72u from a barrel that goes off: inside the kill radius.
+  const stand = { milo: { start: { x: 230, y: 1152 }, speed: 0 }, objects: [barrel({ x: 320, fuse: 300 })] };
+  const open = buildSim(level(stand));
+  runTo(open, 500);
+  check('in the open, the same blast kills him', open.run.outcome === OUTCOME.KILLED, open.run.outcome);
+  destroySim(open);
+
+  const wall = { id: 'wall', type: 'platform', x: 262, y: 1000, w: 16, h: 152 };
+  const sim = buildSim(level({ ...stand, static: [...level().static, wall] }));
+  runTo(sim, 500);
+  check('behind a wall, he is shielded', sim.run.outcome === OUTCOME.RUNNING && sim.run.cause === null,
+    `${sim.run.outcome}, cause ${sim.run.cause}`);
+  check('and it counts as a close call', sim.closeCalls.some((c) => c.id === 'tnt'));
+  const bl = sim.blasts[0];
+  const towardHim = bl.reach[12];             // ray 12 of 24 points left, at him
+  const away = bl.reach[0];                   // ray 0 points right, into open air
+  check('the drawn blast stops at the wall', towardHim < 60 && away === bl.radius,
+    `reach toward him ${towardHim.toFixed(0)}u, away ${away.toFixed(0)}u`);
+  destroySim(sim);
+}
+{
+  // The player's own line is cover too: that is the whole of TAKE COVER.
+  const sim = buildSim(level({ milo: { start: { x: 230, y: 1152 }, speed: 0 }, objects: [barrel({ x: 320, fuse: 600 })] }));
+  runTo(sim, 300);
+  const res = commitStroke(sim, [{ x: 272, y: 1150 }, { x: 272, y: 1080 }, { x: 272, y: 1010 }]);
+  check('a stroke between them commits', res.ok, res.ok ? '' : res.reason);
+  runTo(sim, 800);
+  check('the player\'s line shields him', sim.run.outcome === OUTCOME.RUNNING, sim.run.outcome);
+  destroySim(sim);
+}
+{
+  // A board behind a shelf is shielded; boards in a row never shield each other.
+  const shelf = { id: 'shelf', type: 'platform', x: 330, y: 1060, w: 140, h: 16 };
+  const under = { id: 'under', type: 'platform', x: 380, y: 1100, w: 40, h: 52, breakable: true };
+  const sim = buildSim(level({
+    milo: { start: { x: 60, y: 1152 }, speed: 0 },
+    static: [...level().static, shelf, under],
+    objects: [barrel({ x: 400, y: 1000, fuse: 300 })],
+  }));
+  runTo(sim, 500);
+  check('a board under a shelf survives a blast on the shelf', sim.detonated.has('tnt') && !sim.broken.has('under'));
+  destroySim(sim);
+}
+{
+  // b2 stands directly behind b1 on the line from the barrel: if boards
+  // shielded each other, b2 would survive.
+  const b1 = { id: 'b1', type: 'platform', x: 440, y: 1088, w: 16, h: 64, breakable: true };
+  const b2 = { id: 'b2', type: 'platform', x: 456, y: 1088, w: 30, h: 64, breakable: true };
+  const sim = buildSim(level({
+    milo: { start: { x: 60, y: 1152 }, speed: 0 },
+    static: [...level().static, b2, b1],   // b2 first: checked while b1 still stands
+  }));
+  runTo(sim, 800);
+  check('a board behind another board still breaks', sim.broken.has('b1') && sim.broken.has('b2'),
+    `b1 ${sim.broken.has('b1')}, b2 ${sim.broken.has('b2')}`);
+  destroySim(sim);
+}
+
+// 7. The chain: a blast lights the barrels it reaches.
+{
+  const sim = buildSim(level({
+    milo: { start: { x: 60, y: 1152 }, speed: 0 },
+    objects: [barrel({ id: 'a', x: 400, fuse: 600 }), barrel({ id: 'b', x: 480, fuse: 5000 }),
+      barrel({ id: 'c', x: 690, fuse: 5000 })],
+  }));
+  runTo(sim, 1200);
+  const a = sim.detonated.get('a'), b = sim.detonated.get('b');
+  check('a barrel the blast reaches goes off a beat later', b !== undefined && b - a >= TNT.chain && b - a < TNT.chain + 10,
+    `a ${a?.toFixed(0)}ms, b ${b?.toFixed(0)}ms`);
+  check('a barrel out of reach does not', !sim.detonated.has('c'));
+  destroySim(sim);
+}
+{
+  const wall = { id: 'wall', type: 'platform', x: 432, y: 1000, w: 16, h: 152 };
+  const sim = buildSim(level({
+    milo: { start: { x: 60, y: 1152 }, speed: 0 },
+    static: [...level().static, wall],
+    objects: [barrel({ id: 'a', x: 400, fuse: 600 }), barrel({ id: 'b', x: 480, fuse: 5000 })],
+  }));
+  runTo(sim, 1200);
+  check('a wall between them stops the chain', sim.detonated.has('a') && !sim.detonated.has('b'));
+  destroySim(sim);
+}
+
+check('the default radii are the ones the levels are built on',
+  TNT.radius === 130 && TNT.kill === 90 && TNT.push === 600 && TNT.chain === 150, JSON.stringify(TNT));
 
 console.log(failed === 0 ? '\nTNT: PASS\n' : `\nTNT: ${failed} FAILED\n`);
 process.exit(failed === 0 ? 0 : 1);

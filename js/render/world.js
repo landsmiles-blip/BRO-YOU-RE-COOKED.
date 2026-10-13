@@ -627,6 +627,33 @@ function drawTnt(ctx, body, spec, simTime, now, freeze) {
 }
 
 /** Where a barrel went off: a scorch that stays, and a flash for 480 ms. */
+/**
+ * Trace where a blast actually reached, capped at `cap`. Solid things stop a
+ * blast, so its outline is not a circle when it met a wall: the sim records
+ * how far it got in each direction (`reach`), and every picture of a blast —
+ * here and in the replay — is drawn from that, so the wall that saved him is
+ * visibly the place the fire stopped.
+ */
+export function blastPath(ctx, bl, cap) {
+  const n = bl.reach?.length ?? 0;
+  ctx.beginPath();
+  if (!n) { ctx.arc(bl.x, bl.y, cap, 0, Math.PI * 2); return; }
+  for (let k = 0; k < n; k++) {
+    const a = (k / n) * Math.PI * 2, r = Math.min(bl.reach[k], cap);
+    const px = bl.x + Math.cos(a) * r, py = bl.y + Math.sin(a) * r;
+    if (k) ctx.lineTo(px, py); else ctx.moveTo(px, py);
+  }
+  ctx.closePath();
+}
+
+/** The reach in direction `ang`: the shorter of the two samples around it. */
+function reachAt(bl, ang) {
+  const n = bl.reach?.length ?? 0;
+  if (!n) return bl.radius;
+  const t = (((ang / (Math.PI * 2)) % 1) + 1) % 1 * n;
+  return Math.min(bl.reach[Math.floor(t) % n], bl.reach[Math.ceil(t) % n]);
+}
+
 function drawBlast(ctx, bl, simTime, now) {
   const age = simTime - bl.t;
   if (age < 0) return;
@@ -637,14 +664,16 @@ function drawBlast(ctx, bl, simTime, now) {
     const f = 1 - age / 480;
     ctx.globalAlpha = 0.45 * f;
     ctx.fillStyle = C.fire;
-    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.radius * (0.55 + 0.45 * (1 - f)), 0, Math.PI * 2); ctx.fill();
+    blastPath(ctx, bl, bl.radius * (0.55 + 0.45 * (1 - f))); ctx.fill();
     ctx.globalAlpha = f;
     ctx.strokeStyle = C.danger; ctx.lineWidth = 4;
-    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.kill, 0, Math.PI * 2); ctx.stroke();
+    blastPath(ctx, bl, bl.kill); ctx.stroke();
     ctx.globalAlpha = 1;
     for (let k = 0; k < 12; k++) {
       const ang = (k / 12) * Math.PI * 2 + 0.2;
-      const r0 = bl.radius * 0.3, r1 = bl.radius * (0.5 + 0.5 * (1 - f));
+      const r1 = Math.min(bl.radius * (0.5 + 0.5 * (1 - f)), reachAt(bl, ang));
+      const r0 = Math.min(bl.radius * 0.3, r1);
+      if (r1 - r0 < 4) continue;
       inkPath(ctx, [
         { x: bl.x + Math.cos(ang) * r0, y: bl.y + Math.sin(ang) * r0 },
         { x: bl.x + Math.cos(ang) * r1, y: bl.y + Math.sin(ang) * r1 },

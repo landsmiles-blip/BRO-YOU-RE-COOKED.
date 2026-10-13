@@ -25,6 +25,7 @@ import { applyTransform } from '../view.js';
 import { C } from './palette.js';
 import { MILO, LINE, DEATH_CAM, SAFE_BOX, PHYSICS_DT } from '../constants.js';
 import { drawBanner } from './hud.js';
+import { blastPath } from './world.js';
 
 export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   applyTransform(ctx);
@@ -190,16 +191,18 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
 
   // THE BLAST, once it has happened in this frame: the reach as a dashed ring
   // and the kill radius in red — the replay of a blast death has to show the
-  // ring he was standing inside, or it explains nothing.
+  // ring he was standing inside, or it explains nothing. Both are drawn where
+  // the blast actually REACHED, so a wall that stopped it shows as the place
+  // the ring stops.
   for (const bl of sim.blasts ?? []) {
     if (bl.t > tFrame) continue;
     ctx.save();
     ctx.setLineDash([8, 8]);
     ctx.strokeStyle = 'rgba(42,38,34,0.45)'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.radius, 0, Math.PI * 2); ctx.stroke();
+    blastPath(ctx, bl, bl.radius); ctx.stroke();
     ctx.setLineDash([]);
     ctx.strokeStyle = C.danger; ctx.lineWidth = 4;
-    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.kill, 0, Math.PI * 2); ctx.stroke();
+    blastPath(ctx, bl, bl.kill); ctx.stroke();
     ctx.restore();
   }
 

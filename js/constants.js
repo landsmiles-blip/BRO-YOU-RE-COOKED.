@@ -62,7 +62,14 @@ export const NEAR_MISS_DIST = 30;   // TUNE — less than Milo's 36u width
 // measured, a line catching the barrel hits it at a normal speed of 359-479
 // while a delivery to a fence hits at 336 — an impact trigger would go off in
 // the player's hands.
-export const TNT = { radius: 130, kill: 90, push: 600 };   // TUNE
+// SOLID THINGS STOP IT. A wall, a shelf, the player's line or a rock standing
+// between the barrel and a target shields that target — Milo, a board, a loose
+// body, another barrel — because that is what every explosion a player has
+// ever seen does, and what the genre's shield levels teach them to expect.
+// Breakable boards never shield one another: a fence shatters as one thing.
+// A blast that reaches another barrel LIGHTS it, and it goes off `chain` ms
+// later — a beat apart, so a chain reads as two bangs and not one.
+export const TNT = { radius: 130, kill: 90, push: 600, chain: 150 };   // TUNE
 
 // THE CLOSE CALL. The game is called BRO, YOU'RE COOKED and it is about nearly
 // dying — and until now nearly dying looked and sounded EXACTLY like winning

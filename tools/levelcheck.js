@@ -103,7 +103,10 @@ function nounsOf(level) {
     // TNT. A barrel with its fuse taken out is a rock that never goes off,
     // which is the honest comparison: if the level plays the same when nothing
     // ever explodes, the explosion was never the puzzle.
-    if (o.type === 'tnt') out.push({ what: `tnt "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, fuse: 1e9 } : q)) }) });
+    // Deleting a barrel means it never explodes — neither by its own fuse nor
+    // by another blast lighting it — while its body stays, so a barrel that
+    // also matters as a WEIGHT is not mistaken for one that matters as a bomb.
+    if (o.type === 'tnt') out.push({ what: `tnt "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, type: 'boulder' } : q)) }) });
   }
   return out;
 }

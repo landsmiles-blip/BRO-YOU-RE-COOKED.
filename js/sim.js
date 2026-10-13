@@ -8,7 +8,7 @@
 import {
   createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
   onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel, addPivot, addCross,
-  removeBody, setAngularVelocity, setStatic,
+  removeBody, setAngularVelocity, setStatic, raycast,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
@@ -54,6 +54,9 @@ export function buildSim(level) {
     detonated: new Map(),
     broken: new Map(),
     blasts: [],
+    // Barrels another blast has lit: id -> the time it goes off, if that is
+    // sooner than its own fuse.
+    lit: new Map(),
     causality: createCausality(),
     recorder: createRecorder(),
     simTime: 0,
@@ -377,51 +380,106 @@ function applyLift(sim) {
  */
 function detonate(sim) {
   for (const [id, o] of sim.objects) {
-    if (o.spec.type !== 'tnt' || sim.detonated.has(id) || sim.simTime < o.spec.fuse) continue;
+    if (o.spec.type !== 'tnt' || sim.detonated.has(id)) continue;
+    if (sim.simTime < Math.min(o.spec.fuse, sim.lit.get(id) ?? Infinity)) continue;
     const { x, y } = o.body.position;
     const R = o.spec.blast?.radius ?? TNT.radius;
     const K = o.spec.blast?.kill ?? TNT.kill;
     const P = o.spec.blast?.push ?? TNT.push;
     sim.detonated.set(id, sim.simTime);
-    sim.blasts.push({ id, x, y, t: sim.simTime, radius: R, kill: K });
     setStatic(o.body, true);
     o.body.collisionFilter.mask = 0;
     o.body.collisionFilter.category = 0;
 
+    // Boards first, so a board the blast breaks no longer shields anything
+    // behind it. Boards never shield each other: a fence shatters as one.
+    const boards = new Set(sim.statics.filter((st) => st.spec.breakable).map((st) => st.body));
     for (const st of sim.statics) {
       const s = st.spec;
       if (!s.breakable || sim.broken.has(s.id)) continue;
       const nx = Math.max(s.x, Math.min(x, s.x + s.w));
       const ny = Math.max(s.y, Math.min(y, s.y + s.h));
       if (Math.hypot(nx - x, ny - y) >= R) continue;
+      if (shielded(sim, x, y, nx, ny, (b) => boards.has(b))) continue;
       sim.broken.set(s.id, sim.simTime);
       st.body.collisionFilter.mask = 0;
       st.body.collisionFilter.category = 0;
+    }
+
+    // Another barrel inside the reach is lit, and goes off a beat later.
+    for (const [oid, other] of sim.objects) {
+      if (other.spec.type !== 'tnt' || oid === id || sim.detonated.has(oid)) continue;
+      const p = other.body.position;
+      if (Math.hypot(p.x - x, p.y - y) - other.spec.radius >= R) continue;
+      if (shielded(sim, x, y, p.x, p.y, (b) => b === other.body)) continue;
+      const at = sim.simTime + TNT.chain;
+      if (!(sim.lit.get(oid) <= at)) sim.lit.set(oid, at);
     }
 
     for (const b of allBodies(sim.ctx)) {
       if (b.isStatic || b.isSensor || b === sim.milo.body) continue;
       const dx = b.position.x - x, dy = b.position.y - y, d = Math.hypot(dx, dy);
       if (d >= R || d < 1e-6) continue;
+      if (shielded(sim, x, y, b.position.x, b.position.y, (q) => q === b)) continue;
       const k = P * (1 - d / R), v = getVelocity(b);
       setVelocity(b, v.x + (dx / d) * k, v.y + (dy / d) * k);
     }
 
     // Distance to the nearest point of Milo's body, not his centre: a blast
-    // that reaches his feet reaches him.
+    // that reaches his feet reaches him — unless something solid is in between.
     const m = sim.milo.body.position;
     const cx = Math.max(m.x - MILO.width / 2, Math.min(x, m.x + MILO.width / 2));
     const cy = Math.max(m.y - MILO.height / 2, Math.min(y, m.y + MILO.height / 2));
     const gap = Math.hypot(cx - x, cy - y);
+    const cover = gap < K + NEAR_MISS_DIST * 2 && shielded(sim, x, y, cx, cy, () => false);
+    // Where it actually reached, for the renderers: the flash and the replay
+    // stop at the wall, so a player can SEE what saved him.
+    sim.blasts.push({ id, x, y, t: sim.simTime, radius: R, kill: K, reach: blastReach(sim, x, y, R) });
     audio.blast();
-    if (gap < K) {
+    if (gap < K && !cover) {
       kill(sim.run, id);
       sim.run.cause = 'blast';
     } else if (gap < K + NEAR_MISS_DIST * 2 && sim.run.outcome === OUTCOME.RUNNING) {
-      sim.closeCalls.push({ id, t: sim.simTime, gap: gap - K, speed: P, x: (x + m.x) / 2, y: (y + m.y) / 2 });
+      sim.closeCalls.push({ id, t: sim.simTime, gap: Math.max(0, gap - K), speed: P, x: (x + m.x) / 2, y: (y + m.y) / 2 });
       audio.closeCall(P);
     }
   }
+}
+
+/**
+ * Is something solid between the blast at (x, y) and the point (tx, ty)?
+ * `skip(body)` names the bodies that cannot shield this target — the target
+ * itself, and for a board every other board. Milo, sensors and anything that
+ * has stopped existing physically (a spent barrel, a broken board, an opened
+ * gate) never shield.
+ */
+function shielded(sim, x, y, tx, ty, skip) {
+  const dx = tx - x, dy = ty - y, d = Math.hypot(dx, dy);
+  if (d < 1) return false;
+  // Half a unit short: a ray ending exactly on the target's edge can graze
+  // whatever the target rests against, and that is not cover.
+  const ex = tx - (dx / d) * 0.5, ey = ty - (dy / d) * 0.5;
+  return raycast(sim.ctx, x, y, ex, ey, (part) => {
+    const b = part.parent ?? part;
+    if (b === sim.milo.body || part.isSensor || b.isSensor) return false;
+    if (part.collisionFilter.mask === 0 || b.collisionFilter.mask === 0) return false;
+    return !skip(b);
+  }).length > 0;
+}
+
+/** How far the blast got in each of REACH_RAYS directions, up to R. */
+const REACH_RAYS = 24;
+function blastReach(sim, x, y, R) {
+  const out = [];
+  for (let k = 0; k < REACH_RAYS; k++) {
+    const a = (k / REACH_RAYS) * Math.PI * 2, c = Math.cos(a), s = Math.sin(a);
+    const blocked = (r) => shielded(sim, x, y, x + c * r, y + s * r, () => false);
+    if (!blocked(R)) { out.push(R); continue; }
+    let lo = 0, hi = R;
+    for (let i = 0; i < 7; i++) { const mid = (lo + hi) / 2; if (blocked(mid)) hi = mid; else lo = mid; }
+    out.push(lo);
+  }
+  return out;
 }
 
 function applyUpdrafts(sim) {

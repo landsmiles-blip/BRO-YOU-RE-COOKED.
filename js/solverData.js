@@ -238,18 +238,18 @@ export const SOLVER = {
   },
   "a52-keepaway": {
     "solvable": true,
-    "solutionBreadth": 0.1153,
+    "solutionBreadth": 0.128,
     "precisionFloor": 65,
-    "worstJitter": 4,
+    "worstJitter": 6,
     "distinctFamilies": 6,
     "twoStarLength": 288,
-    "threeStarLength": 184,
+    "threeStarLength": 165,
     "shortestWin": 110,
     "measuredAt": "2026-10-13"
   },
   "a51-fence": {
     "solvable": true,
-    "solutionBreadth": 0.0662,
+    "solutionBreadth": 0.0745,
     "precisionFloor": 65,
     "worstJitter": 2,
     "distinctFamilies": 6,

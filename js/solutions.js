@@ -870,10 +870,10 @@ export const SOLUTIONS = {
   },
   "a52-keepaway": {
     "id": "a52-keepaway",
-    "winners": 237,
-    "robust": 110,
-    "anchoredRobust": 47,
-    "handRate": 0.464,
+    "winners": 263,
+    "robust": 135,
+    "anchoredRobust": 50,
+    "handRate": 0.513,
     "solution": {
       "family": "arc",
       "length": 288,
@@ -913,31 +913,43 @@ export const SOLUTIONS = {
   },
   "a51-fence": {
     "id": "a51-fence",
-    "winners": 314,
-    "robust": 128,
-    "anchoredRobust": 4,
-    "handRate": 0.408,
+    "winners": 353,
+    "robust": 168,
+    "anchoredRobust": 1,
+    "handRate": 0.476,
     "solution": {
-      "family": "line",
-      "length": 300,
+      "family": "arc",
+      "length": 288,
       "parts": 10,
-      "anchors": 1,
+      "anchors": 7,
       "points": [
         {
-          "x": 290.1,
-          "y": 807.9
+          "x": 652.6,
+          "y": 449.3
         },
         {
-          "x": 376.7,
-          "y": 857.9
+          "x": 599.8,
+          "y": 444.5
         },
         {
-          "x": 463.3,
-          "y": 907.9
+          "x": 553.1,
+          "y": 450.3
         },
         {
-          "x": 549.9,
-          "y": 957.9
+          "x": 512.5,
+          "y": 466.7
+        },
+        {
+          "x": 478,
+          "y": 493.6
+        },
+        {
+          "x": 449.7,
+          "y": 531.2
+        },
+        {
+          "x": 427.4,
+          "y": 579.3
         }
       ]
     }
