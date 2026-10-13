@@ -1325,7 +1325,7 @@ export const CHAPTERS = [
   { name: 'AIR',            tag: 'it carries whatever is in it',
     slots: [A28,  null, null, null, A4,   null, A19,  null, null, A29] },
   { name: 'BALLOONS',       tag: 'it only goes up',
-    slots: [null, null, null, null, A30,  null, null, A13,  null, A34] },
+    slots: [CH5.A100, null, null, null, A30,  null, null, A13,  null, A34] },
   { name: 'ALL OF IT',      tag: 'everything at once',
     slots: [null, null, null, null, A31,  null, A43,  A21,  null, null] },
 ];

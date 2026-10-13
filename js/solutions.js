@@ -1090,5 +1090,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a100-balloon": {
+    "id": "a100-balloon",
+    "winners": 119,
+    "robust": 67,
+    "anchoredRobust": 54,
+    "handRate": 0.563,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 365,
+          "y": 522.8
+        },
+        {
+          "x": 316.9,
+          "y": 545.1
+        },
+        {
+          "x": 279.3,
+          "y": 573.5
+        },
+        {
+          "x": 252.4,
+          "y": 607.9
+        },
+        {
+          "x": 236,
+          "y": 648.5
+        },
+        {
+          "x": 230.2,
+          "y": 695.2
+        },
+        {
+          "x": 235,
+          "y": 748
+        }
+      ]
+    }
   }
 };
