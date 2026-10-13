@@ -1219,5 +1219,36 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a90-gust": {
+    "id": "a90-gust",
+    "winners": 60,
+    "robust": 31,
+    "anchoredRobust": 25,
+    "handRate": 0.517,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 3,
+      "points": [
+        {
+          "x": 217.5,
+          "y": 1102.1
+        },
+        {
+          "x": 272.5,
+          "y": 1102.1
+        },
+        {
+          "x": 327.5,
+          "y": 1102.1
+        },
+        {
+          "x": 382.5,
+          "y": 1102.1
+        }
+      ]
+    }
   }
 };

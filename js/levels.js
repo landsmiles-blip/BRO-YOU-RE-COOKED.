@@ -1323,7 +1323,7 @@ export const CHAPTERS = [
   { name: 'TNT',            tag: 'it goes off wherever it is',
     slots: [CH3.A53, CH3.A52, null, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
   { name: 'AIR',            tag: 'it carries whatever is in it',
-    slots: [A28,  null, null, null, A4,   null, A19,  null, null, A29] },
+    slots: [A28,  CH4.A90, null, null, A4,   null, A19,  null, null, A29] },
   { name: 'BALLOONS',       tag: 'it only goes up',
     slots: [CH5.A100, null, null, null, A30,  null, CH5.A101, A13, null, A34] },
   { name: 'ALL OF IT',      tag: 'everything at once',

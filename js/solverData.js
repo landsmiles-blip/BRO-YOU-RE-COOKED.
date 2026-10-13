@@ -323,5 +323,16 @@ export const SOLVER = {
     "threeStarLength": 230,
     "shortestWin": 110,
     "measuredAt": "2026-10-13"
+  },
+  "a90-gust": {
+    "solvable": true,
+    "solutionBreadth": 0.0785,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 2,
+    "twoStarLength": 230,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
   }
 };
