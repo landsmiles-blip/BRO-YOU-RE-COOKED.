@@ -236,3 +236,35 @@ A CLIMB IS STRUCTURALLY NARROW, AND THIS FILE ALREADY SAID SO. It is solvable an
 > THAT ROOF IS IN THE WAY OF THE CLIMB
 
 Held unbuilt with A49 — the overhang needs the approach blocked on the side Milo actually walks in from, and he only ever walks right, so the eave has nothing to block.
+
+## Shelved after the plan (2026-10-13 on)
+
+### A110 TAILWIND — the barrel, the wind and the fence (chapter 6 boss attempt)
+
+**Idea.** A wooden fence shuts him in and only a blast opens it. The barrel
+lands in front of him; rolled along the ground it is too slow for its fuse, and
+holding him back does nothing because the fence needs the bomb. A low draught
+just over his head blows whatever is fed into it to the foot of the fence.
+
+**Measured.** Passed every gate: 2.5% breadth, 34% hand, 65u floor, wobble 2,
+4 families — 117 tries, the final boss's band. **The A14 test failed it**:
+the certified winner, an anchored arc from the shelf, wins with the draught
+deleted. The arc is a LAUNCH RAMP — the barrel gains speed rolling off a shelf
+and flies to the fence by itself. With the draught removed the level keeps 66
+of its 76 wins: the wind decides 13% of them. "Too slow" was true of a ground
+roll, not of a ramp falling from a shelf.
+
+**To bring it back:** take away the height a ramp could launch from — no shelf
+over the barrel's fall, or a fence too far for a throw (a launched barrel flies
+~150u) — and the wind becomes the only road again. Check with the census, with
+the draught deleted, before anything else.
+
+```js
+{ id: 'a110-tailwind', hint: 'IT HAS TO GET THERE BEFORE HE DOES', verb: 'TAILWIND', world: 'backyard',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed }, freezeAt: 400,
+  goal: { id: 'goal', x: 662, y: 1152, w: 70, h: 140 },
+  static: [ground 0,1152,720x128; shelf 0,760,262x20;
+           boards at x 560: 760 h70, 830 h70, 900 h70, 970 h70, 1040 h112, all breakable],
+  objects: [{ id: 'tnt', type: 'tnt', x: 300, y: 520, radius: 22, density: 0.03, fuse: 1500 }],
+  zones: [{ id: 'draught', kind: 'updraft', x: 330, y: 940, w: 200, h: 120, accel: -2400, ax: 900 }] }
+```
