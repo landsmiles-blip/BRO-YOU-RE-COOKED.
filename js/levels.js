@@ -1313,16 +1313,38 @@ export const SLOT_ROLES = [
   'BREATHER', 'DEVELOP', 'DEVELOP', 'BREATHER', 'BOSS',
 ];
 
+// `tag` is the one line a player reads when a chapter opens: what the new
+// thing DOES, never what to do about it — the same rule as a level's hint.
 export const CHAPTERS = [
-  { name: 'THE LINE',       slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
-  { name: 'PLATES & GATES', slots: [A9,   null, null, null, A10,  null, null, null, null, A11] },
-  { name: 'TNT',            slots: [CH3.A53, CH3.A52, null, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
-  { name: 'AIR',            slots: [A28,  null, null, null, A4,   null, A19,  null, null, A29] },
-  { name: 'BALLOONS',       slots: [null, null, null, null, A30,  null, null, A13,  null, A34] },
-  { name: 'ALL OF IT',      slots: [null, null, null, null, A31,  null, A43,  A21,  null, null] },
+  { name: 'THE LINE',       tag: 'one line, one shot',
+    slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
+  { name: 'PLATES & GATES', tag: 'something has to press it',
+    slots: [A9,   null, null, null, A10,  null, null, null, null, A11] },
+  { name: 'TNT',            tag: 'it goes off wherever it is',
+    slots: [CH3.A53, CH3.A52, null, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
+  { name: 'AIR',            tag: 'it carries whatever is in it',
+    slots: [A28,  null, null, null, A4,   null, A19,  null, null, A29] },
+  { name: 'BALLOONS',       tag: 'it only goes up',
+    slots: [null, null, null, null, A30,  null, null, A13,  null, A34] },
+  { name: 'ALL OF IT',      tag: 'everything at once',
+    slots: [null, null, null, null, A31,  null, A43,  A21,  null, null] },
 ];
 
 export const LEVELS = CHAPTERS.flatMap((ch) => ch.slots.filter(Boolean));
+
+/**
+ * The chapter a campaign level belongs to, counted from 1, and whether it is
+ * the first level of that chapter a player meets — which is where the
+ * chapter's card is shown. null for a level that is not in the campaign.
+ */
+export function chapterOf(index) {
+  const lvl = LEVELS[index];
+  if (!lvl) return null;
+  const c = CHAPTERS.findIndex((ch) => ch.slots.includes(lvl));
+  if (c < 0) return null;
+  const ch = CHAPTERS[c];
+  return { n: c + 1, name: ch.name, tag: ch.tag, first: ch.slots.find(Boolean) === lvl };
+}
 
 /** Where a level sits: its chapter, its slot and that slot's role. */
 export function slotOf(id) {

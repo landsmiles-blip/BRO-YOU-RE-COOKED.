@@ -89,7 +89,8 @@ export function hitTest(box, x, y) {
 const inside = (r, x, y) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
 
 export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
-                                  openAt = () => true, skippedOf = () => false, tokens = 0 }) {
+                                  openAt = () => true, skippedOf = () => false, tokens = 0,
+                                  chapterAt = () => null }) {
   const box = layout(levels.length);
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
 
@@ -171,6 +172,23 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
     ctx.textBaseline = 'middle';
     ctx.fillStyle = played ? C.paper : locked ? 'rgba(232,226,214,0.16)' : 'rgba(232,226,214,0.45)';
     ctx.fillText(String(card.i + 1), card.x + card.w / 2, card.y + card.h * 0.36);
+
+    // THE CHAPTERS, on the card that opens each one: a small accent tab over
+    // its top edge. The grid stays a grid at every ratio; the ladder of six
+    // chapters is still readable on it, including the ones not reached yet.
+    const ch = chapterAt(card.i);
+    if (ch?.first) {
+      const tSize = Math.max(7, Math.min(card.w * 0.13, card.h * 0.12, 12));
+      ctx.font = `800 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      const label = card.w > 54 ? ch.name : String(ch.n);
+      const tw = Math.min(card.w - 4, ctx.measureText(label).width + tSize);
+      ctx.fillStyle = locked ? 'rgba(214,138,58,0.35)' : C.anchor;
+      ctx.fillRect(card.x + 2, card.y - tSize * 0.6, tw, tSize * 1.25);
+      ctx.fillStyle = 'rgba(42,38,34,0.95)';
+      ctx.textAlign = 'left';
+      ctx.fillText(label, card.x + 2 + tSize * 0.5, card.y + tSize * 0.03, tw - tSize * 0.6);
+      ctx.textAlign = 'center';
+    }
     if (locked) continue;
 
     // The verb, when there is room for it to be readable rather than a smudge.

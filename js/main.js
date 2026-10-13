@@ -15,8 +15,8 @@ import {
 import { dayNumber, dailyFor, asDaily } from './daily.js';
 import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
-import { load as loadProgress, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped } from './progress.js';
-import { A1, LEVELS, assertLevel } from './levels.js';
+import { load as loadProgress, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped, resumeIndex } from './progress.js';
+import { A1, LEVELS, assertLevel, chapterOf } from './levels.js';
 import { POOL } from './dailyPool.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT, CLOSE_CALL, NEAR_MISS_DIST } from './constants.js';
 import { clear, drawScene } from './render/world.js';
@@ -53,7 +53,20 @@ let skipBtn = null;
 // would be charged against the load-time budget for no gain: the only thing
 // the save changes is which level "play again" returns to and what the ending
 // screen totals, neither of which exists at t=0.
-loadProgress().then((p) => { game.progress = p; });
+//
+// A RETURNING PLAYER STARTS WHERE THEY ARE. The first frame is always level 1,
+// because nothing is known yet; once the save arrives, a player with progress
+// is moved to the first level they have neither beaten nor skipped — but only
+// if they have not touched anything yet, so the save can never yank a level out
+// from under a finger that is already drawing.
+loadProgress().then((p) => {
+  game.progress = p;
+  const at = resumeIndex(p);
+  const untouched = game.levelIndex === 0 && !game.isDaily && game.attempt <= 1 &&
+    !game.stroke.active && !game.stroke.points.length &&
+    (game.phase === PHASE.LIVE || game.phase === PHASE.FROZEN);
+  if (at > 0 && untouched) { goToLevel(game, at); _resetPhase(); }
+});
 
 // Walk phase must reset with the sim, or a retry starts mid-stride.
 const _resetPhase = () => { walkPhase = 0; lastMiloX = null; };
@@ -173,6 +186,7 @@ function render() {
       levels: LEVELS,
       starsOf: (id) => starsOn(g.progress, id),
       openAt: (i) => isOpen(g.progress, i),
+      chapterAt: (i) => chapterOf(i),
       skippedOf: (id) => isSkipped(g.progress, id),
       tokens: g.progress.tokens || 0,
       current: g.levelIndex,
@@ -227,6 +241,16 @@ function render() {
         drawText(ctx, lead, 0.5, 0.105, Math.max(11, view.cssH * 0.019), 'rgba(42,38,34,0.55)');
       } else {
         drawText(ctx, lead, 0.5, 0.07, Math.max(17, view.cssH * 0.032), C.ink);
+      }
+      // A NEW CHAPTER SAYS SO, once: on the first attempt at its first level.
+      // A new noun arriving unannounced reads as the game changing its rules;
+      // named, it reads as the game opening up.
+      const ch = !g.isDaily && g.attempt <= 1 ? chapterOf(g.levelIndex) : null;
+      if (ch?.first) {
+        // The progress accent, not the danger red: red is reserved for what
+        // can hurt him and for the near miss.
+        drawText(ctx, `CHAPTER ${ch.n} — ${ch.name}  ·  ${ch.tag}`, 0.5, 0.148,
+                 Math.max(11, view.cssH * 0.018), C.anchor);
       }
     }
     drawInk(ctx, inkUsed(g), inkMax(g));
