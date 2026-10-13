@@ -641,6 +641,37 @@ came out of proving it:
   at friction 0.6 it will not slide down a 23-degree ramp, at 0.1 it flies
   past. FILL died on the delivery, not the plug.
 
+- **WHEN THE NOUNS RUN DRY, CHANGE THE CARGO.** Every air level used to carry
+  a rock. Two new decisions came from asking what ELSE the air acts on — it
+  pushes every dynamic body, so it carries MILO (A90 GUST) and the player's own
+  free LINE (A91 KITE), and neither is a twin of anything. Ask it of every noun:
+  what does it act on that no level has used it on yet?
+- **MILO IS AIR CARGO ONLY WHILE HE IS AIRBORNE.** While his feet are on
+  something the walk controller sets his velocity every step and throws away
+  any upward part, so air under a walking Milo does nothing. And stepping off
+  an edge he loses his walk and drops almost straight down — beside a gust
+  that starts 80 units out, not in it. GUST is built on both facts.
+- **A FREE LINE IS A THING, AND A LEVEL ABOUT IT SAYS SO.** KITE's answer is a
+  dropped line, so it declares `solutionKind: 'unanchored'` like DROP and is
+  held to the stricter rule (most winners must survive a hand) instead of the
+  anchored one.
+- **A FLOATING BOMB HAS A HEIGHT WINDOW.** Too high does nothing, too low
+  kills him, and it falls out of TNT plus lift with no new code: A101 LOW
+  BLOW's lid must hold the barrel within reach of the fence's bottom board and
+  outside the kill radius of Milo waiting at it. The window was 127 units and
+  a 20u precision floor until the bottom board was made taller to meet it.
+- **A PLATE IS PRESSED FROM ONE SIDE, AND THE PICTURE MUST SAY WHICH.** Every
+  plate was drawn with arrows on its top and sank when it fired, so the four
+  ceiling plates (UPDRAFT, BALLOON, FLOAT, SINK) told players to load the roof.
+  `from: 'below'` turns them over in both renderers, and assertLevel refuses a
+  plate under a roof that does not say it.
+- **TENSION COUNTS BLASTS.** It only watched lethal moving objects, so every
+  TNT level read FLAT. A blast's edge against his nearest point now counts.
+- **A CLIMBING BRIDGE IS STILL A CLIMB.** UNDERSIDE asked for one stroke to be
+  his bridge and a balloon's ceiling at once; the physics worked and the
+  winning bridge — one that climbs from a 25-unit window at the bank edge —
+  measured 0.0–0.1% across seven geometries. The A2/A49 finding, again.
+
 ## THE HAND MODEL
 
 `tools/test/lib/hand.js` is the ONE definition of what a real stroke looks like.
