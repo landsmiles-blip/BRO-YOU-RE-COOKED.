@@ -610,6 +610,37 @@ came out of proving it:
   LIVE object on `globalThis.__byc` and read that — one source of truth, which
   is the same lesson the stroke renderer and the board already paid for.
 
+- **TRACE EVERY WINNER, NOT ONE: `npm run census`.** It sorts every winning
+  stroke of a sweep by what happened in it — which barrels went off and when,
+  cover, broken boards, opened gates, lines drawn THROUGH an object. Tracing
+  the certified winner shows one story out of hundreds; the census showed a
+  chain level whose chain was used by 0 of 319 wins, and a bomb-on-the-plate
+  level that was FUNNEL with a fuse. Run it on every new level.
+- **A LINE DRAWN THROUGH A RESTING OBJECT POPS IT OUT.** The engine shoves a
+  body out of a stroke drawn through it, so a level whose noun must MOVE a
+  resting object can be won by drawing through the object. SHOVE passed every
+  gate that way (3.0%, 65u, 4 families) with its barrel lying on the ground —
+  36 of 57 wins survived the barrel being made inert. Most levels take 0-16%
+  of their wins through objects, incidentally (a ramp drawn where the frozen
+  rock is), which is why no rule bans it: LEVER's most natural stroke does it.
+- **A FUSE ASKS WHEN, AND HOLDING HIM BACK ANSWERS IT.** A fallen line that
+  stops Milo until the blast clears it away wins nearly every TNT design, at a
+  hand rate of 20-30%, and buries the designed decision: 60-77% of wins in
+  the cover-plus-keep-away combination, all of FENCE's top families, every
+  chain level. SHELTER survives it only because its fuse is LONG — he waits at
+  the fence anyway, so delaying him changes nothing. Design TNT around that.
+- **SOLID THINGS STOP A BLAST, AND THE PICTURE SAYS SO.** Cover is physics
+  now (`detonate` in js/sim.js): the player's line, a shelf, a rock or a wall
+  between a barrel and a target shields it; boards never shield boards; the
+  sim records how far each blast reached in 24 directions and both renderers
+  draw that, so the fire visibly stops at the wall. A blast also lights any
+  barrel it reaches, 150ms later — consistent, and so far no level's answer.
+- **A CRATE PLUGS A HOLE ONLY WHEN IT ARRIVES FLAT AND CENTRED** (within ~5u,
+  with 10u of play), and Milo PUSHES a crate lying on flat ground into a hole
+  and seats it every time. But a ramp-delivered crate tumbles or overshoots:
+  at friction 0.6 it will not slide down a 23-degree ramp, at 0.1 it flies
+  past. FILL died on the delivery, not the plug.
+
 ## THE HAND MODEL
 
 `tools/test/lib/hand.js` is the ONE definition of what a real stroke looks like.
@@ -834,6 +865,8 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
     npm run solver [id ...]       the gates, and writes measured star thresholds
     npm run certify [id]          certifies a hand-robust solution per level
     npm run curve                 all 60 slots: each target, what is built, what is left
+    npm run sketch -- f.js [slot] measure several candidate levels against a slot's band
+    npm run census -- f.js [EXP]  sort every winning stroke by WHAT HAPPENED in it
     npm run film                  films every level being WON — READ THE IMAGES
     FILM_IDLE=1 npm run film      films it being LOST — read those too
     npm run frozen                every opening frame in ONE grid — READ IT
