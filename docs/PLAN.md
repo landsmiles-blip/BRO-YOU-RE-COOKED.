@@ -1,6 +1,6 @@
 # PLAN — from 21 levels to a game one person comes back to
 
-> **Status, 13 Oct, late.** 32 levels. Since the morning: COVER, KEEP AWAY,
+> **Status, 13 Oct, late.** 31 levels. Since the morning: COVER, KEEP AWAY,
 > FENCE, SHELTER and PROTECT (chapter 3); BALLOON, the balloon chapter's
 > intro, and LOW BLOW, a floating barrel held down at the fence (chapter 5);
 > GUST, where the air carries Milo, and KITE, where it carries the player's
@@ -9,7 +9,7 @@
 > above. Every brief that died, and why, is in docs/batch/levels.md. The
 > pattern holds: an old noun gives a new decision only when it acts on new
 > CARGO (Milo, the line) or when two nouns make a constraint neither has alone
-> (LOW BLOW's height window). Chapters 4–6 have 16 open slots; most
+> (LOW BLOW's height window). Chapters 4–6 have 15 open slots; most
 > combinations measured so far collapse into decisions already asked, so the
 > rest wait on the Saturday checkpoint: new nouns, or a looser twin rule.
 
