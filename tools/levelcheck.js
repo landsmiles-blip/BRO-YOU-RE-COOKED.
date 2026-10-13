@@ -100,6 +100,10 @@ function nounsOf(level) {
     // level can be built on — and a noun no tool can check is a noun that gets
     // to be decoration unnoticed.
     if ((o.restitution ?? 0) >= 0.4) out.push({ what: `bounce "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, restitution: 0 } : q)) }) });
+    // TNT. A barrel with its fuse taken out is a rock that never goes off,
+    // which is the honest comparison: if the level plays the same when nothing
+    // ever explodes, the explosion was never the puzzle.
+    if (o.type === 'tnt') out.push({ what: `tnt "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, fuse: 1e9 } : q)) }) });
   }
   return out;
 }

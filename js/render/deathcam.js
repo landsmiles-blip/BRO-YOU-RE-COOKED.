@@ -23,7 +23,7 @@
 
 import { applyTransform } from '../view.js';
 import { C } from './palette.js';
-import { MILO, LINE, DEATH_CAM, SAFE_BOX } from '../constants.js';
+import { MILO, LINE, DEATH_CAM, SAFE_BOX, PHYSICS_DT } from '../constants.js';
 import { drawBanner } from './hud.js';
 
 export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
@@ -32,6 +32,13 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   ctx.fillRect(-2000, -2000, 8000, 8000);
   ctx.fillStyle = C.paperDark;
   ctx.fillRect(0, 0, SAFE_BOX.w, SAFE_BOX.h);
+
+  // The sim time this frame shows. The recorder keeps every step, newest
+  // last, so frame i is (n-1-i) steps before the end of the run. Anything that
+  // CHANGES during a run — a board a blast broke, the blast itself — has to be
+  // drawn as it was at this moment, not as it ended up.
+  const nFrames = sim.recorder.frames.length;
+  const tFrame = sim.simTime - (nFrames - 1 - Math.min(frameIdx, nFrames - 1)) * PHYSICS_DT;
 
   // static geometry stays put
   ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(42,38,34,0.35)';
@@ -42,15 +49,21 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     // explained the wrong mechanism — a death cam with no air in it, and one
     // that drew the player's own line as a fixed dash. A pane that broke must
     // read as broken, or the replay says the floor held.
-    const gone = s.spec.brittle && sim.shattered?.has(s.spec.id);
+    const brokenAt = s.spec.breakable ? sim.broken?.get(s.spec.id) : undefined;
+    const gone = (s.spec.brittle && sim.shattered?.has(s.spec.id))
+      || (brokenAt !== undefined && brokenAt <= tFrame);
     if (gone) {
       ctx.setLineDash([7, 9]);
       ctx.strokeRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
       ctx.setLineDash([]);
       continue;
     }
+    // A breakable board is wood here too: the replay must say which part of
+    // the wall a blast could take down.
+    if (s.spec.breakable) ctx.fillStyle = 'rgba(183,154,110,0.75)';
     ctx.fillRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
     ctx.strokeRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
+    if (s.spec.breakable) ctx.fillStyle = 'rgba(198,188,169,0.5)';
     if (s.spec.brittle) {
       const n = Math.max(2, Math.round(s.spec.w / 58));
       for (let c = 0; c < n; c++) {
@@ -175,6 +188,21 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     ctx.strokeRect(g.x - g.w / 2, g.y - g.h, g.w, g.h);
   }
 
+  // THE BLAST, once it has happened in this frame: the reach as a dashed ring
+  // and the kill radius in red — the replay of a blast death has to show the
+  // ring he was standing inside, or it explains nothing.
+  for (const bl of sim.blasts ?? []) {
+    if (bl.t > tFrame) continue;
+    ctx.save();
+    ctx.setLineDash([8, 8]);
+    ctx.strokeStyle = 'rgba(42,38,34,0.45)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.radius, 0, Math.PI * 2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle = C.danger; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.kill, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+  }
+
   const frames = sim.recorder.frames;
   const frame = frames[Math.min(frameIdx, frames.length - 1)];
   if (!frame) return;
@@ -237,6 +265,15 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
           ctx.strokeStyle = C.danger; ctx.lineWidth = 3;
           ctx.strokeRect(-spec.w / 2 - 10, -spec.h / 2 - 10, spec.w + 20, spec.h + 20);
         }
+      } else if (spec?.type === 'tnt') {
+        // A barrel replays as a barrel — red, banded, named — never as a ball.
+        const r = spec.radius;
+        ctx.fillStyle = C.danger;
+        ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = C.paper;
+        ctx.font = `900 ${Math.round(r * 0.62)}px ui-sans-serif, system-ui, sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('TNT', 0, 1);
       } else {
         const r = spec?.radius ?? 20;
         ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();

@@ -8,7 +8,7 @@
 import {
   createWorld, destroyWorld, addRect, addCircle, setVelocity, step as physStep,
   onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel, addPivot, addCross,
-  removeBody, setAngularVelocity,
+  removeBody, setAngularVelocity, setStatic,
 } from './physics/adapter.js';
 import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
@@ -21,7 +21,7 @@ import { buildStrokeBody } from './drawing/bodyFactory.js';
 import { anchorStroke } from './physics/anchor.js';
 import * as audio from './audio.js';
 import { simplify } from './drawing/simplify.js';
-import { PHYSICS_DT, LINE, MILO, SAFE_BOX, NEAR_MISS_DIST, CLOSE_CALL } from './constants.js';
+import { PHYSICS_DT, LINE, MILO, SAFE_BOX, NEAR_MISS_DIST, CLOSE_CALL, TNT } from './constants.js';
 
 export function buildSim(level) {
   const ctx = createWorld();
@@ -48,6 +48,12 @@ export function buildSim(level) {
     // so a pane that recorded its own break on the spec would arrive already
     // broken for every run after the first.
     shattered: new Set(),
+    // TNT, per run for the same reason: which barrels have gone off and when,
+    // which breakable boards they broke and when (the death cam replays the
+    // past, so it needs the TIME, not just the fact), and where each blast was.
+    detonated: new Map(),
+    broken: new Map(),
+    blasts: [],
     causality: createCausality(),
     recorder: createRecorder(),
     simTime: 0,
@@ -271,6 +277,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   const hazardBodies = [...sim.objects.values()].map((o) => o.body);
   applyUpdrafts(sim);
   applyLift(sim);
+  detonate(sim);
   audio.setDanger(updateDanger(sim.milo, hazardBodies));
   detectCloseCalls(sim);
   record(sim.recorder, allBodies(sim.ctx));
@@ -280,7 +287,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   );
 
   if (outcome !== OUTCOME.RUNNING && outcome !== OUTCOME.SUCCESS && !sim.death) {
-    sim.death = explain(sim.causality, outcome, sim.run.culpritId, strokeState(sim));
+    sim.death = explain(sim.causality, outcome, sim.run.culpritId, strokeState(sim), sim.run.cause);
     audio.death();
   }
   return outcome;
@@ -353,6 +360,67 @@ function applyLift(sim) {
     if (!spec.lift || body.isStatic) continue;
     if (sim.burst.has(spec.id)) continue;      // popped: it is just a weight now
     applyAccel(body, 0, -spec.lift);
+  }
+}
+
+/**
+ * TNT. A barrel goes off at its `fuse` WHEREVER IT IS — the player's line
+ * decides where that is, never when. Inside the blast radius every breakable
+ * board breaks and every loose body is shoved away from the barrel, harder the
+ * closer it is; Milo dies if any part of him is inside the kill radius, and a
+ * miss by less than a body's width is a close call.
+ *
+ * The barrel itself stops existing physically the instant it goes off (made
+ * static and non-colliding, not removed, so the renderers can still find it).
+ * The player's anchored line is static, so the shove never moves it — the
+ * blast is a thing that happens TO the world the player built, not to the line.
+ */
+function detonate(sim) {
+  for (const [id, o] of sim.objects) {
+    if (o.spec.type !== 'tnt' || sim.detonated.has(id) || sim.simTime < o.spec.fuse) continue;
+    const { x, y } = o.body.position;
+    const R = o.spec.blast?.radius ?? TNT.radius;
+    const K = o.spec.blast?.kill ?? TNT.kill;
+    const P = o.spec.blast?.push ?? TNT.push;
+    sim.detonated.set(id, sim.simTime);
+    sim.blasts.push({ id, x, y, t: sim.simTime, radius: R, kill: K });
+    setStatic(o.body, true);
+    o.body.collisionFilter.mask = 0;
+    o.body.collisionFilter.category = 0;
+
+    for (const st of sim.statics) {
+      const s = st.spec;
+      if (!s.breakable || sim.broken.has(s.id)) continue;
+      const nx = Math.max(s.x, Math.min(x, s.x + s.w));
+      const ny = Math.max(s.y, Math.min(y, s.y + s.h));
+      if (Math.hypot(nx - x, ny - y) >= R) continue;
+      sim.broken.set(s.id, sim.simTime);
+      st.body.collisionFilter.mask = 0;
+      st.body.collisionFilter.category = 0;
+    }
+
+    for (const b of allBodies(sim.ctx)) {
+      if (b.isStatic || b.isSensor || b === sim.milo.body) continue;
+      const dx = b.position.x - x, dy = b.position.y - y, d = Math.hypot(dx, dy);
+      if (d >= R || d < 1e-6) continue;
+      const k = P * (1 - d / R), v = getVelocity(b);
+      setVelocity(b, v.x + (dx / d) * k, v.y + (dy / d) * k);
+    }
+
+    // Distance to the nearest point of Milo's body, not his centre: a blast
+    // that reaches his feet reaches him.
+    const m = sim.milo.body.position;
+    const cx = Math.max(m.x - MILO.width / 2, Math.min(x, m.x + MILO.width / 2));
+    const cy = Math.max(m.y - MILO.height / 2, Math.min(y, m.y + MILO.height / 2));
+    const gap = Math.hypot(cx - x, cy - y);
+    audio.blast();
+    if (gap < K) {
+      kill(sim.run, id);
+      sim.run.cause = 'blast';
+    } else if (gap < K + NEAR_MISS_DIST * 2 && sim.run.outcome === OUTCOME.RUNNING) {
+      sim.closeCalls.push({ id, t: sim.simTime, gap: gap - K, speed: P, x: (x + m.x) / 2, y: (y + m.y) / 2 });
+      audio.closeCall(P);
+    }
   }
 }
 

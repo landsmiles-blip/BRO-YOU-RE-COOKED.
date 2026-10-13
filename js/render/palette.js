@@ -28,6 +28,11 @@ export const C = {
   // must read as hardware holding a moving part, not as another moving part.
   pivot:      '#6E6257',
   danger:     '#E0452B',   // THE accent. Danger only.
+  // Fire: a lit fuse and the flash of a blast. Orange, between the anchor
+  // yellow and the danger red and distinct from both — the anchor colour means
+  // "attach here" and must never flicker on a bomb; the red stays for the
+  // barrel itself and the ring inside which the blast kills.
+  fire:       '#F28C28',
   goal:       '#3FA96B',
   goalGlow:   'rgba(63,169,107,0.28)',
   milo:       '#F6F1E6',

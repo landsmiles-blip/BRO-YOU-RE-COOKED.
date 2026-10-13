@@ -241,6 +241,13 @@ export function success(stars = 1) {
  * Pitched by how fast the thing was going, so a boulder at terminal velocity
  * and a ball drifting past do not sound alike — the same principle as impact().
  */
+/** The barrel going off: a low thump under a falling roar. */
+export function blast() {
+  if (!ok()) return;
+  noise(0.55, 0.34, { type: 'lowpass', freq: 2200, sweepTo: 70 });
+  blip('sine', 62, 0.45, 0.28, { sweepTo: 28 });
+}
+
 export function closeCall(speed = 400) {
   if (!ok() || !throttled('closeCall', 200)) return;
   const s = Math.max(0, Math.min(1, speed / 800));

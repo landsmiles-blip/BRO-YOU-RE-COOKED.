@@ -1362,6 +1362,10 @@ export function assertLevel(level) {
     if (o.lethal && !LETHAL_KINDS.has(o.lethal.kind)) {
       problems.push(`object "${o.id}" has unknown lethal kind "${o.lethal.kind}"`);
     }
+    // TNT must have a fuse and a body; a barrel that never goes off, or one
+    // with no size to be caught by, is a bug and not a level.
+    if (o.type === 'tnt' && !(o.fuse > 0)) problems.push(`tnt "${o.id}" has no fuse`);
+    if (o.type === 'tnt' && !(o.radius > 0)) problems.push(`tnt "${o.id}" has no radius`);
     for (const t of o.triggers ?? []) {
       const exists = level.objects.some((x) => x.id === t) || level.static.some((x) => x.id === t);
       if (!exists) problems.push(`"${o.id}" triggers missing target "${t}"`);

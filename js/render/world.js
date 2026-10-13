@@ -6,7 +6,7 @@
 
 import { view, applyTransform, visibleBounds } from '../view.js';
 import { C } from './palette.js';
-import { LINE, SAFE_BOX } from '../constants.js';
+import { LINE, SAFE_BOX, TNT } from '../constants.js';
 import { inkPath, inkShape, rectPoints, circlePoints } from './stroke.js';
 import { drawMilo } from './rig.js';
 import { drain, drawMotionStreaks } from './freeze.js';
@@ -63,7 +63,8 @@ export function drawScene(ctx, sim, opts = {}) {
     // as bad the other way: the filmstrip showed the plank simply ceasing to
     // exist between two frames, so what a player sees is a level that never
     // had a floor rather than one they just broke. The outline says which.
-    if (b.brittle && sim.shattered?.has(b.id)) {
+    // A board a blast broke leaves the same ghost, for the same reason.
+    if ((b.brittle && sim.shattered?.has(b.id)) || (b.breakable && sim.broken?.has(b.id))) {
       ctx.save();
       ctx.setLineDash([9, 8]);
       ctx.lineWidth = 2;
@@ -100,9 +101,18 @@ export function drawScene(ctx, sim, opts = {}) {
     for (let k = 0; k < blades; k++) {
       if (k) { ctx.translate(cx, cy); ctx.rotate(Math.PI / blades); ctx.translate(-cx, -cy); }
       inkShape(ctx, rectPoints(b.x, b.y, b.w, b.h), {
-        now, fill: drain(C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
+        now, fill: drain(b.breakable ? C.plank : C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
         width: 3.4, salt: b.x | 0,
       });
+      // BREAKABLE: planks, so a fence a blast can take down never looks like
+      // the ground beside it that it cannot. Grain lines at a fixed spacing.
+      if (b.breakable) {
+        const ink = drain(C.ink, 0.55 + freeze * 0.3);
+        for (let gx = b.x + 11; gx < b.x + b.w - 4; gx += 11) {
+          inkPath(ctx, [{ x: gx, y: b.y + 3 }, { x: gx, y: b.y + b.h - 3 }],
+            { now, colour: ink, width: 1.6, salt: (gx | 0) + 23, passes: 1 });
+        }
+      }
       // THORNS, in the danger accent and drawn as teeth. Shape carries the
       // meaning: a beam that pops a balloon must not look like the beam next
       // to it that does not. They point DOWN, at what rises into them.
@@ -414,6 +424,14 @@ export function drawScene(ctx, sim, opts = {}) {
     //
     // A knot and a tail below it, and the pale air colour rather than stone:
     // shape carries the meaning, colour only reinforces it.
+    // TNT. Gone the instant it goes off — the blast marks where it was.
+    if (spec.type === 'tnt') {
+      if (sim.detonated?.has(spec.id)) continue;
+      drawTnt(ctx, body, spec, sim.simTime, now, freeze);
+      moving.push({ body, radius: spec.radius });
+      continue;
+    }
+
     if (spec.lift) {
       // A POPPED BALLOON IS NOT A BALLOON. It keeps its outline so the player
       // can follow what it used to be, but loses the air colour and the tail —
@@ -468,6 +486,7 @@ export function drawScene(ctx, sim, opts = {}) {
 
   drawMotionStreaks(ctx, moving, freeze);
   drawMilo(ctx, sim.milo, now, walkPhase);
+  for (const bl of sim.blasts ?? []) drawBlast(ctx, bl, sim.simTime, now);
 
   // ── anchor sparks — this one VFX carries the whole stability model ────
   if (anchors?.length) {
@@ -541,6 +560,100 @@ export function drawScene(ctx, sim, opts = {}) {
  * so it lost half a segment at each end and visibly SHRANK the instant it
  * committed. One geometry, one renderer, no special cases.
  */
+/**
+ * A barrel of TNT: red because it kills, two bands and its name so it never
+ * reads as a rock, and a fuse that BURNS DOWN — its length is the time left,
+ * so the freeze frame tells the player how long they have. The ring is the
+ * kill radius: what the player has to keep him out of when the fuse runs out.
+ */
+function drawTnt(ctx, body, spec, simTime, now, freeze) {
+  const { x, y } = body.position, r = spec.radius, a = body.angle;
+  const K = spec.blast?.kill ?? TNT.kill;
+  const R = spec.blast?.radius ?? TNT.radius;
+  ctx.save();
+  ctx.setLineDash([10, 9]);
+  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = drain(C.danger, freeze * 0.35);
+  ctx.globalAlpha = 0.7;
+  ctx.beginPath(); ctx.arc(x, y, K, 0, Math.PI * 2); ctx.stroke();
+  if (freeze > 0) {
+    // While the world is stopped, the outer reach too: what it will break.
+    ctx.strokeStyle = drain(C.ink, 0.6);
+    ctx.globalAlpha = 0.45;
+    ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.restore();
+
+  inkShape(ctx, circlePoints(x, y, r), { now, fill: C.danger, ink: C.ink, width: 3.6, salt: 401 });
+  const cos = Math.cos(a), sin = Math.sin(a);
+  for (const off of [-0.5, 0.5]) {
+    const half = Math.sqrt(Math.max(0, 1 - off * off)) * r;
+    inkPath(ctx, [
+      { x: x - cos * half - sin * off * r, y: y - sin * half + cos * off * r },
+      { x: x + cos * half - sin * off * r, y: y + sin * half + cos * off * r },
+    ], { now, colour: C.ink, width: 2.2, salt: 402 + (off > 0 ? 1 : 0), passes: 1 });
+  }
+  ctx.save();
+  ctx.translate(x, y); ctx.rotate(a);
+  ctx.fillStyle = C.paper;
+  ctx.font = `900 ${Math.round(r * 0.62)}px ui-sans-serif, system-ui, sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('TNT', 0, 1);
+  ctx.restore();
+
+  // The fuse, from the top of the barrel, shortening as time runs out.
+  const left = Math.max(0, 1 - simTime / spec.fuse);
+  const len = 6 + 26 * left;
+  const tx = x + sin * r, ty = y - cos * r;
+  const pts = [{ x: tx, y: ty }];
+  for (let i = 1; i <= 4; i++) {
+    const f = i / 4;
+    pts.push({ x: tx + sin * len * f + Math.sin(f * 5) * 4 * cos, y: ty - cos * len * f + Math.sin(f * 5) * 4 * sin });
+  }
+  inkPath(ctx, pts, { now, colour: C.ink, width: 2.2, salt: 405, passes: 1 });
+  const tip = pts[pts.length - 1];
+  const flick = 5 + 2.5 * Math.sin(now / 45);
+  ctx.save();
+  ctx.fillStyle = C.fire;
+  ctx.beginPath();
+  for (let k = 0; k < 10; k++) {
+    const ang = (k / 10) * Math.PI * 2;
+    const rad = k % 2 ? flick * 0.45 : flick;
+    ctx.lineTo(tip.x + Math.cos(ang) * rad, tip.y + Math.sin(ang) * rad);
+  }
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+/** Where a barrel went off: a scorch that stays, and a flash for 480 ms. */
+function drawBlast(ctx, bl, simTime, now) {
+  const age = simTime - bl.t;
+  if (age < 0) return;
+  ctx.save();
+  ctx.fillStyle = 'rgba(42,38,34,0.16)';
+  ctx.beginPath(); ctx.ellipse(bl.x, bl.y, 34, 24, 0, 0, Math.PI * 2); ctx.fill();
+  if (age < 480) {
+    const f = 1 - age / 480;
+    ctx.globalAlpha = 0.45 * f;
+    ctx.fillStyle = C.fire;
+    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.radius * (0.55 + 0.45 * (1 - f)), 0, Math.PI * 2); ctx.fill();
+    ctx.globalAlpha = f;
+    ctx.strokeStyle = C.danger; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.arc(bl.x, bl.y, bl.kill, 0, Math.PI * 2); ctx.stroke();
+    ctx.globalAlpha = 1;
+    for (let k = 0; k < 12; k++) {
+      const ang = (k / 12) * Math.PI * 2 + 0.2;
+      const r0 = bl.radius * 0.3, r1 = bl.radius * (0.5 + 0.5 * (1 - f));
+      inkPath(ctx, [
+        { x: bl.x + Math.cos(ang) * r0, y: bl.y + Math.sin(ang) * r0 },
+        { x: bl.x + Math.cos(ang) * r1, y: bl.y + Math.sin(ang) * r1 },
+      ], { now, colour: C.ink, width: 2.4, salt: 420 + k, passes: 1, alpha: f });
+    }
+  }
+  ctx.restore();
+}
+
 function drawStrokeBody(ctx, body, now) {
   const local = body.strokePath;
   if (!local || local.length < 2) return;

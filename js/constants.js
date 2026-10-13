@@ -54,6 +54,16 @@ export const MILO = {
 export const STUCK = { speedUnder: 12, forMs: 3000, sinceContactMs: 500 };  // TUNE
 export const NEAR_MISS_DIST = 30;   // TUNE — less than Milo's 36u width
 
+// TNT: a barrel with a lit fuse that goes off at `fuse` ms WHEREVER IT IS.
+// Inside `radius` it breaks every `breakable` static and shoves every loose body
+// away from it; inside `kill` of Milo's body it kills him. A level may override
+// any of the three per barrel with `blast: { radius, kill, push }`.
+// A FUSE, NOT AN IMPACT, because an impact cannot tell a catch from a delivery:
+// measured, a line catching the barrel hits it at a normal speed of 359-479
+// while a delivery to a fence hits at 336 — an impact trigger would go off in
+// the player's hands.
+export const TNT = { radius: 130, kill: 90, push: 600 };   // TUNE
+
 // THE CLOSE CALL. The game is called BRO, YOU'RE COOKED and it is about nearly
 // dying — and until now nearly dying looked and sounded EXACTLY like winning
 // comfortably. NEAR_MISS_DIST sat in this file, declared and read by nothing.

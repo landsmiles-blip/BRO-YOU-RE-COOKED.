@@ -36,7 +36,7 @@ export function noteContact(c, bodyA, bodyB, simTimeMs, speed) {
  * `stroke` is { drawn, anchored, fell } — whether the player drew at all,
  * whether it welded to anything, and how far it has since travelled.
  */
-export function explain(c, reason, culpritId, stroke = null) {
+export function explain(c, reason, culpritId, stroke = null, cause = null) {
   // THE UNANCHORED DEATH OUTRANKS EVERY OTHER EXPLANATION.
   //
   // If the line was never attached to anything, it fell, and nothing it might
@@ -56,6 +56,10 @@ export function explain(c, reason, culpritId, stroke = null) {
   if (reason === 'stuck')   return { label: "HE'S STUCK",       culpritId: null };
   if (reason === 'timeout') return { label: 'STILL OUT THERE',  culpritId: null };
   if (reason === 'fell')    return { label: "HE'S GONE",        culpritId: null };
+
+  // A blast reaches him through the air, so nothing "got through": he was
+  // simply standing too near the barrel when the fuse ran out.
+  if (cause === 'blast') return { label: 'HE WAS TOO CLOSE', culpritId };
 
   // Killed. Was the player's own drawing implicated in what hit him?
   if (culpritId === 'stroke')                     return { label: 'YOUR OWN LINE',   culpritId };
