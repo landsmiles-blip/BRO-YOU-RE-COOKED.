@@ -1,4 +1,4 @@
-// CERTIFICATION CONFORMANCE GATE — docs/CERTIFICATION_CHECKLIST.md, automated.
+// CERTIFICATION CONFORMANCE GATE — docs/CERTIFICATION.md, automated.
 //
 // The checklist says every box is signed off "with evidence (a test name, a
 // measurement, a screenshot), never from memory". This IS that evidence for

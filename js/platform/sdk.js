@@ -7,7 +7,7 @@
 //
 // Verified SDK surface: firstFrameReady, gameReady, saveData, loadData,
 // onPause, onResume, ads.requestInterstitialAd(), ads.requestRewardedAd(id).
-// See docs/EXECUTION_ROADMAP §2.
+// See docs/CERTIFICATION.md, which links Google's requirement pages.
 
 const sdk = typeof globalThis.ytgame !== 'undefined' ? globalThis.ytgame : null;
 
@@ -48,7 +48,7 @@ export function onResume(fn) {
 // implemented, so nothing the player did was ever remembered — which is also a
 // certification item, not just a nicety. Outside Playables they fall back to
 // localStorage so progress works in a plain tab during development and in the
-// open-web build, which is a different product on the same code (roadmap §1.1).
+// open-web build, which is a different product on the same code.
 //
 // The SDK's saveData is asynchronous and can reject (quota, signed-out user,
 // transient failure). None of those are worth interrupting a game for, so every

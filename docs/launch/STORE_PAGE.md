@@ -65,9 +65,9 @@ Open it, use **Share → Anyone with the link**, and that URL works for anyone
 > Built for the platform from day one: the Playables SDK loads first,
 > `firstFrameReady`/`gameReady` are wired, cloud save via `saveData`/`loadData`,
 > `onPause` halts physics, audio and rendering, zero external network calls.
-> 67 KB gzipped, interactive in under 1.5 s on slow 4G, playable at all nine
+> 53 KB gzipped, interactive in under 1.5 s on slow 4G, playable at all nine
 > aspect ratios. 21 levels plus a daily challenge. A certification dry-run
 > against the published requirements is complete; the ZIP is ready to upload.
 
-The roadmap calls sending this link "the single highest-leverage action in the
-entire plan": it turns the build into approval evidence.
+Playables access is reviewed by YouTube, and a working public link is one of
+the things the review looks at — sending it turns the build into evidence.

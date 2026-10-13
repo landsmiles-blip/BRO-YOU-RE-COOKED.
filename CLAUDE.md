@@ -17,8 +17,8 @@ cause was the same: I was proving assertions about a MODEL of the game instead
 of looking at the game. A vibrating line, a shrinking line and a line that will
 not sit still all satisfy an assertion about positions.
 
-    node tools/test/filmstrip.js        # films every level being WON, and READ them
-    FILM_IDLE=1 node tools/test/filmstrip.js   # films it being LOST
+    npm run film                 # films every level being WON, and READ them
+    FILM_IDLE=1 npm run film     # films it being LOST
 
 **And film the FAILURES too.** Every filmstrip in this project's history filmed
 a win. Nobody had ever looked at what a player sees when they LOSE — which is
@@ -808,7 +808,7 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
 Matter import that these scripts add; `node tools/levelcheck.js` on its own
 throws "Matter.js not loaded".
 
-Browser tests need `node tools/serve.js` running.
+Browser tests need `npm run serve` running.
 
 ## WORKING AGREEMENT
 

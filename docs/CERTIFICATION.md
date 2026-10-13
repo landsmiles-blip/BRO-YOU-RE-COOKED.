@@ -1,10 +1,12 @@
-# Certification Evidence — BRO, YOU'RE COOKED.
+# Certification — BRO, YOU'RE COOKED.
 
-**Walked:** 2026-10-12, against `docs/CERTIFICATION_CHECKLIST.md`, on build
-`dist/byc-playables.zip` (one file: `index.html`, 233 KB raw / 67 KB gzipped).
-**Re-run the machine half:** `node tools/build.js && node tools/serve.js &` then
-`node tools/test/conformance.js`, `node tools/test/board.js`,
-`node tools/test/audio.js`, `npm test`.
+Every YouTube Playables requirement, with the evidence that it is met. Walked
+**2026-10-12**, against Google's published requirements (sources at the end), on build
+`dist/byc-playables.zip` (one file: `index.html`). **Machine half re-run 2026-10-13**
+on the purged build — 185 KB raw / 53 KB gzipped, shelved levels out of the
+bundle — and every row still passes; the figures below are that run's.
+**Re-run the machine half:** `npm run build && npm run serve &` then
+`npm run test:conformance`, `npm run test:board`, `npm run test:audio`, `npm test`.
 
 Google's live docs were re-checked for the integration rules on this date (SDK
 `game_api/v1` before any game code, `index.html` at the bundle root, ZIP upload,
@@ -33,7 +35,7 @@ Legend: **PASS** with evidence · **PROXY** measured here, needs a real device �
 |---|---|---|
 | PASS | SDK is the first script | conformance: YouTube build's first script is `game_api/v1`, and it is the only script with a `src` |
 | PASS | `firstFrameReady` on first meaningful frame | conformance: called, and before `gameReady` |
-| PASS | `gameReady` when input is accepted | conformance: time to interactive 150 ms |
+| PASS | `gameReady` when input is accepted | conformance: time to interactive 82 ms |
 | PASS | Cloud save via `saveData`/`loadData` | conformance: round-trip through the cloud; `loadData` used on boot |
 | PASS | Save versioned; old loads; unknown degrades | conformance: versioned payload, unknown version and malformed data degrade without throwing; `tools/test/daily.js`: a v1 save migrates |
 | PASS | `onPause` halts everything | conformance: physics frozen (simTime unchanged), phase clock stopped, audio context SUSPENDED; `audio.js`: pause suspends, resume restores |
@@ -45,10 +47,10 @@ Legend: **PASS** with evidence · **PROXY** measured here, needs a real device �
 
 | | Requirement | Evidence |
 |---|---|---|
-| PASS | Bundle < 30 MiB (< 15 recommended) | 67.3 KB gzipped — 0.44% of 15 MiB |
-| PASS | Peak heap < 512 MB | conformance 200-retry soak: peak 5.8 MB |
-| PASS | Time to interactive < 5 s | 150 ms local; **1.46 s on Slow 4G (1.6 Mbps, 150 ms RTT) with CPU x4, cold cache, uncompressed**; 2.13 s on Fast 3G |
-| PASS | No leak across 200 retries | 4.3 → 4.8 MB |
+| PASS | Bundle < 30 MiB (< 15 recommended) | 53.2 KB gzipped — 0.35% of 15 MiB |
+| PASS | Peak heap < 512 MB | conformance 200-retry soak: peak 5.5 MB |
+| PASS | Time to interactive < 5 s | 82 ms local; **1.46 s on Slow 4G (1.6 Mbps, 150 ms RTT) with CPU x4, cold cache, uncompressed**; 2.13 s on Fast 3G (throttled figures measured 2026-10-12 on the larger 67 KB build) |
+| PASS | No leak across 200 retries | 3.5 → 4.5 MB |
 | PROXY | 60 fps on mid-range Android | Locked 16.7 ms frames at native CPU. With CPU x4 and SOFTWARE canvas (headless, no GPU — pessimistic): median 16.7 ms, p95 33.4 ms on the heaviest levels. Physics is fixed-step, so a slow frame never changes an outcome. **Check on a real mid-range Android.** |
 | HUMAN | No crashes across the device matrix | needs devices |
 | HUMAN | Does not crash the YouTube app | portal "Verify and test" |
@@ -106,3 +108,27 @@ Legend: **PASS** with evidence · **PROXY** measured here, needs a real device �
 | HUMAN | Partner Manager contact | pending access |
 | HUMAN | Portal "Verify and test" + the SDK Test Suite | pending access |
 | HUMAN | One rejection round budgeted | 2–7 business days testing → release |
+
+## Known rejection causes — designed against from the first commit
+
+Google names these as the common reasons a Playable is sent back: text
+rendering on high-density screens (§3: legible at 1x/2x/3x), crashes on
+specific devices (§2: needs real devices), pause/resume lifecycle failures
+(§1: `onPause` halts everything), and initial load size (§2: 53 KB gzipped).
+
+## Sources
+
+Re-verify against Google's live documentation before submitting: requirements
+change, and the live pages are the final authority.
+
+- [YouTube Playables — overview](https://developers.google.com/youtube/gaming/playables)
+- [Integration requirements](https://developers.google.com/youtube/gaming/playables/certification/requirements_integration)
+- [Stability and performance requirements](https://developers.google.com/youtube/gaming/playables/certification/requirements_stability)
+- [Design requirements](https://developers.google.com/youtube/gaming/playables/certification/requirements_design)
+- [Monetization requirements](https://developers.google.com/youtube/gaming/playables/certification/requirements_monetization)
+- [Privacy requirements](https://developers.google.com/youtube/gaming/playables/certification/requirements_privacydata)
+- [Trust & safety requirements](https://developers.google.com/youtube/gaming/playables/certification/requirements_trustsafety)
+- [Certification FAQ](https://developers.google.com/youtube/gaming/playables/support/certification_faq)
+- [Design best practices](https://developers.google.com/youtube/gaming/playables/certification/best_practices_design)
+- [Monetization SDK reference](https://developers.google.com/youtube/gaming/playables/reference/monetization)
+- [Developer Portal](https://developers.google.com/youtube/gaming/playables/developer_portal)

@@ -16,10 +16,20 @@ that was visible on day one: it was A21 mirrored. **Every design you kill on
 sight is a sweep nobody runs.** That is your entire value. Be blunt.
 
 Read `CLAUDE.md` first, every time. It is the rulebook and it changes. Read
-`js/levels.js` for the shipping set. Everything below is a summary of that file,
-not a replacement for it — if they disagree, CLAUDE.md wins.
+`js/levels.js` for the shipping set and `docs/HELD.md` for the 29 that were built
+and shelved. Everything below is a summary of CLAUDE.md, not a replacement for
+it — if they disagree, CLAUDE.md wins.
+
+Name levels by their id (`A21 LEVER`), never by a level number: the numbers
+change every time the order does, and acting on a stale one has removed the
+wrong level before.
 
 ## The kill-checks, in order of how cheap they are to fail
+
+**0. Was it already built and shelved?**
+Search `docs/HELD.md` for the noun and the question. If the design is a held
+level again, say which one and quote why it was held. That reason was measured;
+a new geometry does not overturn it unless it removes the cause.
 
 **1. Does the noun MOVE or ACT?**
 A static line can be any static geometry, so no static noun can ever be a
@@ -28,13 +38,18 @@ bridge is redundant with the stroke by construction. Only things that move or
 act (air, springs, pivots, anything with lift) can carry a level.
 
 **2. Is the QUESTION new?**
-Each noun has exactly one question in it, and three are already spent:
-- pivot → WHICH SIDE OF THE PIN (level 15)
-- updraft → IN THE COLUMN OR NOT (level 13)
-- spring → WHERE ON THE BOARD (level 14)
+Each noun has exactly one question in it, and these are already spent:
+- pivot → WHICH SIDE OF THE PIN (A21 LEVER)
+- updraft → IN THE COLUMN OR NOT (A19 UPDRAFT)
+- leaning air → INTERRUPT THE RUN (A28 DUCT) — earned only because leaning the
+  air changed what the noun does
+- sideways air → FINISH THE ROAD: deliver it, not stop it (A29 RAIL)
+- spring → WHERE ON THE BOARD (A20 SPRING) — and the bounce is on the object,
+  not the pad, so no new level can be built on a bouncy floor
+- balloon → WHERE DOES IT GO (A30 FLOAT), WHERE DOES IT LET GO (A31 THORNS)
+- downdraft → WHICH WAY TO TIP THE PAN (A34 SINK)
+- brittle floor → HOW HARD DOES HE LAND (A43 CRACK)
 A second level on a noun needs a different QUESTION, not a different geometry.
-Level 16 earned one ("interrupt the run") only because leaning the air changed
-what the noun does.
 
 **3. Does it ask the player to control HOW something ARRIVES?**
 One static stroke can choose WHERE a thing goes. It cannot choose how it gets
@@ -80,7 +95,7 @@ is cheap and CLAUDE.md's standing rule is that the measurement is usually the
 finding. Run headless probes with:
 
     node --import ./tools/node-matter.js <script>
-    node --import ./tools/node-matter.js tools/levelcheck.js <level-id>
+    npm run levelcheck -- <level-id>
 
-Never run the solver or `representative.js`. Those are the cost you exist to
+Never run the solver or `npm run certify`. Those are the cost you exist to
 avoid. Never claim something works without having looked at the output.

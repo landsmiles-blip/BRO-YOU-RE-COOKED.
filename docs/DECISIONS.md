@@ -1,6 +1,6 @@
 # Locked Decisions
 
-Every open item from `PRODUCTION_BIBLE_v1.0.md` Part 11, now closed. The user delegated these calls; each is recorded with its reasoning and its reversal cost, so any of them can be reopened deliberately rather than by drift.
+Every open item from the Production Bible's Part 11 (in git history at `9c073b9`), now closed. The user delegated these calls; each is recorded with its reasoning and its reversal cost, so any of them can be reopened deliberately rather than by drift.
 
 **Status key:** **LOCKED** — build against it. Reversal cost is stated where it is non-trivial.
 
@@ -132,9 +132,8 @@ broken method, not bad luck, and this decision is the method that replaces it.
   looked plausible afterwards. The most common way a tool is used must not be
   its destructive path.
 
-**Verification order, every time:** `npm test` → `node tools/solver/representative.js`
-→ build → `node tools/test/filmstrip.js` → **read the images** → `npm run solver`
-→ `npm run test:browser`.
+**Verification order, every time:** `npm test` → `npm run certify` → `npm run build`
+→ `npm run film` → **read the images** → `npm run solver` → `npm run test:browser`.
 
 
 ---
