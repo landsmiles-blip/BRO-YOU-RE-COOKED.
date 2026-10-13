@@ -76,7 +76,7 @@ export const A1 = {
   ],
 
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
 
   // Written by the solver harness at M1 — never typed by hand (Bible §3.8).
   solver: null,
@@ -132,7 +132,7 @@ export const A2 = {
   zones: [
     { id: 'pit', kind: 'zone', x: 330, y: 1100, w: 145, h: 180, lethal: true },
   ],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -183,7 +183,7 @@ export const A3 = {
     },
   ],
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -228,7 +228,7 @@ export const A4 = {
   zones: [
     { id: 'pit', kind: 'zone', x: 250, y: 1240, w: 170, h: 40, lethal: true },
   ],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -261,73 +261,7 @@ export const A5 = {
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
   ],
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A6 — STEP.  Teaches: the line helps MILO move, it is not only for threats.
-//
-// Every level so far used the stroke against something. Here nothing is
-// chasing him — the goal simply sits above a wall he cannot climb, because
-// maxStepUp is 22 units and the wall is far taller. The only answer is a ramp.
-// ─────────────────────────────────────────────────────────────────────────
-export const A6 = {
-  id: 'a6-step',
-  hint: "HE CAN'T CLIMB THAT", world: 'backyard', verb: 'RAMP',
-  milo: { start: { x: 90, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 620, y: 1030, w: 80, h: 140 },
-  freezeAt: 450,
-  // MILO.maxWalkSlope is 40 degrees, so a rise needs run >= rise/tan(40) =
-  // 1.19x. The first version asked him to climb 332 units against a 40-unit
-  // run — an 83-degree wall. Zero wins. Now a 152-unit rise with room for a
-  // ~190-unit run, which is a ramp a person would actually draw.
-  // No gap. The first version left a 50-unit void between the ground and the
-  // shelf, so a ramp had to bridge AND climb, and the hand-off at the shelf
-  // lip was a knife edge — Milo would climb the ramp, reach the shelf's own
-  // height, and stall 18 units short of it. A pure climb against a flush wall
-  // is the lesson this level is for; bridging is A2's job.
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 400, h: 128 },
-    { id: 'shelf',  type: 'platform', x: 400, y: 1030, w: 320, h: 250 },
-  ],
-  objects: [],
-  zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A7 — PROP.  Teaches: structural thinking — hold something UP.
-//
-// The walkway is a free body resting on one edge. Milo's own weight tips it
-// and he rides it into the pit. The stroke has to become a leg under the far
-// end, which is the first time the player builds a support rather than a
-// barrier or a path.
-// ─────────────────────────────────────────────────────────────────────────
-export const A7 = {
-  id: 'a7-prop',
-  hint: 'THE PLANK TIPS WHEN HE STANDS ON IT', world: 'backyard', verb: 'SUPPORT',
-  milo: { start: { x: 90, y: 900 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 630, y: 900, w: 80, h: 140 },
-  freezeAt: 450,
-  static: [
-    { id: 'bankL', type: 'platform', x: 0,   y: 900, w: 250, h: 380 },
-    { id: 'bankR', type: 'platform', x: 520, y: 900, w: 200, h: 380 },
-  ],
-  objects: [
-    // Rests on the left bank, overhangs the gap. Unsupported, it pivots.
-    // A PROP, not a hazard, and it says so. It used to carry an `impact` spec,
-    // so the renderer painted it in the danger accent — telling the player
-    // "do not touch" about the one object they are meant to walk across. The
-    // single-accent rule cuts both ways: the accent must mark what kills, and
-    // nothing else.
-    { id: 'plank', type: 'plank', x: 170, y: 884, w: 360, h: 22,
-      density: 0.005, restitution: 0.05, friction: 0.8,
-      lethal: { kind: 'none' } },
-  ],
-  zones: [{ id: 'pit', kind: 'zone', x: 250, y: 1240, w: 270, h: 40, lethal: true }],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -360,7 +294,7 @@ export const A8 = {
   zones: [],
   // Tight ink: a sprawling barrier is not a wedge. Efficiency pressure is the
   // difficulty axis here, not more hazards.
-  drawing: { maxLength: 420, denyZones: [] },
+  drawing: { maxLength: 420 },
   solver: null,
 };
 
@@ -394,7 +328,7 @@ export const A9 = {
     { id: 'gate',  type: 'gate',   x: 545, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
-  drawing: { maxLength: 560, denyZones: [] },
+  drawing: { maxLength: 560 },
   solver: null,
 };
 
@@ -430,31 +364,19 @@ export const A10 = {
     { id: 'gate',  type: 'gate',   x: 470, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
 // ─────────────────────────────────────────────────────────────────────────
-// SHIPPING SET vs HELD BACK
-//
-// A level that fails its solver gates does not ship. It is not deleted — the
-// work and the reason are kept — but it stays out of the player's hands until
-// it clears the bar, because a level that makes someone quit is negative
-// inventory.
-//
-// A4 WAS HELD AND IS NOW SHIPPING. It was held for a precision floor of 10u,
-// which turned out to be a SYMPTOM, not the level: rigid weld constraints made
-// every drawn line oscillate, and a catch is exactly where that shows up. With
-// anchoring made static it measures 65u precision and zero wobble. Holding it
-// was right; the diagnosis was wrong, and only fixing the real bug revealed
-// that.
-//
-// STILL HELD:
-//   A6 RAMP — genuinely too hard, and not for physics reasons: 0.2% breadth,
-//     and it only clears the gates with a 47u wall, barely above Milo's own
-//     22u step-up. A level that passes while teaching nothing is worse than
-//     no level.
+// A level that fails its solver gates does not ship. A4 was held once for a
+// precision floor of 10u, which turned out to be a SYMPTOM, not the level:
+// rigid weld constraints made every drawn line oscillate, and a catch is
+// exactly where that shows up. With anchoring made static it measures 65u
+// precision and zero wobble. Holding it was right; the diagnosis was wrong,
+// and only fixing the real bug revealed that.
 // ─────────────────────────────────────────────────────────────────────────
+
 // ─────────────────────────────────────────────────────────────────────────
 // A11 — DEAD WEIGHT.  Teaches: NOT anchoring is also a tool.
 //
@@ -495,7 +417,7 @@ export const A11 = {
     { id: 'gate',  type: 'gate',   x: 545, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -534,7 +456,7 @@ export const A12 = {
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
   ],
   zones: [],
-  drawing: { maxLength: 460, denyZones: [] },
+  drawing: { maxLength: 460 },
   solver: null,
 };
 
@@ -588,60 +510,7 @@ export const A13 = {
   ],
   objects: [],
   zones: [{ id: 'pit', kind: 'zone', x: 225, y: 1215, w: 250, h: 65, lethal: true }],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A14 — TWO JOBS.  Teaches: the thing trying to kill him is also the answer.
-//
-// REBUILT, and the first version is worth recording because the failure was
-// invisible from the level data. It paired a falling rock with a gap, and the
-// solver passed it at 1.6% — but a diagnostic that simply DELETED the rock
-// changed the outcome by 25 milliseconds. The rock was decoration. The level
-// was level two wearing a costume, and no amount of breadth tuning would have
-// found that, because breadth measures how many strokes win, not whether the
-// level is the one you meant to build.
-//
-// Now the rock does both jobs, and one stroke arranges both. It falls onto
-// Milo's walking line and will kill him. The gap beyond it is exactly one rock
-// wide with a floor set so that a rock sitting on it is FLUSH with the ground.
-// Deflect the rock into the gap and it stops being a hazard and starts being
-// the floor he crosses on.
-//
-// (A rock WEDGED between two rims can never work here: a ball jammed in a gap
-// protrudes by at least its own radius, and Milo's step-up is 22u against a
-// 28u radius. It has to come to rest on a floor at a measured depth.)
-// ─────────────────────────────────────────────────────────────────────────
-export const A14 = {
-  id: 'a14-twojobs',
-  hint: 'STOP THE ROCK. MIND THE HOLE.', world: 'backyard', verb: 'REPURPOSE',
-  milo: { start: { x: 70, y: 1000 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 655, y: 1000, w: 70, h: 140 },
-  freezeAt: 520,
-  // THE GROUND FUNNELS. Flat, this level measured 1.5% breadth and a 20u
-  // precision floor — it demanded that the player deflect a falling rock into
-  // a 70u target, and widening that target only made it worse (90u -> 0.8%,
-  // 110u -> 0.5%, 130u -> 0.4%: a bigger hole is a hole Milo also falls into).
-  //
-  // Tipping both banks toward the slot moves the precision OUT of the player's
-  // stroke and into the terrain: the rock self-routes once it is down, so the
-  // player's actual job is the wide one — do not let it land on him. Measured
-  // 1.5% -> 4.2%.
-  static: [
-    { id: 'groundL', type: 'platform', x: 0,   y: 1000, w: 330, h: 280, angle:  9 },
-    { id: 'groundR', type: 'platform', x: 400, y: 1000, w: 320, h: 280, angle: -9 },
-    // Depth is the design: ground top 1000, rock radius 28, so a floor at 1056
-    // leaves the resting rock's crown exactly level with the walking line.
-    { id: 'slot',    type: 'platform', x: 330, y: 1056, w: 70,  h: 224 },
-  ],
-  objects: [
-    { id: 'rock', type: 'boulder', x: 230, y: 420, radius: 28,
-      density: 0.03, restitution: 0.04, friction: 0.45,
-      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
-  ],
-  zones: [],
-  drawing: { maxLength: 400, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -687,155 +556,7 @@ export const A15 = {
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
   ],
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A16 — DON'T.  Teaches: the instinct you spent twelve levels building is
-// sometimes the thing that kills him.
-//
-// THE MOST IMPORTANT LEVEL IN THE SET, and the one most likely to get cut for
-// being awkward. Do not cut it.
-//
-// Every level so far has rewarded BLOCKING the falling thing. Here the falling
-// rock is not the hazard, it is the FLOOR: it drops into a chasm too wide to
-// bridge with the ink allowed, and lands flush with the walking line. Block it
-// — the reflex thirteen levels have trained — and the chasm stays 180 units
-// wide against 210 units of ink that has to reach anchors as well. Unwinnable,
-// by your own hand, using the move that has always worked.
-//
-// THE LOCK IS THAT YOU ONLY GET ONE STROKE — not a starved ink budget. The
-// first version used 210 units of ink to make spanning the chasm impossible,
-// and the solver was blunt: a 10-unit precision floor, well under what a thumb
-// can hit, because a 180-unit span with 30 units left over for anchoring has
-// almost no margin at either end. Starving the ink made the level unfair
-// without making the point.
-//
-// The point does not need ink at all. You get ONE stroke. Spend it stopping the
-// rock and you have nothing left to cross with, and the rock was never the
-// danger — it was the floor.
-// ─────────────────────────────────────────────────────────────────────────
-export const A16 = {
-  id: 'a16-dont',
-  hint: "THAT ROCK IS NOT YOUR PROBLEM",
-  world: 'backyard', verb: 'DON\'T',
-  milo: { start: { x: 70, y: 1120 }, speed: 200 },
-  goal: { id: 'goal', x: 660, y: 1120, w: 70, h: 140 },
-  freezeAt: 520,
-  static: [
-    { id: 'groundL', type: 'platform', x: 0,   y: 1120, w: 380, h: 160 },
-    { id: 'groundR', type: 'platform', x: 560, y: 1120, w: 160, h: 160 },
-    // Depth is the whole design: floor at 1188, rock radius 34, so a rock at
-    // rest sits with its crown exactly on the walking line.
-    { id: 'floor',   type: 'platform', x: 380, y: 1188, w: 180, h: 92  },
-  ],
-  objects: [
-    // A CRATE, NOT A BOULDER, and that is a fairness fix rather than a dressing
-    // change. As a ball it measured a 10-unit precision floor no matter how
-    // much ink it was given, because the winning line had to land on top of a
-    // CURVE — there is one tangent point and everything either side of it
-    // slides. A crate lands flat and presents a surface, so the same idea
-    // stops demanding a thumb the size of a pin.
-    //
-    // CENTRED IN THE CHASM, which is the other half of the fairness fix. At the
-    // near rim it landed HALF ON THE LEDGE, tipped off the corner, and came to
-    // rest somewhere slightly different every run — so no bridge drawn to it
-    // could be robust, and no amount of ink was going to change that. Dropping
-    // it clean makes the landing repeatable, which is what a player is being
-    // asked to plan around.
-    { id: 'crate', type: 'crate', x: 470, y: 300, w: 118, h: 68,
-      density: 0.035, restitution: 0.02, friction: 0.6,
-      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
-  ],
-  zones: [{ id: 'spikes', kind: 'zone', x: 386, y: 1158, w: 168, h: 30, lethal: true }],
-  drawing: { maxLength: 300, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A17 — THREAD IT.  Teaches: WHERE you may draw is part of the puzzle.
-//
-// The first level to use denyZones, a mechanic that has been implemented and
-// enforced in drawing/validate.js since M0 and used by nothing. Two forbidden
-// bands leave one horizontal slot, and the only anchors are on the far side of
-// it, so the line has to be threaded through rather than placed.
-//
-// A rejected stroke is a NO-OP, never a spent attempt — so probing the slot
-// costs nothing but the second it takes, which is what keeps a constraint from
-// becoming a punishment.
-// ─────────────────────────────────────────────────────────────────────────
-export const A17 = {
-  id: 'a17-thread',
-  hint: "YOU CANNOT DRAW IN THE RED",
-  world: 'backyard', verb: 'THREAD',
-  milo: { start: { x: 70, y: 1120 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 655, y: 1120, w: 70, h: 140 },
-  freezeAt: 560,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1120, w: 720, h: 160 },
-    { id: 'pillarL', type: 'platform', x: 210, y: 700, w: 40, h: 150 },
-    { id: 'pillarR', type: 'platform', x: 470, y: 700, w: 40, h: 150 },
-  ],
-  objects: [
-    { id: 'rock', type: 'boulder', x: 360, y: 240, radius: 28,
-      density: 0.03, restitution: 0.05, friction: 0.4,
-      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
-  ],
-  zones: [],
-  // The slot is the 90 units between these two bands. Anchoring means reaching
-  // the pillars, and the pillars are only reachable through it.
-  drawing: {
-    maxLength: LINE.maxLengthDefault,
-    denyZones: [
-      { x: 250, y: 560, w: 220, h: 230 },
-      // Pushed DOWN from y=880 so the only legal slot sits lower, which forces
-      // the block much closer to his head. Measured 373u of clearance before,
-      // which is five body-heights of safety and reads as nothing happening.
-      { x: 250, y: 950, w: 220, h: 170 },
-    ],
-  },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A18 — UPDRAFT.  Introduces: air. The first thing in this world that acts
-// without being solid.
-//
-// Built after looking at what the games that own this genre actually do to
-// stay interesting. Cut the Rope adds bubbles that lift, spiders that steal,
-// wheels that change trajectory; Happy Glass adds blades and moving platforms.
-// Every one of them is a THING IN THE WORLD THAT OBEYS PHYSICS. Not one is a
-// rule about where you may draw — which is exactly what the level this
-// replaces was, and why it was wrong.
-//
-// The level introduces the noun and nothing else, which is the pattern those
-// games follow: one new idea, alone, before it is ever combined. The rock is
-// coming for him and there is a column of rising air beside its path. Nudge it
-// across and the air takes it. The verb is REDIRECT, which he already knows —
-// all that is new is somewhere to redirect it TO.
-// ─────────────────────────────────────────────────────────────────────────
-export const A18 = {
-  id: 'a18-updraft',
-  hint: "THE AIR HOLDS THINGS UP",
-  world: 'backyard', verb: 'UPDRAFT',
-  milo: { start: { x: 70, y: 1120 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 660, y: 1120, w: 70, h: 140 },
-  freezeAt: 540,
-  static: [
-    { id: 'ground', type: 'platform', x: 0, y: 1120, w: 720, h: 160 },
-    // Something to anchor a deflector to, over the rock's line of fall.
-    { id: 'eave',  type: 'platform', x: 150, y: 700, w: 110, h: 26 },
-  ],
-  objects: [
-    { id: 'rock', type: 'boulder', x: 300, y: 260, radius: 28,
-      density: 0.03, restitution: 0.05, friction: 0.4,
-      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
-  ],
-  // 2600 against 1800 of gravity: it lifts, but not so hard that anything that
-  // touches it is flung off the top and out of the level.
-  zones: [{ id: 'draft', kind: 'updraft', x: 400, y: 300, w: 150, h: 820, accel: -2600 }],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -923,7 +644,7 @@ export const A19 = {
   // Gravity is 1800 u/s², so -2400 is a net 600 up: strong enough to carry a
   // light ball the full height, not so strong it is flung out of the world.
   zones: [{ id: 'draft', kind: 'updraft', x: 320, y: 420, w: 160, h: 460, accel: -2400 }],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -1021,14 +742,15 @@ export const A20 = {
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
   ],
   zones: [],
-  drawing: { maxLength: 460, denyZones: [] },
+  drawing: { maxLength: 460 },
   solver: null,
 };
 
 // ─────────────────────────────────────────────────────────────────────────
 // A21 — LEVER.  The lever again, with the rule turned into a puzzle.
 //
-// A22 teaches that the loaded arm goes down. This one asks the player to use
+// A22 was built to teach that the loaded arm goes down and is held (see
+// docs/HELD.md), so this level introduces the lever AND asks the player to use
 // it: the rock's landing point has to be moved across the pin, and the target
 // is an arm rather than a point. Every other piece of geometry in this game is
 // nailed down; this one turns, and what it does is decided by where the weight
@@ -1128,379 +850,7 @@ export const A21 = {
     { id: 'gate',  type: 'gate',   x: 580, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A22 — TIP.  Introduces: a surface that CHANGES WHICH WAY IT LEANS.
-//
-// THIS TEACHES THE LEVER AND A21 TESTS IT, and that order was decided by
-// measurement rather than by the order they were built in. This one sweeps at
-// 39.4% breadth — the most forgiving level in the game, looser than the
-// tutorial at 12.7% — while A21 comes in at 14.9%. Shipping them the other way
-// round would have introduced the mechanic with the harder of the two.
-//
-// The rule is the whole lesson: whichever arm takes the weight goes down, and
-// drops what it is carrying off that end. Here the two ends are "behind him"
-// and "on top of him", so the rule arrives attached to a consequence rather
-// than to an explanation.
-// ─────────────────────────────────────────────────────────────────────────
-export const A22 = {
-  id: 'a22-tip',
-  hint: 'IT WILL TIP HIS WAY',
-  world: 'backyard', verb: 'TIP',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 400,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // Leaning RIGHT to start: the end that is down is the end ahead of him.
-    // SHIFTED 60 UNITS LEFT, and the number came from a trace rather than a
-    // guess. At x=250 the rock left the right arm and landed at x=571 while he
-    // was still at x=515 — 56 units ahead of him — so it simply rolled away in
-    // front and he strolled after it to the goal. Doing nothing WON, which the
-    // pre-flight caught in about a second.
-    { id: 'plank',  type: 'platform', x: 190, y: 880, w: 240, h: 18,
-      pivot: { x: 310, y: 889 }, angle: 8, density: 0.01 },
-    { id: 'stopL',  type: 'platform', x: 196, y: 926, w: 26, h: 20 },
-    { id: 'stopR',  type: 'platform', x: 404, y: 926, w: 26, h: 20 },
-  ],
-  objects: [
-    // minSpeed 250, NOT 400. At 400 only a rock that landed square on him
-    // counted, so almost any interference at all saved him by accident and the
-    // level swept at 39.4% breadth — the loosest in the game. Worse, with that
-    // many junk strokes winning, the certified "representative" came out an
-    // incoherent snake drawn straight down through his walking path, which then
-    // lost in the browser. A rock still ROLLING at him is lethal at 250, so
-    // perturbing it is no longer enough: it has to end up behind him.
-    // FALLING 40 UNITS RIGHT OF THE PIN, not onto it. At x=310 the rock landed
-    // exactly on the pivot — a balance point, where which way it goes is decided
-    // by noise. That is why the level swept loose AND why its certified stroke
-    // won in the solver and lost twice in the browser on the same geometry: a
-    // stroke redrawn with a mouse is never bit-identical, and on a knife edge
-    // that is the whole difference. A21 works because its rock lands 30 units
-    // off the pin and the wrong answer is decisive; this is the same fix.
-    { id: 'rock',  type: 'boulder', x: 350, y: 430, radius: 28,
-      density: 0.035, restitution: 0.05, friction: 0.1,
-      lethal: { kind: 'impact', minSpeed: 250, graceRadius: 6 } },
-  ],
-  zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A23 — RIDE.  The lever, with Milo on it.
-//
-// The combine beat: the rule from A22 and A21 turned on the one body the
-// player cannot steer. His own weight is now the thing that loads the arm, and
-// it loads the wrong one the moment he walks past the pin.
-//
-// MILO CAN WALK A SEE-SAW — measured before this was drawn, because he ignores
-// two things the physics offers him. He does not bounce and he does not care
-// about friction, so a moving surface was a fair question. He crosses one whose
-// near end is level or down, and is stopped dead by one whose near end is
-// raised: at +6deg he stood at x=185 until the clock ran out, because a raised
-// end is a step taller than his 22u limit. A2's rule, applied to a moving part.
-//
-// ONE JOB: HOLD THE FAR ARM UP. The first cut left a 40-unit gap past the
-// plank's end as well, so a single stroke had to prop AND bridge. The solver
-// was blunt about the cost — 0.6% breadth against a 2% floor, the narrowest
-// thing measured in this project. Two jobs in one costume is what shelved A14.
-// The far bank now reaches to within 10 units of the arm, and the prop is the
-// whole answer.
-// ─────────────────────────────────────────────────────────────────────────
-export const A23 = {
-  id: 'a23-ride',
-  hint: 'IT WILL TIP UNDER HIM',
-  world: 'backyard', verb: 'RIDE',
-  milo: { start: { x: 80, y: 1000 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 620, y: 1000, w: 70, h: 140 },
-  freezeAt: 500,
-  static: [
-    { id: 'bankL',  type: 'platform', x: 0,   y: 1000, w: 250, h: 280 },
-    // THE FAR BANK MOVED IN TO 475. At 505 it left a 40-unit gap past the
-    // plank's end, so one stroke had to hold the arm up AND bridge — and the
-    // solver was blunt about what that costs: 0.6% breadth against a 2% floor,
-    // the narrowest thing this project has measured. Two jobs in one costume is
-    // what put A14 on the shelf; asking for only the prop is the whole fix.
-    { id: 'bankR',  type: 'platform', x: 475, y: 1000, w: 245, h: 280 },
-    // Pinned high above the banks, so the arm that goes down goes down a long
-    // way. Stops here would only make it a bridge: two banks at equal height
-    // with a plank between them is something he walks across unaided.
-    { id: 'plank',  type: 'platform', x: 255, y: 921, w: 210, h: 18,
-      pivot: { x: 360, y: 930 }, angle: -20, density: 0.012 },
-  ],
-  objects: [],
-  zones: [{ id: 'pit', kind: 'zone', x: 255, y: 1215, w: 215, h: 65, lethal: true }],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A24 — MILL.  Introduces: a machine that is ALREADY RUNNING.
-//
-// Everything in this game until now has been ballistic after release, or a zone
-// that sits there. This turns on its own before the player touches anything,
-// and it is the first thing here with power of its own.
-//
-// It exists because of a failure. A free pivot SPINS — a plank went 0deg to
-// -246deg and kept going, which is what makes a see-saw need end-stops and what
-// eventually shelved A23. For a wheel that is not a defect, it is the mechanism.
-//
-// A WHEEL MUST OUTWEIGH WHAT IT THROWS. At density 0.006 it massed 30 against
-// the rock's 36 and the rock stalled it — measured spinning up to 463deg,
-// stopping, and REVERSING to -0.0072 while the rock went out of the world. At
-// 252 against 36 it carries straight through the collision.
-//
-// THE PLAYER DOES NOT AIM IT, AND THAT IS THE WHOLE DESIGN. Four attempts asked
-// them to feed the mill so it would throw a rock somewhere useful, and the
-// honest version of that swept at 0.9% breadth against a 2% floor: a nudge into
-// a narrow feed band, times the right blade phase, times threading the landing.
-// Three conditions in series is the A14 trap with extra steps.
-//
-// So the mill is a MENACE instead. It is already turning, it will throw the
-// rock at him, and the answer is the oldest verb in the game — keep the rock
-// out of the machine. Nothing to aim, and the thing to understand is visible
-// from the frozen frame: that wheel is going to hit that rock.
-// ─────────────────────────────────────────────────────────────────────────
-export const A24 = {
-  id: 'a24-mill',
-  hint: 'THE MILL WILL THROW IT AT HIM',
-  world: 'backyard', verb: 'MILL',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 450,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // NEGATIVE spin: counter-clockwise, so the top of the wheel travels LEFT
-    // and a rock dropped into it is thrown back down the level at Milo. The
-    // hub sits 280 units above his head; he never touches the machine itself.
-    { id: 'wheel',  type: 'platform', x: 330, y: 793,  w: 180, h: 14,
-      pivot: { x: 420, y: 800 }, blades: 2, spin: -0.20, density: 0.05 },
-  ],
-  objects: [
-    { id: 'rock',  type: 'boulder', x: 420, y: 300, radius: 24,
-      density: 0.02, restitution: 0.05, friction: 0.05,
-      lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
-  ],
-  zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A25 — VAULT.  The springboard again, used to CLIMB.
-//
-// A20 taught that a hopping thing keeps its speed where a rolling thing spends
-// it on friction. The other half of that is height: a rolling ball cannot get
-// onto a ledge, and a bouncing one can. So the plate goes somewhere only a
-// bounce reaches, and the board is the only way up.
-//
-// WHY THIS AND NOT A HAZARD. Three hazard levels died today on the same
-// arithmetic: Milo crosses the level in about 2.7 seconds and a machine needs
-// one and a half to two to act, so by the time it delivers he has walked past
-// and "doing nothing" WINS. The levels that work hold him at a gate while the
-// machine takes its time. That is why the plate-and-gate pattern keeps earning
-// its place — it is not a motif, it is what makes a slow machine legible.
-//
-// The stroke does the same job as A20: decide where the ball meets the board.
-// Everything after that is the board's business.
-// ─────────────────────────────────────────────────────────────────────────
-export const A25 = {
-  id: 'a25-vault',
-  hint: 'IT CANNOT CLIMB UP THERE',
-  world: 'backyard', verb: 'VAULT',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 450,
-  static: [
-    { id: 'ground',  type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // A TILTED board, and the tilt is the whole point. A flat springboard set
-    // into the floor was useless: every ramp that fed it delivered the ball
-    // travelling sideways, and a sideways arrival has almost no speed into the
-    // surface, so there is nothing to bounce. A ball dropped straight onto a
-    // flat board goes straight back up and lands on the board again.
-    // Measured at 10deg and 0.8: a straight fall comes off rising 115 units and
-    // travelling 255 to the right, which is a launch rather than a rebound.
-    // At 20deg it leaves the world entirely.
-    { id: 'board',   type: 'platform', x: 290, y: 990,  w: 180, h: 20,
-      angle: 10, restitution: 0.8, friction: 0.3 },
-    // The plate's ledge, with 130 units of clearance beneath it so Milo walks
-    // under and the only thing that ever gets up there is the ball.
-    { id: 'ledge',   type: 'platform', x: 470, y: 900,  w: 200, h: 20 },
-    // A ROOF OVER THE PLATE, for the same reason the mill needed one. Left open
-    // the level is solved by dropping an unanchored line straight onto the
-    // plate — measured, it wins from any height — and the board never matters.
-    // A11 teaches that a falling line is a weight, so of course it gets tried.
-    // The ball comes in under this on a flat arc (it crosses the ledge edge at
-    // about y=860 and lands at 547); anything falling from above lands on top.
-    { id: 'roof',    type: 'platform', x: 450, y: 780,  w: 240, h: 16 },
-    // A FUNNEL, because the board wants a vertical arrival and a player cannot
-    // give it one. Any ramp that moves the ball sideways robs it of the speed
-    // INTO the surface that the bounce is made of, so the honest solution was
-    // a knife edge: 1.2% breadth once the plate was roofed. The funnel mouth is
-    // 320 units wide and its throat is 78, so the stroke only has to get the
-    // ball into a barn door and the geometry does the precise part — the same
-    // trade A19 makes with its chimney.
-    // The left wall reaches out to x=130. At its first size its upper lip sat at
-    // x=219 and the ball arrives at x=221 — landing ON the tip, falling off the
-    // outside as often as the inside, and every failure traced the same way:
-    // 221 -> 165 -> 102 -> off to the left. A funnel you can miss by two units
-    // is not a funnel.
-    { id: 'funnelL', type: 'platform', x: 109, y: 873,  w: 254, h: 16, angle:  34 },
-    { id: 'funnelR', type: 'platform', x: 400, y: 892,  w: 160, h: 16, angle: -40 },
-  ],
-  objects: [
-    // Falls straight down onto dead ground and stays there. A drawn line is
-    // STATIC once anchored and cannot shove anything, so the ball has to arrive
-    // already moving — every level here redirects something, none starts it.
-    { id: 'ball',  type: 'boulder', x: 170, y: 260, radius: 26,
-      density: 0.02, restitution: 0.1, friction: 0.06,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 490, y: 870, w: 160, h: 30, triggers: ['gate'] },
-    { id: 'gate',  type: 'gate',   x: 590, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A26 — CASCADE.  Two levers, one decision.
-//
-// No new noun. The rule is the one A21 already taught — the loaded arm goes
-// down and drops what it carries off that end — and the only new thing is that
-// it happens twice, so the player has to follow the rock one step further than
-// they are used to before they know where to draw.
-//
-// BOTH PIVOTS ARE LOAD-BEARING, for the same structural reason A21's is and
-// A22's was not: each plank's STATIC lean sends the rock the wrong way. Nail
-// either of them down and the chain breaks at that link.
-//
-// One stroke sets the whole thing going. Feed the upper lever's right arm and
-// everything after it is the machine's business — which is the difference
-// between a puzzle that makes you think and one that makes you fiddle.
-// ─────────────────────────────────────────────────────────────────────────
-export const A26 = {
-  id: 'a26-cascade',
-  hint: 'BOTH OF THEM LEAN THE WRONG WAY',
-  world: 'backyard', verb: 'CASCADE',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 500,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // THE SHAFT IS TALL AND ENDS WELL CLEAR OF THE LEVER. Both numbers were
-    // paid for. Too short and the rock has already fallen past every ramp worth
-    // drawing by the time the world stops; too low and its wall stands beside
-    // the plank, so the rock wedges between the two and sits there — measured
-    // stuck at (227,535) on every stroke tried, identical to doing nothing.
-    // Its right wall stops short as A21's does: that is the door a deflected
-    // rock leaves by, and without it the rock jams in the corner instead.
-    { id: 'shaftL', type: 'platform', x: 190, y: 240, w: 16, h: 420 },
-    { id: 'shaftR', type: 'platform', x: 350, y: 240, w: 16, h: 300 },
-    // Lever one.
-    { id: 'plankA', type: 'platform', x: 150, y: 751, w: 240, h: 18,
-      pivot: { x: 270, y: 760 }, angle: -8, density: 0.01 },
-    { id: 'stopAL', type: 'platform', x: 156, y: 797, w: 26, h: 20 },
-    { id: 'stopAR', type: 'platform', x: 364, y: 797, w: 26, h: 20 },
-    // THE BAFFLE, and without it lever one is scenery. Measured: a ramp can
-    // throw the rock clean past lever one's right end at x=390 — it crossed the
-    // gap at x=467 and dropped straight onto lever two, and nailing lever one
-    // down left three of four winning strokes still winning.
-    //
-    // It does two jobs with one wall. Anything flying right is stopped, so the
-    // upper lever cannot be skipped; and lever one's own output, which leaves
-    // its right end at about (390,785), meets this ten units later and drops
-    // vertically onto lever two's right arm instead of scattering.
-    { id: 'baffle', type: 'platform', x: 400, y: 690, w: 16, h: 210 },
-    // Lever two, offset right so the first one's right arm feeds its right arm.
-    { id: 'plankB', type: 'platform', x: 250, y: 891, w: 240, h: 18,
-      pivot: { x: 370, y: 900 }, angle: -8, density: 0.01 },
-    { id: 'stopBL', type: 'platform', x: 256, y: 937, w: 26, h: 20 },
-    { id: 'stopBR', type: 'platform', x: 464, y: 937, w: 26, h: 20 },
-    // The landing, over Milo's head with 142 units of clearance.
-    { id: 'deck',   type: 'platform', x: 470, y: 990, w: 230, h: 20 },
-    // The lid that keeps the plate honest — see A19 and A21. It hangs well
-    // above the rock's arrival, which comes off lever two at about y=925.
-    { id: 'lid',    type: 'platform', x: 500, y: 820, w: 200, h: 16 },
-  ],
-  objects: [
-    { id: 'rock',  type: 'boulder', x: 240, y: 280, radius: 26,
-      density: 0.03, restitution: 0.05, friction: 0.08,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 490, y: 960, w: 170, h: 30, triggers: ['gate'] },
-    { id: 'gate',  type: 'gate',   x: 600, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A27 — BLOCKED.  The lever again, and this time there is no plate at all.
-//
-// Every plate level in this game has the same back door: drop an unanchored
-// line on the plate and the gate opens with the machine untouched. Levels 13
-// and 15 needed lids to close it. This one has nothing to press — the rock
-// itself is the lock, and the only question is where it ends up.
-//
-// THE SHAFT SITS OVER THE LEVER, WALL TO WALL. A machine placed before the
-// player's delivery point can always be bypassed by delivering directly — that
-// is what held the two-lever cascade, where a ramp threw the rock clean past
-// the first plank. Here the rock has nowhere else to go: both walls run the
-// full height and the only floor beneath them is the plank.
-//
-// So the whole level is one decision, made in a 144-unit-wide shaft: which side
-// of the pin does it come down on.
-// ─────────────────────────────────────────────────────────────────────────
-export const A27 = {
-  id: 'a27-blocked',
-  hint: 'HE CANNOT CLIMB OVER THAT',
-  world: 'backyard', verb: 'BLOCKED',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 686, y: 1152, w: 60, h: 140 },
-  freezeAt: 500,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // 184 units of interior, not 144. The narrow version left only a 48-unit
-    // band left of the pin once the rock's own radius was taken off, and a ramp
-    // reaching into it wedged the rock against the wall — measured resting at
-    // (372,576), never falling at all. A decision needs somewhere to be made.
-    { id: 'shaftL', type: 'platform', x: 300, y: 300, w: 16, h: 400 },
-    { id: 'shaftR', type: 'platform', x: 500, y: 300, w: 16, h: 400 },
-    // Leaning RIGHT, so the untouched rock goes the way that blocks him.
-    { id: 'plank',  type: 'platform', x: 300, y: 751, w: 240, h: 18,
-      pivot: { x: 420, y: 760 }, angle: 8, density: 0.01 },
-    { id: 'stopL',  type: 'platform', x: 306, y: 797, w: 26, h: 20 },
-    { id: 'stopR',  type: 'platform', x: 514, y: 797, w: 26, h: 20 },
-    // NO DOORWAY, NO JAMBS, NO PLATE. The first build put two pillars in his
-    // path with a gap between them, which blocks him whether the rock is there
-    // or not — he walks into the first pillar at x=542 and stops. The rock does
-    // not need help: it is 52 units tall against his 22-unit step-up, so a rock
-    // at rest anywhere on the floor is already a wall he cannot climb.
-    // WHERE THE ROCK GOES WHEN IT GOES THE RIGHT WAY. Without this the level
-    // has two losing answers and no winning one: send it right and it plugs the
-    // doorway, send it left and it lands at x=122 — measured — square in the
-    // walk he has not started yet, and blocks him there instead. The shelf
-    // catches the left-hand drop and holds it over his head, 132 units clear.
-    // It runs all the way to x=40 because the rock leaves the lever's left end
-    // travelling, not dropping: a 150-unit shelf under the arm was overshot
-    // every time, out to x=-266 on one run and down to x=72 — where he starts —
-    // on another.
-    { id: 'shelf',  type: 'platform', x: 40,  y: 1000, w: 340, h: 20 },
-
-  ],
-  objects: [
-    // Not lethal. It does not have to kill him — it only has to be in the way.
-    { id: 'rock',  type: 'boulder', x: 460, y: 340, radius: 26,
-      density: 0.03, restitution: 0.05, friction: 0.3,
-      lethal: { kind: 'none' } },
-  ],
-  zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
 
@@ -1571,7 +921,7 @@ export const A28 = {
   // and it is the thing the level is teaching. It just must not be free.
   // 220 units still spans the column (140) and still walls the run (160). It
   // does not pay for a bowl, a ring, or a fence across the whole thing.
-  drawing: { maxLength: 220, denyZones: [] },
+  drawing: { maxLength: 220 },
   solver: null,
 };
 
@@ -1666,7 +1016,7 @@ export const A29 = {
     // rock the last few units onto the plate rather than leaving it just short.
     { id: 'draught', kind: 'updraft', x: 100, y: 620, w: 440, h: 260, accel: 0, ax: 600 },
   ],
-  drawing: { maxLength: 320, denyZones: [] },
+  drawing: { maxLength: 320 },
   solver: null,
 };
 
@@ -1734,7 +1084,7 @@ export const A30 = {
     { id: 'gate',  type: 'gate',   x: 330, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
-  drawing: { maxLength: 300, denyZones: [] },
+  drawing: { maxLength: 300 },
   solver: null,
 };
 
@@ -1810,110 +1160,7 @@ export const A31 = {
   // too-long — the level was unsolvable by the only route it is built around.
   // The weight gate is unaffected: 400 units buys a line of about 129 against
   // a threshold of 200.
-  drawing: { maxLength: 400, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A32 — TIP. The first COMBINE in the game.
-//
-// introduce -> practise -> combine is the structure this project took from Cut
-// the Rope and had never got to the third step. Two attempts died on the same
-// geometry: A26's two levers in series, held with the note "a cascade needs a
-// delivery that lands INSIDE the next machine, which a see-saw cannot give —
-// pair the lever with something that catches from above". That note has been
-// sitting there waiting for a machine that drops things straight down.
-//
-// The pop is that machine. A burst balloon falls DEAD VERTICAL from wherever
-// it burst, and where it bursts is where the player's shield ends. So the
-// balloon's question (where does it let go) feeds the pivot's question (which
-// side of the pin) and both machines are load-bearing off ONE stroke.
-//
-// Measured before building: a ball dropped vertically on the LEFT arm leaves
-// the plank at -8 degrees and ends at x=114; on the RIGHT arm, +13 degrees and
-// x=674. Clean and binary, and near enough mass-independent — which is why this
-// balloon can be light where A30's had to be heavy.
-// ─────────────────────────────────────────────────────────────────────────
-export const A32 = {
-  id: 'a32-tip',
-  hint: 'WHICH ARM CATCHES IT',
-  world: 'backyard', verb: 'TIP',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 300,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // THE RISE COLUMN MUST BE CLEAR OF THE MACHINE. First build started the
-    // balloon at x=290 against a plank starting at 300: it grazed the plank's
-    // left corner on the way up, got knocked sideways, missed the thorn
-    // ceiling entirely and left through the top of the world. A balloon rises
-    // through everything the level owns, so its column has to be empty.
-    { id: 'jamb',   type: 'platform', x: 182, y: 470,  w: 18,  h: 150 },
-    { id: 'thorns', type: 'platform', x: 200, y: 470,  w: 380, h: 16, sharp: true },
-    // The see-saw, directly under the run so a burst anywhere along it lands
-    // on one arm or the other. Pin at 420: left arm 300..420, right 420..540.
-    { id: 'plank',  type: 'platform', x: 300, y: 820,  w: 240, h: 18,
-      pivot: { x: 420, y: 829 }, angle: 0, density: 0.01 },
-    { id: 'stopL',  type: 'platform', x: 306, y: 866,  w: 26, h: 20 },
-    { id: 'stopR',  type: 'platform', x: 514, y: 866,  w: 26, h: 20 },
-    // The pen under the RIGHT end. Loaded right, the plank drops its cargo in.
-    { id: 'penL',   type: 'platform', x: 556, y: 960,  w: 18,  h: 120 },
-    { id: 'penR',   type: 'platform', x: 672, y: 960,  w: 18,  h: 120 },
-    { id: 'penF',   type: 'platform', x: 556, y: 1080, w: 134, h: 18  },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 230, y: 1000, radius: 24,
-      density: 0.05, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 574, y: 1050, w: 98, h: 30, triggers: ['gate'] },
-    { id: 'gate',  type: 'gate',   x: 330, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: 360, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A33 — DIP. The road that has to climb back out.
-//
-// Level 17 asked how FAR to build. This asks whether what you build can be
-// climbed, which is a different question and it comes straight out of the
-// physics rather than out of a rule: a draught can only push a rock up a slope
-// shallower than atan(ax/g). At ax=600 against gravity 1800 that is about 18
-// degrees, and there is no friction here to help.
-//
-// So the beam is not an obstacle in the decorative sense. It forces the road
-// DOWN, and every unit of drop has to be paid back at 18 degrees or the rock
-// sits in the dip for the rest of the level with the wind blowing uselessly
-// against it. Duck too deep and it never comes out; hug the beam and it does.
-// ─────────────────────────────────────────────────────────────────────────
-export const A33 = {
-  id: 'a33-dip',
-  hint: 'THE WIND CANNOT PUSH IT UPHILL',
-  world: 'backyard', verb: 'DIP',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 300,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'rail',   type: 'platform', x: 100, y: 700,  w: 130, h: 20  },
-    // THE BEAM. Hangs into the run, so a flat road cannot pass.
-    { id: 'beam',   type: 'platform', x: 300, y: 620,  w: 40,  h: 130 },
-    { id: 'deck',   type: 'platform', x: 470, y: 820,  w: 170, h: 20  },
-    { id: 'kerb',   type: 'platform', x: 640, y: 780,  w: 20,  h: 40  },
-  ],
-  objects: [
-    { id: 'rock',  type: 'boulder', x: 130, y: 674, radius: 26,
-      density: 0.09, restitution: 0.1, friction: 0.06,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 480, y: 790, w: 150, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 150 },
-    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [
-    { id: 'draught', kind: 'updraft', x: 100, y: 560, w: 480, h: 300, accel: 0, ax: 600 },
-  ],
-  drawing: { maxLength: 380, denyZones: [] },
+  drawing: { maxLength: 400 },
   solver: null,
 };
 
@@ -1972,372 +1219,7 @@ export const A34 = {
   zones: [
     { id: 'down', kind: 'updraft', x: 310, y: 400, w: 140, h: 420, accel: 1500, ax: 0 },
   ],
-  drawing: { maxLength: 320, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A35 — BARRIER. The downdraft's second question.
-//
-// SINK asks which way to tip a floor. This asks how to get PAST a column of
-// falling air — because a downdraft is the one thing in this world a balloon
-// cannot push through. It rises into the underside of the column and is shoved
-// straight back down, forever, and no amount of lift changes that: 1500 of
-// downforce plus 1800 of gravity against 2400 of lift is 900 down, whatever
-// the thing weighs.
-//
-// So the column is a wall that only floating things can feel, and the level is
-// a detour. The stroke is a ceiling BELOW the column that walks the balloon
-// sideways until it is clear of the edge, after which it climbs on its own.
-// Nothing is blocked, nothing is caught — the line just has to get it out from
-// underneath before it tries to go up.
-// ─────────────────────────────────────────────────────────────────────────
-export const A35 = {
-  id: 'a35-barrier',
-  hint: 'IT CANNOT GET THROUGH THAT',
-  world: 'backyard', verb: 'BARRIER',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 300,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // The column hangs from this, so it reads as something with a source.
-    { id: 'hood',   type: 'platform', x: 222, y: 420, w: 156, h: 18 },
-    // A NARROW COLUMN. At 242 units wide the level swept 0.2% — one win in
-    // five hundred strokes — and that is structural, not tuning: to escape,
-    // the balloon has to be dragged the full width of the column SIDEWAYS
-    // while the air pushes it down the whole way. At 138 the escape is 60
-    // units from where it starts, which a short ramp can do.
-    //
-    // THE POST RUNS THE FULL HEIGHT OF THE COLUMN. At 120 it stopped at y=558
-    // and there was nothing at the balloon's level to anchor to — every probe
-    // stroke came back "NOTHING HELD IT UP", because a line touching no static
-    // geometry is not a ledge, it is a falling object. A level whose answer is
-    // a ramp has to give the ramp somewhere to start.
-    { id: 'post',   type: 'platform', x: 222, y: 438, w: 18,  h: 520 },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 340, y: 1000, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 400, y: 560, w: 290, h: 340, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
-    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [
-    { id: 'down', kind: 'updraft', x: 240, y: 438, w: 138, h: 480, accel: 1500, ax: 0 },
-  ],
-  drawing: { maxLength: 340, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A36 — SPILL. The pan already leans, and this time it kills him.
-//
-// SINK asks which way to tip a flat pan. This one is tipped ALREADY, toward a
-// hole over the walk, and the balloon is on its way to that hole from the
-// moment the world starts. The decision is not "pick a side", it is "undo a
-// lean that is already losing" — the same relationship A21 has to A15.
-//
-// It is also the first level since 16 whose failure is a DEATH rather than a
-// stall. Levels 17 through 20 all end in HE'S STUCK, and the tension gate has
-// warned FLAT on every one of them: nothing dangerous ever goes near him on a
-// win. A downdraft makes that easy to fix, because it drives its cargo DOWN,
-// which is where Milo is.
-// ─────────────────────────────────────────────────────────────────────────
-export const A36 = {
-  id: 'a36-spill',
-  hint: 'IT IS ALREADY LEANING AT HIM',
-  world: 'backyard', verb: 'SPILL',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 300,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // TIPPED RIGHT, AND THE COLUMN PUSHES HARD. Both numbers came out of the
-    // clock rather than out of taste. At accel 1500 the balloon is only 900
-    // units-per-second-squared down once its own lift is subtracted, so it
-    // drifted to the floor at 2558ms — by which time Milo had already reached
-    // the goal, and doing nothing WON. At 3000 it falls faster than a rock.
-    // And it has to lean RIGHT, not left: he passes x=240 at 0.78s and x=460
-    // at 1.78s, so only the right-hand end of the pan drops its cargo in
-    // front of him instead of behind him.
-    { id: 'pan',    type: 'platform', x: 300, y: 820, w: 160, h: 18, angle: 9 },
-    // No lip and no shelf: the SAFE side is simply outside the column, where
-    // the balloon's own lift takes it up and away. Both were in the first
-    // build and both were in the way of that.
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 380, y: 740, radius: 24,
-      density: 0.10, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'impact', minSpeed: 300, graceRadius: 6 } },
-  ],
-  zones: [
-    // THE COLUMN HAS TO REACH THE GROUND. First build stopped it at y=820 and
-    // doing nothing WON: the balloon spilled off the left of the pan, left the
-    // column, and its own lift carried it up and away from Milo entirely. A
-    // downdraft only threatens him for as long as it is still pushing.
-    // ASYMMETRIC ON PURPOSE. It starts at the pan's LEFT edge and runs 60 units
-    // past its right one, so the two ends of the pan are not equivalent: spill
-    // right and the balloon is still in the air that is pushing it down, spill
-    // left and it is out of the column and its own lift takes it away. With
-    // the column centred, BOTH ends dropped it straight out and it floated off
-    // the top of the world either way — doing nothing won twice.
-    { id: 'down', kind: 'updraft', x: 300, y: 420, w: 220, h: 700, accel: 3000, ax: 0 },
-  ],
-  drawing: { maxLength: 300, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A37 — THREAD. Two columns, and the only way up is between them.
-//
-// The downdraft's third property: a balloon cannot cross one, so two of them
-// with a gap make a doorway that only exists for floating things. Nothing is
-// blocked to look at — Milo walks under all of it — but the balloon has one
-// route and it is not the one it is on.
-//
-// A35 died proving that ESCAPING a column sideways is nearly impossible once
-// the air is pushing down on you, so this does not ask for that. The balloon
-// starts in clear air BELOW the gap and rises; the stroke is the ramp that
-// lines it up before it gets there, which is a job done at the bottom where
-// there is no downforce at all.
-// ─────────────────────────────────────────────────────────────────────────
-export const A37 = {
-  id: 'a37-thread',
-  hint: 'ONLY ONE WAY UP',
-  world: 'backyard', verb: 'THREAD',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 300,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'hoodL',  type: 'platform', x: 180, y: 400, w: 160, h: 18 },
-    { id: 'hoodR',  type: 'platform', x: 460, y: 400, w: 160, h: 18 },
-    // FULL-HEIGHT POSTS. At 300 they stopped at y=718 and there was nothing
-    // down at the balloon's level to build from — every probe came back
-    // "NOTHING HELD IT UP", which is a line touching no static geometry, i.e.
-    // a falling object rather than a ramp. A35 died of the same thing.
-    { id: 'postL',  type: 'platform', x: 180, y: 418, w: 18,  h: 560 },
-    { id: 'postR',  type: 'platform', x: 602, y: 418, w: 18,  h: 560 },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 250, y: 1000, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 330, y: 280, w: 200, h: 110, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
-    { id: 'gate',  type: 'gate',   x: 300, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [
-    { id: 'downL', kind: 'updraft', x: 198, y: 418, w: 142, h: 400, accel: 1500, ax: 0 },
-    { id: 'downR', kind: 'updraft', x: 460, y: 418, w: 142, h: 400, accel: 1500, ax: 0 },
-  ],
-  drawing: { maxLength: 320, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A38 — FORK. Level 19 with a second chute, and the far one is the live one.
-//
-// THORNS punishes overbuilding: build too much shield and the balloon sails
-// past the chute. This asks the opposite. The near opening is a dead end and
-// the plate is in the far one, so stopping short is the mistake. Same thorn
-// ceiling, same shield, same measured pop lag of roughly 50 units past wherever
-// the line ends.
-// ─────────────────────────────────────────────────────────────────────────
-export const A38 = {
-  id: 'a38-fork',
-  hint: 'THE NEAR ONE IS A DEAD END',
-  world: 'backyard', verb: 'FORK',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 300,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // EVERYTHING PULLED RIGHT, so the shield is short. First build put the jamb
-    // at 262 and the balloon at 320, which meant a winning shield had to span
-    // 220 units AND ride close to the thorns AND anchor — it swept 0.0%, one
-    // win in the whole space. The decision is unchanged; only the distance is.
-    { id: 'jamb',   type: 'platform', x: 360, y: 520, w: 18,  h: 160 },
-    { id: 'thorns', type: 'platform', x: 378, y: 520, w: 282, h: 16, sharp: true },
-    // Near chute — a bin with nothing in it.
-    { id: 'binL',   type: 'platform', x: 430, y: 660, w: 18,  h: 200 },
-    { id: 'binR',   type: 'platform', x: 540, y: 660, w: 18,  h: 200 },
-    { id: 'binF',   type: 'platform', x: 430, y: 860, w: 128, h: 18  },
-    // Far chute — the live one.
-    { id: 'penL',   type: 'platform', x: 580, y: 660, w: 18,  h: 200 },
-    { id: 'penR',   type: 'platform', x: 672, y: 660, w: 18,  h: 200 },
-    { id: 'penF',   type: 'platform', x: 580, y: 860, w: 110, h: 18  },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 410, y: 1000, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 598, y: 830, w: 74, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
-    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: 400, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A39 — HATCH. Level 20 with a hole in the pan.
-//
-// SINK asks which end of the pan to spill off. This one has a gap in the middle
-// of it, and the column runs on BELOW the pan, so anything that goes through
-// the gap keeps getting pushed down instead of floating back up. Spill off the
-// left and the balloon leaves the column and rises away; drop it through the
-// hatch and the air walks it down onto the plate.
-//
-// Same column strength (1500 against 2400 of lift) and the same 160 units of
-// pan that made A34 pass.
-// ─────────────────────────────────────────────────────────────────────────
-export const A39 = {
-  id: 'a39-hatch',
-  hint: 'THERE IS A WAY THROUGH IT',
-  world: 'backyard', verb: 'HATCH',
-  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
-  freezeAt: 300,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'panL',   type: 'platform', x: 300, y: 820, w: 82,  h: 18 },
-    { id: 'panR',   type: 'platform', x: 458, y: 820, w: 60,  h: 18 },
-    // Catch walls under the hatch, so what drops through stays dropped.
-    { id: 'wellL',  type: 'platform', x: 364, y: 900, w: 18,  h: 150 },
-    { id: 'wellR',  type: 'platform', x: 460, y: 900, w: 18,  h: 150 },
-    { id: 'wellF',  type: 'platform', x: 364, y: 1050, w: 114, h: 18 },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 350, y: 700, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 382, y: 1020, w: 78, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
-    { id: 'gate',  type: 'gate',   x: 230, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [
-    // Runs PAST the pan, so the hatch leads somewhere instead of handing the
-    // balloon straight back up through the hole it fell down.
-    { id: 'down', kind: 'updraft', x: 310, y: 400, w: 140, h: 660, accel: 1500, ax: 0 },
-  ],
-  drawing: { maxLength: 320, denyZones: [] },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
-// A40, A41, A42 — the shield family, finished.
-//
-// These three start from generated candidates. The generator found the fair
-// window for this shape after 40 samples — 5 kept, all measuring 2.1-2.6%
-// breadth with healthy precision floors — and it found it far faster than I
-// did by hand, where A31 took three sweeps to land on the same numbers.
-//
-// What it could NOT do is make them different from each other. All five
-// keepers were A31 with the furniture nudged: the widest spread across them
-// was 40 units of ceiling height. So the numbers here are the machine's and
-// the ARRANGEMENTS are not — each of the three asks the shield for something
-// the other two do not, which is the half of the job the file's own header
-// reserves for a person: "a shortlist for a person to choose from and finish,
-// not content to ship".
-// ─────────────────────────────────────────────────────────────────────────
-
-/** A40 — REACH. The catch is far and the ceiling is high: build long. */
-export const A40 = {
-  id: 'a40-reach',
-  hint: 'THE CATCH IS A LONG WAY OVER',
-  world: 'backyard', verb: 'REACH',
-  milo: { start: { x: 100, y: 1136 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 660, y: 1136, w: 70, h: 140 },
-  freezeAt: 900,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
-    { id: 'jamb',   type: 'platform', x: 300, y: 560,  w: 18,  h: 160 },
-    { id: 'thorns', type: 'platform', x: 318, y: 560,  w: 342, h: 16, sharp: true },
-    { id: 'chuteL', type: 'platform', x: 410, y: 700,  w: 18,  h: 170 },
-    { id: 'chuteR', type: 'platform', x: 668, y: 700,  w: 18,  h: 170 },
-    { id: 'floor',  type: 'platform', x: 410, y: 870,  w: 276, h: 18 },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 340, y: 986, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 428, y: 840, w: 240, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
-    { id: 'gate',  type: 'gate',   x: 260, y: 996, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: 380, denyZones: [] },
-  solver: null,
-};
-
-/** A41 — PINCH. Same machine, low ceiling: the shield has no headroom. */
-export const A41 = {
-  id: 'a41-pinch',
-  hint: 'NOT MUCH ROOM UNDER THERE',
-  world: 'backyard', verb: 'PINCH',
-  milo: { start: { x: 100, y: 1136 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 660, y: 1136, w: 70, h: 140 },
-  freezeAt: 900,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
-    // THE CATCH SITS BEYOND THE POP'S OWN CARRY. First build put it at x=410
-    // against a balloon starting at 330, and the level delivered itself: a
-    // burst balloon keeps the sideways speed it had, and the trace showed it
-    // drift 330 -> 459 on its own and land on the plate with no stroke at all.
-    // The rule is already in the file — a pop is not a vertical delivery — and
-    // this is the first time it bit from the other direction.
-    { id: 'jamb',   type: 'platform', x: 270, y: 780,  w: 18,  h: 150 },
-    { id: 'thorns', type: 'platform', x: 288, y: 780,  w: 372, h: 16, sharp: true },
-    { id: 'chuteL', type: 'platform', x: 480, y: 900,  w: 18,  h: 120 },
-    { id: 'chuteR', type: 'platform', x: 688, y: 900,  w: 18,  h: 120 },
-    { id: 'floor',  type: 'platform', x: 480, y: 1020, w: 226, h: 18 },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 310, y: 1090, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 498, y: 990, w: 190, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
-    { id: 'gate',  type: 'gate',   x: 240, y: 996, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: 380, denyZones: [] },
-  solver: null,
-};
-
-/** A42 — BACK. Mirrored: the catch is BEHIND where it starts. */
-export const A42 = {
-  id: 'a42-back',
-  hint: 'IT HAS TO GO THE OTHER WAY',
-  world: 'backyard', verb: 'BACK',
-  milo: { start: { x: 70, y: 1136 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 665, y: 1136, w: 70, h: 140 },
-  freezeAt: 900,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
-    // Jamb on the RIGHT, so the shield has to slope the other way. A rising
-    // balloon travels to the HIGH end of whatever it meets, which is the one
-    // thing about this mechanic a player has to un-learn from level 19.
-    { id: 'jamb',   type: 'platform', x: 600, y: 560,  w: 18,  h: 160 },
-    { id: 'thorns', type: 'platform', x: 260, y: 560,  w: 340, h: 16, sharp: true },
-    { id: 'chuteL', type: 'platform', x: 268, y: 700,  w: 18,  h: 170 },
-    { id: 'chuteR', type: 'platform', x: 506, y: 700,  w: 18,  h: 170 },
-    { id: 'floor',  type: 'platform', x: 268, y: 870,  w: 256, h: 18 },
-  ],
-  objects: [
-    { id: 'balloon', type: 'boulder', x: 570, y: 986, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 286, y: 840, w: 220, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
-    { id: 'gate',  type: 'gate',   x: 190, y: 996, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: 380, denyZones: [] },
+  drawing: { maxLength: 320 },
   solver: null,
 };
 
@@ -2394,292 +1276,7 @@ export const A43 = {
     // puts air under the plank and makes it a bridge.
     { id: 'pit', kind: 'zone', x: 340, y: 1200, w: 300, h: 80, lethal: true },
   ],
-  drawing: { maxLength: 220, denyZones: [] },
-  solver: null,
-};
-
-/**
- * A44 — BURST. The balloon's pop height decides whether the bridge survives.
- *
- * Combines two nouns that are each already measured: A31's shield, which puts
- * the pop where the player chooses, and A43's brittle threshold, which turns a
- * fall into a yes or no. Neither asks this question alone — the shield asks
- * WHERE it lets go, the plank asks HOW HARD it lands, and putting them
- * together asks how high you dare let it climb.
- *
- * Two thorn banks at different heights, and the plank is the only way across
- * the pit. Untouched the balloon climbs to the HIGH bank and the 474-unit fall
- * shatters it. A shield slung under the high bank slides it left — a rising
- * balloon travels to the HIGH end of whatever it meets — to pop under the low
- * bank instead, 84 units up, which the plank takes.
- */
-export const A44 = {
-  id: 'a44-burst',
-  hint: 'THE HIGHER IT POPS THE HARDER IT LANDS',
-  world: 'backyard', verb: 'BURST',
-  milo: { start: { x: 60, y: 1136 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 650, y: 1136, w: 70, h: 140 },
-  freezeAt: 600,
-  static: [
-    { id: 'groundL',   type: 'platform', x: 0,   y: 1136, w: 340, h: 144 },
-    // NO ESCAPE ROUTE. The first build left 80 units of solid ground past the
-    // pit and the certified winner used it: pop the balloon and fling it RIGHT,
-    // landing at x=616 on the far side, plank never touched, brittleness pure
-    // decoration in the solved run. A brittle floor can always be saved by not
-    // hitting it, so it has to be the only floor there is.
-    { id: 'plank',     type: 'platform', x: 340, y: 1136, w: 380, h: 18, brittle: 600 },
-    { id: 'lowThorn',  type: 'platform', x: 250, y: 990,  w: 170, h: 16, sharp: true },
-    // The shield has to start somewhere. A line touching no static geometry is
-    // a falling object, not a ledge.
-    { id: 'jamb',      type: 'platform', x: 404, y: 1006, w: 16,  h: 56 },
-    { id: 'highThorn', type: 'platform', x: 440, y: 600,  w: 240, h: 16, sharp: true },
-  ],
-  objects: [
-    // MOVED IN FROM x=520. Breadth has two filters and the one that bites here
-    // is STROKE LENGTH: the shield has to reach from the jamb out past the
-    // balloon, and at 520 that was 126 units for a 20u precision floor. At 470
-    // a 76-unit shield does the same job.
-    { id: 'balloon', type: 'boulder', x: 470, y: 1080, radius: 24,
-      density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
-      lethal: { kind: 'none' } },
-  ],
-  zones: [
-    { id: 'pit', kind: 'zone', x: 346, y: 1200, w: 368, h: 80, lethal: true },
-  ],
-  drawing: { maxLength: 260, denyZones: [] },
-  solver: null,
-};
-
-/**
- * A45 — BRAKE. Air is the only thing here that makes a fall gentler.
- *
- * A19 asks IN THE COLUMN OR NOT and answers it with a plate. The same question
- * against a brittle floor gets a different answer, because a column of rising
- * air is a brake: the rock that falls beside it arrives at terminal speed and
- * takes the bridge out from under him, and the one nudged into it arrives slow
- * enough that the bridge holds.
- */
-export const A45 = {
-  id: 'a45-brake',
-  hint: 'IT IS COMING DOWN TOO FAST',
-  world: 'backyard', verb: 'BRAKE',
-  milo: { start: { x: 60, y: 1136 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 655, y: 1136, w: 65, h: 140 },
-  freezeAt: 500,
-  static: [
-    { id: 'groundL', type: 'platform', x: 0,   y: 1136, w: 300, h: 144 },
-    { id: 'groundR', type: 'platform', x: 640, y: 1136, w: 80,  h: 144 },
-    { id: 'plank',   type: 'platform', x: 300, y: 1136, w: 340, h: 18, brittle: 600 },
-    { id: 'post',    type: 'platform', x: 480, y: 700,  w: 16,  h: 200 },
-  ],
-  objects: [
-    { id: 'rock', type: 'boulder', x: 600, y: 300, radius: 22,
-      density: 0.09, restitution: 0.05, friction: 0.4,
-      lethal: { kind: 'none' } },
-  ],
-  zones: [
-    { id: 'lift', kind: 'updraft', x: 330, y: 700, w: 150, h: 436, accel: -2400 },
-    { id: 'pit',  kind: 'zone',    x: 306, y: 1200, w: 328, h: 80, lethal: true },
-  ],
-  drawing: { maxLength: 300, denyZones: [] },
-  solver: null,
-};
-
-/**
- * A46 — HAMMER. The mirror of BRAKE, and the reason a downdraft earns its keep.
- *
- * A34 uses falling air to HOLD its cargo on a pan. Here it does the other thing
- * air can do to a fall: with gravity on its side the column drives the rock
- * hard enough to go through a lid that a plain drop cannot touch. Untouched the
- * rock lands beside the column, the lid takes it, the plate is never pressed
- * and the gate never opens — a dead end, not a death.
- *
- * It also closes the door it is built on. This file's own fix for the
- * drop-on-the-plate back door is a lid; making the lid BRITTLE turns the
- * anti-bypass furniture into the mechanic, and a dropped line is far too light
- * to break it.
- */
-export const A46 = {
-  id: 'a46-hammer',
-  hint: 'NOTHING FALLING THAT SLOWLY WILL GET THROUGH',
-  world: 'backyard', verb: 'HAMMER',
-  milo: { start: { x: 60, y: 1136 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 655, y: 1136, w: 65, h: 140 },
-  freezeAt: 400,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1136, w: 720, h: 144 },
-    // THE THRESHOLD CANNOT EXCEED MAX_SPEED, which is LOCKED at 900. The first
-    // build asked for 1100 and was unsolvable: every dynamic body is clamped,
-    // so a downdraft cannot make anything land HARDER than a long drop already
-    // does — it can only reach the ceiling SOONER. That is the whole design
-    // here: the fall is deliberately SHORT, so free it arrives slow and inside
-    // the column it arrives clamped.
-    { id: 'lid',    type: 'platform', x: 500, y: 1040, w: 150, h: 16, brittle: 720 },
-    { id: 'pierL',  type: 'platform', x: 500, y: 1056, w: 14,  h: 80 },
-    { id: 'pierR',  type: 'platform', x: 636, y: 1056, w: 14,  h: 80 },
-  ],
-  objects: [
-    { id: 'rock',  type: 'boulder', x: 610, y: 900, radius: 22,
-      density: 0.09, restitution: 0.05, friction: 0.4,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 516, y: 1106, w: 118, h: 30, triggers: ['gate'] },
-    { id: 'gate',  type: 'gate',   x: 430, y: 996,  w: 34,  h: 140 },
-  ],
-  zones: [
-    { id: 'down', kind: 'updraft', x: 500, y: 860, w: 70, h: 180, accel: 1500, ax: 0 },
-  ],
-  drawing: { maxLength: 300, denyZones: [] },
-  solver: null,
-};
-
-/** A47 — VOLLEY. The bounce goes up. The plate is sideways. */
-export const A47 = {
-  id: 'a47-volley',
-  hint: 'IT COMES STRAIGHT BACK UP EVERY TIME',
-  world: 'backyard', verb: 'VOLLEY',
-  // Milo's route is SHORT and on the left, so the apparatus on the right is
-  // never something he has to walk under.
-  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 205, y: 1152, w: 70, h: 140 },
-  freezeAt: 400,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // NO SPRING PAD. It was decoration and levelcheck said so: the bounce lives
-    // on the BALL's restitution, and zeroing the pad's changes nothing at all.
-    // The ball bounces off plain ground, and off the player's line, at 0.85.
-    { id: 'shelf',  type: 'platform', x: 480, y: 1040, w: 240, h: 16 },
-    // A kerb, not a wall — the bounce peaks at a centre of y=976 and has to
-    // clear this to land on the shelf.
-    { id: 'lip',    type: 'platform', x: 480, y: 1010, w: 16,  h: 30 },
-    // THE LID CLOSES THE PLATE BACK DOOR. The first build swept 19.3% with
-    // 86.4% hand-robust and the certified winner was an UNANCHORED bowl with
-    // zero anchors: dropped straight onto the plate, ball never leaving x=360.
-    // The ball arrives ROLLING along the shelf and a dropped line arrives from
-    // above, so a cap 92 units over its head separates them for free.
-    { id: 'lid',    type: 'platform', x: 494, y: 880,  w: 222, h: 16 },
-  ],
-  objects: [
-    // THE BALL CARRIES THE BOUNCE, NOT THE PAD. Measured: with the ball at
-    // restitution 0.1 it rebounds ONE unit off a pad set to 0.85, and at 0.85
-    // it rebounds 150. Whatever Matter is doing with the pair, the number that
-    // moves the ball is the one on the ball.
-    { id: 'ball',  type: 'boulder', x: 360, y: 600, radius: 26,
-      density: 0.04, restitution: 0.85, friction: 0.15, frictionAir: 0,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 500, y: 1010, w: 200, h: 30, triggers: ['gate'] },
-    { id: 'gate',  type: 'gate',   x: 150, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [],
-  // 130 OF INK, AND THAT IS THE LEVEL. At 320 the A14 test said the bounce was
-  // decoration, because a ramp from the ground to the shelf is affordable and
-  // a rolled ball needs no bounce at all. A budget too small to build that ramp
-  // leaves only a short bank board — which is a thing a bouncing ball needs and
-  // a rolling one cannot use.
-  drawing: { maxLength: 130, denyZones: [] },
-  solver: null,
-};
-
-/** A48 — LOB. It has the height. It does not have the distance. */
-export const A48 = {
-  id: 'a48-lob',
-  hint: 'IT CANNOT GET OVER THAT ON ITS OWN',
-  world: 'backyard', verb: 'LOB',
-  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 650, y: 1152, w: 70, h: 140 },
-  freezeAt: 400,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'spring', type: 'platform', x: 180, y: 1152, w: 170, h: 128,
-      restitution: 0.85, friction: 0.3 },
-    { id: 'wall',   type: 'platform', x: 470, y: 1074, w: 18,  h: 78 },
-  ],
-  objects: [
-    { id: 'ball',  type: 'boulder', x: 120, y: 700, radius: 26,
-      density: 0.04, restitution: 0.85, friction: 0.15, frictionAir: 0, vx: 260,
-      lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 510, y: 1122, w: 180, h: 30, triggers: ['gate'] },
-    { id: 'gate',  type: 'gate',   x: 120, y: 1012, w: 34, h: 140 },
-  ],
-  zones: [],
-  drawing: { maxLength: 320, denyZones: [] },
-  solver: null,
-};
-
-/**
- * A49 — CLIMB. The first level in this game that asks him to go UP.
- *
- * Every shipped level runs along flat ground or descends, and the contact sheet
- * shows it: twenty-one frames, all bottom-heavy. Climbing has been core physics
- * since A2 — descending is free, climbing is gated by the 22u step-up — and has
- * never been the puzzle. `MILO.maxWalkSlope` is 40 degrees, so a ramp under
- * that is walkable and a ramp over it is a wall.
- *
- * Doing nothing walks him into the face of the ledge and stops him dead, which
- * is a stuck timeout and reads as exactly what it is.
- */
-export const A49 = {
-  id: 'a49-climb',
-  hint: 'HE CANNOT GET UP THERE',
-  world: 'backyard', verb: 'CLIMB',
-  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
-  // THE GOAL SITS AT THE FAR END OF THE SHELF, NOT WHERE THE RAMP LANDS. At
-  // x=600 its box covered the arrival point and the solver rejected almost
-  // every stroke with "overlaps-goal" before simulating it — breadth 0.0% with
-  // nothing actually wrong with the level. The same class as the frozen frame
-  // that spawned a killing ball on top of the goal.
-  goal: { id: 'goal', x: 620, y: 1060, w: 70, h: 140 },
-  freezeAt: 400,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 520, h: 128 },
-    // THE SHELF IS 152 UNITS UP, WHICH IS WHAT A RAMP CAN ACTUALLY DELIVER.
-    // Measured before this was rebuilt: he climbs 93u at 16 degrees, 139u at
-    // 25 and 187u at 35. The first build put the goal 392 units up behind a
-    // stub at 1010 — a stub he could not step onto, since the step-up is 22 —
-    // and it swept 0.0% because there was nothing to draw.
-    // CLOSER AND LOWER, BECAUSE LENGTH IS WHAT KILLS BREADTH. At a shelf 152u
-    // up and 130 across, the winning ramp had to span 265 units and only 4
-    // strokes in the plausible space managed it — 0.2%. At 92u up and 90
-    // across it is a 163-unit ramp, an ordinary thing for a hand to draw.
-    { id: 'shelf',  type: 'platform', x: 520, y: 1060, w: 200, h: 220 },
-  ],
-  objects: [],
-  // NO PIT. With a gap to span AND a shelf to reach AND a slope limit AND a
-  // goal box to miss, the winning ramp had four conditions to satisfy at once
-  // and five strokes in the whole space managed it — 0.3%, twice. Conditions
-  // in series is what killed the wheel. Take the gap away and the ledge is
-  // simply too tall to climb: the ramp's foot can go anywhere on the ground
-  // and its top anywhere on the face, and walking into the wall is a stuck
-  // timeout that reads as exactly what it is.
-  zones: [],
-  drawing: { maxLength: 420, denyZones: [] },
-  solver: null,
-};
-
-/**
- * A50 — OVERHANG. The way up is not the way a ramp wants to go.
- *
- * CLIMB asks whether he can get up at all. This asks WHICH SIDE the ramp has to
- * start from, because the ledge hangs out over the approach: a ramp built
- * straight at it meets the underside, and the only line that works comes up
- * behind it. Same locomotion rule, different question.
- */
-export const A50 = {
-  id: 'a50-overhang',
-  hint: 'THAT ROOF IS IN THE WAY OF THE CLIMB',
-  world: 'backyard', verb: 'OVERHANG',
-  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
-  goal: { id: 'goal', x: 250, y: 700, w: 70, h: 140 },
-  freezeAt: 400,
-  static: [
-    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    // The perch, and the lip that hangs out over the approach to it.
-    { id: 'perch',  type: 'platform', x: 210, y: 700,  w: 150, h: 20 },
-    { id: 'eave',   type: 'platform', x: 360, y: 700,  w: 200, h: 20 },
-    { id: 'pillar', type: 'platform', x: 544, y: 720,  w: 20,  h: 432 },
-  ],
-  objects: [],
-  zones: [],
-  drawing: { maxLength: 460, denyZones: [] },
+  drawing: { maxLength: 220 },
   solver: null,
 };
 
@@ -2701,311 +1298,8 @@ export const LEVELS = [
   A30, A43, A31, A34,                   // the finale:    FLOAT CRACK THORNS SINK
 ];
 
-/**
- * HELD — built, measured, passing their gates, and NOT SHIPPING.
- *
- * A level on this shelf is not deleted and not broken. It is one that does not
- * yet earn its place, and shipping it would cost more than leaving it out. They
- * come back when the idea behind them is worth the slot.
- *
- * A7 and A14 are here on PLAYTEST evidence rather than on measurement, which is
- * the whole point of the shelf: both pass every automated gate. The gates
- * measure whether a level is fair. They cannot measure whether a person knows
- * what it wants from them.
- *
- * A NOTE ON NAMES, because it cost a wrong removal. The constant A13 is NOT
- * level 13. These names are creation order; the number on screen is the level's
- * position in LEVELS, and holding A6 already shifted everything after it by one.
- * A7 was level 6. A13 was level 12. A14 was level 13. When a level is discussed
- * by the number a player saw, resolve it through LEVELS before touching
- * anything — the code name and the screen number are different things.
- */
-export const HELD = [
-  { level: A50, reason: 'Held unbuilt with A49 — the overhang needs the approach blocked on the side '
-    + 'Milo actually walks in from, and he only ever walks right, so the eave has nothing to block.' },
-  { level: A49, reason: 'A CLIMB IS STRUCTURALLY NARROW, AND THIS FILE ALREADY SAID SO. It is '
-    + 'solvable and clean — three hand-drawn ramps win, 30-45u precision floor, wobble 0 — and it '
-    + 'swept 0.2%, then 0.3%, then 0.3% again across three geometries. Five wins in 1820 plausible '
-    + 'strokes every time. '
-    + 'The reason is already recorded under A2, which was the hardest level in the game at position '
-    + 'TWO on 1.1% breadth: descending is free, climbing is gated by the 22u step-up, and what fixed '
-    + 'A2 was DROPPING the far bank so the crossing became a descent. A ramp that has to meet the '
-    + 'ground at one end and a ledge at the other inside a 20-38 degree window is a needle in the '
-    + 'stroke space, and neither shortening it (265u to 163u) nor removing the pit moved the number '
-    + 'by a single win. '
-    + 'Two real bugs were found on the way and are worth keeping. The first build put the goal 392 '
-    + 'units up behind a stub at y=1010 that Milo could not step onto at all. The second had the '
-    + 'goal box sitting exactly where the ramp lands, so the solver threw out nearly every candidate '
-    + 'with "overlaps-goal" BEFORE simulating it — a level can sweep 0.0%% with nothing whatever '
-    + 'wrong with its physics. Check the rejection reason before believing an unsolvable verdict.' },
-  { level: A48, reason: 'UNSOLVABLE — 0.0%. An angled bounce buys only 84 units of height, which is '
-    + 'not enough to lob anything over a wall worth having. Held with A47, whose reason explains '
-    + 'why no spring level works.' },
-  { level: A47, reason: 'THE SPRING PAD IS NOT A NOUN IN THIS ENGINE, AND THE BOUNCE IS REDUNDANT '
-    + 'WITH THE STROKE. Two findings, both measured, and between them they close the whole idea. '
-    + 'FIRST: the bounce is on the BALL, not the pad. A pad at restitution 0.85 rebounds a ball of '
-    + '0.1 by ONE unit; the same ball at 0.85 rebounds 150, off any surface at all. Measured across '
-    + 'drop heights 1090 to 600 — a vertical drop never bounces, at any speed, because the number '
-    + 'that matters is the one on the object. So a spring PAD cannot carry a level, and levelcheck '
-    + 'said the pad was decoration the moment it was asked. '
-    + 'SECOND, and fatal: with the pad gone and the bounce on the ball, the A14 test says the BOUNCE '
-    + 'is decoration too — a drawn ramp rolls the ball to the same shelf and no bouncing is needed. '
-    + 'Cutting the ink from 320 to 130 to make that ramp unaffordable did not change it: still '
-    + 'decoration, and the families collapsed from five to one. A bounce gets a ball UP and ACROSS, '
-    + 'and those are the two things a static line already does. '
-    + 'It also ate the plate back door in passing: the first build swept 19.3% at 86.4% hand-robust '
-    + 'and its certified winner was an UNANCHORED bowl with zero anchors, dropped straight onto the '
-    + 'plate while the ball never left x=360. A lid fixed that and took breadth to 3.6%, which is '
-    + 'what the file already says closing that door costs.' },
-  { level: A44, reason: 'THE WINNING SHIELD HAS A 50-UNIT BAND TO LIVE IN, AND THAT IS THE 20u '
-    + 'PRECISION FLOOR. It must sit BELOW the low thorn bank (bottom 1006) so the balloon can still '
-    + 'reach the bank, and ABOVE the balloon top (1056) so the balloon meets it at all. Fifty units '
-    + 'is not a band a thumb can find, and no amount of tuning moves it because both walls are what '
-    + 'the level IS. '
-    + 'Three attempts, all measured. The first build shipped a different bug and it is the one worth '
-    + 'keeping: the certified winner popped the balloon and flung it RIGHT onto 80 units of solid '
-    + 'ground past the pit, landing at x=616 with the plank never touched — 6.9% breadth, four '
-    + 'families, 45u floor, and the brittleness pure decoration in the solved run. Removing the '
-    + 'escape fixed the honesty and exposed the band. Shortening the required stroke (balloon 520 to '
-    + '470) did not move the floor; widening the anchor made it UNSOLVABLE, because a jamb wide '
-    + 'enough to grab is wide enough to block the route. '
-    + 'If it returns, the two banks have to be much further apart vertically so the shield has real '
-    + 'room — which probably means the low bank is a floor the balloon rests under, not a ceiling it '
-    + 'squeezes below.' },
-  { level: A45, reason: 'THE COLUMN HOLDS THE ROCK UP FOR EVER, SO THE LEVEL IS BLOCK IN A COSTUME. '
-    + 'An updraft at -2400 against gravity 1800 is net 600 UP, so a rock steered into it never comes '
-    + 'down: the certified winner ends at y=723, floating inside the column, and the plank survives '
-    + 'because nothing ever touches it. Brittleness is decoration in the solved run, which the A14 '
-    + 'test cannot see because it compares outcomes and the IDLE run still changes. '
-    + 'It swept well first — 5.0% breadth, four families, 45u floor, 48.8% hand-robust — which is '
-    + 'exactly why tracing the certified winner is not optional. '
-    + 'A column weak enough to let the rock through (|accel| under 1800) does not brake it either, '
-    + 'because MAX_SPEED is locked at 900 and a long drop is already AT the clamp before it enters. '
-    + 'If it returns it needs a column that reaches the plank and is too short to stop anything.' },
-  { level: A46, reason: 'MAX_SPEED IS LOCKED AT 900, SO "LAND HARDER" IS NOT A MECHANIC. Every dynamic '
-    + 'body is clamped — the constant is locked because at 120Hz, 900 u/s is 7.5 units of travel per '
-    + 'step against a 16-unit line, so raising it lets things tunnel through the player stroke. The '
-    + 'first build asked a downdraft to drive a rock through a lid at 1100 and swept 0.0%: measured, '
-    + 'a drop beside the column and a drop inside it BOTH arrived at exactly 900. A downdraft cannot '
-    + 'make a fall harder than the ceiling, only reach the ceiling SOONER. '
-    + 'That salvage works and was measured — shorten the drop to 138 units and free-fall arrives at '
-    + '582 while the column arrives at 781, which a 720 threshold separates cleanly. It swept 0.0% '
-    + 'anyway, 1276 stuck, because THE TWO REQUIREMENTS FIGHT: the fall has to be short for the '
-    + 'column to matter, and a short fall leaves no room to steer the rock sideways into it. Two '
-    + 'conditions in series, which is what killed the wheel. '
-    + 'The general form is worth more than the level: in this engine a brittle threshold can only '
-    + 'ever ask to land SOFTER, never harder, because the hard end is a locked constant.' },
-  { level: A40, reason: 'A TWIN OF A31, AND I SHIPPED IT — the contact sheet caught what the '
-    + 'gates could not. Tiled beside level 19 THORNS it is the same picture: toothed ceiling, '
-    + 'two-post bin with an arrowed plate, balloon low, Milo behind a gate. The numbers say the '
-    + 'same thing louder — jamb 282 vs 300, thorns y 520 vs 560, chute 400/620 vs 410/668, floor '
-    + 'y 860 vs 870, plate 418 vs 428, and the balloon starts at x=340 in BOTH. It is A31 shifted '
-    + 'by ten to forty units. '
-    + 'And it PLAYS the same, which is the part that settles it: the certified winners are both '
-    + 'the bowl family, both horizontal at 0 degrees, both a shield slung under the thorns — 295u '
-    + 'at y=488 against 246u at y=632. The claimed second question, how far the pop carries, is '
-    + 'not asked: A31 starts its balloon 78 units from the chute mouth and this one 88. '
-    + 'The warning was already in CLAUDE.md before it shipped, in my own words: the shield '
-    + 'archetype produced five keepers and all five were NEAR-IDENTICAL to A31. I took one of '
-    + 'those five, hand-finished it, and it passed every gate at 2.1% breadth and 62.2% '
-    + 'hand-robust. The gates measure fair. They cannot measure whether the set already has this '
-    + 'level in it. If it returns it needs a different QUESTION, not a shorter shield.' },
-  { level: A42, reason: 'THE A27 MISTAKE, WITH A BALLOON IN IT. This is A40 REACH with the jamb moved '
-    + 'from x=300 to x=600 and the whole apparatus mirrored around it, which is the same question — how '
-    + 'far does the pop carry — asked a second time with the lean reversed. That is precisely what '
-    + 'shelved A27, and the rule is already in this file: a second level on a noun needs a different '
-    + 'QUESTION, not a different geometry. It also failed its gates (1.7% breadth against a 2% floor, '
-    + '20u precision floor against the 25u thumb limit) but the numbers are not why it is here. Tuning '
-    + 'it to a pass would have bought a level that passes and is a mirror.' },
-  { level: A41, reason: 'TWO ATTEMPTS SPENT AND THE SECOND QUESTION NEVER ARRIVED. A low ceiling over '
-    + 'A40 REACH is less headroom for the same shield answering the same question. Build one delivered '
-    + 'itself — the burst balloon drifted 330 to 459 and pressed the plate with no stroke at all, which '
-    + 'is the pop-is-not-a-vertical-delivery rule biting from the other side. Build two moved the catch '
-    + 'beyond that carry and swept 0.9% against a 2% floor. The guardrail is two attempts, then hold. '
-    + 'The shield noun is DONE at two levels: A31 asks where the balloon bursts, A40 asks how far that '
-    + 'burst carries. A third wants a third question, and neither of these has one.' },
-  { level: A39, reason: 'NO MACHINE IN IT. Strip the lift AND the downdraft and the level plays exactly '
-    + 'the same — idle stuck, solved success — so it is a ball rolling into a hole, which level 3 '
-    + 'already is. It passed every number first (3.3% breadth, 45u precision floor, wobble 2, four '
-    + 'families, 38 of 75 winners hand-robust) and the A14 test is the only thing that saw it. '
-    + 'The distinction worth keeping, because A34 SINK is nearly the same picture and DOES work: a '
-    + 'downdraft only earns its place when the cargo would otherwise LEAVE. In SINK the balloon would '
-    + 'float straight off the pan without the column, so the column is what makes the pan a pan. Here '
-    + 'the hatch does all the work — gravity alone holds a ball on a pan and a tilt alone slides it '
-    + 'into a hole — so both the air and the buoyancy are along for the ride.' },
-  { level: A38, reason: 'A SECOND CHUTE DOES NOT SURVIVE THE SHIELD BEING SHORT ENOUGH TO DRAW. The idea '
-    + 'was A31 inverted — the near opening a dead end and the plate in the far one, so stopping short '
-    + 'is the mistake rather than overshooting — and it works by hand: a shield to x=430 drops the '
-    + 'balloon in the bin, to 500 or 560 it makes the pen. It swept 0.0% anyway, one win in the whole '
-    + 'space, because a winning shield had to span 220 units AND ride close to the thorns AND anchor to '
-    + 'the jamb, and almost nothing in the plausible set does all three. Pulling the whole apparatus '
-    + 'right to shorten the shield made it UNSOLVABLE instead: the balloon then starts so near the bin '
-    + 'that every shield long enough to clear it is also long enough to overshoot the pen. '
-    + 'The two chutes are the problem. A31 ships because its single chute is a wide target with slack '
-    + 'on both sides; splitting that width in two leaves neither half big enough for the pop lag, which '
-    + 'is roughly 50 units and varies with how fast the shield made the balloon travel. If it returns, '
-    + 'it needs ONE chute and a different second outcome — a shelf, a drop, anything that does not eat '
-    + 'half the landing zone.' },
-  { level: A37, reason: 'A DOWNDRAFT IS GOOD AT HOLDING AND BAD AT BLOCKING, and this is the second '
-    + 'level to prove it. Two columns with a gap make a doorway only floating things can feel, which '
-    + 'reads well and does not work: the balloon arrives at the gap with the horizontal momentum the '
-    + 'ceiling gave it, and it climbs far too slowly to get up through the gap before drifting into the '
-    + 'next column. Traced at an 80-unit gap and again at 120 — x went 333, 360, 402, 450, 490 while y '
-    + 'moved only 818 to 763. It crosses the doorway sideways instead of going up it. '
-    + 'Two diagnostics worth keeping. A rising balloon meets the player line from BELOW, so the stroke '
-    + 'is a CEILING, not a floor: the first four probes all steered it the wrong way because they were '
-    + 'drawn as ramps. And a line touching no static geometry is not a ledge but a falling object — '
-    + 'the posts had to run the full height of the column before any stroke could anchor at all. '
-    + 'Put beside A34 SINK, which works, the rule is clear: a downdraft that HOLDS its cargo against a '
-    + 'surface gives a clean decision, and a downdraft used as a WALL does not. Stop building walls '
-    + 'out of air.' },
-  { level: A36, reason: 'A DOWNDRAFT CANNOT THREATEN MILO, and three builds say so. Outside the column a '
-    + 'balloon rises, so the moment it spills off either end of the pan its own lift carries it up and '
-    + 'away from him — doing nothing WON every time. The fixes each moved the failure rather than '
-    + 'removing it: extending the column to the ground made the balloon drift down at only 900 net and '
-    + 'reach the floor at 2558ms, by which point Milo was already at the goal; tripling the column to '
-    + '3000 made it fall fast but it spilled out of the right edge and floated off the top of the world; '
-    + 'making the column asymmetric so one end stays inside it did not help either. '
-    + 'The general shape: a downdraft only acts on its cargo INSIDE the column, and a column wide '
-    + 'enough to hold the cargo all the way down to Milo is a column with no safe side left in it. '
-    + 'That is the mirror of the trap already in the file — an updraft plus a ceiling pins MILO — and '
-    + 'it means air levels stay non-lethal: a draught is a delivery mechanism, not a weapon. '
-    + 'If it returns it needs the hazard to be something the column DROPS onto, not the cargo itself.' },
-  { level: A35, reason: 'BREADTH TUNING HOLLOWED IT OUT, and only the A14 test could see it. This level '
-    + 'passes every number — 2.4% breadth, 45u precision floor, wobble 1, four families, 26 of 42 '
-    + 'winners hand-robust at 61.9% — and its downdraft column is DECORATION. Delete the zone and '
-    + 'NOTHING changes: not the idle run, not the solved run. '
-    + 'The way it got there is the lesson. Honest, the column was a wall a balloon cannot push through '
-    + 'and the level was a detour around it — and it swept 0.2%, one win in five hundred strokes, '
-    + 'because escaping meant being dragged the full 242-unit width of the column sideways while the '
-    + 'air pushed down the whole way. Narrowing it to 138 gave 0.6%. Dropping the plate to meet the '
-    + 'escape gave 1.3%. Moving the balloon to 40 units from the column edge gave 2.4% and a pass — '
-    + 'and by then the balloon barely entered the column at all, so the column had stopped mattering. '
-    + 'EVERY STEP THAT BOUGHT BREADTH SPENT MEANING, and the breadth gate cannot tell the difference. '
-    + 'If it returns, the escape has to be short WITHOUT the column being easy to avoid — which '
-    + 'probably means the balloon starts dead centre under a narrow column and the ramp is the only '
-    + 'way out in either direction, rather than a nudge toward an edge it was already near.' },
-  { level: A33, reason: 'A WIND ROAD CANNOT BE ASKED TO CLIMB, and the arithmetic says so before any '
-    + 'sweep does. A draught pushes a rock up a slope only while tan(angle) < ax/g, which at ax=600 '
-    + 'against gravity 1800 is about 18 degrees — and there is no friction here to help. So every unit '
-    + 'of drop costs THREE units of run to pay back, and the world is 720 wide. Forcing a dip with a '
-    + 'hanging beam and then asking for a 70-unit climb needs 215 units of clear run after the beam; '
-    + 'the geometry left 130. Widening it enough to be possible makes it a knife edge, which is the '
-    + 'same shape of failure as A24 — the machine works, the world is too small for it. '
-    + 'The build also had the beam as decoration and the trace said so: an untouched rock leaves the '
-    + 'rail at x=217 and is already below y=750 by x=275, so it passes UNDER the beam without the beam '
-    + 'doing anything. A hanging obstacle only obstructs if it reaches into the path the cargo actually '
-    + 'takes, and in this engine a rock leaving a rail falls almost straight — measured, twice now. '
-    + 'If this returns, the climb has to be the whole level rather than a complication added to one: '
-    + 'a long shallow run with nothing else in it, and the question being whether the player can keep '
-    + 'under 18 degrees for its whole length.' },
-  { level: A32, reason: 'A POP IS NOT A VERTICAL DELIVERY, and that kills the whole idea of feeding a machine with one. A burst balloon keeps every unit of horizontal speed the shield gave it, and the faster the shield made it travel the further it carries after bursting — measured at 330 units. So it cannot feed a see-saw. A ball that lands still moving rolls ACROSS the pin, and a see-saw amplifies the roll rather than resisting it: pops at x=319, x=404 and x=502 — two of them LEFT of a pin at 420 — all three tipped the plank RIGHT and all three delivered to the same pen. The landing side stopped deciding anything. '
-    + 'The A14 test said it out loud when run by hand: nail the plank down and two of the four strokes are completely unchanged. A lever that half the solutions do not need is decoration, which is exactly the fraud A14 was written to catch. '
-    + 'The general finding is worth more than the level. A28 LIP is the only true vertical delivery in this game — it works by stopping the cargo dead against a wall — and it is fixed in place by construction, so the player can never choose WHERE it happens. Until something can deliver from rest at a point the player picks, a see-saw cannot be the second machine in a chain. '
-    + 'It also hid a staging fault worth remembering: the catch pen was walled from y=960 to 1080 and Milo stands 72 tall on ground at 1152, so its walls hung exactly into his headroom and blocked the goal. Every winning run reported timeout, not success.' },
-  { level: A27, reason: 'A27 IS A21 MIRRORED, which is the one fault no per-level gate can see. The same shaft, the same pivoted plank, the same pair of end-stops, the same 26-unit rock, and the same single question — which side of the pin does it come down on. Only the lean is reversed. Tiled beside A21 on the frozen sheet they are one level twice, which is exactly what the playtest meant by "too basic". '
-    + 'It never got its failure to hold either. The untouched rock leaves the right arm with 800 units of drop behind it and FRICTION DOES NOTHING in this engine, so nothing stops it: it rolled to x=700, past the goal, and doing nothing WON. Measured kerbs — 14u and 18u were rolled straight over, 22u launched the rock out of the world at y=9711. A rock arriving that fast cannot be parked in a walkway by any obstacle low enough for Milo to step over. '
-    + 'The finding worth keeping is the general one: WHICH SIDE OF THE PIN is the pivot\'s only question, and A21 already asks it. A second pivot level needs a different question, not a different lean.' },
-  { level: A26, reason: 'TWO LEVERS IN SERIES CANNOT BOTH MATTER, and the reason is geometric rather '
-    + 'than tuning. A see-saw delivers off its END, which is by definition outside its own footprint, '
-    + 'so the second lever has to sit offset from the first — and that offset IS a window to drop the '
-    + 'rock straight onto lever two, skipping lever one. Measured: lever two is fully load-bearing '
-    + '(nail it down and all four winning strokes fail) while lever one is not (nailed down, three of '
-    + 'four still win, because a ramp throws the rock past its right end at x=390 and it crosses the '
-    + 'gap at x=467). A baffle closes the skip and closes the real route with it — three of the four '
-    + 'winners died and lever one was STILL skippable on the survivor. '
-    + 'Widening lever two only widens the window; covering it needs lever one to span the whole of '
-    + 'lever two plus its own arms, which makes it asymmetric and it then tips under its own weight. '
-    + 'A cascade needs a delivery that lands INSIDE the next machine, which a see-saw cannot give. '
-    + 'Pair the lever with something that catches from above instead — a chimney or a funnel.' },
-  { level: A25, reason: 'THE SPRING NEEDS A VERTICAL ARRIVAL AND A PLAYER CANNOT GIVE IT ONE. '
-    + 'A bounce is made of speed INTO the surface, so every ramp that feeds a board delivers the '
-    + 'ball sideways and there is nothing left to bounce with. A tilted board fixes the launch '
-    + '(measured 10deg at 0.8: rises 115u, travels 255u right — 20deg leaves the world) but not '
-    + 'the arrival. A funnel to verticalise it got breadth from 1.2% to 3.4%, and then the throat '
-    + 'started catching the ball: with the board dead and the board springy the run ends identically, '
-    + 'jammed at (398,967). Five shapes, and the noun ends up decoration. '
-    + 'The real lesson is bigger than this level and is written up in CLAUDE.md: a machine that '
-    + 'needs its input delivered in a particular DIRECTION cannot be driven by one static stroke. '
-    + 'The spring works when the player only chooses WHERE something lands (A20) and fails whenever '
-    + 'the level also needs to choose HOW it arrives.' },
-  { level: A24, reason: 'THE MACHINE WORKS; THE WORLD IS TOO SMALL FOR IT. Five designs, and the '
-    + 'physics was never the problem. Findings, so none of this is paid for twice: a wheel must '
-    + 'OUTWEIGH what it throws — at mass 30 against a 36 rock it stalled, reversed to -0.0072 and '
-    + 'flung the rock out of the world, while at 252 it carried through cleanly; the free spin that '
-    + 'ruins a see-saw is exactly what a wheel wants; and a heavy enough wheel throws EVERYTHING '
-    + 'far, so the throw distance cannot be the puzzle. '
-    + 'Asking the player to AIM it — nudge the rock into a feed band, catch the right blade phase, '
-    + 'land it somewhere — is three conditions in series and swept at 0.9% breadth against a 2% '
-    + 'floor. (An earlier cut measured 20.4%, but that was the bypass: the certified solution came '
-    + 'back anchors=0, an unanchored line dropped straight on the plate, with the mill as scenery.) '
-    + 'Turned round as a HAZARD it throws too fast and too flat to catch a walking man: eight '
-    + 'combinations of spin and hub position, and the closest it ever came to Milo was 51 units. '
-    + 'The engine support (addCross, spin, bladed rendering) is sound and stays. Bring the wheel '
-    + 'back for something that does NOT need aiming and does not need it to hit a moving target — '
-    + 'a mill that turns something, or a hazard that sweeps a place he must cross rather than one '
-    + 'that has to intercept him.' },
-  { level: A22, reason: 'CAUGHT BETWEEN TWO DEAD ENDS, and the A14 test named the second one. '
-    + 'The rock has to land on the plank for the lever to route it. Land it ON the pin and the '
-    + 'outcome is decided by noise: the level swept at 39.4% breadth, the loosest in the game, and '
-    + 'its certified stroke won in the solver and lost in the browser TWICE on unchanged geometry, '
-    + 'because a stroke redrawn with a mouse is never bit-identical and a balance point has no '
-    + 'margin. Land it OFF the pin, as A21 does, and the pre-flight reports the pivot as decoration '
-    + '— correctly, because a STATIC plank tilted the same way sends the rock to the same end. '
-    + 'A21 needs its pivot precisely because its static lean sends the rock the WRONG way, so the '
-    + 'tipping is what saves it; nothing here has that property. Three attempts, and the mechanic '
-    + 'is fine — it ships in A21. Bring this back only with a shape where a fixed plank and a free '
-    + 'one give different answers.' },
-  { level: A23, reason: 'HOLDING A PIVOTED ARM UP IS NOT A PLAYABLE VERB, and this is the second '
-    + 'time this project has found that out. A7 was held on playtest for the same shape — "the plank '
-    + 'reads as scenery, not as the thing you must hold up" — and A23 puts a number on it: 0.6% '
-    + 'breadth against a 2% floor, the narrowest measurement taken here, unchanged across two '
-    + 'geometries. It was also the failure mode of the first solutions tried on A21, where props '
-    + 'either missed the plank underside entirely or jammed the rock against it at -34deg. '
-    + 'The reason is structural: a drawn line is STATIC and the arm is MOVING, so the player is '
-    + 'asked to guess where a moving thing will be. Every other stroke in this game acts on '
-    + 'something falling or rolling along a path you can read off the frozen frame. '
-    + 'The lever itself is fine and ships twice (A22, A21) — what does not work is being asked '
-    + 'to hold one. Bring this back only with a mechanism that LATCHES, so the player acts on '
-    + 'something stationary and the arm is held by the world rather than by their aim.' },
-  { level: A6, reason: 'only passes with a 47u wall, barely above the 22u step-up — teaches nothing' },
-  { level: A7, reason: 'playtest: the plank reads as scenery, not as the thing you must hold up. '
-    + 'The idea (anchor both ends or it is a see-saw) is good and the physics works; '
-    + 'what is missing is any way to see that it is about to tip. Bring it back when '
-    + 'the tipping is telegraphed before he steps on it.' },
-  { level: A18, reason: 'the MECHANIC is sound and verified; this LEVEL is not. Built to introduce '
-    + 'the updraft and the A14 test killed it in one run — deleting the air changed nothing, on '
-    + 'every stroke tried, so the column was decoration. Two rebuilds where the air lifts MILO '
-    + 'instead both failed on a real property of the mechanic: an updraft plus ANY ceiling pins '
-    + 'him against it (measured: stuck at x=510 for every lid height and every sideways push from '
-    + '280 to 400). A level where the air lifts him needs somewhere for him to LEAVE sideways '
-    + 'under his own power, which airborne Milo does not have. Build it around lifting an OBJECT '
-    + 'whose exit is geometry, not around lifting him.' },
-  { level: A17, reason: 'playtest, and correctly: "the worst idea we have ever had". Its constraint '
-    + 'was a RULE (a no-draw zone) rather than a THING. Every other constraint in this game comes '
-    + 'out of the physics — gravity, anchoring, the 22u step-up — and this one came out of me. Two '
-    + 'red hatched boxes floating in a backyard read as a debug overlay, and beating it teaches '
-    + '"do not draw there", which is not a skill. denyZones stay implemented; they belong on '
-    + 'something diegetic (a hot pipe, a hornet nest), never as a bare forbidden rectangle.' },
-  { level: A16, reason: 'the INVERSION is the best idea in the set and this is the wrong build of '
-    + 'it. Measured 3.3% breadth and a precision floor of 0u — it fails even a 10u nudge — '
-    + 'because winning means covering TWO separate ~31u gaps either side of the crate with '
-    + 'ONE stroke. That is precise by nature: it is A14\'s two-jobs problem wearing a hat, and '
-    + 'no amount of ink, a crate instead of a ball, or a cleaner landing moved it (10u -> 10u '
-    + '-> 0u across three attempts). The fix is not tuning. The crate must plug the chasm '
-    + 'COMPLETELY so the level is purely about the DECISION not to block it, with no bridging '
-    + 'to execute afterwards. Rebuild it that way.' },
-  { level: A14, reason: 'playtest: "very unclear what the player is supposed to do", and it ends '
-    + 'with Milo dead almost every time. Its hint has to say TWO things — "stop the rock, mind '
-    + 'the hole" — which is the tell: it is two puzzles wearing one level. The rock-becomes-the-'
-    + 'floor idea is worth keeping. Bring it back once the two jobs read as one action.' },
-];
-
-export const ALL_LEVELS = [...LEVELS, ...HELD.map((h) => h.level)];
-
-export function getLevel(id) {
-  return LEVELS.find((l) => l.id === id) ?? LEVELS[0];
-}
+// Levels that were built and did not ship are recorded in docs/HELD.md, with
+// the measured reason for each and the commit where the code still lives.
 
 /** Dev-time assertions. A level that fails these is a bug, not a hard level. */
 export function assertLevel(level) {

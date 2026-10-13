@@ -62,7 +62,7 @@ function drop(r) {
         friction: 0.4, lethal: IMPACT },
     ],
     zones: [],
-    drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+    drawing: { maxLength: LINE.maxLengthDefault },
   };
 }
 
@@ -89,7 +89,7 @@ function crossing(r) {
     ],
     objects: [],
     zones: [{ id: 'pit', kind: 'zone', x: nearW + 5, y: 1215, w: gap - 10, h: 65, lethal: true }],
-    drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+    drawing: { maxLength: LINE.maxLengthDefault },
   };
 }
 
@@ -123,7 +123,7 @@ function chimney(r) {
         density: 0.03, restitution: 0.06, friction: 0.35, lethal: IMPACT },
     ],
     zones: [],
-    drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+    drawing: { maxLength: LINE.maxLengthDefault },
   };
 }
 
@@ -155,7 +155,7 @@ function roller(r) {
         vx: speed, lethal: IMPACT },
     ],
     zones: [],
-    drawing: { maxLength: step(r, 400, 560, 20), denyZones: [] },
+    drawing: { maxLength: step(r, 400, 560, 20) },
   };
 }
 
@@ -193,7 +193,7 @@ function trigger(r) {
     static: statics,
     objects,
     zones: [],
-    drawing: { maxLength: LINE.maxLengthDefault, denyZones: [] },
+    drawing: { maxLength: LINE.maxLengthDefault },
   };
 }
 
@@ -243,7 +243,7 @@ function tilt(r) {
       { id: 'down', kind: 'updraft', x: colX, y: step(r, 380, 440, 20),
         w: colW, h: step(r, 380, 440, 20), accel: step(r, 1400, 1700, 50), ax: 0 },
     ],
-    drawing: { maxLength: step(r, 300, 340, 10), denyZones: [] },
+    drawing: { maxLength: step(r, 300, 340, 10) },
   };
 }
 
@@ -287,7 +287,7 @@ function shield(r) {
       { id: 'gate', type: 'gate', x: step(r, 230, 300, 10), y: groundY - 140, w: 34, h: 140 },
     ],
     zones: [],
-    drawing: { maxLength: step(r, 360, 420, 20), denyZones: [] },
+    drawing: { maxLength: step(r, 360, 420, 20) },
   };
 }
 

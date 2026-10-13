@@ -83,8 +83,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-174219",
     "world": "backyard",
@@ -143,8 +142,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-31677",
     "world": "backyard",
@@ -217,8 +215,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-23758",
     "world": "backyard",
@@ -285,8 +282,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 560,
-      "denyZones": []
+      "maxLength": 560
     },
     "id": "gen-roller-87110",
     "world": "backyard",
@@ -378,8 +374,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-trigger-7920",
     "world": "backyard",
@@ -460,8 +455,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-245490",
     "world": "backyard",
@@ -520,8 +514,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-174219",
     "world": "backyard",
@@ -594,8 +587,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-39596",
     "world": "backyard",
@@ -662,8 +654,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 500,
-      "denyZones": []
+      "maxLength": 500
     },
     "id": "gen-roller-182138",
     "world": "backyard",
@@ -755,8 +746,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-trigger-71272",
     "world": "backyard",
@@ -837,8 +827,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-197976",
     "world": "backyard",
@@ -897,8 +886,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-118786",
     "world": "backyard",
@@ -971,8 +959,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-142543",
     "world": "backyard",
@@ -1039,8 +1026,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 460,
-      "denyZones": []
+      "maxLength": 460
     },
     "id": "gen-roller-158381",
     "world": "backyard",
@@ -1132,8 +1118,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-trigger-134624",
     "world": "backyard",
@@ -1214,8 +1199,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-166300",
     "world": "backyard",
@@ -1274,8 +1258,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-39596",
     "world": "backyard",
@@ -1348,8 +1331,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-1",
     "world": "backyard",
@@ -1416,8 +1398,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 540,
-      "denyZones": []
+      "maxLength": 540
     },
     "id": "gen-roller-229652",
     "world": "backyard",
@@ -1509,8 +1490,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-trigger-110867",
     "world": "backyard",
@@ -1591,8 +1571,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-63353",
     "world": "backyard",
@@ -1651,8 +1630,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-55434",
     "world": "backyard",
@@ -1725,8 +1703,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-55434",
     "world": "backyard",
@@ -1793,8 +1770,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 420,
-      "denyZones": []
+      "maxLength": 420
     },
     "id": "gen-roller-110867",
     "world": "backyard",
@@ -1886,8 +1862,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-trigger-118786",
     "world": "backyard",
@@ -1968,8 +1943,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-190057",
     "world": "backyard",
@@ -2028,8 +2002,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-1",
     "world": "backyard",
@@ -2102,8 +2075,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-87110",
     "world": "backyard",
@@ -2170,8 +2142,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 500,
-      "denyZones": []
+      "maxLength": 500
     },
     "id": "gen-roller-245490",
     "world": "backyard",
@@ -2240,8 +2211,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-trigger-95029",
     "world": "backyard",
@@ -2322,8 +2292,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-79191",
     "world": "backyard",
@@ -2382,8 +2351,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-15839",
     "world": "backyard",
@@ -2456,8 +2424,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-47515",
     "world": "backyard",
@@ -2524,8 +2491,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 560,
-      "denyZones": []
+      "maxLength": 560
     },
     "id": "gen-roller-190057",
     "world": "backyard",
@@ -2606,8 +2572,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-158381",
     "world": "backyard",
@@ -2666,8 +2631,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-95029",
     "world": "backyard",
@@ -2740,8 +2704,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-166300",
     "world": "backyard",
@@ -2822,8 +2785,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-chimney-47515",
     "world": "backyard",
@@ -2882,8 +2844,7 @@ export const POOL = [
       }
     ],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-crossing-87110",
     "world": "backyard",
@@ -2956,8 +2917,7 @@ export const POOL = [
     ],
     "zones": [],
     "drawing": {
-      "maxLength": 900,
-      "denyZones": []
+      "maxLength": 900
     },
     "id": "gen-drop-134624",
     "world": "backyard",

@@ -13,7 +13,6 @@ export const REJECT = {
   TOO_LONG: 'too-long',
   OVERLAPS_MILO: 'overlaps-milo',
   OVERLAPS_GOAL: 'overlaps-goal',
-  IN_DENY_ZONE: 'in-deny-zone',
 };
 
 export function validate(points, level, miloBody) {
@@ -43,14 +42,6 @@ export function validate(points, level, miloBody) {
     if (p.x > g.x - g.w / 2 - pad && p.x < g.x + g.w / 2 + pad &&
         p.y > g.y - g.h - pad && p.y < g.y + pad) {
       return { ok: false, reason: REJECT.OVERLAPS_GOAL };
-    }
-  }
-
-  for (const z of level.drawing?.denyZones ?? []) {
-    for (const p of points) {
-      if (p.x > z.x && p.x < z.x + z.w && p.y > z.y && p.y < z.y + z.h) {
-        return { ok: false, reason: REJECT.IN_DENY_ZONE };
-      }
     }
   }
 

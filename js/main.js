@@ -16,7 +16,7 @@ import { dayNumber, dailyFor, asDaily } from './daily.js';
 import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
 import { load as loadProgress, totalStars, maxStars, perfect, starsOn } from './progress.js';
-import { A1, LEVELS, ALL_LEVELS, assertLevel } from './levels.js';
+import { A1, LEVELS, assertLevel } from './levels.js';
 import { POOL } from './dailyPool.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT, CLOSE_CALL, NEAR_MISS_DIST } from './constants.js';
 import { clear, drawScene } from './render/world.js';
@@ -31,7 +31,7 @@ import * as audio from './audio.js';
 
 // The daily pool too: a malformed pool level would otherwise surface only on
 // the one day it is dealt, as a blank page for everybody at once.
-for (const lvl of [...ALL_LEVELS, ...POOL]) assertLevel(lvl);
+for (const lvl of [...LEVELS, ...POOL]) assertLevel(lvl);
 
 const canvas = document.getElementById('stage');
 initView(canvas);
@@ -426,7 +426,6 @@ function rejectText(reason) {
     case 'too-long': return 'TOO MUCH INK';
     case 'overlaps-milo': return 'NOT THROUGH HIM';
     case 'overlaps-goal': return 'NOT OVER THE EXIT';
-    case 'in-deny-zone': return 'NOT THERE';
     default: return 'TRY AGAIN';
   }
 }

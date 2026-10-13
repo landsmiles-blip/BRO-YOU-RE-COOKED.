@@ -50,7 +50,7 @@
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { assertLevel, LEVELS, ALL_LEVELS } from '../../js/levels.js';
+import { assertLevel, LEVELS } from '../../js/levels.js';
 import { SOLVER } from '../../js/solverData.js';
 import { inkFor } from '../../js/daily.js';
 import { representativeFor } from '../solver/representative.js';
@@ -100,7 +100,7 @@ if (files.length) {
   }
   console.log(`${candidates.length} candidates — certifying each at its daily budget`);
 
-  const campaignIds = new Set(ALL_LEVELS.map((l) => l.id));
+  const campaignIds = new Set(LEVELS.map((l) => l.id));
   const seen = new Set();
   const certified = [];
   for (const c of candidates) {

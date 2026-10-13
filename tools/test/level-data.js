@@ -16,7 +16,7 @@
 // well-formed, which nothing checked anywhere: that its verified solution
 // still exists, and that the constants the levels silently depend on hold.
 
-import { LEVELS, ALL_LEVELS, assertLevel } from '../../js/levels.js';
+import { LEVELS, assertLevel } from '../../js/levels.js';
 import { MILO, LINE } from '../../js/constants.js';
 import { LETHAL_KINDS } from '../../js/hazards.js';
 
@@ -29,7 +29,7 @@ const check = (label, cond, detail = '') => {
 console.log('\nLEVEL DATA');
 
 // The exact failure that shipped a blank page.
-for (const lvl of ALL_LEVELS) {
+for (const lvl of LEVELS) {
   let err = null;
   try { assertLevel(lvl); } catch (e) { err = e.message.replace(/\n\s*/g, ' '); }
   check(`"${lvl.id}" is valid`, !err, err ?? '');
@@ -91,7 +91,7 @@ console.log('\nDAILY POOL');
 check('the pool is baked', POOL.length >= 40, `${POOL.length} levels`);
 each('every pool level is valid level data', (l) => { try { assertLevel(l); return true; } catch { return false; } });
 
-const campaign = new Set(ALL_LEVELS.map((l) => l.id));
+const campaign = new Set(LEVELS.map((l) => l.id));
 const poolIds = POOL.map((l) => l.id);
 check('pool ids are unique, and none is a campaign id',
   new Set(poolIds).size === poolIds.length && poolIds.every((id) => !campaign.has(id)));

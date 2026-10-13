@@ -131,8 +131,10 @@ measurement first; the measurement is usually the finding.
 - **A hint per level names the PROBLEM, never the solution.** A verb in the
   corner is not communication. If a hint needs to say two things, the level is
   two puzzles wearing one costume — that is what put A14 on the shelf.
-- **A held level is not a deleted one.** `HELD` in js/levels.js keeps the level
-  and the reason, so it returns as a better version rather than the same one.
+- **A held level is not a deleted one.** `docs/HELD.md` keeps every shelved
+  level's measured reason and the commit where its code lives, so it returns as
+  a better version rather than the same one. Shelved code does not stay in
+  `js/levels.js`: it shipped in the bundle and doubled the file.
 
 ## ADD NOUNS, NOT RULES
 
@@ -785,20 +787,26 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
 
 ## COMMANDS
 
-    node tools/levelcheck.js      STRUCTURE, in seconds — run BEFORE the solver
-    npm test                      level data, physics, levels — fast, run always
-    npm run solver                the gates, and writes measured star thresholds
-    node tools/solver/representative.js   certifies a hand-robust solution per level
-    node tools/test/filmstrip.js  films every level winning — READ THE IMAGES
-    FILM_IDLE=1 node tools/test/filmstrip.js   films it LOSING — read those too
-    node tools/test/frozen.js     every opening frame in ONE grid — READ IT
+    npm run levelcheck [id]       STRUCTURE, in seconds — run BEFORE the solver
+    npm test                      level data, physics, levels, curve, daily — fast, run always
+    npm run solver [id ...]       the gates, and writes measured star thresholds
+    npm run certify [id]          certifies a hand-robust solution per level
+    npm run curve                 prints the difficulty curve (tries per level)
+    npm run film                  films every level being WON — READ THE IMAGES
+    FILM_IDLE=1 npm run film      films it being LOST — read those too
+    npm run frozen                every opening frame in ONE grid — READ IT
     npm run test:audio            renders waveforms; silence throws no error
     npm run test:board            level board hit regions at four ratios
     npm run test:conformance      the automated half of certification
-    node tools/levelgen/generate.js       proposes level candidates
-    node tools/levelgen/bake.js <candidates.js ...>   bakes the DAILY DECK; no args
-                                  re-certifies it — after ANY campaign/solver/physics change
-    FILM_POOL=1 node tools/test/filmstrip.js   (and frozen.js) the daily pool, on its budget
+    npm run build                 dist/: the web page, the YouTube ZIP, the web ZIP
+    npm run generate              DAILY POOL candidates only — it cannot make a campaign level
+    npm run bake [candidates.js ...]   bakes the DAILY DECK; no args re-certifies
+                                  it — after ANY campaign/solver/physics change
+    FILM_POOL=1 npm run film      (and frozen) the daily pool, on its budget
+
+`npm run x -- args` passes flags through. Every tool that simulates needs the
+Matter import that these scripts add; `node tools/levelcheck.js` on its own
+throws "Matter.js not loaded".
 
 Browser tests need `node tools/serve.js` running.
 
