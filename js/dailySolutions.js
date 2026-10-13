@@ -470,6 +470,38 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a90-gust": {
+    "id": "a90-gust",
+    "ink": 165,
+    "winners": 26,
+    "robust": 3,
+    "anchoredRobust": 1,
+    "handRate": 0.115,
+    "solution": {
+      "family": "line",
+      "length": 110,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 125,
+          "y": 865
+        },
+        {
+          "x": 161.7,
+          "y": 865
+        },
+        {
+          "x": 198.3,
+          "y": 865
+        },
+        {
+          "x": 235,
+          "y": 865
+        }
+      ]
+    }
+  },
   "a4-catch": {
     "id": "a4-catch",
     "ink": 260,
@@ -566,6 +598,38 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a100-balloon": {
+    "id": "a100-balloon",
+    "ink": 230,
+    "winners": 27,
+    "robust": 9,
+    "anchoredRobust": 9,
+    "handRate": 0.333,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 10,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 251.4,
+          "y": 594.2
+        },
+        {
+          "x": 203.8,
+          "y": 621.7
+        },
+        {
+          "x": 156.2,
+          "y": 649.2
+        },
+        {
+          "x": 108.6,
+          "y": 676.7
+        }
+      ]
+    }
+  },
   "a30-float": {
     "id": "a30-float",
     "ink": 229,
@@ -594,6 +658,38 @@ export const DAILY_SOLUTIONS = {
         {
           "x": 108.6,
           "y": 676.7
+        }
+      ]
+    }
+  },
+  "a101-low-blow": {
+    "id": "a101-low-blow",
+    "ink": 230,
+    "winners": 19,
+    "robust": 4,
+    "anchoredRobust": 4,
+    "handRate": 0.211,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 468.6,
+          "y": 814.2
+        },
+        {
+          "x": 516.2,
+          "y": 841.7
+        },
+        {
+          "x": 563.8,
+          "y": 869.2
+        },
+        {
+          "x": 611.4,
+          "y": 896.7
         }
       ]
     }
@@ -674,6 +770,38 @@ export const DAILY_SOLUTIONS = {
         {
           "x": 380,
           "y": 820
+        }
+      ]
+    }
+  },
+  "a111-tailwind": {
+    "id": "a111-tailwind",
+    "ink": 165,
+    "winners": 13,
+    "robust": 5,
+    "anchoredRobust": 4,
+    "handRate": 0.385,
+    "solution": {
+      "family": "line",
+      "length": 110,
+      "parts": 9,
+      "anchors": 1,
+      "points": [
+        {
+          "x": 132.4,
+          "y": 872.5
+        },
+        {
+          "x": 164.1,
+          "y": 890.8
+        },
+        {
+          "x": 195.9,
+          "y": 909.2
+        },
+        {
+          "x": 227.6,
+          "y": 927.5
         }
       ]
     }

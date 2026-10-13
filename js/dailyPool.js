@@ -3380,6 +3380,7 @@ export const HELD_FROM_DAILY = {
   "a51-fence": "inside 165u of ink the only wins a hand can land are dropped lines, and it lands 45% of them (46/103) — under the 50% an unanchored solution needs",
   "a54-shelter": "inside 165u of ink the only wins a hand can land are dropped lines, and it lands 42% of them (11/26) — under the 50% an unanchored solution needs",
   "a28-duct": "not one of 23 winning strokes inside 110u of ink survives a hand",
+  "a91-kite": "not one of 14 winning strokes inside 110u of ink survives a hand",
   "a43-crack": "not one of 5 winning strokes inside 110u of ink survives a hand"
 };
 
@@ -3397,12 +3398,16 @@ export const DAILY_CAMPAIGN = [
   "a53-cover",
   "a52-keepaway",
   "a55-protect",
+  "a90-gust",
   "a4-catch",
   "a19-updraft",
   "a29-rail",
+  "a100-balloon",
   "a30-float",
+  "a101-low-blow",
   "a13-yeet",
   "a34-sink",
+  "a111-tailwind",
   "a31-thorns",
   "a21-lever"
 ];
