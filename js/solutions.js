@@ -1250,5 +1250,36 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a91-kite": {
+    "id": "a91-kite",
+    "winners": 34,
+    "robust": 34,
+    "anchoredRobust": 0,
+    "handRate": 1,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 10,
+      "anchors": 0,
+      "points": [
+        {
+          "x": 217.5,
+          "y": 494
+        },
+        {
+          "x": 272.5,
+          "y": 494
+        },
+        {
+          "x": 327.5,
+          "y": 494
+        },
+        {
+          "x": 382.5,
+          "y": 494
+        }
+      ]
+    }
   }
 };

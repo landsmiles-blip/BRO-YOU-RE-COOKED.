@@ -334,5 +334,16 @@ export const SOLVER = {
     "threeStarLength": 165,
     "shortestWin": 110,
     "measuredAt": "2026-10-13"
+  },
+  "a91-kite": {
+    "solvable": true,
+    "solutionBreadth": 0.0643,
+    "precisionFloor": 65,
+    "worstJitter": 3,
+    "distinctFamilies": 2,
+    "twoStarLength": 165,
+    "threeStarLength": 110,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
   }
 };
