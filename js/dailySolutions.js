@@ -38,34 +38,34 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
-  "a2-gap": {
-    "id": "a2-gap",
-    "ink": 253,
-    "winners": 28,
-    "robust": 13,
-    "anchoredRobust": 13,
-    "handRate": 0.464,
+  "a5-hang": {
+    "id": "a5-hang",
+    "ink": 230,
+    "winners": 79,
+    "robust": 39,
+    "anchoredRobust": 20,
+    "handRate": 0.494,
     "solution": {
       "family": "line",
-      "length": 230,
-      "parts": 11,
-      "anchors": 8,
+      "length": 165,
+      "parts": 9,
+      "anchors": 6,
       "points": [
         {
-          "x": 320.4,
-          "y": 989.6
+          "x": 491.4,
+          "y": 421.6
         },
         {
-          "x": 386.8,
-          "y": 1028
+          "x": 443.8,
+          "y": 449.1
         },
         {
-          "x": 453.2,
-          "y": 1066.3
+          "x": 396.2,
+          "y": 476.6
         },
         {
-          "x": 519.6,
-          "y": 1104.6
+          "x": 348.6,
+          "y": 504.1
         }
       ]
     }
@@ -118,66 +118,146 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
-  "a4-catch": {
-    "id": "a4-catch",
-    "ink": 260,
-    "winners": 13,
-    "robust": 7,
-    "anchoredRobust": 7,
-    "handRate": 0.538,
+  "a2-gap": {
+    "id": "a2-gap",
+    "ink": 253,
+    "winners": 28,
+    "robust": 13,
+    "anchoredRobust": 13,
+    "handRate": 0.464,
     "solution": {
       "family": "line",
       "length": 230,
-      "parts": 13,
-      "anchors": 2,
+      "parts": 11,
+      "anchors": 8,
       "points": [
         {
-          "x": 185,
-          "y": 995
+          "x": 320.4,
+          "y": 989.6
         },
         {
-          "x": 261.7,
-          "y": 995
+          "x": 386.8,
+          "y": 1028
         },
         {
-          "x": 338.3,
-          "y": 995
+          "x": 453.2,
+          "y": 1066.3
         },
         {
-          "x": 415,
-          "y": 995
+          "x": 519.6,
+          "y": 1104.6
         }
       ]
     }
   },
-  "a5-hang": {
-    "id": "a5-hang",
-    "ink": 230,
-    "winners": 79,
-    "robust": 39,
-    "anchoredRobust": 20,
-    "handRate": 0.494,
+  "a20-spring": {
+    "id": "a20-spring",
+    "ink": 165,
+    "winners": 119,
+    "robust": 33,
+    "anchoredRobust": 4,
+    "handRate": 0.277,
+    "solution": {
+      "family": "span",
+      "length": 137,
+      "parts": 8,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 380,
+          "y": 1152
+        },
+        {
+          "x": 397.1,
+          "y": 1165
+        },
+        {
+          "x": 414.3,
+          "y": 1175.5
+        },
+        {
+          "x": 431.4,
+          "y": 1181.2
+        },
+        {
+          "x": 448.6,
+          "y": 1181.2
+        },
+        {
+          "x": 465.7,
+          "y": 1175.5
+        },
+        {
+          "x": 482.9,
+          "y": 1165
+        },
+        {
+          "x": 500,
+          "y": 1152
+        }
+      ]
+    }
+  },
+  "a15-eitherway": {
+    "id": "a15-eitherway",
+    "ink": 184,
+    "winners": 36,
+    "robust": 25,
+    "anchoredRobust": 9,
+    "handRate": 0.694,
     "solution": {
       "family": "line",
-      "length": 165,
+      "length": 110,
       "parts": 9,
       "anchors": 6,
       "points": [
         {
+          "x": 347.6,
+          "y": 738.5
+        },
+        {
+          "x": 315.9,
+          "y": 756.8
+        },
+        {
+          "x": 284.1,
+          "y": 775.2
+        },
+        {
+          "x": 252.4,
+          "y": 793.5
+        }
+      ]
+    }
+  },
+  "a12-ontime": {
+    "id": "a12-ontime",
+    "ink": 183,
+    "winners": 114,
+    "robust": 62,
+    "anchoredRobust": 21,
+    "handRate": 0.544,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 10,
+      "anchors": 1,
+      "points": [
+        {
           "x": 491.4,
-          "y": 421.6
+          "y": 888.3
         },
         {
           "x": 443.8,
-          "y": 449.1
+          "y": 915.8
         },
         {
           "x": 396.2,
-          "y": 476.6
+          "y": 943.3
         },
         {
           "x": 348.6,
-          "y": 504.1
+          "y": 970.8
         }
       ]
     }
@@ -294,77 +374,45 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
-  "a12-ontime": {
-    "id": "a12-ontime",
-    "ink": 183,
-    "winners": 114,
-    "robust": 62,
-    "anchoredRobust": 21,
-    "handRate": 0.544,
+  "a53-cover": {
+    "id": "a53-cover",
+    "ink": 185,
+    "winners": 91,
+    "robust": 50,
+    "anchoredRobust": 37,
+    "handRate": 0.549,
     "solution": {
       "family": "line",
-      "length": 165,
-      "parts": 10,
-      "anchors": 1,
+      "length": 110,
+      "parts": 9,
+      "anchors": 8,
       "points": [
         {
-          "x": 491.4,
-          "y": 888.3
+          "x": 447.5,
+          "y": 1155.7
         },
         {
-          "x": 443.8,
-          "y": 915.8
+          "x": 429.2,
+          "y": 1187.4
         },
         {
-          "x": 396.2,
-          "y": 943.3
+          "x": 410.8,
+          "y": 1219.2
         },
         {
-          "x": 348.6,
-          "y": 970.8
+          "x": 392.5,
+          "y": 1250.9
         }
       ]
     }
   },
-  "a13-yeet": {
-    "id": "a13-yeet",
-    "ink": 288,
-    "winners": 14,
-    "robust": 1,
+  "a52-keepaway": {
+    "id": "a52-keepaway",
+    "ink": 165,
+    "winners": 45,
+    "robust": 20,
     "anchoredRobust": 1,
-    "handRate": 0.071,
-    "solution": {
-      "family": "line",
-      "length": 230,
-      "parts": 13,
-      "anchors": 6,
-      "points": [
-        {
-          "x": 200.4,
-          "y": 676.1
-        },
-        {
-          "x": 266.8,
-          "y": 714.4
-        },
-        {
-          "x": 333.2,
-          "y": 752.7
-        },
-        {
-          "x": 399.6,
-          "y": 791.1
-        }
-      ]
-    }
-  },
-  "a15-eitherway": {
-    "id": "a15-eitherway",
-    "ink": 184,
-    "winners": 36,
-    "robust": 25,
-    "anchoredRobust": 9,
-    "handRate": 0.694,
+    "handRate": 0.444,
     "solution": {
       "family": "line",
       "length": 110,
@@ -372,20 +420,84 @@ export const DAILY_SOLUTIONS = {
       "anchors": 6,
       "points": [
         {
-          "x": 347.6,
-          "y": 738.5
+          "x": 492.4,
+          "y": 924.5
         },
         {
-          "x": 315.9,
-          "y": 756.8
+          "x": 524.1,
+          "y": 942.8
         },
         {
-          "x": 284.1,
-          "y": 775.2
+          "x": 555.9,
+          "y": 961.2
         },
         {
-          "x": 252.4,
-          "y": 793.5
+          "x": 587.6,
+          "y": 979.5
+        }
+      ]
+    }
+  },
+  "a55-protect": {
+    "id": "a55-protect",
+    "ink": 230,
+    "winners": 28,
+    "robust": 6,
+    "anchoredRobust": 5,
+    "handRate": 0.214,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 348.6,
+          "y": 833.8
+        },
+        {
+          "x": 396.2,
+          "y": 861.3
+        },
+        {
+          "x": 443.8,
+          "y": 888.8
+        },
+        {
+          "x": 491.4,
+          "y": 916.3
+        }
+      ]
+    }
+  },
+  "a4-catch": {
+    "id": "a4-catch",
+    "ink": 260,
+    "winners": 13,
+    "robust": 7,
+    "anchoredRobust": 7,
+    "handRate": 0.538,
+    "solution": {
+      "family": "line",
+      "length": 230,
+      "parts": 13,
+      "anchors": 2,
+      "points": [
+        {
+          "x": 185,
+          "y": 995
+        },
+        {
+          "x": 261.7,
+          "y": 995
+        },
+        {
+          "x": 338.3,
+          "y": 995
+        },
+        {
+          "x": 415,
+          "y": 995
         }
       ]
     }
@@ -418,86 +530,6 @@ export const DAILY_SOLUTIONS = {
         {
           "x": 180,
           "y": 893.6
-        }
-      ]
-    }
-  },
-  "a20-spring": {
-    "id": "a20-spring",
-    "ink": 165,
-    "winners": 119,
-    "robust": 33,
-    "anchoredRobust": 4,
-    "handRate": 0.277,
-    "solution": {
-      "family": "span",
-      "length": 137,
-      "parts": 8,
-      "anchors": 8,
-      "points": [
-        {
-          "x": 380,
-          "y": 1152
-        },
-        {
-          "x": 397.1,
-          "y": 1165
-        },
-        {
-          "x": 414.3,
-          "y": 1175.5
-        },
-        {
-          "x": 431.4,
-          "y": 1181.2
-        },
-        {
-          "x": 448.6,
-          "y": 1181.2
-        },
-        {
-          "x": 465.7,
-          "y": 1175.5
-        },
-        {
-          "x": 482.9,
-          "y": 1165
-        },
-        {
-          "x": 500,
-          "y": 1152
-        }
-      ]
-    }
-  },
-  "a21-lever": {
-    "id": "a21-lever",
-    "ink": 177,
-    "winners": 33,
-    "robust": 5,
-    "anchoredRobust": 2,
-    "handRate": 0.152,
-    "solution": {
-      "family": "line",
-      "length": 165,
-      "parts": 9,
-      "anchors": 7,
-      "points": [
-        {
-          "x": 251.4,
-          "y": 684.8
-        },
-        {
-          "x": 203.8,
-          "y": 712.3
-        },
-        {
-          "x": 156.2,
-          "y": 739.8
-        },
-        {
-          "x": 108.6,
-          "y": 767.3
         }
       ]
     }
@@ -566,34 +598,34 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
-  "a31-thorns": {
-    "id": "a31-thorns",
-    "ink": 165,
-    "winners": 10,
-    "robust": 2,
-    "anchoredRobust": 2,
-    "handRate": 0.2,
+  "a13-yeet": {
+    "id": "a13-yeet",
+    "ink": 288,
+    "winners": 14,
+    "robust": 1,
+    "anchoredRobust": 1,
+    "handRate": 0.071,
     "solution": {
       "family": "line",
-      "length": 110,
-      "parts": 9,
-      "anchors": 7,
+      "length": 230,
+      "parts": 13,
+      "anchors": 6,
       "points": [
         {
-          "x": 347.6,
-          "y": 576.5
+          "x": 200.4,
+          "y": 676.1
         },
         {
-          "x": 315.9,
-          "y": 594.8
+          "x": 266.8,
+          "y": 714.4
         },
         {
-          "x": 284.1,
-          "y": 613.2
+          "x": 333.2,
+          "y": 752.7
         },
         {
-          "x": 252.4,
-          "y": 631.5
+          "x": 399.6,
+          "y": 791.1
         }
       ]
     }
@@ -642,6 +674,70 @@ export const DAILY_SOLUTIONS = {
         {
           "x": 380,
           "y": 820
+        }
+      ]
+    }
+  },
+  "a31-thorns": {
+    "id": "a31-thorns",
+    "ink": 165,
+    "winners": 10,
+    "robust": 2,
+    "anchoredRobust": 2,
+    "handRate": 0.2,
+    "solution": {
+      "family": "line",
+      "length": 110,
+      "parts": 9,
+      "anchors": 7,
+      "points": [
+        {
+          "x": 347.6,
+          "y": 576.5
+        },
+        {
+          "x": 315.9,
+          "y": 594.8
+        },
+        {
+          "x": 284.1,
+          "y": 613.2
+        },
+        {
+          "x": 252.4,
+          "y": 631.5
+        }
+      ]
+    }
+  },
+  "a21-lever": {
+    "id": "a21-lever",
+    "ink": 177,
+    "winners": 33,
+    "robust": 5,
+    "anchoredRobust": 2,
+    "handRate": 0.152,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 7,
+      "points": [
+        {
+          "x": 251.4,
+          "y": 684.8
+        },
+        {
+          "x": 203.8,
+          "y": 712.3
+        },
+        {
+          "x": 156.2,
+          "y": 739.8
+        },
+        {
+          "x": 108.6,
+          "y": 767.3
         }
       ]
     }

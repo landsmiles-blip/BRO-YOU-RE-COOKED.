@@ -3377,6 +3377,8 @@ export const POOL_SOLVER = {
 
 export const HELD_FROM_DAILY = {
   "a8-jam": "inside 165u of ink the only wins a hand can land are dropped lines, and it lands 32% of them (14/44) — under the 50% an unanchored solution needs",
+  "a51-fence": "inside 165u of ink the only wins a hand can land are dropped lines, and it lands 45% of them (46/103) — under the 50% an unanchored solution needs",
+  "a54-shelter": "inside 165u of ink the only wins a hand can land are dropped lines, and it lands 42% of them (11/26) — under the 50% an unanchored solution needs",
   "a28-duct": "not one of 23 winning strokes inside 110u of ink survives a hand",
   "a43-crack": "not one of 5 winning strokes inside 110u of ink survives a hand"
 };
@@ -3392,6 +3394,9 @@ export const DAILY_CAMPAIGN = [
   "a9-chute",
   "a10-switch",
   "a11-deadweight",
+  "a53-cover",
+  "a52-keepaway",
+  "a55-protect",
   "a4-catch",
   "a19-updraft",
   "a29-rail",
