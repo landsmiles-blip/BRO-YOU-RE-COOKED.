@@ -25,7 +25,7 @@ import { applyTransform } from '../view.js';
 import { C } from './palette.js';
 import { MILO, LINE, DEATH_CAM, SAFE_BOX, PHYSICS_DT } from '../constants.js';
 import { drawBanner } from './hud.js';
-import { blastPath } from './world.js';
+import { blastPath, plateShape } from './world.js';
 
 export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   applyTransform(ctx);
@@ -93,20 +93,19 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     ctx.strokeStyle = 'rgba(42,38,34,0.55)';
     ctx.fillStyle = C.plank;
     if (spec.type === 'switch') {
-      const y = spec.y + (fired ? 8 : 0), h = spec.h - (fired ? 8 : 0);
+      // The same shape and arrows as live play, from the one definition —
+      // including which side a plate is pressed from.
+      const { y, h, arrows } = plateShape(spec, fired);
       if (fired) ctx.fillStyle = C.anchor;
       ctx.globalAlpha = 0.8;
       ctx.fillRect(spec.x, y, spec.w, h);
       ctx.strokeRect(spec.x, y, spec.w, h);
-      if (!fired) {
-        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-        for (const fx of [0.3, 0.7]) {
-          const x = spec.x + spec.w * fx;
-          ctx.beginPath();
-          ctx.moveTo(x, y - 30); ctx.lineTo(x, y - 8);
-          ctx.moveTo(x - 7, y - 16); ctx.lineTo(x, y - 6); ctx.lineTo(x + 7, y - 16);
-          ctx.stroke();
-        }
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for (const a of arrows) {
+        ctx.beginPath();
+        a.shaft.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+        a.head.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+        ctx.stroke();
       }
     } else {
       ctx.globalAlpha = fired ? 0.22 : 0.8;

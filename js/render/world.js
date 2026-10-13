@@ -721,20 +721,46 @@ function drawRectBody(ctx, body, fill, now, salt) {
 
 /** A pressure plate. Visibly depresses and lights once it has fired. */
 function drawPlate(ctx, spec, fired, now, freeze) {
-  const y = spec.y + (fired ? 8 : 0);
-  inkShape(ctx, rectPoints(spec.x, y, spec.w, spec.h - (fired ? 8 : 0)), {
+  const { y, h, arrows } = plateShape(spec, fired);
+  inkShape(ctx, rectPoints(spec.x, y, spec.w, h), {
     now, fill: fired ? C.anchor : drain(C.plank, freeze * 0.3), ink: C.ink, width: 3.2, salt: 411,
   });
-  // two arrows pressing down on it — reads as "put something heavy here"
+  // two arrows pressing on it from the side it is pressed from — reads as
+  // "put something heavy here", or under a roof "push something up into here"
+  for (const a of arrows) {
+    inkPath(ctx, a.shaft, { now, colour: C.ink, width: 2.6, salt: 412, passes: 1 });
+    inkPath(ctx, a.head, { now, colour: C.ink, width: 2.6, salt: 413, passes: 1 });
+  }
+}
+
+/**
+ * Where a plate is drawn, and its arrows, for both renderers.
+ *
+ * A PLATE PRESSED FROM BELOW WAS DRAWN BEING PRESSED FROM ABOVE. Every plate
+ * got two arrows standing on its top edge and sank when it fired, and on the
+ * four levels whose plate hangs under a roof — UPDRAFT, BALLOON, FLOAT, SINK —
+ * that put the arrows on top of the roof slab: a picture telling the player to
+ * load the roof, in the levels whose whole idea is that something rises into
+ * it. `from: 'below'` turns the arrows over and fires the plate UP into its
+ * mount. assertLevel refuses a plate with a roof on it that does not say so.
+ */
+export function plateShape(spec, fired) {
+  const up = spec.from === 'below';
+  const y = spec.y + (fired && !up ? 8 : 0);
+  const h = spec.h - (fired ? 8 : 0);
+  const arrows = [];
   if (!fired) {
     for (const fx of [0.3, 0.7]) {
       const x = spec.x + spec.w * fx;
-      inkPath(ctx, [{ x, y: y - 30 }, { x, y: y - 8 }],
-              { now, colour: C.ink, width: 2.6, salt: 412, passes: 1 });
-      inkPath(ctx, [{ x: x - 7, y: y - 16 }, { x, y: y - 6 }, { x: x + 7, y: y - 16 }],
-              { now, colour: C.ink, width: 2.6, salt: 413, passes: 1 });
+      // s = which way the arrow points: +1 down onto the top, -1 up into the bottom
+      const s = up ? -1 : 1, e = up ? y + h : y;
+      arrows.push({
+        shaft: [{ x, y: e - 30 * s }, { x, y: e - 8 * s }],
+        head: [{ x: x - 7, y: e - 16 * s }, { x, y: e - 6 * s }, { x: x + 7, y: e - 16 * s }],
+      });
     }
   }
+  return { y, h, arrows };
 }
 
 /** A gate. Barred when shut; swung aside and ghosted once open. */

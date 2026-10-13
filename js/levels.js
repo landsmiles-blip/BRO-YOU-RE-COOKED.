@@ -646,7 +646,7 @@ export const A19 = {
     { id: 'ball',  type: 'boulder', x: 200, y: 260, radius: 26,
       density: 0.02, restitution: 0.1, friction: 0.06,
       lethal: { kind: 'none' } },
-    { id: 'plate', type: 'switch', x: 320, y: 390, w: 160, h: 30, triggers: ['gate'] },
+    { id: 'plate', type: 'switch', x: 320, y: 390, w: 160, h: 30, triggers: ['gate'], from: 'below' },
     { id: 'gate',  type: 'gate',   x: 585, y: 980, w: 34, h: 140 },
   ],
   // Gravity is 1800 u/s², so -2400 is a net 600 up: strong enough to carry a
@@ -1088,7 +1088,7 @@ export const A30 = {
     // Directly under the roof, so the balloon travelling along the underside
     // runs into it. 300 units of ink cannot buy a line heavier than ~97.
     { id: 'plate', type: 'switch', x: 440, y: 578, w: 180, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
+      requires: 'heavy', minMass: 200, from: 'below' },
     { id: 'gate',  type: 'gate',   x: 330, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
@@ -1221,7 +1221,7 @@ export const A34 = {
     // Off to the right and high, so it is only reachable by a balloon that got
     // out of the column on that side and then floated up.
     { id: 'plate', type: 'switch', x: 470, y: 500, w: 220, h: 100, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
+      requires: 'heavy', minMass: 200, from: 'below' },
     { id: 'gate',  type: 'gate',   x: 300, y: 1012, w: 34, h: 140 },
   ],
   zones: [
@@ -1391,6 +1391,24 @@ export function assertLevel(level) {
     for (const t of o.triggers ?? []) {
       const exists = level.objects.some((x) => x.id === t) || level.static.some((x) => x.id === t);
       if (!exists) problems.push(`"${o.id}" triggers missing target "${t}"`);
+    }
+    // A PLATE UNDER A ROOF IS PRESSED FROM BELOW, AND MUST SAY SO. Both
+    // renderers draw its arrows from `from`; a ceiling plate left at the
+    // default was drawn with arrows standing on the roof, telling the player
+    // to load the roof on exactly the levels where something rises into it.
+    if (o.type === 'switch') {
+      if (o.from != null && o.from !== 'above' && o.from !== 'below') {
+        problems.push(`switch "${o.id}" has from "${o.from}" — 'above' (the default) or 'below'`);
+      }
+      const across = (s) => s.x < o.x + o.w && s.x + s.w > o.x;
+      const roofed = level.static.some((s) => across(s) && Math.abs(s.y + s.h - o.y) < 3);
+      const floored = level.static.some((s) => across(s) && Math.abs(s.y - (o.y + o.h)) < 3);
+      if (roofed && !floored && o.from !== 'below') {
+        problems.push(`switch "${o.id}" hangs under a roof — mark it from: 'below' so it is drawn pressed from below`);
+      }
+      if (floored && o.from === 'below') {
+        problems.push(`switch "${o.id}" sits on a floor but says from: 'below'`);
+      }
     }
   }
   if (!inBox(level.milo.start.x - MILO.width / 2, level.milo.start.y - MILO.height,

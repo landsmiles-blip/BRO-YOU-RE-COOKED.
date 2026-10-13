@@ -50,7 +50,7 @@ export const A100 = {
     // Weighed, like FLOAT's: 400 units of ink buys no line heavy enough to
     // press it, so a dropped stroke cannot skip the balloon.
     { id: 'plate', type: 'switch', x: 300, y: 578, w: 180, h: 30, triggers: ['gate'],
-      requires: 'heavy', minMass: 200 },
+      requires: 'heavy', minMass: 200, from: 'below' },
     { id: 'gate', type: 'gate', x: 560, y: 960, w: 34, h: 192 },
   ],
   zones: [],
