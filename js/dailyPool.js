@@ -6,6 +6,8 @@
 // their numbers, measured by the same sweep that writes js/solverData.js.
 // HELD_FROM_DAILY: campaign levels with no hand-drawn win inside their daily
 // budget, and the measurement that says so. They stay in the campaign.
+// DAILY_CAMPAIGN: the campaign levels this bake certified — the only ones the
+// daily deals. A level added since is not dealt until the next bake.
 //
 // Re-bake after any physics change or campaign change: none of this
 // re-measures itself, and tools/test/daily-deck.js fails until it is redone.
@@ -3378,3 +3380,24 @@ export const HELD_FROM_DAILY = {
   "a28-duct": "not one of 23 winning strokes inside 110u of ink survives a hand",
   "a43-crack": "not one of 5 winning strokes inside 110u of ink survives a hand"
 };
+
+export const DAILY_CAMPAIGN = [
+  "a1-wall",
+  "a5-hang",
+  "a3-redirect",
+  "a2-gap",
+  "a20-spring",
+  "a15-eitherway",
+  "a12-ontime",
+  "a9-chute",
+  "a10-switch",
+  "a11-deadweight",
+  "a4-catch",
+  "a19-updraft",
+  "a29-rail",
+  "a30-float",
+  "a13-yeet",
+  "a34-sink",
+  "a31-thorns",
+  "a21-lever"
+];

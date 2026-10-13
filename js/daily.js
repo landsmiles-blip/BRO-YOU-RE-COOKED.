@@ -40,12 +40,17 @@
 // in HELD_FROM_DAILY with the measurement. It stays in the campaign.
 
 import { LEVELS } from './levels.js';
-import { POOL, HELD_FROM_DAILY } from './dailyPool.js';
+import { POOL, DAILY_CAMPAIGN } from './dailyPool.js';
 import { measured } from './rating.js';
 import { LINE } from './constants.js';
 
-/** The campaign levels the daily deals: every one it can certify. */
-const CAMPAIGN = LEVELS.filter((l) => !HELD_FROM_DAILY[l.id]);
+/**
+ * The campaign levels the daily deals: the ones the last bake CERTIFIED, in
+ * campaign order. A level added since is simply not dealt until the next bake
+ * — it can never reach a player's daily uncertified, which is the whole point,
+ * and a new level no longer breaks the suite between bakes.
+ */
+const CAMPAIGN = LEVELS.filter((l) => DAILY_CAMPAIGN.includes(l.id));
 
 /** Every level the daily can deal: the certified campaign, then the pool. */
 export const DAILY = [...CAMPAIGN, ...POOL];

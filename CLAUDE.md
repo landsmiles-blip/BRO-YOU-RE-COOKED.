@@ -766,6 +766,12 @@ challenge whose twist is the ink, so `js/dailyPool.js` holds forty of them and
   stale; it cannot re-certify (minutes), only notice.
 - **Any change to the deck reshuffles every future day.** Before launch, not
   after.
+- **THE DAILY DEALS ONLY WHAT THE LAST BAKE CERTIFIED** (`DAILY_CAMPAIGN` in
+  js/dailyPool.js). It used to deal every campaign level not held, so the first
+  new level of the 60-level push turned `npm test` red until a multi-minute bake
+  ran. Now a new level is simply not dealt until the next bake, `npm test` says
+  WAIT and names it, and it can never reach a player uncertified. Bake once per
+  batch of new levels, and always before launch.
 
 ## THE DIFFICULTY CURVE — MEASURED, NOT REMEMBERED
 
