@@ -1316,7 +1316,7 @@ export const SLOT_ROLES = [
 export const CHAPTERS = [
   { name: 'THE LINE',       slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
   { name: 'PLATES & GATES', slots: [A9,   null, null, null, A10,  null, null, null, null, A11] },
-  { name: 'TNT',            slots: [CH3.A52, null, null, null, CH3.A51, null, null, null, null, null] },
+  { name: 'TNT',            slots: [CH3.A53, CH3.A52, null, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
   { name: 'AIR',            slots: [A28,  null, null, null, A4,   null, A19,  null, null, A29] },
   { name: 'BALLOONS',       slots: [null, null, null, null, A30,  null, null, A13,  null, A34] },
   { name: 'ALL OF IT',      slots: [null, null, null, null, A31,  null, A43,  A21,  null, null] },

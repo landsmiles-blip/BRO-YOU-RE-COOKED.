@@ -13,7 +13,50 @@
 import { MILO, LINE } from '../constants.js';
 
 // ─────────────────────────────────────────────────────────────────────────
-// A52 — KEEP AWAY.  Introduces: TNT, on its own.
+// A53 — COVER.  Introduces: TNT — and that solid things stop a blast.
+//
+// A barrel sits in a cellar under his path, and the only way across is over
+// the slot right above it. Do nothing and he is standing on the slot when the
+// fuse runs out. Nothing can move the barrel, so the question is not where the
+// bomb goes but what stands between it and him: cover the hole.
+//
+// THE EASIEST TNT LEVEL IN THE GAME, so it opens the chapter: one barrel that
+// cannot move, one fuse, one hole. It was meant to be the chapter's breather,
+// and measured 9-10 tries in every variant tried — a wider slot, an earlier
+// fuse, a wooden grate over it — because nearly any line laid over the slot is
+// cover. The curve's own rule (a noun is introduced by its easiest level)
+// moved it to the front. Measured: 64% of winning strokes are an anchored
+// lid, 9% a dropped one; most of the rest make him late.
+//
+// The slot is 24 units: he crosses anything up to 28 unaided, and is stuck in
+// anything from 32 — measured, so the hole is a threat and not a trap.
+// ─────────────────────────────────────────────────────────────────────────
+export const A53 = {
+  id: 'a53-cover',
+  hint: 'HE HAS TO WALK RIGHT OVER IT',
+  world: 'backyard',
+  verb: 'COVER',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  freezeAt: 500,
+  goal: { id: 'goal', x: 662, y: 1152, w: 70, h: 140 },
+  static: [
+    { id: 'slabL', type: 'platform', x: 0, y: 1152, w: 398, h: 20 },
+    { id: 'slabR', type: 'platform', x: 422, y: 1152, w: 298, h: 20 },
+    { id: 'earthL', type: 'platform', x: 0, y: 1172, w: 368, h: 108 },
+    { id: 'earthR', type: 'platform', x: 452, y: 1172, w: 268, h: 108 },
+    { id: 'cellarFloor', type: 'platform', x: 368, y: 1232, w: 84, h: 48 },
+  ],
+  objects: [
+    { id: 'tnt', type: 'tnt', x: 410, y: 1210, radius: 22,
+      density: 0.03, restitution: 0.05, friction: 0.4, fuse: 1800, lethal: { kind: 'none' } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A52 — KEEP AWAY.  The barrel that moves.
 //
 // A barrel with a lit fuse drops onto the path in front of him. Do nothing and
 // he walks into it, pushes it along ahead of him — Milo pushes anything at his
@@ -55,6 +98,14 @@ export const A52 = {
 // bomb to the fence — and him nowhere near it when it goes. KEEP AWAY asked
 // for distance; this asks for a delivery and distance at once.
 //
+// MEASURED, AND LESS OF A DELIVERY THAN IT LOOKS. Left alone the barrel lands
+// 110 units from the fence — inside its 130 reach, so it would break the
+// bottom boards by itself. What kills him is that he is standing beside it. So
+// most winning strokes either nudge it on toward the fence (the certified one
+// moves it 56 units) or hold him back with a dropped line until it has gone
+// off. Both answer "not with him next to it", which is the point; neither is
+// the long delivery the layout suggests.
+//
 // Built once on 12 Oct and lost uncommitted; this is the layout recorded in
 // docs/PLAN.md Appendix A.
 // ─────────────────────────────────────────────────────────────────────────
@@ -76,6 +127,85 @@ export const A51 = {
       density: 0.03, restitution: 0.05, friction: 0.4, fuse: 1500, lethal: { kind: 'none' } },
   ],
   zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A54 — SHELTER.  The barrel that opens the way is right above his head.
+//
+// The fence is short and wooden, and the barrel that will open it sits on top
+// of it. He walks up, stops at the fence, and waits — right underneath. When
+// the fuse runs out it breaks the fence and him with it. The barrel cannot be
+// moved somewhere useful (knock it off and it lands in his path), and he
+// cannot get through until it goes. So the decision is what is over his head
+// when it does: give him cover, or keep him back until it has gone.
+//
+// THE FUSE IS LONG ON PURPOSE. He reaches the fence at 2.0 s and it goes at
+// 3.0: a dropped line can hold him back for half a second, not a whole one,
+// so the hold-back that wins the other TNT levels only wins here if it holds
+// him far enough back for the whole wait. Measured: 60% of winning strokes
+// hold him back with a fallen line until the blast clears it away, 30% are
+// cover. Both answer the hint.
+// ─────────────────────────────────────────────────────────────────────────
+export const A54 = {
+  id: 'a54-shelter',
+  hint: 'IT WILL GO OFF RIGHT OVER HIS HEAD',
+  world: 'backyard',
+  verb: 'SHELTER',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  freezeAt: 600,
+  goal: { id: 'goal', x: 662, y: 1152, w: 70, h: 140 },
+  static: [
+    { id: 'ground', type: 'platform', x: 0, y: 1152, w: 720, h: 128 },
+    { id: 'board0', type: 'platform', x: 520, y: 1052, w: 30, h: 50, breakable: true },
+    { id: 'board1', type: 'platform', x: 520, y: 1102, w: 30, h: 50, breakable: true },
+    { id: 'cap', type: 'platform', x: 506, y: 1040, w: 58, h: 12, breakable: true },
+  ],
+  objects: [
+    { id: 'tnt', type: 'tnt', x: 535, y: 1018, radius: 22,
+      density: 0.03, restitution: 0.05, friction: 0.4, fuse: 3000, lethal: { kind: 'none' } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A55 — PROTECT.  The chapter's boss: the wood is his, this time.
+//
+// He has to cross a wooden bridge over a pit, and the barrel drops straight
+// onto it. Left alone it sits on the planks, goes off as he reaches them, and
+// takes him and the bridge together. FENCE taught that a blast breaks wood;
+// here that is the danger. The decision: keep the bomb off the bridge he
+// needs — up onto the shelf, or back behind him — or give him a way across
+// that the blast cannot take.
+//
+// Measured: 41% of winning strokes send it up to the shelf, 25% knock it
+// clear with a dropped line, and about 30% build him his own crossing.
+// ─────────────────────────────────────────────────────────────────────────
+export const A55 = {
+  id: 'a55-protect',
+  hint: 'HE NEEDS THAT BRIDGE',
+  world: 'backyard',
+  verb: 'PROTECT',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  freezeAt: 450,
+  goal: { id: 'goal', x: 662, y: 1152, w: 70, h: 140 },
+  static: [
+    { id: 'groundL', type: 'platform', x: 0, y: 1152, w: 260, h: 128 },
+    { id: 'groundR', type: 'platform', x: 460, y: 1152, w: 260, h: 128 },
+    ...Array.from({ length: 5 }, (_, i) => (
+      { id: `plank${i}`, type: 'platform', x: 260 + i * 40, y: 1152, w: 40, h: 22, breakable: true })),
+    { id: 'shelf', type: 'platform', x: 420, y: 880, w: 300, h: 28 },
+  ],
+  objects: [
+    { id: 'tnt', type: 'tnt', x: 360, y: 560, radius: 22,
+      density: 0.03, restitution: 0.05, friction: 0.4, fuse: 1500, lethal: { kind: 'none' } },
+  ],
+  zones: [
+    { id: 'pit', kind: 'zone', x: 262, y: 1200, w: 196, h: 80, lethal: true },
+  ],
   drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };

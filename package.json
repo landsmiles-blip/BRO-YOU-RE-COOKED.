@@ -8,6 +8,7 @@
     "test": "node --import ./tools/node-matter.js tools/test/run-all.js",
     "levelcheck": "node --import ./tools/node-matter.js tools/levelcheck.js",
     "sketch": "node --import ./tools/node-matter.js tools/lib/sketch.js",
+    "census": "node --import ./tools/node-matter.js tools/lib/census.js",
     "solver": "node --import ./tools/node-matter.js tools/solver",
     "certify": "node --import ./tools/node-matter.js tools/solver/representative.js",
     "curve": "node --import ./tools/node-matter.js tools/test/curve.js",

@@ -257,5 +257,38 @@ export const SOLVER = {
     "threeStarLength": 165,
     "shortestWin": 110,
     "measuredAt": "2026-10-13"
+  },
+  "a53-cover": {
+    "solvable": true,
+    "solutionBreadth": 0.1915,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 6,
+    "twoStarLength": 300,
+    "threeStarLength": 185,
+    "shortestWin": 73,
+    "measuredAt": "2026-10-13"
+  },
+  "a54-shelter": {
+    "solvable": true,
+    "solutionBreadth": 0.0628,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a55-protect": {
+    "solvable": true,
+    "solutionBreadth": 0.0383,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 6,
+    "twoStarLength": 300,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
   }
 };
