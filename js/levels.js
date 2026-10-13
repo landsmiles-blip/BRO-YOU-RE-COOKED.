@@ -1327,7 +1327,7 @@ export const CHAPTERS = [
   { name: 'BALLOONS',       tag: 'it only goes up',
     slots: [CH5.A100, null, null, null, A30,  null, null, A13,  null, A34] },
   { name: 'ALL OF IT',      tag: 'everything at once',
-    slots: [null, null, null, null, A31,  null, A43,  A21,  null, null] },
+    slots: [null, null, null, CH6.A111, A31, null, A43,  A21,  null, null] },
 ];
 
 export const LEVELS = CHAPTERS.flatMap((ch) => ch.slots.filter(Boolean));

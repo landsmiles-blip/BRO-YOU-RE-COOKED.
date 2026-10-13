@@ -301,5 +301,16 @@ export const SOLVER = {
     "threeStarLength": 230,
     "shortestWin": 110,
     "measuredAt": "2026-10-13"
+  },
+  "a111-tailwind": {
+    "solvable": true,
+    "solutionBreadth": 0.0285,
+    "precisionFloor": 45,
+    "worstJitter": 3,
+    "distinctFamilies": 4,
+    "twoStarLength": 300,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
   }
 };

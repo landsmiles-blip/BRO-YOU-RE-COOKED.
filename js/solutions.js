@@ -1133,5 +1133,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a111-tailwind": {
+    "id": "a111-tailwind",
+    "winners": 69,
+    "robust": 34,
+    "anchoredRobust": 26,
+    "handRate": 0.493,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 115,
+          "y": 787.4
+        },
+        {
+          "x": 110.2,
+          "y": 840.2
+        },
+        {
+          "x": 116,
+          "y": 886.9
+        },
+        {
+          "x": 132.4,
+          "y": 927.5
+        },
+        {
+          "x": 159.3,
+          "y": 962
+        },
+        {
+          "x": 196.9,
+          "y": 990.3
+        },
+        {
+          "x": 245,
+          "y": 1012.6
+        }
+      ]
+    }
   }
 };
