@@ -867,5 +867,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a52-keepaway": {
+    "id": "a52-keepaway",
+    "winners": 237,
+    "robust": 110,
+    "anchoredRobust": 47,
+    "handRate": 0.464,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 3,
+      "points": [
+        {
+          "x": 427.4,
+          "y": 771
+        },
+        {
+          "x": 480.2,
+          "y": 766.2
+        },
+        {
+          "x": 526.9,
+          "y": 772
+        },
+        {
+          "x": 567.5,
+          "y": 788.4
+        },
+        {
+          "x": 602,
+          "y": 815.3
+        },
+        {
+          "x": 630.3,
+          "y": 852.9
+        },
+        {
+          "x": 652.6,
+          "y": 901
+        }
+      ]
+    }
   }
 };

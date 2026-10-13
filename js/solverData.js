@@ -235,5 +235,16 @@ export const SOLVER = {
     "threeStarLength": 110,
     "shortestWin": 110,
     "measuredAt": "2026-09-23"
+  },
+  "a52-keepaway": {
+    "solvable": true,
+    "solutionBreadth": 0.1153,
+    "precisionFloor": 65,
+    "worstJitter": 4,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 184,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
   }
 };
