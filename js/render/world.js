@@ -427,6 +427,16 @@ export function drawScene(ctx, sim, opts = {}) {
     // TNT. Gone the instant it goes off — the blast marks where it was.
     if (spec.type === 'tnt') {
       if (sim.detonated?.has(spec.id)) continue;
+      // A BARREL THAT FLOATS SAYS SO. Lift on a barrel makes it a TNT
+      // balloon, and without the balloon's tail the picture would show a
+      // barrel falling upwards — the class of lie that has cost this project
+      // the most. The same tail every balloon carries; gone once it is popped.
+      if (spec.lift && !sim.burst?.has(spec.id)) {
+        const bx = body.position.x, by = body.position.y + spec.radius;
+        inkPath(ctx, [
+          { x: bx, y: by }, { x: bx - 5, y: by + 9 }, { x: bx + 5, y: by + 18 }, { x: bx - 3, y: by + 26 },
+        ], { now, colour: C.ink, width: 2.4, salt: 309, passes: 1 });
+      }
       drawTnt(ctx, body, spec, sim.simTime, now, freeze);
       moving.push({ body, radius: spec.radius });
       continue;

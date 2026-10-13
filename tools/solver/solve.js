@@ -238,6 +238,7 @@ export function tension(level, winners, sampleCount = 6) {
     const sim = buildSim(level);
     const freezeAt = level.freezeAt ?? FREEZE_AT;
     let committed = false;
+    let blastsSeen = 0;
     for (let n = 0; n < MAX_STEPS; n++) {
       if (!committed && sim.simTime >= freezeAt) {
         if (!commitStroke(sim, w.points).ok) break;
@@ -245,6 +246,17 @@ export function tension(level, winners, sampleCount = 6) {
       }
       const o = stepSim(sim);
       const b = sim.milo.body;
+      // A BLAST IS A HAZARD TOO. The loop below only sees lethal objects in
+      // motion, and a barrel is neither, so every TNT level read FLAT — even
+      // one won with the blast passing 26 units from him. How close it came is
+      // its edge against his nearest point; cover (a shielded blast inside the
+      // kill radius) is as close as it gets.
+      for (; blastsSeen < sim.blasts.length; blastsSeen++) {
+        const bl = sim.blasts[blastsSeen];
+        const cx = Math.max(b.position.x - hw, Math.min(bl.x, b.position.x + hw));
+        const cy = Math.max(b.position.y - hh, Math.min(bl.y, b.position.y + hh));
+        best = Math.min(best, Math.max(0, Math.hypot(bl.x - cx, bl.y - cy) - bl.kill));
+      }
       for (const [, ob] of sim.objects) {
         if (!isHazardous(ob.spec.lethal)) continue;
         const v = getVelocity(ob.body);

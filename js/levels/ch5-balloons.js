@@ -10,7 +10,7 @@
 // The schema is the one every level in js/levels.js uses; copy the closest
 // shipped level rather than starting from nothing.
 
-import { MILO } from '../constants.js';
+import { MILO, LINE } from '../constants.js';
 
 // ─────────────────────────────────────────────────────────────────────────
 // A100 — BALLOON.  Introduces: the balloon, on its own.
@@ -55,5 +55,49 @@ export const A100 = {
   ],
   zones: [],
   drawing: { maxLength: 400 },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A101 — LOW BLOW.  The balloon and the barrel at once: a barrel that floats.
+//
+// The wooden fence that shuts him in opens only to a blast, and the barrel
+// that could blow it starts right behind it — but this barrel floats. Left
+// alone it is long gone by the time the fuse runs out, and it goes off at the
+// top of the sky with the fence untouched. Hold it down. Not too low, though:
+// he is waiting at the fence when it goes, and a lid at his head height keeps
+// it close enough to take him with the fence.
+//
+// Measured with a flat lid from the fence: at 880 to 960 he wins (a close
+// call at 960, 26 units), at 1000 the blast takes him, and with nothing drawn
+// he is stuck. The bottom board is 172 tall so that the band that opens the
+// fence reaches up to meet the band that spares him: at 132 the window was
+// 127 units and the precision floor 20u, under the thumb limit; at 172 it is
+// 65u.
+//
+// The census: every win is an anchored line holding the barrel down. Holding
+// HIM back does nothing — the barrel floats off whatever he does — and no win
+// draws through it.
+// ─────────────────────────────────────────────────────────────────────────
+export const A101 = {
+  id: 'a101-low-blow',
+  hint: 'IT WILL FLOAT OFF BEFORE IT GOES OFF',
+  world: 'backyard',
+  verb: 'LOW BLOW',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  freezeAt: 300,
+  goal: { id: 'goal', x: 665, y: 1152, w: 60, h: 140 },
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'board0', type: 'platform', x: 520, y: 840,  w: 30,  h: 70,  breakable: true },
+    { id: 'board1', type: 'platform', x: 520, y: 910,  w: 30,  h: 70,  breakable: true },
+    { id: 'board2', type: 'platform', x: 520, y: 980,  w: 30,  h: 172, breakable: true },
+  ],
+  objects: [
+    { id: 'tnt', type: 'tnt', x: 590, y: 1110, radius: 22,
+      density: 0.3, restitution: 0.05, friction: 0.1, fuse: 2400, lift: 2400, lethal: { kind: 'none' } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };

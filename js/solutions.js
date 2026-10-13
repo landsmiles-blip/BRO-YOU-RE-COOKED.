@@ -1176,5 +1176,48 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a101-low-blow": {
+    "id": "a101-low-blow",
+    "winners": 80,
+    "robust": 44,
+    "anchoredRobust": 44,
+    "handRate": 0.55,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 10,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 427.4,
+          "y": 790.4
+        },
+        {
+          "x": 449.7,
+          "y": 838.6
+        },
+        {
+          "x": 478,
+          "y": 876.1
+        },
+        {
+          "x": 512.5,
+          "y": 903.1
+        },
+        {
+          "x": 553.1,
+          "y": 919.4
+        },
+        {
+          "x": 599.8,
+          "y": 925.2
+        },
+        {
+          "x": 652.6,
+          "y": 920.4
+        }
+      ]
+    }
   }
 };
