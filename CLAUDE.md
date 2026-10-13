@@ -6,6 +6,11 @@ This file is not documentation. It is the set of rules that were paid for —
 every one of them cost a shipped bug, a wasted build, or a playtest that came
 back saying the game did not work. Read it before changing anything.
 
+**START HERE.** `docs/PLAN.md` is what we are doing next and why — how many
+levels, where they come from, who builds them (proposed 2026-10-13; check its
+status line before acting on it). `docs/HELD.md` is every level already built
+and shelved, with the measured reason. Read both before designing anything.
+
 ---
 
 ## THE ONE RULE ABOVE ALL OTHERS
