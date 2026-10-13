@@ -1280,23 +1280,50 @@ export const A43 = {
   solver: null,
 };
 
-// THE ORDER IS MEASURED, and tools/test/curve.js holds it there. It used to be
-// creation order, and creation order put CATCH (56 tries) at level 4 among
-// levels of about 11, and introduced air with UPDRAFT (39) while DUCT (6)
-// waited behind it. Now: a gentle line chapter, then each new noun met at its
-// easiest — plate (FUNNEL), air (DUCT), balloon (FLOAT) — rising in waves to
-// the two hardest levels in the game at the end. Move a level and the curve
-// gate says whether the move is allowed.
+// THE GAME IS SIX CHAPTERS OF TEN, AND EVERY SLOT HAS A MEASURED TARGET.
+//
+// The order is not taste and it is not creation order. Each chapter follows the
+// same sawtooth (SLOT_ROLES): an INTRO that teaches the chapter's new thing on
+// its own, three levels that develop it, a SPIKE, a BREATHER, two more, a
+// breather before the BOSS. tools/lib/difficulty.js turns slot k of chapter c
+// into a target number of tries,
+//
+//     T(c, k) = 8.6 · 1.26^c · 4.0^p(k)
+//
+// fitted to the 21 levels that ship, and tools/test/curve.js holds every level
+// inside its slot's band. A null slot is a level still to build; LEVELS skips
+// it, so the game always ships whatever is complete, in its final order.
+//
+// New levels live in their own chapter file under js/levels/ (one file per
+// chapter, so parallel work never edits the same file) and are placed here.
 //
 // The numbers cannot see silhouettes, so the contact sheet still has a vote:
-// the first pass put HANG and CHOOSE side by side — two tall posts with a ball
-// between them, twice — and neither number moved. Keep look-alikes apart.
-export const LEVELS = [
-  A1, A5, A20, A3, A12, A15, A8, A2,    // the line:      BLOCK HANG SPRING REDIRECT INTERCEPT CHOOSE WEDGE BRIDGE
-  A9, A10, A11, A4,                     // plate & gate:  FUNNEL TRIGGER DROP, then CATCH
-  A28, A19, A13, A29, A21,              // air:           DUCT UPDRAFT, CARRY, RAIL, LEVER
-  A30, A43, A31, A34,                   // the finale:    FLOAT CRACK THORNS SINK
+// an earlier order put HANG and CHOOSE side by side — two tall posts with a
+// ball between them, twice — and no number moved. Keep look-alikes apart.
+export const SLOT_ROLES = [
+  'INTRO', 'DEVELOP', 'DEVELOP', 'DEVELOP', 'SPIKE',
+  'BREATHER', 'DEVELOP', 'DEVELOP', 'BREATHER', 'BOSS',
 ];
+
+export const CHAPTERS = [
+  { name: 'THE LINE',       slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
+  { name: 'PLATES & GATES', slots: [A9,   null, null, null, A10,  null, null, null, null, A11] },
+  { name: 'TNT',            slots: [null, null, null, null, null, null, null, null, null, null] },
+  { name: 'AIR',            slots: [A28,  null, null, null, A4,   null, A19,  null, null, A29] },
+  { name: 'BALLOONS',       slots: [null, null, null, null, A30,  null, null, A13,  null, A34] },
+  { name: 'ALL OF IT',      slots: [null, null, null, null, A31,  null, A43,  A21,  null, null] },
+];
+
+export const LEVELS = CHAPTERS.flatMap((ch) => ch.slots.filter(Boolean));
+
+/** Where a level sits: its chapter, its slot and that slot's role. */
+export function slotOf(id) {
+  for (let c = 0; c < CHAPTERS.length; c++) {
+    const k = CHAPTERS[c].slots.findIndex((l) => l?.id === id);
+    if (k >= 0) return { chapter: c, k, role: SLOT_ROLES[k] };
+  }
+  return null;
+}
 
 // Levels that were built and did not ship are recorded in docs/HELD.md, with
 // the measured reason for each and the commit where the code still lives.
