@@ -246,5 +246,16 @@ export const SOLVER = {
     "threeStarLength": 184,
     "shortestWin": 110,
     "measuredAt": "2026-10-13"
+  },
+  "a51-fence": {
+    "solvable": true,
+    "solutionBreadth": 0.0662,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
   }
 };

@@ -910,5 +910,36 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a51-fence": {
+    "id": "a51-fence",
+    "winners": 314,
+    "robust": 128,
+    "anchoredRobust": 4,
+    "handRate": 0.408,
+    "solution": {
+      "family": "line",
+      "length": 300,
+      "parts": 10,
+      "anchors": 1,
+      "points": [
+        {
+          "x": 290.1,
+          "y": 807.9
+        },
+        {
+          "x": 376.7,
+          "y": 857.9
+        },
+        {
+          "x": 463.3,
+          "y": 907.9
+        },
+        {
+          "x": 549.9,
+          "y": 957.9
+        }
+      ]
+    }
   }
 };

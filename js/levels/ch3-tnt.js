@@ -45,3 +45,37 @@ export const A52 = {
   drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// A51 — FENCE.  TNT as the tool, not the threat.
+//
+// A wooden fence stands between him and the way out, and nothing in the world
+// can open it but the barrel. Left alone, the barrel lands short of the fence,
+// he walks up to it, and it goes off with him beside it. The decision: get the
+// bomb to the fence — and him nowhere near it when it goes. KEEP AWAY asked
+// for distance; this asks for a delivery and distance at once.
+//
+// Built once on 12 Oct and lost uncommitted; this is the layout recorded in
+// docs/PLAN.md Appendix A.
+// ─────────────────────────────────────────────────────────────────────────
+export const A51 = {
+  id: 'a51-fence',
+  hint: "HE CAN'T GET THROUGH",
+  world: 'backyard',
+  verb: 'BLAST',
+  milo: { start: { x: 50, y: 1100 }, speed: MILO.speed },
+  freezeAt: 350,
+  goal: { id: 'goal', x: 646, y: 1100, w: 70, h: 140 },
+  static: [
+    { id: 'ground', type: 'platform', x: 0, y: 1100, w: 720, h: 180 },
+    ...Array.from({ length: 10 }, (_, i) => (
+      { id: `board${i}`, type: 'platform', x: 560, y: 460 + i * 64, w: 30, h: 64, breakable: true })),
+  ],
+  objects: [
+    { id: 'tnt', type: 'tnt', x: 460, y: 420, radius: 22,
+      density: 0.03, restitution: 0.05, friction: 0.4, fuse: 1500, lethal: { kind: 'none' } },
+  ],
+  zones: [],
+  drawing: { maxLength: LINE.maxLengthDefault },
+  solver: null,
+};
