@@ -20,6 +20,14 @@
 
 import { SAFE_BOX, MILO, LINE } from './constants.js';
 import { LETHAL_KINDS } from './hazards.js';
+// One file of new levels per chapter, so parallel sessions never edit the same
+// file. Each is placed into its slot in CHAPTERS below as CH3.A51 and so on.
+import * as CH1 from './levels/ch1-line.js';
+import * as CH2 from './levels/ch2-plates.js';
+import * as CH3 from './levels/ch3-tnt.js';
+import * as CH4 from './levels/ch4-air.js';
+import * as CH5 from './levels/ch5-balloons.js';
+import * as CH6 from './levels/ch6-all.js';
 
 /** Objects that act on the world rather than threatening Milo. */
 const MECHANISM_TYPES = new Set(['switch', 'gate']);

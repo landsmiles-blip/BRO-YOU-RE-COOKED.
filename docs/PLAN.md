@@ -1,6 +1,8 @@
 # PLAN — from 21 levels to a game one person comes back to
 
-**Status: PROPOSED, 2026-10-13. Nothing in it starts until you say go.**
+**Status: APPROVED 2026-10-13, with the rewarded SKIP. In execution.** The
+difficulty equation (4.2), the exact build list (4.4) and the skip design
+(section 7) were added on approval.
 
 Written after reviewing everything in this repository, from the first commit to
 today. The review also produced a cleanup (commits `10c0d83` and `16cb3a7`):
@@ -20,7 +22,9 @@ and can be fixed (section 2):
 - I moved on to infrastructure without telling you that levels had stopped.
 - I lost the TNT work by not committing it.
 
-**How many: 60 at launch, in six chapters of about ten.** Someone who plays
+**How many: 60 at launch — six chapters of exactly ten.** 21 are built; 39 are
+to build: 2 in chapter 1, 7 in chapter 2, 10 in chapter 3 (TNT), 6 in chapter
+4, 7 in chapter 5 and 7 in chapter 6. Someone who plays
 ten minutes a day gets roughly a week out of that. The first week is when a
 habit forms or doesn't. 21 levels last about two sittings. After
 60, a new chapter gets added only once players are reaching the end. (Section 3.)
@@ -30,11 +34,11 @@ habit forms or doesn't. 21 levels last about two sittings. After
    rule was "each noun has exactly one question". It capped the game at about 21
    levels. The new rule: no two levels ask for the same decision. The physics
    findings all stay. (Section 4.)
-2. **Most new levels go in the middle of the difficulty range.** The first
-   eight levels average 11 tries. From level 10 on, every level takes 39 or
-   more, except the one that introduces air. There is almost nothing in
-   between. Middle-difficulty levels are also the cheapest kind to get through
-   the gates.
+2. **Every slot has a measured difficulty target, from one equation.**
+   `T(c, k) = 8.6 · 1.26^c · 4.0^p(k)`, fitted to the 21 levels that ship: each
+   chapter starts 26% harder than the last, rises in a sawtooth to a boss four
+   times its intro, with two hard levels in every ten and a breather after
+   each. A new level is built to its slot's number and measured against it.
 3. **One new noun gets a whole chapter: TNT.** The last chapter then combines
    it with every noun before it, because a new noun multiplies the old ones.
    TNT is already designed. The lost code is written into Appendix A so it
@@ -45,7 +49,7 @@ habit forms or doesn't. 21 levels last about two sittings. After
 
 **Who builds it:**
 - Me, as producer and integrator.
-- Two level-designer sessions working in parallel.
+- Three level-designer sessions working in parallel.
 - One session on the game around the levels: chapters, a proper ending and a
   sound switch.
 - The levelsmith reviewer, which rejects weak designs early. (Section 6.)
@@ -61,7 +65,7 @@ habit forms or doesn't. 21 levels last about two sittings. After
 
 **What I need from you:**
 1. Say go, or tell me what to change.
-2. Decide on a rewarded **SKIP** button: yes or no (section 7).
+2. ~~Decide on a rewarded SKIP~~ — approved; designed in section 7.
 3. 15 minutes to play each new batch of levels, plus two or three people who
    have never seen the game.
 4. Ten minutes to upload the game to itch.io (`docs/launch/STORE_PAGE.md`).
@@ -200,25 +204,50 @@ player cannot aim is not a level; the plate is a back door; a static noun can
 never be a puzzle; a climb is too narrow a target. Those were measured, and
 they still rule.
 
-### 4.2 What the difficulty curve needs
+### 4.2 The difficulty equation
 
-"Tries" = 1 ÷ (share of strokes that win × share that survive a shaky hand).
-Measured tries per level, in play order:
+**How the industry does it — not by feel.** The studios that lead level-based
+puzzle games measure every level's difficulty as attempts per success (or its
+inverse, the pass rate), predict it before release with simulated players, and
+then correct it with real players' numbers. The published work on Candy Crush
+does exactly this, and finds the simulated numbers least reliable on the
+hardest levels. The progression they build is a sawtooth, not a straight line:
+- in most games studied, **about one level in five is hard**;
+- **King's first hard level is usually level 10**;
+- **a breather follows a spike**, so the next challenge lands;
+- combining mechanics, not adding more of them, is what makes later levels
+  harder.
 
-    the line   12 10  6 11  8 19 21 28
-    plates      4 40 41 56
-    air         6 39 67 68 69
-    finale     61 64 89 90
+**Ours is built the same way.**
+- **The measurement:** tries = 1 ÷ (share of strokes that win × share a shaky
+  hand still lands). It is our attempts per success, measured by simulated
+  players — the solver sweep and the hand model.
+- **The target for slot k of chapter c** (both counted from 0):
 
-The first eight levels average 11 tries. From level 10 on, every level takes
-39 or more, except DUCT, which introduces air. There is almost nothing in
-between.
-- **The new 39 should split roughly 12 easy (≤ 15 tries, mostly chapter
-  openers), 17 medium (15–40) and 10 hard (40–90).**
-- Medium levels win on 3–13% of strokes. That sits comfortably inside the
-  2–40% gate, so they are the cheapest to get through.
-- Hard levels sit near the 2% floor. That is where builds fail, and that band
-  already has 8 levels.
+      T(c, k) = 8.6 · 1.26^c · 4.0^p(k)
+
+  | Slot | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+  |---|---|---|---|---|---|---|---|---|---|---|
+  | Role | INTRO | develop | develop | develop | **SPIKE** | breather | develop | develop | breather | **BOSS** |
+  | p | 0 | .20 | .35 | .50 | .80 | .30 | .55 | .70 | .45 | 1 |
+
+  - 8.6 is the first level's target.
+  - Each chapter starts 1.26× harder than the one before.
+  - Inside a chapter, the boss is 4.0× its intro.
+- **The three numbers are fitted, not chosen.** They are the least-squares fit
+  to the 21 shipped levels, each kept in its own chapter, with the final boss
+  held to 90–110 (the hardest shipped level measures 90).
+  `tools/lib/fit-curve.py` reproduces them, and every shipped level sits
+  inside its slot's band.
+- **The band:** a level fits its slot within ×1.5 either way. An intro or a
+  breather may be as easy as it likes, because an easy level is never a wall.
+- **The result:** the game climbs from 9 tries to 109. The first chapter's boss
+  sits at level 10, and every chapter starts below where the last one ended.
+- **Enforced by `npm test`** (rule 5 of the difficulty gate).
+  **`npm run curve` prints all 60 slots**, built or not, each with its target:
+  that printout is the build list.
+- **When real players exist, their attempts replace the simulated tries** and
+  the equation is refitted. That is the correction step the industry runs.
 
 ### 4.3 The decision map
 
@@ -239,47 +268,48 @@ is UPDRAFT's decision. Both are gone.
 
 ### 4.4 The chapters
 
-| # | Chapter | Shipping now | New | Where the new ones come from |
-|---|---|---|---|---|
-| 1 | THE LINE | 8 | +3 | ROOF · DON'T · FILL — the line's own habits turned into traps |
-| 2 | PLATES & GATES | 4 | +4 | WRONG PLATE, plus sketching |
-| 3 | **TNT** | 0 | +12 | the noun on its own, then developed, then twisted |
-| 4 | AIR | 4 | +4 | TWO WINDS, plus sketching — the thinnest supply |
-| 5 | LIFT & LEVER | 5 | +3 | sketching |
-| 6 | ALL OF IT | 0 | +13 | TNT combined with every earlier noun; ends on WELL DONE |
-| | | **21** | **+39** | **= 60** |
+The equation placed every shipped level. These are the slots, in play order,
+with each empty slot's target:
 
-- **Chapter sizes are targets; the total of 60 is the commitment.** If a
-  chapter runs out of good ideas, its slots go to one that hasn't.
-- **TNT goes in the middle, not at the end.** That way its levels can be of
-  middle difficulty, which is what the curve lacks, and a new noun arrives in
-  a player's second or third sitting, when interest would otherwise fade.
-- **Chapter 6 combines nouns the player has already met.** It ends on WELL
-  DONE, the one level built as a spectacle: a chain reaction the player starts
-  with a single line. These are the hard levels, and hard levels are where
-  builds fail, so chapter 6 is sized last and is the first place the cut line
-  falls.
-- **Every chapter starts easier than the previous one ended**, a sawtooth
-  pattern. The difficulty gate allows this, and it is how the genre paces new
-  ideas.
+| # | Chapter | Built (slot) | To build (slot: target tries) | New |
+|---|---|---|---|---|
+| 1 | THE LINE | WALL 1, HANG 2, REDIRECT 3, BRIDGE 5, SPRING 6, CHOOSE 7, WEDGE 8, INTERCEPT 9 | 4: 17 · **10 boss: 34** | **2** |
+| 2 | PLATES & GATES | FUNNEL 11, TRIGGER 15, DROP 20 | 12: 14 · 13: 18 · 14: 22 · 16: ≤25 · 17: 23 · 18: 29 · 19: ≤30 | **7** |
+| 3 | **TNT** | — | 21 intro: ≤20 · 22: 18 · 23: 22 · 24: 27 · **25 spike: 41** · 26: ≤31 · 27: 29 · 28: 36 · 29: ≤38 · **30 boss: 55** | **10** |
+| 4 | AIR | DUCT 31, CATCH 35, UPDRAFT 37, RAIL 40 | 32: 23 · 33: 28 · 34: 34 · 36: ≤39 · 38: 45 · 39: ≤48 | **6** |
+| 5 | BALLOONS | FLOAT 45, CARRY 48, SINK 50 | 41 intro: ≤33 · 42: 29 · 43: 35 · 44: 43 · 46: ≤49 · 47: 46 · 49: ≤61 | **7** |
+| 6 | ALL OF IT | THORNS 55, CRACK 57, LEVER 58 | 51 intro: ≤41 · 52: 36 · 53: 44 · 54: 55 · 56: ≤62 · 59: ≤76 · **60 boss: 109** | **7** |
+| | | **21** | | **39** |
+
+- **Chapter 5 needs a new balloon intro** at 33 tries or fewer. FLOAT measures
+  61, too hard to teach the balloon, so it becomes the chapter's spike and a
+  gentler level takes the intro. The equation found this; nobody had to guess.
+- **TNT sits in the middle** so its levels are middle difficulty, which is what
+  the curve lacked, and so a new noun arrives in a player's second or third
+  sitting, when interest would otherwise fade.
+- **Chapter 6 combines nouns the player has already met** and ends on WELL
+  DONE, the one level built as a spectacle. Its levels are the hard ones, so it
+  is the first place the cut line falls.
+- **A level's slot can change** if it measures elsewhere on the curve. The band
+  decides where it goes, not the brief.
 
 ### 4.5 The first briefs
 
 Confidence means my honest guess that the idea survives its gates.
 
-| Working name | Ch | The decision | The trap | Conf. |
+| Working name | Slot | The decision | The trap | Conf. |
 |---|---|---|---|---|
-| ROOF | 1 | rocks fall along his path; shelter the whole stretch (watch for a twin of WALL on the contact sheet) | blocking where the first one lands | M |
-| DON'T | 1 | a crate and a rock fall; the crate plugs the hole; stop only the rock | blocking everything | M |
-| FILL | 1 | the rock that would hit him is the only thing that fills the hole; one ramp does both | blocking it | M |
-| WRONG PLATE | 2 | two plates: one opens the gate, one opens the floor under him (an opened gate vanishes, so a gate set into the floor is a trapdoor with no new code). The right plate needs a lid, or a dropped line wins | the nearer plate | M |
-| KEEP AWAY | 3 | the barrel rolls toward him: stop it *far* away. This is the chapter opener | stopping it at his feet, which is still inside the blast | H |
-| FENCE | 3 | park the barrel at the fence, away from him (built 12 Oct: 2.1% win rate, 5 families) | stopping it too early | M |
-| BUSTER | 3 | a boulder blocks the path; get the barrel to it. The same decision as FENCE, so only one of the two ships | stopping the barrel | — |
-| TAKE COVER | 3 | build him a wall the blast cannot pass (needs the blast to respect walls, a small engine addition) | running from it | L |
-| TWO WINDS | 4 | two leaning columns: one carries it to the plate, one drops it on him | the nearer column | M |
-| BALLOON BOMB | 5/6 | a balloon carries the barrel up; steer it so it is at the shelf when it goes off | letting it float | M |
-| AIR BOMB | 6 | the wind carries the barrel to the fence. RAIL's decision with a bomb in it, so it ships only if the fuse changes the decision | stopping it | L |
+| ROOF | 4 | rocks fall along his path; shelter the whole stretch (watch for a twin of WALL on the contact sheet) | blocking where the first one lands | M |
+| DON'T | 10 boss | a crate and a rock fall; the crate plugs the hole; stop only the rock | blocking everything | M |
+| FILL | 2nd chapter | the rock that would hit him is the only thing that fills the hole; one ramp does both | blocking it | M |
+| WRONG PLATE | 2nd chapter | two plates: one opens the gate, one opens the floor under him (an opened gate vanishes, so a gate set into the floor is a trapdoor with no new code). The right plate needs a lid, or a dropped line wins | the nearer plate | M |
+| KEEP AWAY | 21 intro | the barrel rolls toward him: stop it *far* away. This is the chapter opener | stopping it at his feet, which is still inside the blast | H |
+| FENCE | 3rd chapter | park the barrel at the fence, away from him (built 12 Oct: 2.1% win rate, 5 families) | stopping it too early | M |
+| BUSTER | 3rd chapter | a boulder blocks the path; get the barrel to it. The same decision as FENCE, so only one of the two ships | stopping the barrel | — |
+| TAKE COVER | 3rd chapter | build him a wall the blast cannot pass (needs the blast to respect walls, a small engine addition) | running from it | L |
+| TWO WINDS | 4th chapter | two leaning columns: one carries it to the plate, one drops it on him | the nearer column | M |
+| BALLOON BOMB | 5th/6th | a balloon carries the barrel up; steer it so it is at the shelf when it goes off | letting it float | M |
+| AIR BOMB | 6th chapter | the wind carries the barrel to the fence. RAIL's decision with a bomb in it, so it ships only if the fuse changes the decision | stopping it | L |
 
 **That is 11 named ideas, and I expect about half to pass.** The other 30-odd
 levels have to come from two places:
@@ -342,17 +372,24 @@ Every level goes through the same steps.
 | Role | Who | Owns | Why it exists |
 |---|---|---|---|
 | **Producer & integrator** | this session | this plan, the list of briefs, the level order, the generated data (difficulty data, certified solutions, the daily deck), merging, final review, reporting to you | The shape of the whole set (twins, the difficulty curve, the daily) is invisible to any one level's checks; one owner has to see all of it. And generated files conflict if two sessions write them. |
-| **Level designer A** | parallel session | the TNT chapter, then the TNT combinations in chapter 6 | TNT is a chapter of its own, and the engine has to land first |
-| **Level designer B** | parallel session | the new slots in chapters 1, 2, 4 and 5 | the middle-difficulty levels the curve is missing |
+| **Level designer A** | parallel session | the TNT engine (Appendix A), then chapter 3 | TNT is a chapter of its own, and its engine touches the simulation, which only one session may edit |
+| **Level designer B** | parallel session | chapters 1 and 2, then chapter 4 | the middle-difficulty levels the curve lacks most |
+| **Level designer C** | parallel session | chapter 5, then chapter 6 once TNT has landed | the balloon chapter needs a new intro, and chapter 6 needs TNT |
 | **Shell engineer** | parallel session | the menus, ending, progress and HUD code | Chapters, the ending and the sound switch live in different files from the levels, so this work never collides with theirs |
 | **Levelsmith** | a cheaper, faster model, as a reviewer | nothing; it only gives a verdict | It rejects a design for pennies before a full measurement run is spent on it |
 | **Playtest** | you, plus two or three people who have never seen it | the final verdict | The only check that measures whether a level makes sense to a person |
 
-**Before anyone starts, I do three things myself:**
-1. Split `js/levels.js` into one file per chapter, so parallel sessions never
-   edit the same file.
-2. Put the TNT engine back, with a physics test and a film of it going off.
-3. Write the briefs.
+**Who touches which files**, so no two sessions edit the same one:
+
+| Session | Owns |
+|---|---|
+| Designer A | the simulation, renderer, replay and audio engine files (for TNT), plus the chapter 3 level file |
+| Designers B and C | only their own chapter level files, plus their chapter's line in the chapter table |
+| Shell engineer | the menus, progress, HUD, board and ad-test files |
+| Integrator | the generated data files: difficulty, certified solutions, daily deck |
+
+Every chapter has its own file under `js/levels/`. The chapter table in
+`js/levels.js` places each new level into its slot, one line per chapter.
 
 **How the sessions coordinate:**
 - Each session pushes to its own branch.
@@ -373,30 +410,55 @@ them. On your approval, this section replaces D8's last paragraph.
 **The shell engineer builds these, in order of how much they keep a player:**
 1. **Chapters on the level board**, plus a one-line card when a chapter opens:
    *"CHAPTER 3 — TNT · it goes off wherever it is"*.
-2. **A real ending.** A stat card, as the Bible specified: *"Milo survived 60
+2. **The rewarded SKIP**, below.
+3. **A real ending.** A stat card, as the Bible specified: *"Milo survived 60
    disasters. You drew 1,284 m of line. He nearly died 212 times."* It is the
    screen people will screenshot.
-3. **"More coming"** on the ending, with the daily challenge as the reason to
+4. **"More coming"** on the ending, with the daily challenge as the reason to
    come back tomorrow.
-4. **A sound switch.**
-5. **Rewarded SKIP**, only if you say yes.
+5. **A sound switch.**
 
-**The SKIP decision.**
-- What it is: after five failed attempts on one level, a SKIP button that
-  plays a rewarded ad. The skipped level stays unstarred on the board, so the
-  player can come back for it.
-- What `CLAUDE.md` says today: no rewarded ads. A paid *undo* would sell
-  exactly the tension the game is built on, and a paid *hint* would break the
-  rule that hints name the problem, never the answer.
-- Why a skip is different: it does neither of those things.
-- Why it helps:
-  - The hardest levels take 56–90 tries, and that is where a casual player
-    leaves.
-  - A skip keeps them playing, which also means more ads between levels.
-  - Rewarded ads pay more per view than the ads between levels.
-- The platform allows it, because the player asks for it by pressing the
-  button.
-- **My recommendation: yes.** It changes a rule I wrote, so it is your call.
+**The SKIP: approved, and built the way the successful games build it.**
+
+What the research found:
+- **The fail screen is the moment to offer help.** It is when the player is
+  most motivated, and an offer there is taken far more often than a generic
+  prompt.
+- **Brain Test** (one of the biggest trick-puzzle games) skips a stuck level
+  with a rewarded video, and pays out its daily challenge in the currency that
+  buys skips and hints.
+- **Happy Glass**, the closest game to ours, sells hints that show where to
+  draw.
+- **Platform guidance on rewarded ads:**
+  - cap them and space them out;
+  - never make an ad the only way forward, because when no ad is available the
+    player is stuck;
+  - never play an interstitial straight after a rewarded ad the player chose to
+    watch;
+  - never tune difficulty so players need ads to progress.
+- **King's lesson from Candy Crush:** its hardest early level was its top
+  earner *and* its top cause of churn. The release valve belongs exactly where
+  the curve puts its walls.
+
+So, for this game:
+
+| Rule | What it does | Why |
+|---|---|---|
+| **On the fail card only** | SKIP is a small second button under TRY AGAIN; never before the first attempt, never mid-run | the moment of most intent; trying again stays the default |
+| **Tied to the curve** | appears after **3 failures** on a SPIKE or BOSS, after **5** on any other level | the equation says where the walls are; that is where the skip earns its place |
+| **Never on levels 1–3, never on the daily** | — | the first three teach the line itself; the daily streak must be earned |
+| **Costs one rewarded ad, or one SKIP TOKEN** | finishing the daily challenge earns a token, up to 3 held | Brain Test's pattern: the daily pays the currency that buys skips, so the skip is also a reason to come back every day |
+| **Never held hostage to ad fill** | if no ad is available, the skip is granted anyway | an ad must never be the only way forward |
+| **No stacking** | a rewarded view resets the between-levels ad counter | the player who chose an ad does not get another one straight after |
+| **A real lock behind it** | levels open in order: the next one opens when this one is beaten or skipped; existing saves keep everything up to their furthest level | today's open board would give away for free what the skip charges for; every game with a skip is linear |
+| **Unfinished business** | a skipped level is hollow on the board, scores 0 stars, and stays playable; the ending counts it | the 3-star chase and the stat card bring them back for it |
+| **No undo, no solution hints** | — | a paid undo sells the tension the game is built on, and a hint that shows the answer breaks the rule that hints name the problem |
+
+There is no cap beyond those thresholds. Each skip already costs three to five
+real failures plus an ad or a token. In a linear game, a cap would strand a
+player at exactly the wall the skip exists for. The sawtooth puts a breather
+or a new chapter's intro after every hard level, so skips gather where they
+were designed to.
 
 **Revenue.**
 - **YouTube Playables:** the revenue share is a limited pilot whose terms
@@ -418,10 +480,11 @@ them. On your approval, this section replaces D8's last paragraph.
 
 | When | What | Done when |
 |---|---|---|
-| **Wed 14 Oct** | Setup: chapter files, TNT engine and its test, the 39 briefs, sessions started | tests pass, TNT filmed going off, briefs committed |
-| **Thu 15 – Sat 17** | **Batch 1:** 19 new levels — chapters 1–3, including all 12 of TNT — plus chapters and the ending | merged, difficulty gate passes, films read |
+| **Tue 13 Oct** | Done: the difficulty equation, the 60-slot build list, the skip design, sessions started | `npm run curve` prints 21 built, 39 to build |
+| **Wed 14 Oct** | TNT engine and its physics test (designer A) | TNT filmed going off |
+| **Thu 15 – Sat 17** | **Batch 1:** 19 new levels — chapters 1–3, including all 10 of TNT — plus the skip, chapters and the ending | merged, difficulty gate passes, films read |
 | **Sat 17** | **Checkpoint 1:** pass rate, minutes per level, your playtest | decision: continue to 60, or cut to 45 |
-| **Sun 18 – Tue 20** | **Batch 2:** 20 new levels — chapters 4–6 — plus SKIP if approved | merged |
+| **Sun 18 – Tue 20** | **Batch 2:** 20 new levels — chapters 4–6 | merged |
 | **Wed 21 Oct** | **Ready to ship:** every level filmed won and lost, the contact sheet, the daily deck rebuilt, certification re-run, both ZIPs | the ZIP is in `dist/` |
 
 **Cut lines, decided now rather than later:**
@@ -431,7 +494,7 @@ them. On your approval, this section replaces D8's last paragraph.
   chapters 4–6, chapter 6 first, and nothing else changes.
 - **Playtest:** a level a player cannot read gets held, whatever its numbers.
 - **If Playables access arrives early:** ship whatever is complete and
-  certified (never fewer than 33 levels: the 21 plus the TNT chapter) and add
+  certified (never fewer than 31 levels: the 21 plus the TNT chapter) and add
   the rest as chapter updates.
 - **Every change to the campaign reshuffles every future daily challenge.**
   Lock the campaign before launch, not after.

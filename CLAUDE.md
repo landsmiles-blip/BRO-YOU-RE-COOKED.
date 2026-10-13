@@ -87,8 +87,9 @@ that DO have machines, and both failed in their own way:
 
 So a generator can search the numbers inside a shape, and for these shapes the
 fair region is either empty or it is the level you already shipped. **More
-levels need a new NOUN, not more search.** Twenty is where this vocabulary
-lands; going further is a second wave with a new thing in it, not a grind.
+levels need a new NOUN or a new DECISION, not more search.** I once wrote
+"twenty is where this vocabulary lands" — true only under the old
+one-question-per-noun rule, which is now replaced (see below).
 
 **Nor can they measure the SHAPE OF THE SET.** Seen one at a time every level
 looked fine; tiled into one contact sheet, eleven of fourteen opening frames
@@ -176,8 +177,15 @@ air, springs, pivots. That is not a coincidence about what got built; it is the
 reason those three are the only ones that worked. Check a new noun against this
 first. It costs nothing and it has already saved a build.
 
-The corollary, and it is the expensive half: **each of those nouns has exactly
-one question in it.**
+The corollary used to be **"each of those nouns has exactly one question in
+it"**, and it capped the game at one level per noun — production stopped at 21
+because of it. **The rule now is: no two levels ask for the same DECISION** —
+the sentence a player would say when they get it ("let the crate fall in, stop
+the rock"). Same sentence = twin, whatever the noun or layout; different
+sentence = not a twin, even on the same noun. The games that own this genre
+reuse every element across dozens of levels; what they never repeat is the
+decision. What the old rule got right, and still holds, is below: the
+questions already spent are spent.
 
 - The pivot's is WHICH SIDE OF THE PIN, and A21 already asks it. A27 was built,
   measured and shelved for asking it a second time with the lean reversed.
@@ -639,12 +647,18 @@ and the first ad lands after level 3, and the ENDING — the one screen that tel
 a player they finished the game — is never covered, because `nextLevel` returns
 before the counter. All four of those are asserted.
 
-**THIS GAME CANNOT HAVE A REWARDED AD, and the reason is the premise.** One
-line, one shot. A paid *undo* sells the exact tension every level is built on,
-and a paid *hint* cannot exist here: the rule is that a hint names the PROBLEM
-and never the solution, so a hint that obeys the rule is worth nothing to buy
-and one worth buying breaks it. The function is wired so the header stops lying;
-it has no call site on purpose, and the ads gate fails if one appears quietly.
+**THE ONE REWARDED AD IS A SKIP — approved 2026-10-13, designed in
+docs/PLAN.md section 7.** A paid *undo* is still ruled out (it sells the exact
+tension every level is built on) and so is a paid *hint* (a hint names the
+PROBLEM, never the solution, so one worth buying breaks the rule). A skip does
+neither. Its rules, from how the successful games do it: offered only on the
+fail card, after 3 failures on a SPIKE or BOSS slot and 5 elsewhere; never on
+levels 1–3 or the daily; paid with a rewarded ad OR a token earned by finishing
+the daily (hold 3); GRANTED ANYWAY if no ad is available; a rewarded view resets
+the interstitial counter; levels unlock in order, because an open board gives
+away what a skip sells; a skipped level stays hollow and playable. The ads gate
+asserts every one of those, and fails on any rewarded call site outside the
+skip.
 
 **AND DO NOT IMPORT A "YOUTUBE MONEY FORMULA" FROM ANOTHER PROJECT.** One was
 brought in proposing that deceptive difficulty drives comment velocity, which
@@ -670,7 +684,14 @@ deeper objection is that it optimises for the SPECTATOR and not the player, and
 A7 and A14 already proved those are different people: both passed every gate and
 were shelved because a real person could not tell what they wanted.
 
-## THE DAILY — WHY CONTENT WAS NEVER THE BOTTLENECK
+## THE DAILY — A REASON TO COME BACK (CONTENT IS THE OTHER HALF)
+
+**Correction, 2026-10-13: the argument below was half right, and it stopped
+level production for three weeks.** The daily brings a player back; it gives
+them nothing to do once they are back — one level, a third of an ad. A sitting
+is ~10 minutes and 8–15 levels, so 21 levels is two sittings and 60 is a week.
+Both halves are needed: the daily and the campaign. See docs/PLAN.md section 3.
+
 
 **Twenty-one levels is fourteen minutes, played once.** Revenue here is daily
 actives x sessions x ad impressions, so with nothing to come back FOR the
@@ -777,6 +798,16 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
   level harder, change what it asks, not what it pays.
 - **A new level must fit the curve, not just pass its own gates.** Place it,
   run the curve gate, and move it until it passes.
+- **EVERY SLOT HAS A TARGET NOW, FROM ONE EQUATION** (tools/lib/difficulty.js):
+  `T(c, k) = 8.6 · 1.26^c · 4.0^p(k)` over six chapters of ten, the same
+  sawtooth in each (INTRO, three DEVELOPs, SPIKE, BREATHER, two DEVELOPs,
+  BREATHER, BOSS) — two hard levels in ten, a breather after each, the first
+  boss at level 10, which is where the industry puts them. T0, G and S are the
+  least-squares fit to the shipped levels (`python3 tools/lib/fit-curve.py`
+  reproduces them); a level must measure within x1.5 of its slot's target
+  (intros and breathers may be easier). `npm run curve` prints all sixty slots
+  with their targets: it is the build list. Refit when real players' attempt
+  counts exist — simulated difficulty is least accurate on the hardest levels.
 
 ## PLATFORM CONSTRAINTS (non-negotiable)
 
@@ -796,7 +827,7 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
     npm test                      level data, physics, levels, curve, daily — fast, run always
     npm run solver [id ...]       the gates, and writes measured star thresholds
     npm run certify [id]          certifies a hand-robust solution per level
-    npm run curve                 prints the difficulty curve (tries per level)
+    npm run curve                 all 60 slots: each target, what is built, what is left
     npm run film                  films every level being WON — READ THE IMAGES
     FILM_IDLE=1 npm run film      films it being LOST — read those too
     npm run frozen                every opening frame in ONE grid — READ IT

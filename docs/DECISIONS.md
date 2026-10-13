@@ -64,9 +64,14 @@ If clearance later comes back bad, the title changes and nothing else does — b
 
 ---
 
-## D6 — Content scale · **DEFERRED BY DESIGN, gated on data**
+## D6 — Content scale · **DECIDED 2026-10-13: 60 levels, six chapters of ten**
 
-24 levels is the shippable game. Whether it becomes 16 or grows toward 60 is decided at the M1 gate on **measured authoring cost**, not on optimism. This is deliberately not decided now — deciding it early is precisely how projects end mid-air.
+Was: 24 shippable, 60 the upside, decided on measured authoring cost. Decided
+now on what one player needs: a sitting is ~10 minutes and 8–15 levels, so 21
+levels is two sittings and 60 is a week of daily play — the week a habit forms.
+Every slot has a measured difficulty target (D10). Cut line: if fewer than 12
+of the first 19 new levels pass their gates, the target becomes 45. See
+docs/PLAN.md sections 3, 4 and 8.
 
 ---
 
@@ -235,7 +240,43 @@ direction by passing at 1.6% while its rock was decoration.
   ending nobody reaches is the classic way these projects die at 70%.
 - **No generated level ships in levels 1–24.**
 
-**Also: no AI sub-agents.** The "assistant" here is a script. Parallel agents
-would start with no memory of this project and re-derive the physics, the gates
-and why A14 was a fraud, turning build time into coordination time. One owner,
-one tool.
+**Superseded 2026-10-13: parallel sessions, one owner per file.** This said
+"no AI sub-agents — parallel agents would start with no memory of this project".
+That was true when the memory lived in one session's head. It now lives in
+CLAUDE.md, docs/HELD.md and docs/PLAN.md, which every session reads. Three level
+designers and a shell engineer work in parallel, each owning its own files, and
+one integrator owns the generated data, the order and the final review
+(docs/PLAN.md section 6).
+
+---
+
+## D9 — Monetisation · **LOCKED 2026-10-13: one rewarded ad, and it is a SKIP**
+
+Approved by the user, designed from how the successful games do it: Brain Test
+skips with a rewarded video and pays its daily challenge in the currency that
+buys skips; platform guidance says offer help at the fail screen, never make an
+ad the only way forward, never stack an interstitial on a rewarded view, and
+never tune difficulty to force ads. So: fail card only; after 3 failures on a
+SPIKE or BOSS, 5 elsewhere; never levels 1–3 or the daily; a rewarded ad or a
+token earned from the daily (hold 3); granted anyway if no ad is available;
+resets the interstitial counter; levels unlock in order so the skip is worth
+something; a skipped level stays hollow and playable. Undo and solution hints
+stay ruled out. Full table in docs/PLAN.md section 7.
+
+**Reversal cost:** low in code (one button, one save field), high in trust if
+it is ever tuned to sell — the rule against tuning difficulty to drive ads is
+part of the decision.
+
+---
+
+## D10 — Difficulty · **LOCKED 2026-10-13: every slot has a target from one equation**
+
+`T(c, k) = 8.6 · 1.26^c · 4.0^p(k)`: tries (attempts per success, measured by
+the solver and the hand model — simulated players, the way King predicts
+difficulty before release) for slot k of chapter c. The same sawtooth in every
+chapter: two hard levels in ten (the industry's one in five), a breather after
+each, the first boss at level 10. T0, G and S are the least-squares fit to the
+21 shipped levels, all of which land inside their bands; a level ships only
+inside its slot's band (x1.5; intros and breathers may be easier). Refit when
+real players' numbers exist. tools/lib/difficulty.js, tools/lib/fit-curve.py,
+rule 5 of tools/test/curve.js.
