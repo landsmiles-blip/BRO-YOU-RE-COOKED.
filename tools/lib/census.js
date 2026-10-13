@@ -15,6 +15,7 @@
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
 import { buildSim, stepSim, commitStroke, destroySim, OUTCOME } from '../../js/sim.js';
+import { raycast } from '../../js/physics/adapter.js';
 import { FREEZE_AT, RUN_TIMEOUT, PHYSICS_DT, TNT } from '../../js/constants.js';
 import { samplingRegion } from '../solver/solve.js';
 import { sweep } from '../solver/families.js';
@@ -25,10 +26,20 @@ const MAX_STEPS = Math.ceil(RUN_TIMEOUT / PHYSICS_DT) + 600;
 export function story(level, points) {
   const sim = buildSim(level);
   const freezeAt = level.freezeAt ?? FREEZE_AT;
-  let committed = null;
+  let committed = null, through = false;
   let out = OUTCOME.RUNNING;
   for (let i = 0; i < MAX_STEPS && out === OUTCOME.RUNNING; i++) {
     if (!committed && sim.simTime >= freezeAt) {
+      // THROUGH: the stroke is drawn straight through a loose object. The
+      // engine then shoves the object out of the line, which can win a level
+      // without its puzzle ever being played.
+      for (let k = 1; k < points.length && !through; k++) {
+        const a = points[k - 1], b = points[k];
+        through = raycast(sim.ctx, a.x, a.y, b.x, b.y, (part) => {
+          const body = part.parent ?? part;
+          return !body.isStatic && !body.isSensor && body !== sim.milo.body;
+        }).length > 0;
+      }
       committed = commitStroke(sim, points);
       if (!committed.ok) { destroySim(sim); return null; }
     }
@@ -47,6 +58,7 @@ export function story(level, points) {
   const gates = level.objects.filter((o) => o.type === 'gate' && sim.triggered.has(o.id)).map((o) => o.id);
   if (gates.length) words.push(`opened:${gates.join(',')}`);
   words.push(committed.anchors ? 'anchored' : 'dropped');
+  if (through) words.push('THROUGH');
   destroySim(sim);
   return { outcome: out, words: words.join(' ') };
 }
