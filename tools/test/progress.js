@@ -9,6 +9,7 @@ import {
   createProgress, record, starsOn, totalStars, maxStars, cleared, isComplete,
   perfect, firstUnclearedIndex, serialise, deserialise,
   frontier, isOpen, isDone, isSkipped, markSkipped, resumeIndex, grantToken, spendToken, MAX_TOKENS,
+  noteRun,
 } from '../../js/progress.js';
 import { LEVELS } from '../../js/levels.js';
 
@@ -119,6 +120,28 @@ check('keeps the valid stars alongside the junk', starsOn(dirty, ids[0]) === 3);
   check('an impossible token count is DROPPED, not clamped', junk.tokens === 0, `${junk.tokens}`);
   check('a skip naming no real level is dropped, the rest kept',
         !('not-a-level' in junk.skipped) && isSkipped(junk, ids[6]) && Object.keys(junk.skipped).length === 1);
+}
+
+// ── lifetime stats, for the ending's card ───────────────────────────────
+{
+  const sp = createProgress();
+  noteRun(sp, { won: true, ink: 300, calls: 2 });
+  noteRun(sp, { died: true, ink: 120, calls: 1 });
+  noteRun(sp, { ink: 80 });                       // aborted: neither a win nor a death
+  check('a run counts its win, death, ink and close calls',
+        sp.stats.wins === 1 && sp.stats.deaths === 1 && sp.stats.ink === 500 && sp.stats.calls === 3,
+        JSON.stringify(sp.stats));
+  const rs = deserialise(serialise(sp));
+  check('stats round-trip', JSON.stringify(rs.stats) === JSON.stringify(sp.stats));
+  sp.muted = true;
+  check('the sound switch is remembered', deserialise(serialise(sp)).muted === true &&
+        deserialise(JSON.stringify({ v: 3, best: {}, muted: 'yes' })).muted === false);
+  const old = deserialise(JSON.stringify({ v: 2, best: {} }));
+  check('an old save starts its stats at zero', old.stats.wins === 0 && old.stats.ink === 0);
+  const bad = deserialise(JSON.stringify({ v: 3, best: {}, stats: { wins: -4, deaths: 'lots', ink: 1e99, calls: 7 } }));
+  check('a junk stat is dropped on its own; the rest are kept',
+        bad.stats.wins === 0 && bad.stats.deaths === 0 && bad.stats.ink === 0 && bad.stats.calls === 7,
+        JSON.stringify(bad.stats));
 }
 
 console.log(failed ? `\n${failed} progress check(s) FAILED\n` : '\nprogress OK\n');

@@ -40,7 +40,26 @@ export const MAX_TOKENS = 3;
  * does not exist.
  */
 export function createProgress() {
-  return { v: SCHEMA, best: {}, finishedAt: 0, streak: 0, lastDailyDay: 0, skipped: {}, tokens: 0 };
+  return { v: SCHEMA, best: {}, finishedAt: 0, streak: 0, lastDailyDay: 0, skipped: {}, tokens: 0,
+           stats: freshStats(), muted: false };
+}
+
+// ── lifetime stats, for the ending's card ───────────────────────────────
+//
+// "Milo survived 60 disasters. You drew 1,284 m of line. He nearly died 212
+// times." The screen people screenshot, and the reason it needs numbers that
+// outlive a session. Cosmetic, so they are kept in memory every run and only
+// written when something else is (a win, a skip, a daily) — a run of deaths
+// is not worth a save of its own.
+const freshStats = () => ({ wins: 0, deaths: 0, ink: 0, calls: 0 });
+
+/** Count one finished run. `won` false is a death; an aborted run is neither. */
+export function noteRun(p, { won = false, died = false, ink = 0, calls = 0 } = {}) {
+  const st = p.stats ?? (p.stats = freshStats());
+  if (won) st.wins += 1;
+  if (died) st.deaths += 1;
+  st.ink += Math.max(0, ink) || 0;
+  st.calls += Math.max(0, calls) || 0;
 }
 
 export function starsOn(p, levelId) {
@@ -125,6 +144,7 @@ export function serialise(p) {
     v: SCHEMA, best: p.best, finishedAt: p.finishedAt || 0,
     streak: p.streak || 0, lastDailyDay: p.lastDailyDay || 0,
     skipped: Object.keys(p.skipped || {}).filter((id) => p.skipped[id]), tokens: p.tokens || 0,
+    stats: p.stats ?? freshStats(), muted: !!p.muted,
   });
 }
 
@@ -192,6 +212,12 @@ export function deserialise(text) {
   }
   const tk = Number(raw.tokens);
   fresh.tokens = (Number.isInteger(tk) && tk >= 0 && tk <= MAX_TOKENS) ? tk : 0;
+  fresh.muted = raw.muted === true;
+  // Each stat on its own: one junk number costs that number, not the rest.
+  for (const k of Object.keys(fresh.stats)) {
+    const n = Number(raw.stats?.[k]);
+    fresh.stats[k] = (Number.isFinite(n) && n >= 0 && n < 1e12) ? n : 0;
+  }
   return fresh;
 }
 

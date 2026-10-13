@@ -38,6 +38,7 @@ Legend: **PASS** with evidence Â· **PROXY** measured here, needs a real device Â
 | PASS | `gameReady` when input is accepted | conformance: time to interactive 82 ms |
 | PASS | Cloud save via `saveData`/`loadData` | conformance: round-trip through the cloud; `loadData` used on boot |
 | PASS | Save versioned; old loads; unknown degrades | conformance: versioned payload, unknown version and malformed data degrade without throwing; `tools/test/daily.js`: a v1 save migrates; `tools/test/progress.js`: v1 and v2 saves migrate to v3 (skips and tokens), an old save keeps every level up to its furthest open, and impossible token counts are dropped |
+| PASS | Follows YouTube's sound setting | `ytgame.system.isAudioEnabled()` sets the starting state and `onAudioEnabledChange` is followed live (`js/main.js`); the player's own switch can only turn sound further OFF; `ads.js` asserts both calls on a mocked platform and audio-on off it |
 | PASS | `onPause` halts everything | conformance: physics frozen (simTime unchanged), phase clock stopped, audio context SUSPENDED; `audio.js`: pause suspends, resume restores |
 | PASS | `onResume` restores, no catch-up | conformance: 100 ms of simulation in 120 ms of wall clock after resume |
 | PASS | Zero external network calls | build gate (5 primitives) + conformance grep: clean |

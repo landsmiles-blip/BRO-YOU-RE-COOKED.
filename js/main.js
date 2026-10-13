@@ -15,7 +15,9 @@ import {
 import { dayNumber, dailyFor, asDaily } from './daily.js';
 import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
-import { load as loadProgress, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped, resumeIndex } from './progress.js';
+import {
+  load as loadProgress, save as saveProgress, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped, resumeIndex,
+} from './progress.js';
 import { A1, LEVELS, assertLevel, chapterOf } from './levels.js';
 import { POOL } from './dailyPool.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT, CLOSE_CALL, NEAR_MISS_DIST } from './constants.js';
@@ -47,6 +49,8 @@ let boardBox = null;
 let boardBtn = null;
 // Where the skip button sits on the fail card, when one is offered. Same rule.
 let skipBtn = null;
+// Where the sound switch sits, beside the board button. Same rule.
+let soundBtn = null;
 
 // Progress loads ASYNCHRONOUSLY and never blocks the first frame. Bundle size
 // is measured page-load → gameReady, so waiting on a platform round-trip here
@@ -61,6 +65,7 @@ let skipBtn = null;
 // from under a finger that is already drawing.
 loadProgress().then((p) => {
   game.progress = p;
+  applySound();
   const at = resumeIndex(p);
   const untouched = game.levelIndex === 0 && !game.isDaily && game.attempt <= 1 &&
     !game.stroke.active && !game.stroke.points.length &&
@@ -92,6 +97,14 @@ attachInput(canvas, {
       skip(game).then(_resetPhase);
       return;
     }
+    // The sound switch, live wherever the board button is.
+    if (soundBtn && inside(soundBtn, pt.cssX, pt.cssY) &&
+        (game.phase === PHASE.FROZEN || game.phase === PHASE.RESULT || game.phase === PHASE.ENDING)) {
+      game.progress.muted = !game.progress.muted;
+      applySound();
+      saveProgress(game.progress);
+      return;
+    }
     // The board button is live during the freeze, on the result card and at the
     // ending — the moments the player is not mid-decision.
     if (boardBtn && insideBtn(pt.cssX, pt.cssY) &&
@@ -114,6 +127,14 @@ const insideBtn = (x, y) => inside(boardBtn, x, y);
 // and one that keeps humming in a backgrounded tab, which fails review.
 sdk.onPause(() => { game.paused = true; audio.pause(); });
 sdk.onResume(() => { game.paused = false; acc = 0; last = performance.now(); audio.resume(); });
+
+// SOUND IS ON ONLY IF YOUTUBE SAYS SO AND THE PLAYER HAS NOT SWITCHED IT OFF.
+// YouTube's setting comes first and is followed live; the switch, top right,
+// is the player's own and is saved with their progress.
+let platformAudio = sdk.isAudioEnabled();
+const applySound = () => audio.setEnabled(platformAudio && !game.progress.muted);
+applySound();
+sdk.onAudioEnabledChange((on) => { platformAudio = on; applySound(); });
 
 let last = performance.now();
 let acc = 0;
@@ -261,6 +282,9 @@ function render() {
   if (g.phase === PHASE.ENDING) drawEnding(ctx, g);
   if (g.phase === PHASE.FROZEN || g.phase === PHASE.RESULT || g.phase === PHASE.ENDING) {
     drawBoardButton(ctx, g.phase === PHASE.FROZEN);
+    drawSoundButton(ctx, g.phase === PHASE.FROZEN, platformAudio && !g.progress.muted);
+  } else {
+    soundBtn = null;
   }
 
   // Tiny progress marker. Deliberately unobtrusive — the puzzle owns the screen.
@@ -395,6 +419,47 @@ function drawBoardButton(ctx, quiet) {
 }
 
 /**
+ * THE SOUND SWITCH: a small speaker beside the board button, struck through
+ * when off. Same size, same quietness during the freeze, same stored hit box.
+ * It shows what the player will actually hear — so when YouTube's own setting
+ * has the sound off, it is drawn off, whatever the switch says.
+ */
+function drawSoundButton(ctx, quiet, on) {
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const s = Math.max(22, Math.min(view.cssW, view.cssH) * 0.045);
+  const pad = Math.max(8, Math.min(view.cssW, view.cssH) * 0.022);
+  const x = view.cssW - pad - s - pad - 16 - s, y = pad;
+  soundBtn = { x: x - 8, y: y - 8, w: s + 16, h: s + 16 };
+  const col = quiet ? 'rgba(42,38,34,0.30)' : 'rgba(232,226,214,0.55)';
+  ctx.fillStyle = col;
+  ctx.strokeStyle = col;
+  ctx.lineWidth = Math.max(1.6, s * 0.08);
+  ctx.lineCap = 'round';
+  // The speaker: a box and a cone.
+  ctx.beginPath();
+  ctx.moveTo(x, y + s * 0.36);
+  ctx.lineTo(x + s * 0.22, y + s * 0.36);
+  ctx.lineTo(x + s * 0.50, y + s * 0.10);
+  ctx.lineTo(x + s * 0.50, y + s * 0.90);
+  ctx.lineTo(x + s * 0.22, y + s * 0.64);
+  ctx.lineTo(x, y + s * 0.64);
+  ctx.closePath();
+  ctx.fill();
+  if (on) {
+    for (const r of [0.22, 0.38]) {
+      ctx.beginPath();
+      ctx.arc(x + s * 0.50, y + s * 0.5, s * r, -0.75, 0.75);
+      ctx.stroke();
+    }
+  } else {
+    ctx.beginPath();
+    ctx.moveTo(x + s * 0.64, y + s * 0.30); ctx.lineTo(x + s * 0.96, y + s * 0.70);
+    ctx.moveTo(x + s * 0.96, y + s * 0.30); ctx.lineTo(x + s * 0.64, y + s * 0.70);
+    ctx.stroke();
+  }
+}
+
+/**
  * THE ENDING. The screen whose absence made this a demo rather than a game.
  *
  * It states three things and no more: that it is over, what the player scored
@@ -409,30 +474,51 @@ function drawEnding(ctx, g) {
 
   const got = totalStars(g.progress), max = maxStars();
   const all = perfect(g.progress);
+  const st = g.progress.stats ?? { wins: 0, deaths: 0, ink: 0, calls: 0 };
+  const fmt = (n) => Math.round(n).toLocaleString('en-US');
 
-  drawText(ctx, all ? 'NOT A SINGLE WASTED LINE.' : 'HE MADE IT. EVERY TIME.',
-           0.5, 0.30, Math.max(19, view.cssH * 0.034), C.paper);
-  drawText(ctx, `${got} / ${max}`, 0.5, 0.44, Math.max(34, view.cssH * 0.072), C.anchor);
-  drawText(ctx, all ? 'stars — all of them' : 'stars', 0.5, 0.51,
+  // Honest about the skip: a level skipped is a level he did not make.
+  const skippedAny = LEVELS.some((l) => isSkipped(g.progress, l.id));
+  drawText(ctx, all ? 'NOT A SINGLE WASTED LINE.' : skippedAny ? 'HE MADE IT. MOSTLY.' : 'HE MADE IT. EVERY TIME.',
+           0.5, 0.17, Math.max(19, view.cssH * 0.034), C.paper);
+  drawText(ctx, `${got} / ${max}`, 0.5, 0.28, Math.max(30, view.cssH * 0.064), C.anchor);
+  drawText(ctx, all ? 'stars — all of them' : 'stars', 0.5, 0.345,
            Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.6)');
 
   // A per-level star strip: the 3-star chase, made concrete. It shows exactly
   // WHICH levels still owe the player something, which a bare total cannot.
   const n = LEVELS.length;
   const w = Math.min(view.cssW * 0.82, n * Math.max(20, view.cssW * 0.055));
-  const x0 = (view.cssW - w) / 2, y = view.cssH * 0.62, cw = w / n;
+  const x0 = (view.cssW - w) / 2, y = view.cssH * 0.40, cw = w / n;
   for (let i = 0; i < n; i++) {
-    const st = starsOn(g.progress, LEVELS[i].id);
+    const s = starsOn(g.progress, LEVELS[i].id);
     for (let k = 0; k < 3; k++) {
-      ctx.fillStyle = k < st ? C.anchor : 'rgba(232,226,214,0.16)';
+      ctx.fillStyle = k < s ? C.anchor : 'rgba(232,226,214,0.16)';
       ctx.fillRect(x0 + i * cw + cw * 0.18, y + k * 7, cw * 0.64, 4.5);
     }
   }
 
+  // THE CARD PEOPLE SCREENSHOT. Lifetime numbers, so it is the player's own
+  // story rather than a score: how many disasters he walked out of, how much
+  // line it took, how close it was, and how often it went the other way.
+  // A unit is about 1/60 of a metre: Milo is 72 units and roughly 1.2 m tall.
+  // One fact per line: joined, they shrank to a smudge at 9:32.
+  const small = Math.max(11, Math.min(view.cssH * 0.019, 20));
+  drawText(ctx, `MILO SURVIVED ${fmt(st.wins)} DISASTERS`, 0.5, 0.51,
+           Math.max(16, view.cssH * 0.030), C.paper);
+  drawText(ctx, `you drew ${fmt(st.ink / 60)} m of line`, 0.5, 0.56, small, 'rgba(232,226,214,0.78)');
+  drawText(ctx, `he nearly died ${fmt(st.calls)} times`, 0.5, 0.595, small, 'rgba(232,226,214,0.78)');
+  drawText(ctx, `and he got cooked ${fmt(st.deaths)} times`, 0.5, 0.63, small, 'rgba(232,226,214,0.55)');
+
+  // MORE COMING, and the reason to come back before it does.
+  drawText(ctx, 'MORE LEVELS ARE COMING', 0.5, 0.715, Math.max(13, view.cssH * 0.024), C.anchor);
+  drawText(ctx, 'and a new daily challenge every day', 0.5, 0.755,
+           Math.max(10, Math.min(view.cssH * 0.017, 18)), 'rgba(232,226,214,0.6)');
+
   drawText(ctx,
     all ? 'tap to play it again' : 'tap to go back for the stars you left',
-    0.5, 0.80, Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.55)');
-  drawText(ctx, 'or pick a level, top right', 0.5, 0.845,
+    0.5, 0.86, Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.55)');
+  drawText(ctx, 'or pick a level, top right', 0.5, 0.90,
            Math.max(10, view.cssH * 0.015), 'rgba(232,226,214,0.35)');
 }
 
@@ -516,6 +602,7 @@ globalThis.__byc = {
   game, view, PHASE, retry, nextLevel, goToLevel, openSelect, closeSelect, LEVELS, reducedMotion,
   skip, skipOffer,
   get skipBtn() { return skipBtn; },
+  get soundBtn() { return soundBtn; },
   // The daily pool is not in LEVELS, so films and gates reach it through these.
   POOL, loadLevel, startDaily, asDaily,
   get boardBox() { return boardBox; },

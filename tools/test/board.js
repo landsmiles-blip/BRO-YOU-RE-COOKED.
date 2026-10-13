@@ -118,18 +118,20 @@ for (const [label, w, h] of [['9:16', 405, 720], ['9:32', 360, 1280], ['1:1', 80
   check('a normal stroke still draws — the button does not swallow it',
         st.stroke && st.phase !== 'select', `${st.phase}, stroke ${st.stroke}`);
 
-  // And the certified solutions must not START under the button.
+  // And the certified solutions must not START under the button, or under
+  // the sound switch beside it.
   const clash = await page.evaluate((S) => {
     const B = globalThis.__byc, V = B.view;
     const s = Math.max(22, Math.min(V.cssW, V.cssH) * 0.045);
     const pad = Math.max(8, Math.min(V.cssW, V.cssH) * 0.022);
-    const box = { x: V.cssW - pad - s - 8, y: pad - 8, w: s + 16, h: s + 16 };
+    const boxes = [{ x: V.cssW - pad - s - 8, y: pad - 8, w: s + 16, h: s + 16 }];
+    if (B.soundBtn) boxes.push(B.soundBtn);
     const bad = [];
     for (const lvl of B.LEVELS) {
       const p = S[lvl.id]?.solution?.points?.[0];
       if (!p) continue;
       const sx = (p.x + V.offsetX) * V.scale, sy = (p.y + V.offsetY) * V.scale;
-      if (sx >= box.x && sx <= box.x + box.w && sy >= box.y && sy <= box.y + box.h) bad.push(lvl.id);
+      if (boxes.some((box) => sx >= box.x && sx <= box.x + box.w && sy >= box.y && sy <= box.y + box.h)) bad.push(lvl.id);
     }
     return bad;
   }, SOLUTIONS);

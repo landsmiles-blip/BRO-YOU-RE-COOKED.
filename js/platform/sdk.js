@@ -6,7 +6,8 @@
 // onPause halts EVERYTHING — loop, physics, audio, input, rendering.
 //
 // Verified SDK surface: firstFrameReady, gameReady, saveData, loadData,
-// onPause, onResume, ads.requestInterstitialAd(), ads.requestRewardedAd(id).
+// onPause, onResume, isAudioEnabled, onAudioEnabledChange,
+// ads.requestInterstitialAd(), ads.requestRewardedAd(id).
 // See docs/CERTIFICATION.md, which links Google's requirement pages.
 
 const sdk = typeof globalThis.ytgame !== 'undefined' ? globalThis.ytgame : null;
@@ -40,6 +41,26 @@ export function onResume(fn) {
   if (sdk?.system?.onResume) { try { sdk.system.onResume(fn); return; } catch { /* fall through */ } }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) fn(); });
   window.addEventListener('focus', fn);
+}
+
+// ── YouTube's own sound setting ─────────────────────────────────────────
+//
+// THE GAME NEVER ASKED. The SDK reports whether game audio is enabled in
+// YouTube's settings, and says to start the game's audio from it and follow
+// it when it changes; Google's getting-started guide lists both calls among
+// the required integrations. Until this, the only thing between a muted
+// YouTube and this game's sound was the browser's autoplay policy. Off the
+// platform there is no such setting, so audio is simply on.
+
+export function isAudioEnabled() {
+  try {
+    const v = sdk?.system?.isAudioEnabled?.();
+    return typeof v === 'boolean' ? v : true;
+  } catch { return true; }
+}
+
+export function onAudioEnabledChange(fn) {
+  try { sdk?.system?.onAudioEnabledChange?.((on) => fn(on !== false)); } catch { /* nothing to follow */ }
 }
 
 // ── Persistence ─────────────────────────────────────────────────────────

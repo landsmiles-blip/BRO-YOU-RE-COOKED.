@@ -49,6 +49,7 @@ if (process.argv.includes('--offline')) {
   check('interstitial resolves false', inter === false, String(inter));
   check('rewarded resolves false', rew === false, String(rew));
   check('a rewarded id must be a non-empty string', bad === false, String(bad));
+  check('off the platform there is no sound setting, so audio is on', sdk.isAudioEnabled() === true);
 
   // NEVER HELD HOSTAGE TO AD FILL. Off the platform there is no ad at all —
   // the open web, and any day YouTube has nothing to show — and a stuck player
@@ -78,12 +79,17 @@ if (offline.status !== 0) failed++;
 // The mock goes up BEFORE the imports, because sdk.js reads globalThis.ytgame
 // at module scope. Importing first would silently test the no-op path twice.
 const requested = [];
+const audioListeners = [];
 globalThis.ytgame = {
   game: {
     firstFrameReady() {}, gameReady() {},
     saveData: () => Promise.resolve(), loadData: () => Promise.resolve(''),
   },
-  system: { onPause() {}, onResume() {} },
+  system: {
+    onPause() {}, onResume() {},
+    isAudioEnabled: () => false,
+    onAudioEnabledChange: (cb) => { audioListeners.push(cb); },
+  },
   ads: {
     requestInterstitialAd: () => { requested.push('interstitial'); return Promise.resolve(); },
     requestRewardedAd: (id) => { requested.push('rewarded:' + id); return Promise.resolve(); },
@@ -98,6 +104,15 @@ const sdk = await import('../../js/platform/sdk.js');
 
 console.log('\nADS — ON PLATFORM');
 check('isPlayables is true when ytgame exists', sdk.isPlayables === true);
+
+// YOUTUBE'S OWN SOUND SETTING: read at start, followed when it changes.
+check("the game reads YouTube's sound setting", sdk.isAudioEnabled() === false);
+{
+  const heard = [];
+  sdk.onAudioEnabledChange((on) => heard.push(on));
+  audioListeners.forEach((cb) => cb(true));
+  check('and follows it when it changes', audioListeners.length === 1 && heard.join() === 'true', heard.join());
+}
 
 const g = createGame(LEVELS[0]);
 const adAt = [];          // which level's completion produced an ad

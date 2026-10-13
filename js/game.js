@@ -21,7 +21,7 @@ import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
 import {
   createProgress, record, save, isComplete, firstUnclearedIndex, recordDaily, resumeIndex,
-  isDone, markSkipped, grantToken, spendToken,
+  isDone, markSkipped, grantToken, spendToken, noteRun,
 } from './progress.js';
 import { dayNumber, dailyLevel } from './daily.js';
 import * as audio from './audio.js';
@@ -108,6 +108,8 @@ export function tick(g, dtMs) {
     }
     if (o !== OUTCOME.RUNNING) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
+      noteRun(g.progress, { won: o === OUTCOME.SUCCESS, died: o !== OUTCOME.SUCCESS && o !== OUTCOME.ABORTED,
+                            ink: g.lastLength, calls: g.sim.closeCalls.length });
       if (o === OUTCOME.SUCCESS) {
         g.stars = starsFor(g.level.id, g.lastLength);
         // A DAILY WIN EXTENDS THE STREAK, and only a daily win. The budget is
@@ -119,7 +121,10 @@ export function tick(g, dtMs) {
         // A daily-pool level is not on the board, so it has no best to keep:
         // recording one would only fill the save with an id that deserialise
         // throws away on the next load.
-        if (g.levelIndex >= 0 && record(g.progress, g.level.id, g.stars)) save(g.progress);
+        // Every win is written, best or not: it carries the lifetime stats
+        // the ending totals, which a run of deaths before it only kept in memory.
+        if (g.levelIndex >= 0) record(g.progress, g.level.id, g.stars);
+        save(g.progress);
         audio.success(g.stars);
         g.phase = PHASE.RESULT;
         g.phaseTime = 0;
