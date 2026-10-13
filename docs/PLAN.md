@@ -391,6 +391,27 @@ Every level goes through the same steps.
 Every chapter has its own file under `js/levels/`. The chapter table in
 `js/levels.js` places each new level into its slot, one line per chapter.
 
+**Running now** (started 2026-10-13, from `claude/game-markdown-review-23hf3j`):
+
+| Session | Branch | Session id |
+|---|---|---|
+| Designer A — TNT engine, chapter 3 | `claude/designer-a-tnt` | session_01HoXeLoNWvEZMhJC8UdKQJ2 |
+| Designer B — chapters 1, 2, 4 | `claude/designer-b-ch124` | session_01JWBNAsip61Q55nREp6hS4h |
+| Designer C — chapters 5, 6 | `claude/designer-c-ch56` | session_01TTGN4vq2wjVE5n957hL1vG |
+| Shell engineer — skip, unlocks, chapters, ending, sound | `claude/shell-skip-chapters` | session_011isBfgKwwg8hhZSG2j9AJQ |
+
+Each keeps a log at `docs/batch/<name>.md` on its branch.
+
+**Each integration pass:**
+1. Fetch every branch and merge into the integration branch, with designer A's
+   engine first.
+2. Regenerate any conflicting generated file by re-running the tool for the new
+   ids.
+3. Run `npm test` and `npm run curve`, then film every new level both won and
+   lost, read the contact sheet, and check each new level's decision sentence
+   against every other.
+4. Commit, push, and tell designer C when TNT has landed.
+
 **How the sessions coordinate:**
 - Each session pushes to its own branch.
 - I merge, regenerate the generated files by re-running the tools, run every
