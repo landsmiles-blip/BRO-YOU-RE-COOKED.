@@ -1,5 +1,20 @@
 # PLAN — from 21 levels to a game one person comes back to
 
+> **Status, 13 Oct, end of day.** Built and shipped since approval: the TNT
+> engine (rebuilt, then extended: solid things stop a blast, a blast lights the
+> barrels it reaches), five TNT levels (COVER 21, KEEP AWAY 22, FENCE 24,
+> SHELTER 25, PROTECT 30 — 26 levels in the game), and all of section 7: the
+> skip, chapters on the board and chapter titles, the ending stat card with
+> "more coming", the sound switch — plus resume-where-you-left-off and the
+> YouTube sound-setting integration certification requires. The parallel
+> sessions hit the usage limit two minutes in and are parked; the work is
+> sequential. Every chapter 1–2 brief (FILL, DON'T, KEEP OFF, WRONG PLATE) and
+> eight TNT families died in the sketch funnel with a measured reason —
+> docs/batch/levels.md. The pattern: old nouns collapse into decisions already
+> asked, and TNT ideas collapse into holding Milo back. The next levels need a
+> new noun or combinations designed around the hold-back; see the build log.
+
+
 **Status: APPROVED 2026-10-13, with the rewarded SKIP. In execution.** The
 difficulty equation (4.2), the exact build list (4.4) and the skip design
 (section 7) were added on approval.
