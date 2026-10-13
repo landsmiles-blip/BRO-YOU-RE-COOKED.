@@ -37,7 +37,7 @@ Legend: **PASS** with evidence Â· **PROXY** measured here, needs a real device Â
 | PASS | `firstFrameReady` on first meaningful frame | conformance: called, and before `gameReady` |
 | PASS | `gameReady` when input is accepted | conformance: time to interactive 82 ms |
 | PASS | Cloud save via `saveData`/`loadData` | conformance: round-trip through the cloud; `loadData` used on boot |
-| PASS | Save versioned; old loads; unknown degrades | conformance: versioned payload, unknown version and malformed data degrade without throwing; `tools/test/daily.js`: a v1 save migrates |
+| PASS | Save versioned; old loads; unknown degrades | conformance: versioned payload, unknown version and malformed data degrade without throwing; `tools/test/daily.js`: a v1 save migrates; `tools/test/progress.js`: v1 and v2 saves migrate to v3 (skips and tokens), an old save keeps every level up to its furthest open, and impossible token counts are dropped |
 | PASS | `onPause` halts everything | conformance: physics frozen (simTime unchanged), phase clock stopped, audio context SUSPENDED; `audio.js`: pause suspends, resume restores |
 | PASS | `onResume` restores, no catch-up | conformance: 100 ms of simulation in 120 ms of wall clock after resume |
 | PASS | Zero external network calls | build gate (5 primitives) + conformance grep: clean |
@@ -75,9 +75,9 @@ Legend: **PASS** with evidence Â· **PROXY** measured here, needs a real device Â
 
 | | Requirement | Evidence |
 |---|---|---|
-| PASS | Rewarded ad only on explicit request | it has NO call site by design; `tools/test/ads.js` fails if one appears |
-| N/A | Reward IDs unique / no user data | no rewarded ad |
-| PASS | No ad before meaningful investment | `ads.js`: first interstitial after level 3, every 3rd level after, never over the ending |
+| PASS | Rewarded ad only on explicit request | its one call site is the SKIP, a button the player taps on the fail card after 3 failures on a spike or boss level (5 elsewhere), never on levels 1-3 or the daily; `tools/test/ads.js` asserts each rule and that a playthrough which never skips requests no rewarded ad |
+| PASS | Reward IDs unique / no user data | `skip-<level id>`: one per level, built from level data only; asserted in `ads.js` |
+| PASS | No ad before meaningful investment | `ads.js`: first interstitial after level 3, every 3rd level after, never over the ending; no interstitial straight after a rewarded ad (the counter resets); the skip is granted even when no ad is shown, so an ad is never the only way forward |
 
 ## 5. Privacy & data
 
@@ -85,7 +85,7 @@ Legend: **PASS** with evidence Â· **PROXY** measured here, needs a real device Â
 |---|---|---|
 | PASS | No external analytics | `analytics.js` is a hard no-op when the SDK is present; conformance grep clean |
 | PASS | No user data transmitted | zero network primitives |
-| N/A | No user data in reward IDs | no rewarded ad |
+| PASS | No user data in reward IDs | `skip-<level id>` only |
 
 ## 6. Trust & safety / content
 

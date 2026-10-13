@@ -107,17 +107,16 @@ export function requestInterstitialAd() {
 }
 
 /**
- * WIRED AND DELIBERATELY UNCALLED — read this before adding a call site.
+ * THE ONE REWARDED AD IS THE SKIP (js/game.js, docs/PLAN.md section 7) — read
+ * this before adding a second call site.
  *
  * The obvious rewarded ads for a puzzle game are an undo and a hint, and this
  * game can have neither. "One line. One shot." is the whole premise, so a paid
  * undo sells the exact tension every level is built on. A paid hint is worse:
  * the rule here is that a hint names the PROBLEM and never the solution, so one
  * that obeys the rule is worth nothing to buy, and one worth buying breaks it.
- *
- * It exists because the header above claimed it existed, and a surface that is
- * documented but absent is how saveData stayed broken. If a level skip or a
- * cosmetic ever wants it, the wiring is done and no second SDK pass is needed.
+ * A skip does neither, and it is granted whether or not an ad actually plays.
+ * tools/test/ads.js fails on a rewarded request from anywhere else.
  */
 export function requestRewardedAd(rewardId) {
   if (typeof rewardId !== 'string' || rewardId.length === 0) return Promise.resolve(false);

@@ -296,7 +296,11 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   // it to the opposite half costs three lines and never covers him.
   const me = frame.find((f) => f.id === 'milo');
   const miloFrac = me ? me.y / SAFE_BOX.h : 0.5;
-  drawBanner(ctx, label ?? 'COOKED.', 'tap to try again', miloFrac < 0.5 ? 0.82 : 0.20);
+  const bannerY = miloFrac < 0.5 ? 0.82 : 0.20;
+  drawBanner(ctx, label ?? 'COOKED.', 'tap to try again', bannerY);
+  // Where the banner went, so anything that belongs beside it (the skip) can
+  // sit next to it rather than on top of the death.
+  return bannerY;
 }
 
 /** Which recorded frame to show, given elapsed ms since the death cam started. */

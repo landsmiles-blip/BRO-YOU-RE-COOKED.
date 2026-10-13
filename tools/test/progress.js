@@ -8,6 +8,7 @@
 import {
   createProgress, record, starsOn, totalStars, maxStars, cleared, isComplete,
   perfect, firstUnclearedIndex, serialise, deserialise,
+  frontier, isOpen, isDone, isSkipped, markSkipped, resumeIndex, grantToken, spendToken, MAX_TOKENS,
 } from '../../js/progress.js';
 import { LEVELS } from '../../js/levels.js';
 
@@ -74,6 +75,51 @@ check('drops a negative star count', starsOn(dirty, ids[2]) === 0);
 check('drops a non-numeric star count', starsOn(dirty, ids[3]) === 0);
 check('drops a level that no longer exists', !('a-level-that-was-cut' in dirty.best));
 check('keeps the valid stars alongside the junk', starsOn(dirty, ids[0]) === 3);
+
+// ── THE LOCK AND THE SKIP ───────────────────────────────────────────────
+// A skip only means something in a game that locks, and the lock must never
+// take away anything a player already had.
+{
+  const q = createProgress();
+  check('a new player has only level 1 open', isOpen(q, 0) && !isOpen(q, 1), `frontier ${frontier(q)}`);
+  record(q, ids[0], 1);
+  check('beating a level opens the next one, and only that one', isOpen(q, 1) && !isOpen(q, 2));
+  check('a skip is refused on a level already beaten', markSkipped(q, ids[0]) === false);
+  check('skipping a level opens the next one', markSkipped(q, ids[1]) === true && isOpen(q, 2) && !isOpen(q, 3));
+  check('a skipped level scores nothing and is not cleared',
+        starsOn(q, ids[1]) === 0 && cleared(q) === 1 && isSkipped(q, ids[1]) && isDone(q, ids[1]));
+  check('the campaign resumes past a skip, not back at it', resumeIndex(q) === 2, `${resumeIndex(q)}`);
+  check('"go back for the stars" does return to it', firstUnclearedIndex(q) === 1);
+  record(q, ids[1], 2);
+  check('beating a skipped level fills it in', !isSkipped(q, ids[1]) && starsOn(q, ids[1]) === 2);
+}
+{
+  // An OLD save, from when the board was open: level 14 cleared, level 5 never.
+  const legacy = deserialise(JSON.stringify({ v: 2, best: { [ids[13]]: 2 }, finishedAt: 0, streak: 0, lastDailyDay: 0 }));
+  check('an old save keeps every level up to its furthest open',
+        isOpen(legacy, 4) && isOpen(legacy, 13) && isOpen(legacy, 14) && !isOpen(legacy, 15), `frontier ${frontier(legacy)}`);
+  check('an old save migrates with no skips and no tokens',
+        Object.keys(legacy.skipped).length === 0 && legacy.tokens === 0);
+  const v1 = deserialise(JSON.stringify({ v: 1, best: { [ids[0]]: 3 } }));
+  check('a version 1 save still migrates', starsOn(v1, ids[0]) === 3 && v1.tokens === 0);
+}
+{
+  const t = createProgress();
+  let granted = 0;
+  for (let i = 0; i < MAX_TOKENS + 2; i++) if (grantToken(t)) granted++;
+  check(`tokens are held to ${MAX_TOKENS}`, granted === MAX_TOKENS && t.tokens === MAX_TOKENS);
+  check('spending a token takes one', spendToken(t) && t.tokens === MAX_TOKENS - 1);
+  t.tokens = 0;
+  check('no token, no spend', spendToken(t) === false && t.tokens === 0);
+  t.tokens = 2;
+  markSkipped(t, ids[5]);
+  const rt = deserialise(serialise(t));
+  check('skips and tokens round-trip', rt.tokens === 2 && isSkipped(rt, ids[5]));
+  const junk = deserialise(JSON.stringify({ v: 3, best: {}, tokens: 99, skipped: ['not-a-level', ids[6], 7] }));
+  check('an impossible token count is DROPPED, not clamped', junk.tokens === 0, `${junk.tokens}`);
+  check('a skip naming no real level is dropped, the rest kept',
+        !('not-a-level' in junk.skipped) && isSkipped(junk, ids[6]) && Object.keys(junk.skipped).length === 1);
+}
 
 console.log(failed ? `\n${failed} progress check(s) FAILED\n` : '\nprogress OK\n');
 process.exit(failed ? 1 : 0);

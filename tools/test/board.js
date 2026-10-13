@@ -72,12 +72,27 @@ for (const [label, w, h] of [['9:16', 405, 720], ['9:32', 360, 1280], ['1:1', 80
   if (!last) {
     check(`${label}: board layout is reachable`, false, 'could not import levelselect');
   } else {
+    // LEVELS OPEN IN ORDER (the skip needs a lock), so on a fresh save the
+    // last card must do nothing at all...
+    await page.mouse.click(last.x, last.y);
+    await page.waitForTimeout(200);
+    const locked = await page.evaluate(() => ({
+      id: globalThis.__byc.game.level.id, phase: globalThis.__byc.game.phase,
+    }));
+    check(`${label}: a LOCKED card does nothing`, locked.phase === 'select', `${locked.id} (${locked.phase})`);
+    // ...and once every level before it is beaten, it must land on the level
+    // it shows. The LIVE progress object, never a second copy of the module.
+    await page.evaluate(() => {
+      const B = globalThis.__byc;
+      for (const l of B.LEVELS) B.game.progress.best[l.id] = 1;
+    });
+    await page.waitForTimeout(120);
     await page.mouse.click(last.x, last.y);
     await page.waitForTimeout(200);
     const now = await page.evaluate(() => ({
       id: globalThis.__byc.game.level.id, phase: globalThis.__byc.game.phase,
     }));
-    check(`${label}: tapping the LAST card reaches level ${last.n}`,
+    check(`${label}: an open LAST card reaches level ${last.n}`,
           now.id === last.id && now.phase !== 'select', `${now.id} (${now.phase})`);
   }
   await page.close();

@@ -13,13 +13,16 @@
 // game that waits for you forever without a pause menu.
 
 import { buildSim, stepSim, commitStroke, abort, destroySim, OUTCOME } from './sim.js';
-import { LEVELS } from './levels.js';
+import { LEVELS, slotOf } from './levels.js';
 import { starsFor } from './rating.js';
 import { createStroke, begin, extend, end, remaining } from './drawing/capture.js';
 import { FREEZE_AT, LINE, MAX_STEPS_PER_FRAME, CLOSE_CALL } from './constants.js';
 import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
-import { createProgress, record, save, isComplete, firstUnclearedIndex, recordDaily } from './progress.js';
+import {
+  createProgress, record, save, isComplete, firstUnclearedIndex, recordDaily, resumeIndex,
+  isDone, markSkipped, grantToken, spendToken,
+} from './progress.js';
 import { dayNumber, dailyLevel } from './daily.js';
 import * as audio from './audio.js';
 import * as sdk from './platform/sdk.js';
@@ -58,6 +61,10 @@ export function createGame(level) {
     // sim has reported so far, so the loop can notice a NEW one.
     slowUntil: 0,
     seenCalls: 0,
+    // Failed runs on THIS level, this session — what the skip offer counts.
+    fails: 0,
+    // A rewarded ad is in flight for a skip: input waits until it resolves.
+    skipping: false,
   };
   reset(g);
   return g;
@@ -106,7 +113,7 @@ export function tick(g, dtMs) {
         // A DAILY WIN EXTENDS THE STREAK, and only a daily win. The budget is
         // already the three-star length, so clearing it at all is a three-star
         // run by definition — the streak is the thing being earned here.
-        if (g.isDaily && recordDaily(g.progress, g.dailyDay)) save(g.progress);
+        if (g.isDaily) dailyWon(g);
         // Only a personal BEST is written, so replaying a cleared level to
         // experiment can never cost the player stars they already earned.
         // A daily-pool level is not on the board, so it has no best to keep:
@@ -118,9 +125,22 @@ export function tick(g, dtMs) {
         g.phaseTime = 0;
       }
       else if (o === OUTCOME.ABORTED) { retry(g); }
-      else { g.phase = PHASE.DEATHCAM; g.phaseTime = 0; }
+      else { g.fails++; g.phase = PHASE.DEATHCAM; g.phaseTime = 0; }
     }
   }
+}
+
+/**
+ * Today's daily, won: the streak goes up, and it pays a SKIP TOKEN — Brain
+ * Test's pattern, where the daily pays the currency that buys skips, so the
+ * skip is also a reason to come back tomorrow. Held to MAX_TOKENS. A replay of
+ * a daily already done changes nothing.
+ */
+export function dailyWon(g) {
+  if (!recordDaily(g.progress, g.dailyDay)) return false;
+  grantToken(g.progress);
+  save(g.progress);
+  return true;
 }
 
 /** FROZEN holds forever — no timer, no pressure. */
@@ -152,15 +172,69 @@ export function nextLevel(g) {
   // the campaign where the player actually is.
   if (g.isDaily) {
     adBreak(g);
-    goToLevel(g, isComplete(g.progress) ? 0 : firstUnclearedIndex(g.progress));
+    goToLevel(g, resumeIndex(g.progress));
     openSelect(g);
     return;
   }
+  advance(g, true);
+}
+
+/** On to the next rung — or the ending, which no ad may ever cover. */
+function advance(g, withAdBreak) {
   if (g.levelIndex >= LEVELS.length - 1) {
     g.phase = PHASE.ENDING; g.phaseTime = 0; audio.ending(); return;
   }
-  adBreak(g);
+  if (withAdBreak) adBreak(g);
   goToLevel(g, g.levelIndex + 1);
+}
+
+// ── THE SKIP ────────────────────────────────────────────────────────────
+//
+// docs/PLAN.md section 7, rule by rule, because each one is the reason the
+// skip helps a stuck player instead of selling them a way past the game:
+//
+//   ON THE FAIL CARD ONLY, after the curve's walls: 3 failures on a SPIKE or a
+//   BOSS, 5 anywhere else. The difficulty equation says where the walls are,
+//   and that is where a release valve earns its place.
+//   NEVER ON LEVELS 1-3 (they teach the line itself) OR THE DAILY (a streak
+//   that can be bought is not a streak).
+//   PAID WITH A TOKEN IF ONE IS HELD, otherwise one rewarded ad — and GRANTED
+//   EVEN IF NO AD PLAYS. The platform promises nothing about fill, and an ad
+//   must never be the only way forward.
+//   NO STACKING: a rewarded view resets the between-levels counter, so the
+//   player who chose an ad is not handed an interstitial straight after it.
+
+export const SKIP_AFTER = { wall: 3, other: 5 };
+
+/** The skip on offer right now, or null. */
+export function skipOffer(g) {
+  if (g.phase !== PHASE.DEATHCAM || g.isDaily || g.skipping) return null;
+  if (g.levelIndex < 3 || g.levelIndex >= LEVELS.length) return null;
+  if (isDone(g.progress, g.level.id)) return null;
+  const role = slotOf(g.level.id)?.role;
+  const need = role === 'SPIKE' || role === 'BOSS' ? SKIP_AFTER.wall : SKIP_AFTER.other;
+  if (g.fails < need) return null;
+  return { via: (g.progress.tokens || 0) > 0 ? 'token' : 'ad', tokens: g.progress.tokens || 0 };
+}
+
+/** Take the skip. Resolves true once the player has moved on. */
+export function skip(g) {
+  const offer = skipOffer(g);
+  if (!offer) return Promise.resolve(false);
+  g.skipping = true;
+  const id = g.level.id;
+  const paid = offer.via === 'token'
+    ? Promise.resolve(spendToken(g.progress))
+    : sdk.requestRewardedAd('skip-' + id);
+  return paid.then((shown) => {
+    g.skipping = false;
+    markSkipped(g.progress, id);
+    save(g.progress);
+    track('level_skipped', { level: id, via: offer.via, shown: !!shown, fails: g.fails });
+    if (offer.via === 'ad') g.sinceAd = 0;
+    advance(g, offer.via !== 'ad');
+    return true;
+  });
 }
 
 function adBreak(g) {
@@ -216,6 +290,7 @@ export function loadLevel(g, level) {
   g.levelIndex = LEVELS.findIndex((l) => l.id === level.id);
   g.ghostPoints = null;
   g.attempt = 0;
+  g.fails = 0;
   reset(g);
 }
 
@@ -227,6 +302,7 @@ export function goToLevel(g, index) {
   g.level = LEVELS[g.levelIndex];
   g.ghostPoints = null;
   g.attempt = 0;
+  g.fails = 0;
   reset(g);
 }
 
@@ -267,6 +343,7 @@ export function onDown(g, x, y, pointerId) {
   if (g.phase === PHASE.SELECT) return;
   if (g.phase === PHASE.SIM) { abort(g.sim); return; }          // tap = instant retry
   if (g.phase === PHASE.DEATHCAM) {
+    if (g.skipping) return;                                     // an ad is in flight
     if (g.phaseTime > 250) retry(g);                            // let them see it first
     return;
   }

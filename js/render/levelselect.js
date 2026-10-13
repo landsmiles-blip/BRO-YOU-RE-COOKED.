@@ -6,16 +6,15 @@
 // correct at 9:16 and unusable at 32:9, and text legibility across resolutions
 // is a named certification rejection cause.
 //
-// IT DOES NOT LOCK ANYTHING, and that is a considered call rather than a
-// shortcut. The ladder in §7.4 teaches deliberately — a new idea every two or
-// three levels — so there is a real argument for gating. Against it: this game
-// is played inside YouTube by a distracted audience in short bursts, every
-// level is self-contained physics rather than a dependency chain, and friction
-// on a returning player is the one thing a playable cannot afford. So the
-// ladder is expressed as EMPHASIS instead of as a wall: cleared levels are
-// solid, unplayed ones are dimmed, and the board opens scrolled to where you
-// actually are. Someone who jumps to 14 without learning anchoring will fail
-// and come back — which costs them one attempt, not a session.
+// IT LOCKS NOW, AND IT DID NOT FOR A LONG TIME, on purpose both times. The
+// first version argued for emphasis instead of a wall: a distracted audience,
+// self-contained levels, and friction on a returning player being the one thing
+// a playable cannot afford. What changed is the SKIP (docs/PLAN.md section 7):
+// an open board gives away for free exactly what the skip charges for, and
+// every game with a skip is linear. So the next level opens when this one is
+// beaten or skipped. The ladder is still shown as emphasis too — cleared cards
+// solid, skipped ones hollow, locked ones dim and inert — and the board still
+// opens on where the player actually is.
 
 import { view } from '../view.js';
 import { C } from './palette.js';
@@ -83,13 +82,14 @@ export function layout(count) {
 export function hitTest(box, x, y) {
   if (inside(box.close, x, y)) return { close: true };
   if (box.daily && inside(box.daily, x, y)) return { daily: true };
-  for (const c of box.cards) if (inside(c, x, y)) return { index: c.i };
+  for (const c of box.cards) if (inside(c, x, y)) return { index: c.i, locked: !!c.locked };
   return null;
 }
 
 const inside = (r, x, y) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
 
-export function drawBoard(ctx, { levels, starsOf, current, total, max, daily }) {
+export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
+                                  openAt = () => true, skippedOf = () => false, tokens = 0 }) {
   const box = layout(levels.length);
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
 
@@ -97,7 +97,8 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily }) 
   ctx.fillRect(0, 0, view.cssW, view.cssH);
 
   drawText(ctx, `${total} / ${max}`, 0.5, 0.075, Math.max(20, view.cssH * 0.042), C.anchor);
-  drawText(ctx, 'stars', 0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.55)');
+  drawText(ctx, tokens > 0 ? `stars · ${tokens} skip token${tokens > 1 ? 's' : ''}` : 'stars',
+           0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.55)');
 
   // Close: an X drawn, like everything else in this game.
   ctx.strokeStyle = 'rgba(232,226,214,0.6)';
@@ -149,19 +150,28 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily }) 
     const stars = starsOf(lvl.id);
     const played = stars > 0;
     const here = card.i === current;
+    const locked = !openAt(card.i);
+    const skipped = !played && skippedOf(lvl.id);
+    card.locked = locked;
 
-    ctx.fillStyle = played ? 'rgba(232,226,214,0.14)' : 'rgba(232,226,214,0.05)';
+    // Locked: barely there, and tapping it does nothing. Skipped: HOLLOW — no
+    // fill and a dashed edge — unfinished business, still playable, the first
+    // thing the 3-star chase brings a player back for.
+    ctx.fillStyle = played ? 'rgba(232,226,214,0.14)' : (skipped || locked ? 'rgba(232,226,214,0)' : 'rgba(232,226,214,0.05)');
     ctx.fillRect(card.x, card.y, card.w, card.h);
-    ctx.strokeStyle = here ? C.anchor : (played ? 'rgba(232,226,214,0.32)' : 'rgba(232,226,214,0.13)');
+    ctx.strokeStyle = here ? C.anchor : (played ? 'rgba(232,226,214,0.32)' : skipped ? 'rgba(232,226,214,0.38)' : 'rgba(232,226,214,0.13)');
     ctx.lineWidth = here ? 2.6 : 1.2;
+    if (skipped && !here) ctx.setLineDash([5, 4]);
     ctx.strokeRect(card.x, card.y, card.w, card.h);
+    ctx.setLineDash([]);
 
     const nSize = Math.max(12, Math.min(card.w, card.h) * 0.30);
     ctx.font = `700 ${nSize}px ui-sans-serif, system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = played ? C.paper : 'rgba(232,226,214,0.45)';
+    ctx.fillStyle = played ? C.paper : locked ? 'rgba(232,226,214,0.16)' : 'rgba(232,226,214,0.45)';
     ctx.fillText(String(card.i + 1), card.x + card.w / 2, card.y + card.h * 0.36);
+    if (locked) continue;
 
     // The verb, when there is room for it to be readable rather than a smudge.
     const vSize = Math.min(card.w * 0.16, Math.max(7, card.h * 0.13));
@@ -171,12 +181,20 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily }) 
       ctx.fillText(lvl.verb, card.x + card.w / 2, card.y + card.h * 0.60);
     }
 
-    // Three star pips. Shape carries it, not colour alone.
+    // Three star pips. Shape carries it, not colour alone. A skipped level
+    // says so in words where it has the room, rather than showing three empty
+    // pips that read exactly like a level never played.
     const pw = Math.min(card.w * 0.17, card.h * 0.16);
     const gap = pw * 0.45;
     const totalW = pw * 3 + gap * 2;
     const px = card.x + (card.w - totalW) / 2;
     const py = card.y + card.h * 0.80;
+    if (skipped && vSize >= 8 && card.w > 54) {
+      ctx.font = `700 ${vSize * 0.9}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = 'rgba(232,226,214,0.42)';
+      ctx.fillText('SKIPPED', card.x + card.w / 2, py + pw * 0.2);
+      continue;
+    }
     for (let k = 0; k < 3; k++) {
       ctx.fillStyle = k < stars ? C.anchor : 'rgba(232,226,214,0.16)';
       ctx.fillRect(px + k * (pw + gap), py, pw, Math.max(3, pw * 0.34));

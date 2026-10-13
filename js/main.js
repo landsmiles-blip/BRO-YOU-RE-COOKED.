@@ -10,12 +10,12 @@ import { initView, view, applyTransform } from './view.js';
 import { attachInput } from './input.js';
 import {
   createGame, tick, onDown, onMove, onUp, retry, nextLevel, goToLevel, isSteppingPhase,
-  openSelect, closeSelect, PHASE, inkUsed, inkMax, startDaily, loadLevel,
+  openSelect, closeSelect, PHASE, inkUsed, inkMax, startDaily, loadLevel, skip, skipOffer,
 } from './game.js';
 import { dayNumber, dailyFor, asDaily } from './daily.js';
 import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
-import { load as loadProgress, totalStars, maxStars, perfect, starsOn } from './progress.js';
+import { load as loadProgress, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped } from './progress.js';
 import { A1, LEVELS, assertLevel } from './levels.js';
 import { POOL } from './dailyPool.js';
 import { PHYSICS_DT, MAX_STEPS_PER_FRAME, FREEZE_AT, CLOSE_CALL, NEAR_MISS_DIST } from './constants.js';
@@ -45,6 +45,8 @@ const game = createGame(A1);
 let boardBox = null;
 // Where the level-board button sits. Also set by the renderer.
 let boardBtn = null;
+// Where the skip button sits on the fail card, when one is offered. Same rule.
+let skipBtn = null;
 
 // Progress loads ASYNCHRONOUSLY and never blocks the first frame. Bundle size
 // is measured page-load → gameReady, so waiting on a platform round-trip here
@@ -65,8 +67,16 @@ attachInput(canvas, {
       const hit = boardBox && hitTest(boardBox, pt.cssX, pt.cssY);
       if (hit?.close) closeSelect(game);
       else if (hit?.daily) { startDaily(game); game.selectFrom = null; }
-      else if (hit && hit.index != null) { goToLevel(game, hit.index); game.selectFrom = null; }
+      else if (hit && hit.index != null && !hit.locked) { goToLevel(game, hit.index); game.selectFrom = null; }
       _resetPhase();
+      return;
+    }
+    // The skip lives on the fail card, under the death cam's banner. Checked
+    // before the card's own tap-anywhere-to-retry, and only once the death has
+    // had its quarter second on screen — the same grace the retry gets.
+    if (game.phase === PHASE.DEATHCAM && skipBtn && game.phaseTime > 250 &&
+        inside(skipBtn, pt.cssX, pt.cssY) && skipOffer(game)) {
+      skip(game).then(_resetPhase);
       return;
     }
     // The board button is live during the freeze, on the result card and at the
@@ -83,8 +93,8 @@ attachInput(canvas, {
   onUp: () => onUp(game),
 });
 
-const insideBtn = (x, y) =>
-  x >= boardBtn.x && x <= boardBtn.x + boardBtn.w && y >= boardBtn.y && y <= boardBtn.y + boardBtn.h;
+const inside = (r, x, y) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
+const insideBtn = (x, y) => inside(boardBtn, x, y);
 
 // Certification: onPause MUST halt everything — loop, physics, rendering AND
 // AUDIO. Suspending the AudioContext is the difference between a paused game
@@ -152,14 +162,19 @@ function render() {
 
   if (g.phase === PHASE.DEATHCAM) {
     const idx = replayFrame(g.sim, g.phaseTime);
-    drawReplay(ctx, g.sim, idx, g.sim.death?.label, g.sim.death?.culpritId ?? g.sim.run.culpritId);
+    const bannerY = drawReplay(ctx, g.sim, idx, g.sim.death?.label, g.sim.death?.culpritId ?? g.sim.run.culpritId);
+    drawSkip(ctx, g, bannerY ?? 0.2);
     return;
   }
+  skipBtn = null;
 
   if (g.phase === PHASE.SELECT) {
     boardBox = drawBoard(ctx, {
       levels: LEVELS,
       starsOf: (id) => starsOn(g.progress, id),
+      openAt: (i) => isOpen(g.progress, i),
+      skippedOf: (id) => isSkipped(g.progress, id),
+      tokens: g.progress.tokens || 0,
       current: g.levelIndex,
       total: totalStars(g.progress),
       max: maxStars(),
@@ -397,6 +412,39 @@ function drawEnding(ctx, g) {
            Math.max(10, view.cssH * 0.015), 'rgba(232,226,214,0.35)');
 }
 
+/**
+ * THE SKIP, on the fail card: a small second button beside the banner. TRY
+ * AGAIN stays the default — the banner still says "tap to try again" and the
+ * whole card still does it — so the skip is the quiet option, never the loud
+ * one. It sits on the banner's side of the screen, towards the middle, so it
+ * never covers the replay of the death it is offering a way past.
+ */
+function drawSkip(ctx, g, bannerY) {
+  skipBtn = null;
+  const offer = skipOffer(g);
+  if (!offer && !g.skipping) return;
+  ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
+  const bannerH = Math.max(64, view.cssH * 0.13);
+  // 44 css px is the accepted floor for a finger.
+  const h = Math.max(44, view.cssH * 0.058);
+  const w = Math.min(view.cssW * 0.78, Math.max(220, h * 5.6));
+  const cy = bannerY < 0.5
+    ? view.cssH * bannerY + bannerH / 2 + h * 0.75
+    : view.cssH * bannerY - bannerH / 2 - h * 0.75;
+  const x = (view.cssW - w) / 2;
+  skipBtn = { x, y: cy - h / 2, w, h };
+  ctx.fillStyle = 'rgba(42,38,34,0.80)';
+  ctx.fillRect(x, cy - h / 2, w, h);
+  ctx.strokeStyle = 'rgba(232,226,214,0.40)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x, cy - h / 2, w, h);
+  const label = g.skipping ? 'one moment…'
+    : offer.via === 'token' ? `SKIP THIS ONE · use a token (${offer.tokens} held)`
+    : 'SKIP THIS ONE · watch an ad';
+  drawText(ctx, label, 0.5, cy / view.cssH, Math.max(12, view.cssH * 0.019),
+           'rgba(232,226,214,0.85)', 'center', (w / view.cssW) * 0.9);
+}
+
 /** Three ink stars, filled to the rating. Drawn, like everything else. */
 function drawStars(ctx, stars, cyPx) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
@@ -442,6 +490,8 @@ function rejectText(reason) {
 // was written to catch, this time between the test and the game.
 globalThis.__byc = {
   game, view, PHASE, retry, nextLevel, goToLevel, openSelect, closeSelect, LEVELS, reducedMotion,
+  skip, skipOffer,
+  get skipBtn() { return skipBtn; },
   // The daily pool is not in LEVELS, so films and gates reach it through these.
   POOL, loadLevel, startDaily, asDaily,
   get boardBox() { return boardBox; },

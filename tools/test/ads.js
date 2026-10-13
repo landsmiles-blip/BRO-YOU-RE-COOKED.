@@ -16,9 +16,12 @@
 //                 wrong — every filmstrip, every browser test, and the whole
 //                 open-web build run with no ytgame present.
 //   ON-PLATFORM   the interstitial fires at the cadence the code claims, the
-//                 ENDING is never covered, and NO rewarded ad is ever
-//                 requested. That last one is a design rule made
-//                 machine-checkable: see the comment on requestRewardedAd.
+//                 ENDING is never covered, and the ONE rewarded ad — the skip —
+//                 keeps every rule docs/PLAN.md section 7 gives it: only on the
+//                 fail card, only after the curve's walls (3 failures on a
+//                 spike or boss, 5 elsewhere), never on levels 1-3 or the
+//                 daily, a token before an ad, never an interstitial straight
+//                 after it, and no rewarded request from anywhere else.
 
 import { spawnSync } from 'node:child_process';
 
@@ -46,6 +49,22 @@ if (process.argv.includes('--offline')) {
   check('interstitial resolves false', inter === false, String(inter));
   check('rewarded resolves false', rew === false, String(rew));
   check('a rewarded id must be a non-empty string', bad === false, String(bad));
+
+  // NEVER HELD HOSTAGE TO AD FILL. Off the platform there is no ad at all —
+  // the open web, and any day YouTube has nothing to show — and a stuck player
+  // who asks for the skip still gets it.
+  const { LEVELS, slotOf } = await import('../../js/levels.js');
+  const { createGame, skip, skipOffer, PHASE } = await import('../../js/game.js');
+  const g = createGame(LEVELS[0]);
+  const i = LEVELS.findIndex((l, k) => k >= 3 && slotOf(l.id)?.role === 'DEVELOP');
+  const { goToLevel } = await import('../../js/game.js');
+  goToLevel(g, i);
+  g.phase = PHASE.DEATHCAM; g.fails = 5;
+  const offer = skipOffer(g);
+  check('with no ad and no token, the skip is still offered', offer?.via === 'ad', JSON.stringify(offer));
+  const done = await skip(g);
+  check('and taking it moves him on, with no ad to show', done === true && g.levelIndex === i + 1 &&
+        g.progress.skipped[LEVELS[i].id] === true, `now at ${g.levelIndex + 1}`);
   process.exit(failed === 0 ? 0 : 1);
 }
 
@@ -71,8 +90,10 @@ globalThis.ytgame = {
   },
 };
 
-const { LEVELS } = await import('../../js/levels.js');
-const { createGame, nextLevel, PHASE } = await import('../../js/game.js');
+const { LEVELS, slotOf } = await import('../../js/levels.js');
+const { createGame, nextLevel, goToLevel, skip, skipOffer, startDaily, dailyWon, PHASE, SKIP_AFTER } =
+  await import('../../js/game.js');
+const { record } = await import('../../js/progress.js');
 const sdk = await import('../../js/platform/sdk.js');
 
 console.log('\nADS — ON PLATFORM');
@@ -108,11 +129,82 @@ check('the ENDING is never covered by an ad', endingHadAd === false);
 // DESIGN RULE, MADE CHECKABLE. "One line. One shot." is the premise, so a paid
 // undo sells the tension every level is built on, and a hint that obeys this
 // project's own rule — name the PROBLEM, never the solution — is worth nothing
-// to buy. The function is wired so the surface is honest; it has no call site
-// on purpose, and this catches a future one arriving quietly.
-check('no rewarded ad is requested anywhere in a full playthrough',
+// to buy. The skip is the one rewarded ad, and a playthrough that never asks
+// for it must never see one.
+check('no rewarded ad is requested by a playthrough that never skips',
   requested.every((r) => !r.startsWith('rewarded')),
   requested.filter((r) => r.startsWith('rewarded')).join(',') || 'none');
+
+// ── THE SKIP ────────────────────────────────────────────────────────────
+console.log('\nTHE SKIP — docs/PLAN.md section 7');
+const wallAt = LEVELS.findIndex((l, k) => k >= 3 && ['SPIKE', 'BOSS'].includes(slotOf(l.id)?.role));
+const plainAt = LEVELS.findIndex((l, k) => k >= 3 && slotOf(l.id)?.role === 'DEVELOP');
+const failOn = (index, fails, setup = () => {}) => {
+  const s = createGame(LEVELS[0]);
+  goToLevel(s, index);
+  setup(s);
+  s.phase = PHASE.DEATHCAM;
+  s.fails = fails;
+  return s;
+};
+
+check('never on levels 1-3, however many failures',
+  [0, 1, 2].every((k) => skipOffer(failOn(k, 99)) === null));
+check(`a SPIKE or BOSS offers it after ${SKIP_AFTER.wall} failures, not before`,
+  skipOffer(failOn(wallAt, SKIP_AFTER.wall - 1)) === null && skipOffer(failOn(wallAt, SKIP_AFTER.wall)) !== null,
+  `${LEVELS[wallAt].verb}, slot ${slotOf(LEVELS[wallAt].id).role}`);
+check(`any other level offers it after ${SKIP_AFTER.other}, not before`,
+  skipOffer(failOn(plainAt, SKIP_AFTER.other - 1)) === null && skipOffer(failOn(plainAt, SKIP_AFTER.other)) !== null,
+  `${LEVELS[plainAt].verb}, slot ${slotOf(LEVELS[plainAt].id).role}`);
+check('only on the fail card — never during the freeze or the run',
+  skipOffer(failOn(plainAt, 99, (s) => {})) !== null &&
+  [PHASE.FROZEN, PHASE.SIM, PHASE.RESULT].every((ph) => { const s = failOn(plainAt, 99); s.phase = ph; return skipOffer(s) === null; }));
+check('never on the daily', (() => { const s = failOn(plainAt, 99); startDaily(s); s.phase = PHASE.DEATHCAM; s.fails = 99; return skipOffer(s) === null; })());
+check('never on a level already beaten',
+  skipOffer(failOn(plainAt, 99, (s) => record(s.progress, LEVELS[plainAt].id, 1))) === null);
+
+{
+  // Paid with an ad: exactly one rewarded request, named for the level; the
+  // level is marked skipped; he moves on; and the between-levels counter is
+  // reset, so no interstitial follows the ad the player chose to watch.
+  const s = failOn(plainAt, SKIP_AFTER.other);
+  s.sinceAd = 2;
+  const before = requested.length;
+  await skip(s);
+  const asked = requested.slice(before);
+  check('with no token, it costs one rewarded ad, named for the level',
+    asked.length === 1 && asked[0] === `rewarded:skip-${LEVELS[plainAt].id}`, asked.join(',') || 'none');
+  check('the level is marked skipped and he moves on',
+    s.progress.skipped[LEVELS[plainAt].id] === true && s.levelIndex === plainAt + 1);
+  check('no interstitial straight after a rewarded ad', s.sinceAd === 0 && !asked.includes('interstitial'));
+}
+{
+  // Paid with a token: no ad at all.
+  const s = failOn(plainAt, SKIP_AFTER.other);
+  s.progress.tokens = 2;
+  const before = requested.length;
+  const offer = skipOffer(s);
+  await skip(s);
+  check('a held token is spent instead of showing an ad',
+    offer.via === 'token' && s.progress.tokens === 1 && !requested.slice(before).some((r) => r.startsWith('rewarded')));
+}
+{
+  // Skipping the LAST level ends the game — and no ad covers the ending.
+  const s = failOn(LEVELS.length - 1, 99);
+  const before = requested.length;
+  await skip(s);
+  check('skipping the last level reaches the ending, uncovered',
+    s.phase === PHASE.ENDING && !requested.slice(before).includes('interstitial'));
+}
+{
+  // The daily pays the currency: a token per daily won, held to three.
+  const s = createGame(LEVELS[0]);
+  let paid = 0;
+  for (let day = 20000; day < 20005; day++) { s.isDaily = true; s.dailyDay = day; if (dailyWon(s)) paid++; }
+  s.dailyDay = 20004;
+  check('each daily won pays a token, held to three',
+    paid === 5 && s.progress.tokens === 3 && dailyWon(s) === false, `tokens ${s.progress.tokens}`);
+}
 
 console.log(failed === 0 ? '\nADS: PASS\n' : `\nADS: ${failed} FAILED\n`);
 process.exit(failed === 0 ? 0 : 1);
