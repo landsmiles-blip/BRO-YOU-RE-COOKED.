@@ -209,3 +209,47 @@ export const A55 = {
   drawing: { maxLength: LINE.maxLengthDefault },
   solver: null,
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// A56 — STAY.  The dog, re-asking GOOD BOY's question with a fuse lit.
+//
+// The barrel that will open his fence sits at the end of the dog's shelf, and
+// the dog is trotting straight at it. Left alone it noses the barrel off the
+// end; the barrel drops beside the fence where he is waiting and goes off
+// with him next to it. Turn the dog back and the barrel stays where it was
+// put — high enough to spare him, close enough to take the fence.
+//
+// The dog turned by a wall paces between it and the post for the rest of the
+// level, so it is never near the barrel again. A wall at the shelf's END does
+// not do it: the dog keeps shoving the barrel against it and is still there
+// when it goes. Measured: 85% of wins turn the dog with a line on its shelf,
+// about 10% shield him instead; with the dog deleted doing nothing wins, and
+// with the barrel deleted nothing opens the fence. The shelf's length is the
+// dial — starting at 200 it measured 50 tries, at 140 28, at 100 22.
+// ─────────────────────────────────────────────────────────────────────────
+export const A56 = {
+  id: 'a56-stay',
+  hint: 'THE DOG WILL KNOCK IT OFF',
+  world: 'backyard',
+  verb: 'STAY',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  freezeAt: 300,
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    // Over his head: he walks under it to the fence.
+    { id: 'shelf',  type: 'platform', x: 100, y: 1000, w: 370, h: 20 },
+    { id: 'post',   type: 'platform', x: 100, y: 940,  w: 20,  h: 60 },
+    // One tall board, in the barrel's line of sight past the shelf's corner.
+    // A shorter one is shielded by the shelf it sits on.
+    { id: 'board0', type: 'platform', x: 560, y: 1032, w: 30, h: 120, breakable: true },
+  ],
+  objects: [
+    { id: 'dog', type: 'dog', x: 160, y: 1000, dir: 1 },
+    { id: 'tnt', type: 'tnt', x: 455, y: 978, radius: 22,
+      density: 0.03, restitution: 0.05, friction: 0.4, fuse: 3000, lethal: { kind: 'none' } },
+  ],
+  zones: [],
+  drawing: { maxLength: 300 },
+  solver: null,
+};

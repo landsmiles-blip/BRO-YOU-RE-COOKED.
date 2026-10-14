@@ -389,5 +389,16 @@ export const SOLVER = {
     "threeStarLength": 110,
     "shortestWin": 110,
     "measuredAt": "2026-10-14"
+  },
+  "a56-stay": {
+    "solvable": true,
+    "solutionBreadth": 0.0699,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 96,
+    "measuredAt": "2026-10-14"
   }
 };

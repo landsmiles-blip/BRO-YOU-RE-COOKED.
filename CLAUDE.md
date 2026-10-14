@@ -664,6 +664,10 @@ came out of proving it:
   the cover-plus-keep-away combination, all of FENCE's top families, every
   chain level. SHELTER survives it only because its fuse is LONG — he waits at
   the fence anyway, so delaying him changes nothing. Design TNT around that.
+- **A BARREL ON A SHELF CANNOT REACH WHAT IS UNDER THE SHELF.** The shelf is
+  solid, so it shields everything below it — STAY's first fence stood under the
+  barrel's shelf and never broke. Put what the blast must reach in its line of
+  sight, past the shelf's corner.
 - **SOLID THINGS STOP A BLAST, AND THE PICTURE SAYS SO.** Cover is physics
   now (`detonate` in js/sim.js): the player's line, a shelf, a rock or a wall
   between a barrel and a target shields it; boards never shield boards; the
