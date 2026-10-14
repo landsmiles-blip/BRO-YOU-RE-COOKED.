@@ -348,7 +348,7 @@ export const SOLVER = {
   },
   "a80-good-boy": {
     "solvable": true,
-    "solutionBreadth": 0.0803,
+    "solutionBreadth": 0.0856,
     "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 4,
@@ -377,6 +377,17 @@ export const SOLVER = {
     "twoStarLength": 288,
     "threeStarLength": 165,
     "shortestWin": 98,
+    "measuredAt": "2026-10-14"
+  },
+  "a83-incoming": {
+    "solvable": true,
+    "solutionBreadth": 0.0828,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 4,
+    "twoStarLength": 230,
+    "threeStarLength": 110,
+    "shortestWin": 110,
     "measuredAt": "2026-10-14"
   }
 };

@@ -1284,10 +1284,10 @@ export const SOLUTIONS = {
   },
   "a80-good-boy": {
     "id": "a80-good-boy",
-    "winners": 123,
-    "robust": 75,
-    "anchoredRobust": 73,
-    "handRate": 0.61,
+    "winners": 131,
+    "robust": 79,
+    "anchoredRobust": 76,
+    "handRate": 0.603,
     "solution": {
       "family": "line",
       "length": 230,
@@ -1387,6 +1387,37 @@ export const SOLUTIONS = {
         {
           "x": 320.4,
           "y": 783.5
+        }
+      ]
+    }
+  },
+  "a83-incoming": {
+    "id": "a83-incoming",
+    "winners": 95,
+    "robust": 59,
+    "anchoredRobust": 55,
+    "handRate": 0.621,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 5,
+      "points": [
+        {
+          "x": 461.3,
+          "y": 899.6
+        },
+        {
+          "x": 433.8,
+          "y": 947.2
+        },
+        {
+          "x": 406.3,
+          "y": 994.8
+        },
+        {
+          "x": 378.8,
+          "y": 1042.4
         }
       ]
     }

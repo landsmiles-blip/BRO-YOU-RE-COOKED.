@@ -294,6 +294,38 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a80-good-boy": {
+    "id": "a80-good-boy",
+    "ink": 165,
+    "winners": 21,
+    "robust": 8,
+    "anchoredRobust": 8,
+    "handRate": 0.381,
+    "solution": {
+      "family": "line",
+      "length": 110,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 180,
+          "y": 721.9
+        },
+        {
+          "x": 180,
+          "y": 758.5
+        },
+        {
+          "x": 180,
+          "y": 795.2
+        },
+        {
+          "x": 180,
+          "y": 831.9
+        }
+      ]
+    }
+  },
   "a10-switch": {
     "id": "a10-switch",
     "ink": 192,
@@ -338,6 +370,86 @@ export const DAILY_SOLUTIONS = {
         {
           "x": 380,
           "y": 620
+        }
+      ]
+    }
+  },
+  "a82-heads-up": {
+    "id": "a82-heads-up",
+    "ink": 165,
+    "winners": 40,
+    "robust": 17,
+    "anchoredRobust": 12,
+    "handRate": 0.425,
+    "solution": {
+      "family": "span",
+      "length": 134,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 356,
+          "y": 750
+        },
+        {
+          "x": 375.1,
+          "y": 750
+        },
+        {
+          "x": 394.3,
+          "y": 750
+        },
+        {
+          "x": 413.4,
+          "y": 750
+        },
+        {
+          "x": 432.6,
+          "y": 750
+        },
+        {
+          "x": 451.7,
+          "y": 750
+        },
+        {
+          "x": 470.9,
+          "y": 750
+        },
+        {
+          "x": 490,
+          "y": 750
+        }
+      ]
+    }
+  },
+  "a81-down-boy": {
+    "id": "a81-down-boy",
+    "ink": 163,
+    "winners": 14,
+    "robust": 1,
+    "anchoredRobust": 1,
+    "handRate": 0.071,
+    "solution": {
+      "family": "line",
+      "length": 110,
+      "parts": 9,
+      "anchors": 4,
+      "points": [
+        {
+          "x": 365,
+          "y": 916
+        },
+        {
+          "x": 401.7,
+          "y": 916
+        },
+        {
+          "x": 438.3,
+          "y": 916
+        },
+        {
+          "x": 475,
+          "y": 916
         }
       ]
     }

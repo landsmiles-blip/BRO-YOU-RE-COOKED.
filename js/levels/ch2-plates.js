@@ -28,9 +28,10 @@ import { MILO } from '../constants.js';
 // wall had a 120-unit stretch to land in and the level measured 48 tries, far
 // too hard to meet a new thing on. Starting it at 60 measured 17, which left
 // TRIGGER and DROP more than three times the levels before them while chapter
-// 2 is still half empty, so the shelf starts at 180: 20 tries, inside its band.
+// 2 is still half empty, so the shelf starts at 170: 19 tries, inside its band.
 // (It was 120 until the dog learned to turn when it bumps its head, which made
-// more strokes turn it.)
+// more strokes turn it.) It must also stay within 1.25x of the easiest dog
+// level after it — INCOMING, at 16 — or it stops being the gentle way in.
 // ─────────────────────────────────────────────────────────────────────────
 export const A80 = {
   id: 'a80-good-boy',
@@ -42,7 +43,7 @@ export const A80 = {
   goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
   static: [
     { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'shelf',  type: 'platform', x: 180, y: 800,  w: 410, h: 20 },
+    { id: 'shelf',  type: 'platform', x: 170, y: 800,  w: 420, h: 20 },
     { id: 'post',   type: 'platform', x: 570, y: 740,  w: 20,  h: 60 },
   ],
   objects: [
@@ -114,10 +115,16 @@ export const A81 = {
 //
 // A rock is falling right where the dog will be on its way to the plate.
 // Stop it — without stopping the dog: a line that turns the dog back walks
-// it off the open end of its shelf into the spikes, so holding it back is
-// not an answer, and a shield too low walls it off. What is left is the
-// first chapter's question with the one being saved trotting along under
-// the line.
+// it off the open end of its shelf into its kennel, where it is safe and
+// presses nothing, so holding it back is not an answer; and a shield too low
+// walls it off. What is left is the first chapter's question with the one
+// being saved trotting along under the line.
+//
+// A KENNEL, NOT SPIKES. The first build had a spike pit there, and once the
+// dog had pressed the plate it turned at the post and trotted back into it:
+// winning runs were a race between Milo reaching the goal and the dog dying,
+// decided by fractions of a second. The kennel fails the hold-back just as
+// surely and keeps a dog that has done its job alive.
 //
 // Allowed by the amended rule (docs/PLAN.md 4.1). Census: every win is the
 // dog reaching the plate alive (228 of 228) — 43% an anchored shield across
@@ -138,10 +145,11 @@ export const A82 = {
     { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
     { id: 'shelf',  type: 'platform', x: 230, y: 900,  w: 390, h: 20 },
     { id: 'postR',  type: 'platform', x: 600, y: 840,  w: 20,  h: 60 },
-    // behind the dog: the open end of its shelf, over a spike pit
-    { id: 'pitL',   type: 'platform', x: 150, y: 920,  w: 20,  h: 90 },
-    { id: 'pitF',   type: 'platform', x: 150, y: 1010, w: 100, h: 20 },
-    { id: 'pitR',   type: 'platform', x: 230, y: 920,  w: 20,  h: 90 },
+    // behind the dog: the open end of its shelf, over its kennel. A dog that
+    // goes in there is safe and stays — and presses nothing.
+    { id: 'kenL',   type: 'platform', x: 150, y: 920,  w: 20,  h: 90 },
+    { id: 'kenF',   type: 'platform', x: 150, y: 1010, w: 100, h: 20 },
+    { id: 'kenR',   type: 'platform', x: 230, y: 920,  w: 20,  h: 90 },
     // two ledges either side of where the rock falls, to hang a shield from
     // (36 wide: at 50 the level measured 16, easier than the dog's own
     // introduction, which a new thing's first level must never be)
@@ -157,9 +165,60 @@ export const A82 = {
       requires: 'heavy', minMass: 150 },
     { id: 'gate',  type: 'gate',    x: 140, y: 960, w: 34, h: 192 },
   ],
-  zones: [
-    { id: 'spikes', kind: 'zone', x: 170, y: 980, w: 60, h: 30, lethal: true },
-  ],
+  zones: [],
   drawing: { maxLength: 300 },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A83 — INCOMING.  The dog, re-asking WEDGE's question: stop the roller.
+//
+// A rock is rolling along the dog's shelf straight at it, over the plate the
+// dog is trotting toward. Stop the roller before it gets there — and not the
+// dog: a line that turns the dog early walks it back into its kennel, where
+// it presses nothing, and a line laid over the plate hides the plate from it. A rolling rock cannot
+// climb any lip at all (CLAUDE.md), while the dog steps over 22 units, so
+// even a low bump drawn on the shelf in the roller's way is a wedge; so is a
+// hook hung from the overhang.
+//
+// Allowed by the amended rule (docs/PLAN.md 4.1). Census: every win is the
+// dog pressing the plate with the roller stopped short of it; about a fifth
+// are drawn through the roller, which still stops it. With the dog deleted
+// nothing presses the plate; with the roller deleted doing nothing wins.
+// ─────────────────────────────────────────────────────────────────────────
+export const A83 = {
+  id: 'a83-incoming',
+  hint: 'A ROCK IS ROLLING AT THE DOG',
+  world: 'backyard',
+  verb: 'INCOMING',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  freezeAt: 300,
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'shelf',  type: 'platform', x: 200, y: 900,  w: 520, h: 20 },
+    { id: 'over',   type: 'platform', x: 490, y: 790,  w: 80,  h: 26 },
+    // a post at the far end, so a dog that has done its job paces instead of
+    // trotting off the edge of the world after a roller knocked away
+    { id: 'postR',  type: 'platform', x: 700, y: 840,  w: 20,  h: 60 },
+    // behind the dog: the open end of its shelf, over its kennel (see HEADS UP)
+    { id: 'kenL',   type: 'platform', x: 120, y: 920,  w: 20,  h: 90 },
+    { id: 'kenF',   type: 'platform', x: 120, y: 1010, w: 100, h: 20 },
+    { id: 'kenR',   type: 'platform', x: 200, y: 920,  w: 20,  h: 90 },
+  ],
+  objects: [
+    { id: 'dog',    type: 'dog',     x: 230, y: 900, dir: 1 },
+    // Lighter than the plate asks for, so the roller crossing it opens nothing.
+    { id: 'roller', type: 'boulder', x: 665, y: 870, radius: 30,
+      density: 0.04, restitution: 0.06, friction: 0.12, frictionAir: 0, vx: -400,
+      lethal: { kind: 'impact', minSpeed: 300, graceRadius: 6 } },
+    // Close to the roller, so the wedge has a short stretch to land in: at
+    // x 380 the level measured 13 tries, easier than the dog's introduction.
+    { id: 'plate',  type: 'switch',  x: 440, y: 874, w: 80, h: 26, triggers: ['gate'],
+      requires: 'heavy', minMass: 150 },
+    { id: 'gate',   type: 'gate',    x: 140, y: 960, w: 34, h: 192 },
+  ],
+  zones: [],
+  drawing: { maxLength: 260 },
   solver: null,
 };

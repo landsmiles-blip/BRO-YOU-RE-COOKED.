@@ -681,6 +681,43 @@ came out of proving it:
   winning bridge — one that climbs from a 25-unit window at the bank edge —
   measured 0.0–0.1% across seven geometries. The A2/A49 finding, again.
 
+## THE DOG — a second walker, added 2026-10-14
+
+- **IT WALKS ON MILO'S LEGS AND TURNS WHERE HE WOULD STOP.** Shared ground
+  probe, slope rule and step-up (measured identical for Milo: three levels
+  re-swept to the same numbers, every daily certificate replays); blocked by
+  anything it cannot step over, it turns around. That one difference is the
+  noun: the first thing in this game a line can STEER.
+- **"BLOCKED" IS DISTANCE MOVED, NOT VELOCITY.** Meeting Milo head-on, both
+  set their walking speed every step and the dog read -138 u/s while being
+  shoved backwards — it never turned. And it must test its HEAD as well as its
+  feet and middle, or a slope meeting it above its middle wedges it in place
+  for ever (the pen level's census found every win was that).
+- **A DOG THAT HAS DONE ITS JOB NEEDS SOMEWHERE SAFE TO BE.** A run ends when
+  Milo reaches the goal, so a level can "win" while the dog is already
+  trotting to its death: HEADS UP's dog turned at the far post and walked back
+  into the spike pit behind it, INCOMING's walked off the end of the world,
+  each a few hundred milliseconds after the finish — a race a player redrawing
+  the same line loses half the time, invisible to every gate. `npm run race`
+  replays every winner with the goal out of reach and fails a level where the
+  dog dies within a second of the finish. The fix is a post to pace against
+  or a KENNEL to drop into: it fails "turn the dog back early" exactly as
+  spikes did (a dog in its kennel presses nothing) and keeps the dog alive.
+- **HOLD MILO AT A GATE BY HIS START** on a dog level, so that a lost dog is
+  always lost before he could have finished.
+- **NO LINE THROUGH THE DOG, TESTED ALONG THE SEGMENTS** — a simplified
+  stroke can have two points 300 units apart either side of it.
+- **A NEW THING'S FIRST LEVEL MUST STAY ITS EASIEST**, and with chapter 2 half
+  empty that pins it from both sides: GOOD BOY must be at least 18.7 tries or
+  TRIGGER is more than 3x the four before it, and at most 1.25x the easiest
+  dog level after it. Every later dog level was tuned up to meet that, never
+  GOOD BOY down. Filling slots 13–14 frees it.
+- **WHAT DIED: a pen is a needle** (two feet in two windows: 2 wins in 1,900),
+  **and a trapdoor is answered by a floor** (draw under the hatch and let the
+  dog press the trap plate — the KEEP OFF finding). A dog BRIDGE measured as a
+  needle too, but every bridge drawn by hand wins: the sweep's winners are
+  edge-to-edge spans in a small corner of a big level. Parked, not dead.
+
 ## THE HAND MODEL
 
 `tools/test/lib/hand.js` is the ONE definition of what a real stroke looks like.
@@ -907,6 +944,7 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
     npm run curve                 all 60 slots: each target, what is built, what is left
     npm run sketch -- f.js [slot] measure several candidate levels against a slot's band
     npm run census -- f.js [EXP]  sort every winning stroke by WHAT HAPPENED in it
+    npm run race -- id ...        a dog level: does the dog die just after the finish?
     npm run film                  films every level being WON — READ THE IMAGES
     FILM_IDLE=1 npm run film      films it being LOST — read those too
     npm run frozen                every opening frame in ONE grid — READ IT
