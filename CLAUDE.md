@@ -187,6 +187,15 @@ reuse every element across dozens of levels; what they never repeat is the
 decision. What the old rule got right, and still holds, is below: the
 questions already spent are spent.
 
+**AMENDED 2026-10-14 (approved): A NEW ELEMENT MAY RE-ASK AN OLD QUESTION.**
+The strict rule capped each new element at one to three levels — the dog's
+pen and trapdoor died in measurement and everything else it could do had been
+asked of Milo. So "get the dog across" may follow "get him across", if the
+element changes how it PLAYS on film, it passes the A14 test and the census,
+and the question is not asked twice in one chapter (docs/PLAN.md 4.1). Two
+levels on the same element still need different questions, and everything
+below about what is spent applies to that.
+
 - The pivot's is WHICH SIDE OF THE PIN, and A21 already asks it. A27 was built,
   measured and shelved for asking it a second time with the lean reversed.
 - The updraft's is IN THE COLUMN OR NOT (A19).

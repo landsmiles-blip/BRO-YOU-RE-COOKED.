@@ -247,6 +247,22 @@ player cannot aim is not a level; the plate is a back door; a static noun can
 never be a puzzle; a climb is too narrow a target. Those were measured, and
 they still rule.
 
+**Amended 14 Oct, approved: a new element may re-ask an old question.** Under
+the rule above each new element gave one to three levels — the dog's own
+second and third questions died in measurement (a pen is a needle; a trapdoor
+is answered by a floor) and every other dog idea re-asked a question Milo had
+already been asked. The games this one is measured against do the opposite:
+every Cut the Rope box brings one new element and re-asks the familiar
+questions with it. So a level whose new element changes how an old question
+PLAYS may ask it again — "get the dog across" after "get him across" — on
+three conditions:
+- **It looks and plays differently on film**, not just in its numbers.
+- **It passes every honesty check**: the A14 test (delete the element and the
+  level changes) and the census (the element is in the wins).
+- **Never the same question twice in one chapter.**
+
+Two levels on the SAME element still need different questions.
+
 ### 4.2 The difficulty equation
 
 **How the industry does it — not by feel.** The studios that lead level-based
