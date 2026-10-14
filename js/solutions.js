@@ -1359,5 +1359,36 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a82-heads-up": {
+    "id": "a82-heads-up",
+    "winners": 205,
+    "robust": 121,
+    "anchoredRobust": 67,
+    "handRate": 0.59,
+    "solution": {
+      "family": "line",
+      "length": 230,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 519.6,
+          "y": 668.5
+        },
+        {
+          "x": 453.2,
+          "y": 706.8
+        },
+        {
+          "x": 386.8,
+          "y": 745.2
+        },
+        {
+          "x": 320.4,
+          "y": 783.5
+        }
+      ]
+    }
   }
 };

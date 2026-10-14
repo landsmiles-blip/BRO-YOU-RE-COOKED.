@@ -367,5 +367,16 @@ export const SOLVER = {
     "threeStarLength": 163,
     "shortestWin": 110,
     "measuredAt": "2026-10-14"
+  },
+  "a82-heads-up": {
+    "solvable": true,
+    "solutionBreadth": 0.0922,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 98,
+    "measuredAt": "2026-10-14"
   }
 };

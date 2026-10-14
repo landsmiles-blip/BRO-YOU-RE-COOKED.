@@ -107,3 +107,59 @@ export const A81 = {
   drawing: { maxLength: 260 },
   solver: null,
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// A82 — HEADS UP.  The dog, re-asking BLOCK's question: stop it reaching
+// the dog.
+//
+// A rock is falling right where the dog will be on its way to the plate.
+// Stop it — without stopping the dog: a line that turns the dog back walks
+// it off the open end of its shelf into the spikes, so holding it back is
+// not an answer, and a shield too low walls it off. What is left is the
+// first chapter's question with the one being saved trotting along under
+// the line.
+//
+// Allowed by the amended rule (docs/PLAN.md 4.1). Census: every win is the
+// dog reaching the plate alive (228 of 228) — 43% an anchored shield across
+// the two ledges, half a dropped line knocking the rock aside in the air,
+// which is the same answer to the same question; 4% drawn through the rock.
+// With the dog deleted, nothing presses the plate; with the rock deleted,
+// doing nothing wins.
+// ─────────────────────────────────────────────────────────────────────────
+export const A82 = {
+  id: 'a82-heads-up',
+  hint: 'SOMETHING IS FALLING ON THE DOG',
+  world: 'backyard',
+  verb: 'HEADS UP',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  freezeAt: 300,
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'shelf',  type: 'platform', x: 230, y: 900,  w: 390, h: 20 },
+    { id: 'postR',  type: 'platform', x: 600, y: 840,  w: 20,  h: 60 },
+    // behind the dog: the open end of its shelf, over a spike pit
+    { id: 'pitL',   type: 'platform', x: 150, y: 920,  w: 20,  h: 90 },
+    { id: 'pitF',   type: 'platform', x: 150, y: 1010, w: 100, h: 20 },
+    { id: 'pitR',   type: 'platform', x: 230, y: 920,  w: 20,  h: 90 },
+    // two ledges either side of where the rock falls, to hang a shield from
+    // (36 wide: at 50 the level measured 16, easier than the dog's own
+    // introduction, which a new thing's first level must never be)
+    { id: 'ledgeL', type: 'platform', x: 320, y: 750,  w: 36,  h: 24 },
+    { id: 'ledgeR', type: 'platform', x: 454, y: 750,  w: 36,  h: 24 },
+  ],
+  objects: [
+    { id: 'dog',   type: 'dog',     x: 255, y: 900, dir: 1 },
+    { id: 'rock',  type: 'boulder', x: 400, y: 300, radius: 26,
+      density: 0.03, restitution: 0.15, friction: 0.4,
+      lethal: { kind: 'impact', minSpeed: 380, graceRadius: 6 } },
+    { id: 'plate', type: 'switch',  x: 510, y: 874, w: 80, h: 26, triggers: ['gate'],
+      requires: 'heavy', minMass: 150 },
+    { id: 'gate',  type: 'gate',    x: 140, y: 960, w: 34, h: 192 },
+  ],
+  zones: [
+    { id: 'spikes', kind: 'zone', x: 170, y: 980, w: 60, h: 30, lethal: true },
+  ],
+  drawing: { maxLength: 300 },
+  solver: null,
+};
