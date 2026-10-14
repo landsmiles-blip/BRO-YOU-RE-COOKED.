@@ -23,15 +23,17 @@ import { MILO } from '../constants.js';
 // the plate, until the post at the far end turns it again and it paces there.
 //
 // The first thing a stroke has ever steered. Every win in the census is the
-// dog pressing the plate after being turned (157 of 157); with the dog deleted
+// dog pressing the plate after being turned (135 of 135); with the dog deleted
 // there are none. The shelf is long and low on purpose: on a short one the
 // wall had a 120-unit stretch to land in and the level measured 48 tries, far
 // too hard to meet a new thing on. Starting it at 60 measured 17, which left
 // TRIGGER and DROP more than three times the levels before them while chapter
-// 2 is still half empty, so the shelf starts at 170: 19 tries, inside its band.
+// 2 is still half empty, so the shelf starts at 140: 19 tries, inside its band.
 // (It was 120 until the dog learned to turn when it bumps its head, which made
-// more strokes turn it.) It must also stay within 1.25x of the easiest dog
-// level after it — INCOMING, at 16 — or it stops being the gentle way in.
+// more strokes turn it; then 170 until a gentle line became a ramp it walks up
+// rather than a wall — the step-up fix of 14 Oct — which took 170 to 23.) It
+// must also stay within 1.25x of the easiest dog level after it, or it stops
+// being the gentle way in.
 // ─────────────────────────────────────────────────────────────────────────
 export const A80 = {
   id: 'a80-good-boy',
@@ -43,7 +45,7 @@ export const A80 = {
   goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
   static: [
     { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'shelf',  type: 'platform', x: 170, y: 800,  w: 420, h: 20 },
+    { id: 'shelf',  type: 'platform', x: 140, y: 800,  w: 450, h: 20 },
     { id: 'post',   type: 'platform', x: 570, y: 740,  w: 20,  h: 60 },
   ],
   objects: [

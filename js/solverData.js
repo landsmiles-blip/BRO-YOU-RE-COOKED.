@@ -18,14 +18,14 @@ export const SOLVER = {
   },
   "a2-gap": {
     "solvable": true,
-    "solutionBreadth": 0.0743,
+    "solutionBreadth": 0.0716,
     "precisionFloor": 65,
     "worstJitter": 2,
-    "distinctFamilies": 6,
+    "distinctFamilies": 5,
     "twoStarLength": 300,
     "threeStarLength": 253,
     "shortestWin": 165,
-    "measuredAt": "2026-09-14"
+    "measuredAt": "2026-10-14"
   },
   "a3-redirect": {
     "solvable": true,
@@ -227,14 +227,14 @@ export const SOLVER = {
   },
   "a43-crack": {
     "solvable": true,
-    "solutionBreadth": 0.0407,
+    "solutionBreadth": 0.0446,
     "precisionFloor": 45,
     "worstJitter": 1,
     "distinctFamilies": 2,
     "twoStarLength": 165,
     "threeStarLength": 110,
     "shortestWin": 110,
-    "measuredAt": "2026-09-23"
+    "measuredAt": "2026-10-14"
   },
   "a52-keepaway": {
     "solvable": true,
@@ -260,14 +260,14 @@ export const SOLVER = {
   },
   "a53-cover": {
     "solvable": true,
-    "solutionBreadth": 0.1915,
+    "solutionBreadth": 0.1997,
     "precisionFloor": 65,
     "worstJitter": 2,
     "distinctFamilies": 6,
     "twoStarLength": 300,
-    "threeStarLength": 185,
+    "threeStarLength": 180,
     "shortestWin": 73,
-    "measuredAt": "2026-10-13"
+    "measuredAt": "2026-10-14"
   },
   "a54-shelter": {
     "solvable": true,
@@ -348,12 +348,12 @@ export const SOLVER = {
   },
   "a80-good-boy": {
     "solvable": true,
-    "solutionBreadth": 0.0856,
+    "solutionBreadth": 0.0882,
     "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 4,
     "twoStarLength": 288,
-    "threeStarLength": 165,
+    "threeStarLength": 230,
     "shortestWin": 110,
     "measuredAt": "2026-10-14"
   },

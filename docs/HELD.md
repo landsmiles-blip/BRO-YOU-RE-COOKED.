@@ -31,7 +31,7 @@ The reasons for these three say the IDEA is good and the build was not.
 
 | Level | Verb | Hint | Why it is held | Code at `9c073b9` |
 |---|---|---|---|---|
-| A6 `a6-step` | RAMP | HE CAN'T CLIMB THAT | Only passes with a 47u wall, barely above the 22u step-up — teaches nothing. | line 275 |
+| A6 `a6-step` | RAMP | HE CAN'T CLIMB THAT | Only passes with a 47u wall, barely above the 22u step-up — teaches nothing. **14 Oct: that was the step-up bug (a straight ramp read as a wall); a 50u ramp-up now measures 2.5–3.1%.** | line 275 |
 | A7 `a7-prop` | SUPPORT | THE PLANK TIPS WHEN HE STANDS ON IT | Playtest: the plank reads as scenery. The tip is not telegraphed before it happens. | line 308 |
 | A14 `a14-twojobs` | REPURPOSE | STOP THE ROCK. MIND THE HOLE. | Playtest: unclear. Its hint has to say two things — two puzzles in one level. | line 616 |
 | A16 `a16-dont` | DON'T | THAT ROCK IS NOT YOUR PROBLEM | One stroke must cover two separate 31u gaps: 0u precision floor. | line 719 |
@@ -58,7 +58,7 @@ The reasons for these three say the IDEA is good and the build was not.
 | A46 `a46-hammer` | HAMMER | NOTHING FALLING THAT SLOWLY WILL GET THROUGH | MAX_SPEED is locked at 900, so "land harder" is not a mechanic. | line 2502 |
 | A47 `a47-volley` | VOLLEY | IT COMES STRAIGHT BACK UP EVERY TIME | A spring pad is not a noun — the bounce is on the object — and a bounce is redundant with the stroke. | line 2536 |
 | A48 `a48-lob` | LOB | IT CANNOT GET OVER THAT ON ITS OWN | Unsolvable: an angled bounce buys 84u of height. | line 2583 |
-| A49 `a49-climb` | CLIMB | HE CANNOT GET UP THERE | A climb is structurally narrow: 0.2–0.3% across three geometries. | line 2620 |
+| A49 `a49-climb` | CLIMB | HE CANNOT GET UP THERE | A climb is structurally narrow: 0.2–0.3% across three geometries. **14 Oct: 1.3% with the step-up bug fixed — narrower than it should be, no longer a wall.** | line 2620 |
 | A50 `a50-overhang` | OVERHANG | THAT ROOF IS IN THE WAY OF THE CLIMB | Unbuilt: Milo only walks right, so an eave has nothing to block. | line 2666 |
 
 ## The reasons, verbatim

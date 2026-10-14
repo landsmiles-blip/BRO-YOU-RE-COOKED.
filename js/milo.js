@@ -82,12 +82,51 @@ function tryStepUp(ctx, milo, dims = MILO) {
   if (!probe.length) return false;
 
   let topY = Infinity;
-  for (const h of probe) topY = Math.min(topY, h.body.bounds.min.y);
+  for (const h of probe) topY = Math.min(topY, topAt(h.body, aheadX, dims));
   const rise = feetY - topY;
   if (rise <= 0 || rise > dims.maxStepUp) return false;
 
   setPosition(b, b.position.x, b.position.y - rise - 1);
   return true;
+}
+
+/**
+ * How high the thing in front of him is, where his foot would go.
+ *
+ * For anything the level built, that is its top. For the player's LINE it is
+ * the line's own surface at that x — unless the line is steeper than he can
+ * walk, and then it is a wall and its top is its top.
+ *
+ * Reading the whole bounding box made every straight ramp a wall. A line drawn
+ * rising at 20 degrees simplifies to ONE part, and that part's box top is its
+ * FAR end: begun 2 units above the floor, its near lip was a third of a step
+ * and measured 60 high, so he stopped dead in front of it — while the same
+ * line begun 2 units lower, buried in the floor, was a road. Measured when it
+ * was fixed: the held CLIMB went from 0.3% of strokes winning to 1.3%, a plain
+ * ramp-up from 0.8% to 2.5%, and no shipped level's certified stroke changed.
+ * tools/test/walk.js holds the rule, for Milo and the dog.
+ */
+function topAt(part, x, dims) {
+  if ((part.parent ?? part).gameId !== 'stroke' && part.gameId !== 'stroke') return part.bounds.min.y;
+  const vs = part.vertices;
+  // A stroke part is a thin rectangle, so its longest edge is the line itself.
+  let longest = 0, slope = 0;
+  for (let i = 0; i < vs.length; i++) {
+    const a = vs[i], b = vs[(i + 1) % vs.length];
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    if (len > longest) { longest = len; slope = Math.abs(Math.atan2(b.y - a.y, b.x - a.x)) * 180 / Math.PI; }
+  }
+  if (slope > 90) slope = 180 - slope;
+  if (slope > dims.maxWalkSlope) return part.bounds.min.y;
+  // The highest point where the vertical line at x crosses the outline.
+  let top = Infinity;
+  for (let i = 0; i < vs.length; i++) {
+    const a = vs[i], b = vs[(i + 1) % vs.length];
+    if ((a.x - x) * (b.x - x) > 0) continue;
+    const y = a.x === b.x ? Math.min(a.y, b.y) : a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x);
+    top = Math.min(top, y);
+  }
+  return Number.isFinite(top) ? top : part.bounds.min.y;
 }
 
 export function updateMilo(ctx, milo, simTimeMs) {

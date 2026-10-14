@@ -823,10 +823,10 @@ export const SOLUTIONS = {
   },
   "a43-crack": {
     "id": "a43-crack",
-    "winners": 21,
+    "winners": 23,
     "robust": 8,
     "anchoredRobust": 8,
-    "handRate": 0.381,
+    "handRate": 0.348,
     "solution": {
       "family": "span",
       "length": 164,
@@ -1284,31 +1284,35 @@ export const SOLUTIONS = {
   },
   "a80-good-boy": {
     "id": "a80-good-boy",
-    "winners": 131,
-    "robust": 79,
-    "anchoredRobust": 76,
-    "handRate": 0.603,
+    "winners": 135,
+    "robust": 80,
+    "anchoredRobust": 74,
+    "handRate": 0.593,
     "solution": {
-      "family": "line",
-      "length": 230,
-      "parts": 13,
-      "anchors": 7,
+      "family": "corner",
+      "length": 260,
+      "parts": 14,
+      "anchors": 5,
       "points": [
         {
-          "x": 357.5,
-          "y": 761.8
+          "x": 180,
+          "y": 692.3
         },
         {
-          "x": 319.2,
-          "y": 828.2
+          "x": 245,
+          "y": 692.3
         },
         {
-          "x": 280.8,
-          "y": 894.6
+          "x": 310,
+          "y": 692.3
         },
         {
-          "x": 242.5,
-          "y": 961
+          "x": 310,
+          "y": 757.3
+        },
+        {
+          "x": 310,
+          "y": 822.3
         }
       ]
     }

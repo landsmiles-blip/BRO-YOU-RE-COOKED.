@@ -42,9 +42,9 @@ export const DAILY_SOLUTIONS = {
     "id": "a5-hang",
     "ink": 230,
     "winners": 79,
-    "robust": 39,
+    "robust": 38,
     "anchoredRobust": 20,
-    "handRate": 0.494,
+    "handRate": 0.481,
     "solution": {
       "family": "line",
       "length": 165,
@@ -121,31 +121,31 @@ export const DAILY_SOLUTIONS = {
   "a2-gap": {
     "id": "a2-gap",
     "ink": 253,
-    "winners": 28,
-    "robust": 13,
-    "anchoredRobust": 13,
-    "handRate": 0.464,
+    "winners": 26,
+    "robust": 17,
+    "anchoredRobust": 17,
+    "handRate": 0.654,
     "solution": {
       "family": "line",
       "length": 230,
       "parts": 11,
-      "anchors": 8,
+      "anchors": 7,
       "points": [
         {
-          "x": 320.4,
-          "y": 989.6
+          "x": 362.5,
+          "y": 947.5
         },
         {
-          "x": 386.8,
-          "y": 1028
+          "x": 400.8,
+          "y": 1013.9
         },
         {
-          "x": 453.2,
-          "y": 1066.3
+          "x": 439.2,
+          "y": 1080.3
         },
         {
-          "x": 519.6,
-          "y": 1104.6
+          "x": 477.5,
+          "y": 1146.7
         }
       ]
     }
@@ -153,10 +153,10 @@ export const DAILY_SOLUTIONS = {
   "a20-spring": {
     "id": "a20-spring",
     "ink": 165,
-    "winners": 119,
-    "robust": 33,
+    "winners": 121,
+    "robust": 27,
     "anchoredRobust": 4,
-    "handRate": 0.277,
+    "handRate": 0.223,
     "solution": {
       "family": "span",
       "length": 137,
@@ -202,9 +202,9 @@ export const DAILY_SOLUTIONS = {
     "id": "a15-eitherway",
     "ink": 184,
     "winners": 36,
-    "robust": 25,
+    "robust": 23,
     "anchoredRobust": 9,
-    "handRate": 0.694,
+    "handRate": 0.639,
     "solution": {
       "family": "line",
       "length": 110,
@@ -230,13 +230,45 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a8-jam": {
+    "id": "a8-jam",
+    "ink": 165,
+    "winners": 44,
+    "robust": 13,
+    "anchoredRobust": 2,
+    "handRate": 0.295,
+    "solution": {
+      "family": "line",
+      "length": 110,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 467.6,
+          "y": 1134.8
+        },
+        {
+          "x": 435.9,
+          "y": 1153.1
+        },
+        {
+          "x": 404.1,
+          "y": 1171.5
+        },
+        {
+          "x": 372.4,
+          "y": 1189.8
+        }
+      ]
+    }
+  },
   "a12-ontime": {
     "id": "a12-ontime",
     "ink": 183,
-    "winners": 114,
-    "robust": 62,
-    "anchoredRobust": 21,
-    "handRate": 0.544,
+    "winners": 115,
+    "robust": 52,
+    "anchoredRobust": 22,
+    "handRate": 0.452,
     "solution": {
       "family": "line",
       "length": 165,
@@ -266,9 +298,9 @@ export const DAILY_SOLUTIONS = {
     "id": "a9-chute",
     "ink": 184,
     "winners": 126,
-    "robust": 110,
+    "robust": 111,
     "anchoredRobust": 4,
-    "handRate": 0.873,
+    "handRate": 0.881,
     "solution": {
       "family": "line",
       "length": 165,
@@ -296,32 +328,32 @@ export const DAILY_SOLUTIONS = {
   },
   "a80-good-boy": {
     "id": "a80-good-boy",
-    "ink": 165,
-    "winners": 21,
-    "robust": 8,
-    "anchoredRobust": 8,
-    "handRate": 0.381,
+    "ink": 230,
+    "winners": 39,
+    "robust": 17,
+    "anchoredRobust": 17,
+    "handRate": 0.436,
     "solution": {
       "family": "line",
-      "length": 110,
-      "parts": 9,
-      "anchors": 8,
+      "length": 165,
+      "parts": 10,
+      "anchors": 7,
       "points": [
         {
           "x": 180,
-          "y": 721.9
+          "y": 778.9
         },
         {
           "x": 180,
-          "y": 758.5
+          "y": 833.9
         },
         {
           "x": 180,
-          "y": 795.2
+          "y": 888.9
         },
         {
           "x": 180,
-          "y": 831.9
+          "y": 943.9
         }
       ]
     }
@@ -488,11 +520,11 @@ export const DAILY_SOLUTIONS = {
   },
   "a53-cover": {
     "id": "a53-cover",
-    "ink": 185,
-    "winners": 91,
-    "robust": 50,
-    "anchoredRobust": 37,
-    "handRate": 0.549,
+    "ink": 180,
+    "winners": 94,
+    "robust": 48,
+    "anchoredRobust": 34,
+    "handRate": 0.511,
     "solution": {
       "family": "line",
       "length": 110,
@@ -500,19 +532,19 @@ export const DAILY_SOLUTIONS = {
       "anchors": 8,
       "points": [
         {
-          "x": 447.5,
+          "x": 392.5,
           "y": 1155.7
         },
         {
-          "x": 429.2,
+          "x": 410.8,
           "y": 1187.4
         },
         {
-          "x": 410.8,
+          "x": 429.2,
           "y": 1219.2
         },
         {
-          "x": 392.5,
+          "x": 447.5,
           "y": 1250.9
         }
       ]
@@ -553,10 +585,10 @@ export const DAILY_SOLUTIONS = {
   "a55-protect": {
     "id": "a55-protect",
     "ink": 230,
-    "winners": 28,
-    "robust": 6,
+    "winners": 30,
+    "robust": 5,
     "anchoredRobust": 5,
-    "handRate": 0.214,
+    "handRate": 0.167,
     "solution": {
       "family": "line",
       "length": 165,
@@ -987,7 +1019,7 @@ export const DAILY_SOLUTIONS = {
     "ink": 230,
     "winners": 67,
     "robust": 28,
-    "anchoredRobust": 14,
+    "anchoredRobust": 15,
     "handRate": 0.418,
     "solution": {
       "family": "line",
@@ -996,20 +1028,20 @@ export const DAILY_SOLUTIONS = {
       "anchors": 8,
       "points": [
         {
-          "x": 228.6,
-          "y": 730.8
+          "x": 217.5,
+          "y": 772
         },
         {
-          "x": 276.2,
-          "y": 758.3
+          "x": 272.5,
+          "y": 772
         },
         {
-          "x": 323.8,
-          "y": 785.8
+          "x": 327.5,
+          "y": 772
         },
         {
-          "x": 371.4,
-          "y": 813.3
+          "x": 382.5,
+          "y": 772
         }
       ]
     }
@@ -1017,10 +1049,10 @@ export const DAILY_SOLUTIONS = {
   "gen-crossing-31677": {
     "id": "gen-crossing-31677",
     "ink": 288,
-    "winners": 23,
+    "winners": 25,
     "robust": 12,
     "anchoredRobust": 12,
-    "handRate": 0.522,
+    "handRate": 0.48,
     "solution": {
       "family": "line",
       "length": 230,
@@ -1101,10 +1133,10 @@ export const DAILY_SOLUTIONS = {
   "gen-roller-87110": {
     "id": "gen-roller-87110",
     "ink": 184,
-    "winners": 78,
-    "robust": 41,
+    "winners": 80,
+    "robust": 36,
     "anchoredRobust": 8,
-    "handRate": 0.526,
+    "handRate": 0.45,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1181,10 +1213,10 @@ export const DAILY_SOLUTIONS = {
   "gen-chimney-245490": {
     "id": "gen-chimney-245490",
     "ink": 230,
-    "winners": 65,
-    "robust": 28,
-    "anchoredRobust": 11,
-    "handRate": 0.431,
+    "winners": 64,
+    "robust": 26,
+    "anchoredRobust": 10,
+    "handRate": 0.406,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1214,9 +1246,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-crossing-174219",
     "ink": 230,
     "winners": 20,
-    "robust": 9,
-    "anchoredRobust": 9,
-    "handRate": 0.45,
+    "robust": 8,
+    "anchoredRobust": 8,
+    "handRate": 0.4,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1246,30 +1278,30 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-drop-39596",
     "ink": 230,
     "winners": 79,
-    "robust": 40,
-    "anchoredRobust": 10,
-    "handRate": 0.506,
+    "robust": 41,
+    "anchoredRobust": 11,
+    "handRate": 0.519,
     "solution": {
       "family": "line",
       "length": 165,
       "parts": 9,
-      "anchors": 3,
+      "anchors": 8,
       "points": [
         {
-          "x": 348.6,
-          "y": 810
+          "x": 371.4,
+          "y": 1090.6
         },
         {
-          "x": 396.2,
-          "y": 837.5
+          "x": 323.8,
+          "y": 1118.1
         },
         {
-          "x": 443.8,
-          "y": 865
+          "x": 276.2,
+          "y": 1145.6
         },
         {
-          "x": 491.4,
-          "y": 892.5
+          "x": 228.6,
+          "y": 1173.1
         }
       ]
     }
@@ -1278,9 +1310,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-roller-182138",
     "ink": 230,
     "winners": 100,
-    "robust": 39,
+    "robust": 35,
     "anchoredRobust": 11,
-    "handRate": 0.39,
+    "handRate": 0.35,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1374,9 +1406,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-crossing-118786",
     "ink": 242,
     "winners": 17,
-    "robust": 6,
-    "anchoredRobust": 6,
-    "handRate": 0.353,
+    "robust": 7,
+    "anchoredRobust": 7,
+    "handRate": 0.412,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1405,31 +1437,31 @@ export const DAILY_SOLUTIONS = {
   "gen-drop-142543": {
     "id": "gen-drop-142543",
     "ink": 229,
-    "winners": 60,
-    "robust": 38,
-    "anchoredRobust": 19,
-    "handRate": 0.633,
+    "winners": 61,
+    "robust": 39,
+    "anchoredRobust": 21,
+    "handRate": 0.639,
     "solution": {
       "family": "line",
       "length": 165,
-      "parts": 10,
+      "parts": 9,
       "anchors": 8,
       "points": [
         {
-          "x": 337.5,
-          "y": 718
+          "x": 371.4,
+          "y": 1077.9
         },
         {
-          "x": 392.5,
-          "y": 718
+          "x": 323.8,
+          "y": 1105.4
         },
         {
-          "x": 447.5,
-          "y": 718
+          "x": 276.2,
+          "y": 1132.9
         },
         {
-          "x": 502.5,
-          "y": 718
+          "x": 228.6,
+          "y": 1160.4
         }
       ]
     }
@@ -1517,10 +1549,10 @@ export const DAILY_SOLUTIONS = {
   "gen-chimney-166300": {
     "id": "gen-chimney-166300",
     "ink": 230,
-    "winners": 57,
-    "robust": 26,
+    "winners": 58,
+    "robust": 24,
     "anchoredRobust": 11,
-    "handRate": 0.456,
+    "handRate": 0.414,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1549,10 +1581,10 @@ export const DAILY_SOLUTIONS = {
   "gen-crossing-39596": {
     "id": "gen-crossing-39596",
     "ink": 288,
-    "winners": 23,
-    "robust": 6,
-    "anchoredRobust": 6,
-    "handRate": 0.261,
+    "winners": 24,
+    "robust": 9,
+    "anchoredRobust": 9,
+    "handRate": 0.375,
     "solution": {
       "family": "line",
       "length": 230,
@@ -1582,9 +1614,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-drop-1",
     "ink": 230,
     "winners": 84,
-    "robust": 33,
+    "robust": 31,
     "anchoredRobust": 19,
-    "handRate": 0.393,
+    "handRate": 0.369,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1614,9 +1646,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-roller-229652",
     "ink": 190,
     "winners": 72,
-    "robust": 24,
+    "robust": 23,
     "anchoredRobust": 10,
-    "handRate": 0.333,
+    "handRate": 0.319,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1710,46 +1742,30 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-crossing-55434",
     "ink": 284,
     "winners": 12,
-    "robust": 5,
-    "anchoredRobust": 5,
-    "handRate": 0.417,
+    "robust": 7,
+    "anchoredRobust": 7,
+    "handRate": 0.583,
     "solution": {
-      "family": "span",
-      "length": 244,
-      "parts": 12,
+      "family": "line",
+      "length": 230,
+      "parts": 10,
       "anchors": 6,
       "points": [
         {
-          "x": 330,
-          "y": 960
+          "x": 305,
+          "y": 1045
         },
         {
-          "x": 362.9,
-          "y": 971.4
+          "x": 381.7,
+          "y": 1045
         },
         {
-          "x": 395.7,
-          "y": 982.9
+          "x": 458.3,
+          "y": 1045
         },
         {
-          "x": 428.6,
-          "y": 994.3
-        },
-        {
-          "x": 461.4,
-          "y": 1005.7
-        },
-        {
-          "x": 494.3,
-          "y": 1017.1
-        },
-        {
-          "x": 527.1,
-          "y": 1028.6
-        },
-        {
-          "x": 560,
-          "y": 1040
+          "x": 535,
+          "y": 1045
         }
       ]
     }
@@ -1757,10 +1773,10 @@ export const DAILY_SOLUTIONS = {
   "gen-drop-55434": {
     "id": "gen-drop-55434",
     "ink": 230,
-    "winners": 68,
-    "robust": 29,
+    "winners": 69,
+    "robust": 26,
     "anchoredRobust": 10,
-    "handRate": 0.426,
+    "handRate": 0.377,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1789,10 +1805,10 @@ export const DAILY_SOLUTIONS = {
   "gen-roller-110867": {
     "id": "gen-roller-110867",
     "ink": 165,
-    "winners": 81,
-    "robust": 23,
+    "winners": 82,
+    "robust": 22,
     "anchoredRobust": 3,
-    "handRate": 0.284,
+    "handRate": 0.268,
     "solution": {
       "family": "line",
       "length": 110,
@@ -1854,9 +1870,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-chimney-190057",
     "ink": 230,
     "winners": 55,
-    "robust": 24,
+    "robust": 22,
     "anchoredRobust": 13,
-    "handRate": 0.436,
+    "handRate": 0.4,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1885,10 +1901,10 @@ export const DAILY_SOLUTIONS = {
   "gen-crossing-1": {
     "id": "gen-crossing-1",
     "ink": 230,
-    "winners": 8,
+    "winners": 7,
     "robust": 4,
     "anchoredRobust": 4,
-    "handRate": 0.5,
+    "handRate": 0.571,
     "solution": {
       "family": "span",
       "length": 215,
@@ -1934,9 +1950,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-drop-87110",
     "ink": 230,
     "winners": 64,
-    "robust": 24,
+    "robust": 22,
     "anchoredRobust": 8,
-    "handRate": 0.375,
+    "handRate": 0.344,
     "solution": {
       "family": "line",
       "length": 165,
@@ -1966,9 +1982,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-roller-245490",
     "ink": 165,
     "winners": 66,
-    "robust": 22,
+    "robust": 20,
     "anchoredRobust": 1,
-    "handRate": 0.333,
+    "handRate": 0.303,
     "solution": {
       "family": "line",
       "length": 110,
@@ -2030,9 +2046,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-chimney-79191",
     "ink": 230,
     "winners": 55,
-    "robust": 23,
+    "robust": 22,
     "anchoredRobust": 8,
-    "handRate": 0.418,
+    "handRate": 0.4,
     "solution": {
       "family": "line",
       "length": 165,
@@ -2062,9 +2078,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-crossing-15839",
     "ink": 300,
     "winners": 17,
-    "robust": 4,
-    "anchoredRobust": 4,
-    "handRate": 0.235,
+    "robust": 5,
+    "anchoredRobust": 5,
+    "handRate": 0.294,
     "solution": {
       "family": "arc",
       "length": 288,
@@ -2077,23 +2093,23 @@ export const DAILY_SOLUTIONS = {
         },
         {
           "x": 333.3,
-          "y": 1019.4
+          "y": 1080.6
         },
         {
           "x": 376.7,
-          "y": 1001.1
+          "y": 1098.9
         },
         {
           "x": 420,
-          "y": 995
+          "y": 1105
         },
         {
           "x": 463.3,
-          "y": 1001.1
+          "y": 1098.9
         },
         {
           "x": 506.7,
-          "y": 1019.4
+          "y": 1080.6
         },
         {
           "x": 550,
@@ -2106,9 +2122,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-drop-47515",
     "ink": 230,
     "winners": 64,
-    "robust": 22,
+    "robust": 21,
     "anchoredRobust": 3,
-    "handRate": 0.344,
+    "handRate": 0.328,
     "solution": {
       "family": "span",
       "length": 192,
@@ -2154,9 +2170,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-roller-190057",
     "ink": 230,
     "winners": 72,
-    "robust": 20,
+    "robust": 18,
     "anchoredRobust": 7,
-    "handRate": 0.278,
+    "handRate": 0.25,
     "solution": {
       "family": "line",
       "length": 165,
@@ -2186,9 +2202,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-chimney-158381",
     "ink": 230,
     "winners": 52,
-    "robust": 21,
+    "robust": 20,
     "anchoredRobust": 7,
-    "handRate": 0.404,
+    "handRate": 0.385,
     "solution": {
       "family": "line",
       "length": 165,
@@ -2313,10 +2329,10 @@ export const DAILY_SOLUTIONS = {
   "gen-crossing-87110": {
     "id": "gen-crossing-87110",
     "ink": 300,
-    "winners": 14,
-    "robust": 2,
-    "anchoredRobust": 2,
-    "handRate": 0.143,
+    "winners": 15,
+    "robust": 3,
+    "anchoredRobust": 3,
+    "handRate": 0.2,
     "solution": {
       "family": "arc",
       "length": 288,
@@ -2325,31 +2341,31 @@ export const DAILY_SOLUTIONS = {
       "points": [
         {
           "x": 307.4,
-          "y": 1010
+          "y": 1068.6
         },
         {
           "x": 360.2,
-          "y": 1005.2
+          "y": 1063.8
         },
         {
           "x": 406.9,
-          "y": 1011
+          "y": 1069.6
         },
         {
           "x": 447.5,
-          "y": 1027.4
+          "y": 1085.9
         },
         {
           "x": 482,
-          "y": 1054.3
+          "y": 1112.9
         },
         {
           "x": 510.3,
-          "y": 1091.9
+          "y": 1150.4
         },
         {
           "x": 532.6,
-          "y": 1140
+          "y": 1198.6
         }
       ]
     }
@@ -2358,9 +2374,9 @@ export const DAILY_SOLUTIONS = {
     "id": "gen-drop-134624",
     "ink": 230,
     "winners": 47,
-    "robust": 13,
+    "robust": 15,
     "anchoredRobust": 4,
-    "handRate": 0.277,
+    "handRate": 0.319,
     "solution": {
       "family": "bowl",
       "length": 185,

@@ -139,12 +139,19 @@ function robustnessOf(level, winner, trials = 10) {
  * reported 0 for levels that are in fact comfortable to play. The question a
  * player cares about is "can I reliably hit SOME solution", so sample winners
  * across the length distribution and take the best.
+ *
+ * A LEVEL WITH FEW WINNERS IS MEASURED WHOLE. Six samples out of 23 winners
+ * is a lottery: when a physics fix added two winners to CRACK, the six picks
+ * moved, missed its one 45u stroke, and the level read 20u — a hard gate
+ * failure for a level that had not got one unit less forgiving. Up to 40
+ * winners every one is tested, which is a superset of the six, so no level's
+ * floor can drop because of this; above 40 the sample is unchanged.
  */
 export function precisionFloor(level, winners, sampleCount = 6) {
   if (!winners.length) return 0;
   const sorted = [...winners].sort((a, b) => a.length - b.length);
-  const picks = [];
-  for (let i = 0; i < sampleCount; i++) {
+  const picks = sorted.length <= 40 ? sorted : [];
+  for (let i = 0; i < sampleCount && sorted.length > 40; i++) {
     picks.push(sorted[Math.min(sorted.length - 1, Math.round((i / Math.max(1, sampleCount - 1)) * (sorted.length - 1)))]);
   }
   let best = 0;

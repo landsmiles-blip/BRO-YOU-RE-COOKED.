@@ -544,6 +544,10 @@ came out of proving it:
   fixed by DROPPING the far bank so the crossing became a descent. Climbing is
   gated by the 22u step-up; descending is free. Do not design a level whose
   answer is a ramp UP.
+  **Correction, 14 Oct: part of that needle was a bug** (next entry but one).
+  With it fixed CLIMB measures 1.3% and a plain 50u ramp-up 2.5–3.1% — still
+  narrow, because a sweep rarely draws a ramp, but no longer a wall a player
+  can hit by starting their line two units too high.
   Two bugs found on the way, both worth keeping:
   - **A stub the ramp starts from must be within 22 units of where Milo is.**
     The first build anchored it 142u up, which he can never reach.
@@ -552,6 +556,28 @@ came out of proving it:
     `overlaps-goal` before simulating it: 0.0% breadth with nothing whatever
     wrong with the physics. **Check the rejection reason before believing an
     unsolvable verdict.**
+- **THE STEP-UP READ A LINE'S WHOLE BOX, SO EVERY STRAIGHT RAMP WAS A WALL.**
+  `tryStepUp` judged how tall the thing in front of a walker was from the hit
+  part's bounding box. For a level's own platforms that is their top. For the
+  player's line it is not: a straight drag simplifies to ONE part, and a rising
+  line's box top is its FAR end. A 20-degree line begun 2 units above the floor
+  has a lip a third of a step high and measured 60 — Milo stopped dead, the dog
+  turned round — while the same line begun 2 units lower, buried in the floor,
+  was a road. Four units of where a finger lands decided whether a ramp was a
+  ramp, and nothing on screen said so. Found when the dog turned around at a
+  gentle line in a sketch. Fixed for STROKE parts only: a slope he can walk is
+  read at his foot, a steeper one is still a wall, rocks and planks unchanged.
+  Measured before adopting it: no certified stroke in 35 levels changed, 33
+  swept identical, GOOD BOY 8.6% to 7.8% (the dog now walks up lines it used to
+  turn at — retuned) and CRACK 4.1% to 4.5%. **A6 RAMP was held for "only
+  passes with a 47u wall" — that was this bug, not the idea.**
+  `tools/test/walk.js` holds the rule and fails without the fix.
+- **A PRECISION FLOOR FROM SIX SAMPLES IS A LOTTERY.** The floor is the most
+  forgiving winner's robustness, estimated from six winners spread across the
+  lengths. The fix above added two winners to CRACK, the six picks moved, missed
+  its one 45u stroke, and a level that had not got one unit less forgiving read
+  20u — a hard gate failure. Levels with 40 winners or fewer are now measured
+  whole (a superset of the six, so no floor can drop because of it).
 - **AND THE GENERATOR CANNOT PRODUCE A NEW-LOOKING LEVEL — confirmed a second
   time, by eye.** 24 fresh candidates through the cheap funnel, rendered as one
   contact sheet: nine `crossing` were level 2, five `drop` were level 3, four
