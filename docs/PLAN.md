@@ -190,6 +190,35 @@ out inside the first week.
 design draft asked for 20–30 levels for a minimum version and 60 for the first
 release. The Production Bible called 24 shippable and 60 the stretch goal.
 
+**What the successful games launched with** (checked 14 Oct):
+
+| Game | At launch | Afterwards |
+|---|---|---|
+| Angry Birds (2009) | 63 levels, three chapters of 21 | +42 two months later; hundreds since |
+| Cut the Rope (2010) | 100 levels, four boxes of 25 | a new 25-level box every one to two months, each bringing a new element; 425 today |
+| Where's My Water? (2011) | 80 levels, four chapters of 20 | 350+ added |
+| World of Goo (2008) | 48 levels | 48: a paid game that never grew |
+| Brain It On! (2015) | about 80 | plus player-made levels every day |
+| Happy Glass (2018) | — | 500–620+, but hyper-casual: 10–20-second levels built from templates |
+
+60 sits inside the range the hand-designed hits launched with (48–100),
+closest to Angry Birds. None of them stopped at launch: the ones that lasted
+added a chapter-sized update every month or two, and Cut the Rope's rule was a
+new element in every box. So: **launch with 60 and the daily, then a new
+10-level chapter with a new element about once a month.** And most players
+never see level 60 anyway — puzzle games average roughly 32% of players back on
+day 1, 12% on day 7 and 5% on day 30 (AppsFlyer averages, quoted second-hand),
+so the first ten levels and the daily do more for retention than the sixty-first.
+
+Sources: [Angry Birds](https://en.wikipedia.org/wiki/Angry_Birds_(video_game)),
+[Cut the Rope](https://en.wikipedia.org/wiki/Cut_the_Rope) and its
+[update history](https://cuttherope.fandom.com/wiki/List_of_updates),
+[Where's My Water?](https://en.wikipedia.org/wiki/Where%27s_My_Water%3F),
+[World of Goo](https://en.wikipedia.org/wiki/World_of_Goo),
+[Brain It On!](https://www.moddb.com/games/brain-it-on),
+[Happy Glass](https://www.gamedeveloper.com/design/happy-glass-design-analysis),
+[puzzle retention](https://segwise.ai/blog/mobile-gaming-app-user-retention-strategies).
+
 ---
 
 ## 4. Where the 39 new levels come from
