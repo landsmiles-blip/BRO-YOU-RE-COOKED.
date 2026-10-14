@@ -348,12 +348,12 @@ export const SOLVER = {
   },
   "a80-good-boy": {
     "solvable": true,
-    "solutionBreadth": 0.0898,
+    "solutionBreadth": 0.0803,
     "precisionFloor": 65,
     "worstJitter": 1,
-    "distinctFamilies": 5,
+    "distinctFamilies": 4,
     "twoStarLength": 288,
-    "threeStarLength": 230,
+    "threeStarLength": 165,
     "shortestWin": 110,
     "measuredAt": "2026-10-14"
   }

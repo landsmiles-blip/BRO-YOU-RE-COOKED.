@@ -106,6 +106,19 @@ console.log('\nTHE DOG — walks, turns at walls, presses plates, can be lost');
   destroySim(sim);
 }
 
+// 4b. A line sloping down in front of it meets it above its middle: it turns
+//     rather than standing wedged under the slope (the pen level's census).
+{
+  const sim = buildSim(level());
+  runTo(sim, 300);
+  const c = commitStroke(sim, [{ x: 140, y: 1150 }, { x: 260, y: 1105 }, { x: 330, y: 1060 }]);
+  runTo(sim, 2200);
+  const d = dogOf(sim);
+  check('a slope that meets its head turns it too', c.ok && d.turns >= 1 && d.dir === 1,
+        `turns ${d.turns}, x ${d.body.position.x.toFixed(0)}`);
+  destroySim(sim);
+}
+
 // 5. A weighed plate: the dog presses it; no affordable line does.
 {
   const plateLevel = (objects) => level({

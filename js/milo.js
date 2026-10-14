@@ -225,9 +225,14 @@ export function updateDog(ctx, dog, simTimeMs) {
 }
 
 /**
- * Is there something solid right in front of it, at its feet or its middle?
- * Sensors (plates) and things that have stopped existing physically (an open
- * gate, a broken board) are not walls.
+ * Is there something solid right in front of it — at its feet, its middle or
+ * its head? Sensors (plates) and things that have stopped existing physically
+ * (an open gate, a broken board) are not walls.
+ *
+ * THE HEAD COUNTS. With only feet and middle tested, a line sloping down in
+ * front of it met it above its middle: it stood wedged under the slope, pushing
+ * for ever, and the census of the pen level found every one of its wins was
+ * the dog stuck like that rather than turned. A dog that bumps its head turns.
  */
 function blockedAhead(ctx, w, dims) {
   const b = w.body;
@@ -237,7 +242,7 @@ function blockedAhead(ctx, w, dims) {
     return p !== b && !o.isSensor && !p.isSensor &&
            o.collisionFilter.mask !== 0 && p.collisionFilter.mask !== 0;
   };
-  for (const dy of [dims.height / 2 - 6, 0]) {
+  for (const dy of [dims.height / 2 - 6, 0, -dims.height / 2 + 4]) {
     const y = b.position.y + dy;
     if (raycast(ctx, b.position.x, y, ahead, y, solid).length) return true;
   }

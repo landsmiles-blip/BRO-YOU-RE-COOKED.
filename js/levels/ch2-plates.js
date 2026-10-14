@@ -28,7 +28,9 @@ import { MILO } from '../constants.js';
 // wall had a 120-unit stretch to land in and the level measured 48 tries, far
 // too hard to meet a new thing on. Starting it at 60 measured 17, which left
 // TRIGGER and DROP more than three times the levels before them while chapter
-// 2 is still half empty; at 120 it is 20, inside its band.
+// 2 is still half empty, so the shelf starts at 180: 20 tries, inside its band.
+// (It was 120 until the dog learned to turn when it bumps its head, which made
+// more strokes turn it.)
 // ─────────────────────────────────────────────────────────────────────────
 export const A80 = {
   id: 'a80-good-boy',
@@ -40,7 +42,7 @@ export const A80 = {
   goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
   static: [
     { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'shelf',  type: 'platform', x: 120, y: 800,  w: 470, h: 20 },
+    { id: 'shelf',  type: 'platform', x: 180, y: 800,  w: 410, h: 20 },
     { id: 'post',   type: 'platform', x: 570, y: 740,  w: 20,  h: 60 },
   ],
   objects: [
