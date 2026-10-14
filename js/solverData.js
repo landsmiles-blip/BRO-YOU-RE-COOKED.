@@ -345,5 +345,16 @@ export const SOLVER = {
     "threeStarLength": 110,
     "shortestWin": 110,
     "measuredAt": "2026-10-13"
+  },
+  "a80-good-boy": {
+    "solvable": true,
+    "solutionBreadth": 0.0898,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-14"
   }
 };

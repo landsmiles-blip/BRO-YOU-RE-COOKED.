@@ -236,6 +236,30 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
         ctx.moveTo(-40, 0); ctx.lineTo(40, 0);
       }
       ctx.stroke();
+    } else if (sim.objects.get(f.id)?.spec.type === 'dog') {
+      // THE DOG, flat like everything here, facing the way it was going —
+      // read from where it was a few frames earlier, since which way it walks
+      // is the whole of the dog. Never in the danger colour, even when it is
+      // what the run lost: it is the victim, not the threat. A ring says it.
+      const back = frames[Math.max(0, Math.min(frameIdx, frames.length - 1) - 6)]?.find((q) => q.id === f.id);
+      const spec = sim.objects.get(f.id).spec;
+      const dir = back && Math.abs(f.x - back.x) > 0.5 ? Math.sign(f.x - back.x) : (spec.dir ?? 1);
+      ctx.scale(dir, 1);
+      ctx.fillStyle = C.milo; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      for (const x of [11, 5, -9, -15]) { ctx.moveTo(x, 1); ctx.lineTo(x, 15); }
+      ctx.moveTo(-18, -4); ctx.lineTo(-25, -16);
+      ctx.stroke();
+      ctx.beginPath(); ctx.rect(-20, -10, 34, 15); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(15, -13, 10, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = C.ink;
+      ctx.beginPath(); ctx.moveTo(8, -21); ctx.lineTo(14, -22); ctx.lineTo(11, -8); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.arc(28, -12, 2.5, 0, Math.PI * 2); ctx.fill();
+      if (guilty) {
+        ctx.setLineDash([6, 6]); ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.arc(2, -4, 40, 0, Math.PI * 2); ctx.stroke();
+      }
     } else {
       const spec = sim.objects.get(f.id)?.spec;
       // everything desaturates except the culprit

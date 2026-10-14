@@ -30,7 +30,9 @@ import * as CH5 from './levels/ch5-balloons.js';
 import * as CH6 from './levels/ch6-all.js';
 
 /** Objects that act on the world rather than threatening Milo. */
-const MECHANISM_TYPES = new Set(['switch', 'gate']);
+// The dog is neither a hazard nor a prop: it is a second walker, and like
+// Milo it declares no lethality of its own.
+const MECHANISM_TYPES = new Set(['switch', 'gate', 'dog']);
 
 // ─────────────────────────────────────────────────────────────────────────
 // A1 — WALL.  Teaches: your line is real, solid matter.
@@ -1319,7 +1321,7 @@ export const CHAPTERS = [
   { name: 'THE LINE',       tag: 'one line, one shot',
     slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
   { name: 'PLATES & GATES', tag: 'something has to press it',
-    slots: [A9,   null, null, null, A10,  null, null, null, null, A11] },
+    slots: [A9,   CH2.A80, null, null, A10,  null, null, null, null, A11] },
   { name: 'TNT',            tag: 'it goes off wherever it is',
     slots: [CH3.A53, CH3.A52, null, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
   { name: 'AIR',            tag: 'it carries whatever is in it',
@@ -1384,6 +1386,9 @@ export function assertLevel(level) {
     if (o.lethal && !LETHAL_KINDS.has(o.lethal.kind)) {
       problems.push(`object "${o.id}" has unknown lethal kind "${o.lethal.kind}"`);
     }
+    // A dog walks one way or the other from the first frame; which way is
+    // half the level, so it has to be said.
+    if (o.type === 'dog' && o.dir !== 1 && o.dir !== -1) problems.push(`dog "${o.id}" needs dir: 1 or -1`);
     // TNT must have a fuse and a body; a barrel that never goes off, or one
     // with no size to be caught by, is a bug and not a level.
     if (o.type === 'tnt' && !(o.fuse > 0)) problems.push(`tnt "${o.id}" has no fuse`);

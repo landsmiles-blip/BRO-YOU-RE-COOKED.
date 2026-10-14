@@ -10,9 +10,9 @@ import {
   onCollisionStart, allBodies, getSpeed, getVelocity, applyAccel, addPivot, addCross,
   removeBody, setAngularVelocity, setStatic, raycast,
 } from './physics/adapter.js';
-import { createMilo, updateMilo, updateDanger, stun, STATE } from './milo.js';
+import { createMilo, updateMilo, updateDanger, stun, STATE, createDog, updateDog } from './milo.js';
 import { createRunState, checkRunEnd, kill, OUTCOME } from './run.js';
-import { isFatal, normalSpeed, isHazardous } from './hazards.js';
+import { isFatal, normalSpeed, isHazardous, inLethalZone } from './hazards.js';
 import { createCausality, noteContact, explain } from './physics/causality.js';
 import { createRecorder, record, reset as resetRec } from './physics/recorder.js';
 import { validate } from './drawing/validate.js';
@@ -21,7 +21,7 @@ import { buildStrokeBody } from './drawing/bodyFactory.js';
 import { anchorStroke } from './physics/anchor.js';
 import * as audio from './audio.js';
 import { simplify } from './drawing/simplify.js';
-import { PHYSICS_DT, LINE, MILO, SAFE_BOX, NEAR_MISS_DIST, CLOSE_CALL, TNT } from './constants.js';
+import { PHYSICS_DT, LINE, MILO, DOG, SAFE_BOX, NEAR_MISS_DIST, CLOSE_CALL, TNT } from './constants.js';
 
 export function buildSim(level) {
   const ctx = createWorld();
@@ -29,6 +29,7 @@ export function buildSim(level) {
     ctx, level,
     milo: null, goal: level.goal,
     objects: new Map(),      // gameId → { body, spec }
+    dogs: [],                // walk state for each dog (js/milo.js); also in `objects`
     statics: [],
     zones: level.zones ?? [],
     stroke: null,            // committed stroke body
@@ -39,6 +40,9 @@ export function buildSim(level) {
     // headline moment — something hits a switch, a gate opens, Milo walks
     // through — was unbuildable. This is that.
     triggered: new Set(),
+    // Who pressed each plate first — the census reads it to tell a plate the
+    // dog pressed from one a dropped line pressed.
+    pressedBy: new Map(),
     // Which balloons have been burst. On the SIM and never on the spec: level
     // data is shared across every run in a solver sweep, so mutating a spec
     // would leak one run's pop into the next 2500.
@@ -132,6 +136,15 @@ export function buildSim(level) {
   }
 
   for (const o of level.objects) {
+    // THE DOG walks on Milo's legs (js/milo.js), so it is built there and its
+    // walk state kept in sim.dogs — and it is registered as an object like any
+    // other, so plates, the recorder and both renderers find it by its id.
+    if (o.type === 'dog') {
+      const dog = createDog(ctx, o);
+      sim.dogs.push(dog);
+      sim.objects.set(o.id, { body: dog.body, spec: o });
+      continue;
+    }
     let body;
     const cx = o.w ? o.x + o.w / 2 : o.x;      // top-left → centre for rects
     const cy = o.h ? o.y + o.h / 2 : o.y;
@@ -184,7 +197,7 @@ export function buildSim(level) {
       if (!entry || entry.spec.type !== 'switch') continue;
       if (other.isSensor) continue;
       if (entry.spec.requires === 'heavy' && (other.mass ?? 0) < (entry.spec.minMass ?? 40)) continue;
-      fireSwitch(sim, entry);
+      fireSwitch(sim, entry, (other.parent ?? other).gameId ?? other.gameId);
     }
 
     // SHARP → POP. The other half of the balloon, and the thing that gives it
@@ -232,6 +245,16 @@ export function buildSim(level) {
       audio.impact(speed, { heavy: true });
     }
 
+    // Whatever would kill Milo kills the dog.
+    for (const dog of sim.dogs) {
+      if (!dog.alive || (a !== dog.body && b !== dog.body)) continue;
+      const hit = a === dog.body ? b : a;
+      const e = sim.objects.get(hit.gameId);
+      if (e && e !== sim.objects.get(dog.spec.id) && isFatal(dog.body, hit, e.spec.lethal, pair, DOG)) {
+        loseDog(sim, dog, 'dog');
+      }
+    }
+
     const miloBody = sim.milo.body;
     if (a !== miloBody && b !== miloBody) return;
     const other = a === miloBody ? b : a;
@@ -241,7 +264,9 @@ export function buildSim(level) {
       kill(sim.run, other.gameId);
       return;
     }
-    // Non-fatal but hard enough to stagger him.
+    // Non-fatal but hard enough to stagger him — unless it is the dog, which
+    // bumps into him at walking pace from the other way and is a friend.
+    if (entry?.spec.type === 'dog') return;
     if (speed > MILO.stumbleSpeed && sim.milo.state !== STATE.STUNNED) {
       stun(sim.milo, sim.simTime);
     }
@@ -251,9 +276,10 @@ export function buildSim(level) {
 }
 
 /** Open every gate a switch points at. Idempotent — a switch fires once. */
-function fireSwitch(sim, entry) {
+function fireSwitch(sim, entry, by = null) {
   if (sim.triggered.has(entry.spec.id)) return;
   sim.triggered.add(entry.spec.id);
+  if (by) sim.pressedBy.set(entry.spec.id, by);
   audio.trigger();
   for (const targetId of entry.spec.triggers ?? []) {
     const target = sim.objects.get(targetId);
@@ -274,15 +300,18 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   if (sim.run.outcome !== OUTCOME.RUNNING) return sim.run.outcome;
 
   updateMilo(sim.ctx, sim.milo, sim.simTime);
+  for (const dog of sim.dogs) updateDog(sim.ctx, dog, sim.simTime);
   physStep(sim.ctx);
   sim.simTime += PHYSICS_DT;
 
-  const hazardBodies = [...sim.objects.values()].map((o) => o.body);
+  // The dog is not a danger to him, so it does not frighten him.
+  const hazardBodies = [...sim.objects.values()].filter((o) => o.spec.type !== 'dog').map((o) => o.body);
   applyUpdrafts(sim);
   applyLift(sim);
   detonate(sim);
   audio.setDanger(updateDanger(sim.milo, hazardBodies));
   detectCloseCalls(sim);
+  checkDogs(sim, worldH);
   record(sim.recorder, allBodies(sim.ctx));
 
   const outcome = checkRunEnd(
@@ -302,7 +331,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
  */
 export function commitStroke(sim, rawPoints) {
   const pts = simplify(rawPoints, LINE.simplifyTol);
-  const v = validate(pts, sim.level, sim.milo.body);
+  const v = validate(pts, sim.level, sim.milo.body, sim.dogs.map((d) => d.body));
   if (!v.ok) return v;
 
   const classified = classify(pts);
@@ -436,6 +465,17 @@ function detonate(sim) {
     // stop at the wall, so a player can SEE what saved him.
     sim.blasts.push({ id, x, y, t: sim.simTime, radius: R, kill: K, reach: blastReach(sim, x, y, R) });
     audio.blast();
+    // The dog first: a blast that takes both is reported as the dog, which is
+    // the one the player was trying to keep out of it.
+    for (const dog of sim.dogs) {
+      if (!dog.alive) continue;
+      const p = dog.body.position;
+      const dx = Math.max(p.x - DOG.width / 2, Math.min(x, p.x + DOG.width / 2));
+      const dy = Math.max(p.y - DOG.height / 2, Math.min(y, p.y + DOG.height / 2));
+      if (Math.hypot(dx - x, dy - y) < K && !shielded(sim, x, y, dx, dy, (q) => q === dog.body)) {
+        loseDog(sim, dog, 'dog');
+      }
+    }
     if (gap < K && !cover) {
       kill(sim.run, id);
       sim.run.cause = 'blast';
@@ -540,6 +580,29 @@ function detectCloseCalls(sim) {
 }
 
 /** What the player's line did, for the death explanation. */
+/**
+ * THE DOG IS LOST: the run ends there, whatever Milo is doing. `why` is
+ * 'dog' when something killed it and 'dog-ran' when it simply walked out of
+ * the world — the label says which.
+ */
+function loseDog(sim, dog, why) {
+  if (!dog.alive) return;
+  dog.alive = false;
+  if (sim.run.outcome !== OUTCOME.RUNNING) return;
+  kill(sim.run, dog.spec.id);
+  sim.run.cause = why;
+}
+
+/** Out of the world, or in a lethal zone: the same tests Milo gets. */
+function checkDogs(sim, worldH) {
+  for (const dog of sim.dogs) {
+    if (!dog.alive) continue;
+    const p = dog.body.position;
+    if (p.x < -DOG.width || p.x > SAFE_BOX.w + DOG.width) loseDog(sim, dog, 'dog-ran');
+    else if (p.y - DOG.height > worldH + 200 || inLethalZone(dog.body, sim.zones, DOG)) loseDog(sim, dog, 'dog');
+  }
+}
+
 function strokeState(sim) {
   const b = sim.stroke;
   if (!b) return { drawn: false, anchored: false, fell: 0 };

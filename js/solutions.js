@@ -1281,5 +1281,40 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a80-good-boy": {
+    "id": "a80-good-boy",
+    "winners": 138,
+    "robust": 77,
+    "anchoredRobust": 77,
+    "handRate": 0.558,
+    "solution": {
+      "family": "corner",
+      "length": 260,
+      "parts": 14,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 60,
+          "y": 692.3
+        },
+        {
+          "x": 125,
+          "y": 692.3
+        },
+        {
+          "x": 190,
+          "y": 692.3
+        },
+        {
+          "x": 190,
+          "y": 757.3
+        },
+        {
+          "x": 190,
+          "y": 822.3
+        }
+      ]
+    }
   }
 };

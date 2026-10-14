@@ -37,6 +37,12 @@ export function noteContact(c, bodyA, bodyB, simTimeMs, speed) {
  * whether it welded to anything, and how far it has since travelled.
  */
 export function explain(c, reason, culpritId, stroke = null, cause = null) {
+  // A LOST DOG OUTRANKS EVERY EXPLANATION BELOW, the unanchored line
+  // included: whatever the line did, the run ended because the dog was lost,
+  // and that is the thing the player has to fix.
+  if (cause === 'dog')     return { label: 'NOT THE DOG!',    culpritId };
+  if (cause === 'dog-ran') return { label: 'THE DOG RAN OFF', culpritId };
+
   // THE UNANCHORED DEATH OUTRANKS EVERY OTHER EXPLANATION.
   //
   // If the line was never attached to anything, it fell, and nothing it might

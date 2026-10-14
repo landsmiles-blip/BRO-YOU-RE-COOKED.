@@ -91,6 +91,7 @@ export function nounsOf(l) {
   if (l.static.some((s) => s.brittle)) n.push('brittle');
   if (l.static.some((s) => s.breakable)) n.push('breakable');
   if (l.objects.some((o) => o.type === 'tnt')) n.push('tnt');
+  if (l.objects.some((o) => o.type === 'dog')) n.push('dog');
   if (l.objects.some((o) => o.vx || o.vy)) n.push('moving');
   return n;
 }

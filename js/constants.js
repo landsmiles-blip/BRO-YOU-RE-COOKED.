@@ -50,6 +50,25 @@ export const MILO = {
   graceShrink: 6,      // LOCKED — hitbox shrink for lethal tests
 };
 
+// THE DOG — a second walker. It walks like Milo, on the same ground probe,
+// slope rule and step-up, but it TURNS AROUND when something blocks it where
+// Milo would stand there until the stuck timer ran out. That one difference is
+// the whole noun: a line can now steer something that walks.
+//
+// Heavier than any line the player can afford to drop on a weighed plate
+// (a 400-unit budget buys about 130), so a plate that wants the dog gets it
+// with `requires: 'heavy', minMass: 150`. Slower than Milo so a stranger can
+// follow it, and low enough to read as a dog beside him.
+export const DOG = {
+  width: 44, height: 30, chamfer: 10,
+  density: 0.17, friction: 0.3, restitution: 0.1,
+  speed: 180,
+  maxStepUp: 22,       // the same lip Milo can take, so a drawn line is a floor to it too
+  maxWalkSlope: 40,
+  groundProbe: 6,
+  turnMs: 250,         // after turning, it walks this long before it may turn again
+};
+
 // ── Run-end detection ───────────────────────────────────────────────────
 export const STUCK = { speedUnder: 12, forMs: 3000, sinceContactMs: 500 };  // TUNE
 export const NEAR_MISS_DIST = 30;   // TUNE — less than Milo's 36u width

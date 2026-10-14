@@ -16,7 +16,7 @@
 // updated, driving face, flinch and brace — so the near-miss comedy emerges in
 // every level with zero per-level authoring.
 
-import { inkPath, inkShape, circlePoints } from './stroke.js';
+import { inkPath, inkShape, circlePoints, rectPoints } from './stroke.js';
 import { C } from './palette.js';
 import { MILO } from '../constants.js';
 import { STATE } from '../milo.js';
@@ -158,4 +158,45 @@ function drawFace(ctx, now, d, airborne) {
     ctx.ellipse(HEAD_R - 4, -8, 2.2, 3.2, 0.3, 0, Math.PI * 2);
     ctx.fill();
   }
+}
+
+/**
+ * Draw the dog. White with a dark ear and nose, so it reads as a friend at a
+ * glance and borrows no colour that already means something here (red is
+ * death, tan a loose part, blue moving air, green the goal).
+ *
+ * Its walk phase is driven by distance, like Milo's, so its feet never skate;
+ * it is mirrored to face the way it is walking, which is the one thing about
+ * the dog a player most needs to read off the frozen frame.
+ */
+export function drawDog(ctx, dog, now) {
+  const b = dog.body;
+  const airborne = dog.state === STATE.AIRBORNE;
+  const phase = b.position.x / 7;
+  ctx.save();
+  ctx.translate(b.position.x, b.position.y);
+  ctx.rotate(b.angle);
+  ctx.scale(dog.dir, 1);                     // drawn facing +x, mirrored for -x
+
+  // legs: two pairs, opposite in phase; tucked when it is in the air
+  for (const [x, off, salt] of [[11, 0, 501], [5, Math.PI, 502], [-9, Math.PI, 503], [-15, 0, 504]]) {
+    const a = Math.PI / 2 + (airborne ? 0.5 : Math.sin(phase + off) * 0.45);
+    inkPath(ctx, [{ x, y: 1 }, { x: x + Math.cos(a) * 14, y: 1 + Math.sin(a) * 14 }],
+            { now, colour: C.ink, width: 4.4, amp: 0.8, salt });
+  }
+  // tail, wagging on the clock rather than the walk: it wags standing still
+  const wag = Math.sin(now / 90) * 0.6;
+  inkPath(ctx, [{ x: -18, y: -4 }, { x: -24, y: -10 + wag * 3 }, { x: -26 + wag * 3, y: -18 }],
+          { now, colour: C.ink, width: 3.6, amp: 0.8, salt: 505 });
+  // body
+  inkShape(ctx, rectPoints(-20, -10, 34, 15), { now, fill: C.milo, ink: C.ink, width: 3.2, amp: 1, salt: 506 });
+  // head, snout, ear
+  inkShape(ctx, circlePoints(15, -13, 10), { now, fill: C.milo, ink: C.ink, width: 3.2, amp: 1, salt: 507 });
+  inkShape(ctx, rectPoints(20, -13, 10, 8), { now, fill: C.milo, ink: C.ink, width: 2.8, amp: 0.8, salt: 508 });
+  inkShape(ctx, [{ x: 8, y: -21 }, { x: 14, y: -22 }, { x: 11, y: -8 }, { x: 6, y: -12 }],
+           { now, fill: C.ink, ink: C.ink, width: 2.4, amp: 0.6, salt: 509 });
+  ctx.fillStyle = C.ink;
+  ctx.beginPath(); ctx.arc(29, -12, 2.6, 0, Math.PI * 2); ctx.fill();     // nose
+  ctx.beginPath(); ctx.arc(18, -16, 1.8, 0, Math.PI * 2); ctx.fill();     // eye
+  ctx.restore();
 }

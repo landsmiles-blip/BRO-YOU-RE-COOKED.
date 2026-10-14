@@ -583,6 +583,7 @@ function rejectText(reason) {
     case 'too-short': return 'TOO SHORT';
     case 'too-long': return 'TOO MUCH INK';
     case 'overlaps-milo': return 'NOT THROUGH HIM';
+    case 'overlaps-dog': return 'NOT THROUGH THE DOG';
     case 'overlaps-goal': return 'NOT OVER THE EXIT';
     default: return 'TRY AGAIN';
   }

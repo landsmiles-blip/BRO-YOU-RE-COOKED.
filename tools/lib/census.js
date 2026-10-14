@@ -57,6 +57,10 @@ export function story(level, points) {
   if (broken.length) words.push(`broke:${broken.length}`);
   const gates = level.objects.filter((o) => o.type === 'gate' && sim.triggered.has(o.id)).map((o) => o.id);
   if (gates.length) words.push(`opened:${gates.join(',')}`);
+  // Who pressed each plate, and how often each dog turned: a plate the dog
+  // was steered onto and one a dropped line fell on are different levels.
+  for (const [plate, by] of sim.pressedBy) words.push(`${plate}<-${by}`);
+  for (const dog of sim.dogs) words.push(`${dog.spec.id}:${dog.turns ? `turned${dog.turns}` : 'straight'}${dog.alive ? '' : ':LOST'}`);
   words.push(committed.anchors ? 'anchored' : 'dropped');
   if (through) words.push('THROUGH');
   destroySim(sim);

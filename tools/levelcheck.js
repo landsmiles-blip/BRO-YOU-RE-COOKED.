@@ -107,6 +107,10 @@ function nounsOf(level) {
     // by another blast lighting it — while its body stays, so a barrel that
     // also matters as a WEIGHT is not mistaken for one that matters as a bomb.
     if (o.type === 'tnt') out.push({ what: `tnt "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.map((q) => (q.id === o.id ? { ...q, type: 'boulder' } : q)) }) });
+    // THE DOG. Deleted outright: a dog that does not walk is not the noun, and
+    // there is nothing else in it to keep. If the level still plays the same,
+    // whatever the dog was doing, something else was doing it too.
+    if (o.type === 'dog') out.push({ what: `dog "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.filter((q) => q.id !== o.id) }) });
   }
   return out;
 }

@@ -79,26 +79,26 @@ export function normalSpeed(a, b, pair) {
  * "Milo should not die because his toe touched a hazard by one pixel", which
  * the source documents stated as a wish and implemented nowhere.
  */
-export function isFatal(miloBody, otherBody, spec, pair) {
+export function isFatal(miloBody, otherBody, spec, pair, dims = MILO) {
   if (!spec || spec.kind === 'none') return false;
 
-  if (spec.kind === 'contact') return withinGrace(miloBody, pair, spec);
+  if (spec.kind === 'contact') return withinGrace(miloBody, pair, spec, dims);
   if (spec.kind === 'impact') {
     const speed = normalSpeed(miloBody, otherBody, pair);
     if (speed < (spec.minSpeed ?? DEFAULT_MIN_SPEED)) return false;
-    return withinGrace(miloBody, pair, spec);
+    return withinGrace(miloBody, pair, spec, dims);
   }
   return false;
 }
 
 /** Contact must be inside Milo's shrunk hitbox to count. */
-function withinGrace(miloBody, pair, spec) {
+function withinGrace(miloBody, pair, spec, dims = MILO) {
   const grace = spec.graceRadius ?? MILO.graceShrink;
   if (!pair?.collision) return true;
   const supports = pair.collision.supports ?? [];
   if (!supports.length) return true;
-  const halfW = MILO.width / 2 - grace;
-  const halfH = MILO.height / 2 - grace;
+  const halfW = dims.width / 2 - grace;
+  const halfH = dims.height / 2 - grace;
   for (const s of supports) {
     if (!s) continue;
     const dx = Math.abs(s.x - miloBody.position.x);
@@ -108,11 +108,11 @@ function withinGrace(miloBody, pair, spec) {
   return false;
 }
 
-/** Is Milo inside a lethal zone? */
-export function inLethalZone(miloBody, zones) {
+/** Is Milo (or, given its size, the dog) inside a lethal zone? */
+export function inLethalZone(miloBody, zones, dims = MILO) {
   const g = MILO.graceShrink;
   const x = miloBody.position.x, y = miloBody.position.y;
-  const hw = MILO.width / 2 - g, hh = MILO.height / 2 - g;
+  const hw = dims.width / 2 - g, hh = dims.height / 2 - g;
   for (const z of zones ?? []) {
     if (!z.lethal) continue;
     if (x + hw > z.x && x - hw < z.x + z.w && y + hh > z.y && y - hh < z.y + z.h) return z;

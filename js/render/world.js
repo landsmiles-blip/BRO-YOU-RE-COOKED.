@@ -8,7 +8,7 @@ import { view, applyTransform, visibleBounds } from '../view.js';
 import { C } from './palette.js';
 import { LINE, SAFE_BOX, TNT } from '../constants.js';
 import { inkPath, inkShape, rectPoints, circlePoints } from './stroke.js';
-import { drawMilo } from './rig.js';
+import { drawMilo, drawDog } from './rig.js';
 import { drain, drawMotionStreaks } from './freeze.js';
 import { isHazardous } from '../hazards.js';
 
@@ -424,6 +424,13 @@ export function drawScene(ctx, sim, opts = {}) {
     //
     // A knot and a tail below it, and the pale air colour rather than stone:
     // shape carries the meaning, colour only reinforces it.
+    // THE DOG, on its own rig, facing the way it walks.
+    if (spec.type === 'dog') {
+      const dog = sim.dogs?.find((d) => d.spec.id === spec.id);
+      if (dog) drawDog(ctx, dog, now);
+      moving.push({ body, radius: 22 });
+      continue;
+    }
     // TNT. Gone the instant it goes off — the blast marks where it was.
     if (spec.type === 'tnt') {
       if (sim.detonated?.has(spec.id)) continue;
