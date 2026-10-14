@@ -57,3 +57,53 @@ export const A80 = {
   drawing: { maxLength: 300 },
   solver: null,
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// A81 — DOWN BOY.  The dog, re-asking CARRY's question: take it down.
+//
+// The plate is on the low floor, past a spike pit, and the dog is up on the
+// high shelf trotting toward the drop. Walking off an edge it falls almost
+// straight down — into the pit, not across it. A slide from the shelf's end
+// to the low floor takes it down and over; once there it presses the plate,
+// turns at the post and paces, back up the slide and down again.
+//
+// Allowed by the amended rule (docs/PLAN.md 4.1): CARRY asks it of Milo in
+// the balloon chapter; here it is the dog, on a shelf over his head, while he
+// waits at the gate. Census: every win is the dog pressing the plate (69 of
+// 69), almost all down a slide and one caught by a floor laid over the pit;
+// with the dog deleted, nothing presses it.
+// ─────────────────────────────────────────────────────────────────────────
+export const A81 = {
+  id: 'a81-down-boy',
+  hint: "THE DOG CAN'T GET DOWN THERE",
+  world: 'backyard',
+  verb: 'DOWN BOY',
+  milo: { start: { x: 70, y: 1152 }, speed: MILO.speed },
+  freezeAt: 300,
+  goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
+  static: [
+    { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
+    { id: 'postL',  type: 'platform', x: 160, y: 680,  w: 20,  h: 60 },
+    { id: 'high',   type: 'platform', x: 160, y: 740,  w: 220, h: 20 },
+    { id: 'low',    type: 'platform', x: 470, y: 920,  w: 150, h: 20 },
+    { id: 'postR',  type: 'platform', x: 600, y: 860,  w: 20,  h: 60 },
+    // the pit: a stone box with spikes in the bottom
+    { id: 'pitL',   type: 'platform', x: 320, y: 940,  w: 20,  h: 90 },
+    { id: 'pitR',   type: 'platform', x: 470, y: 940,  w: 20,  h: 90 },
+    { id: 'pitF',   type: 'platform', x: 320, y: 1030, w: 170, h: 20 },
+  ],
+  objects: [
+    { id: 'dog',   type: 'dog',    x: 240, y: 740, dir: 1 },
+    // Weighed, as GOOD BOY's: only the dog presses it, never a dropped line.
+    { id: 'plate', type: 'switch', x: 520, y: 894, w: 80, h: 26, triggers: ['gate'],
+      requires: 'heavy', minMass: 150 },
+    // His gate is at his start, so a dog lost in the pit is always lost before
+    // he could have reached the goal: no race between the two.
+    { id: 'gate',  type: 'gate',   x: 140, y: 960, w: 34, h: 192 },
+  ],
+  zones: [
+    { id: 'spikes', kind: 'zone', x: 340, y: 1000, w: 130, h: 30, lethal: true },
+  ],
+  drawing: { maxLength: 260 },
+  solver: null,
+};

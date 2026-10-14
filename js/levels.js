@@ -1321,7 +1321,7 @@ export const CHAPTERS = [
   { name: 'THE LINE',       tag: 'one line, one shot',
     slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
   { name: 'PLATES & GATES', tag: 'something has to press it',
-    slots: [A9,   CH2.A80, null, null, A10,  null, null, null, null, A11] },
+    slots: [A9,   CH2.A80, null, null, A10,  null, null, CH2.A81, null, A11] },
   { name: 'TNT',            tag: 'it goes off wherever it is',
     slots: [CH3.A53, CH3.A52, null, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
   { name: 'AIR',            tag: 'it carries whatever is in it',

@@ -356,5 +356,16 @@ export const SOLVER = {
     "threeStarLength": 165,
     "shortestWin": 110,
     "measuredAt": "2026-10-14"
+  },
+  "a81-down-boy": {
+    "solvable": true,
+    "solutionBreadth": 0.0509,
+    "precisionFloor": 30,
+    "worstJitter": 0,
+    "distinctFamilies": 3,
+    "twoStarLength": 219,
+    "threeStarLength": 163,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-14"
   }
 };
