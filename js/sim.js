@@ -580,7 +580,16 @@ function detectCloseCalls(sim) {
     const reach = o.spec.radius ?? Math.max(o.spec.w ?? 0, o.spec.h ?? 0) / 2;
     const gap = Math.hypot(p.x - cx, p.y - cy) - reach;
 
-    const inside = gap < NEAR_MISS_DIST && speed > CLOSE_CALL.minSpeed;
+    let inside = gap < NEAR_MISS_DIST && speed > CLOSE_CALL.minSpeed;
+    // A BEE ON THE FAR SIDE OF A LINE IS NOT A NEAR MISS. A swarm pressed
+    // against the bridge under his feet passes within a body's width of him
+    // all the way across, and the first bee level filmed five CLOSE banners
+    // and five slow-motions in one run for bees that could never have reached
+    // him. A rock past the end of a line is a near miss; a bee behind one is
+    // the line working.
+    if (inside && isBee(o.spec) && shielded(sim, p.x, p.y, cx, cy, (q) => isBee(sim.objects.get(q.gameId)?.spec))) {
+      inside = false;
+    }
     const was = sim._near.get(id) ?? false;
     sim._near.set(id, inside);
 

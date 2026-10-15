@@ -16,15 +16,20 @@ export function createCausality() {
 
 /** Record every contact involving Milo or the player's stroke. */
 export function noteContact(c, bodyA, bodyB, simTimeMs, speed) {
-  const ids = [bodyA.gameId, bodyB.gameId];
-  if (ids.includes('stroke')) {
-    const other = bodyA.gameId === 'stroke' ? bodyB : bodyA;
-    if (other.gameId) c.strokeTouched.add(other.gameId);
+  // BY THE BODY, NOT THE PART. Matter reports a compound body's contacts on
+  // the PART that touched, and only the whole body carries a game id — so a
+  // line of more than one segment, which is nearly every line a hand draws,
+  // touched nothing as far as this file knew, and a rock it had deflected
+  // into him replayed as "NOTHING STOPPED IT".
+  const idA = (bodyA.parent ?? bodyA).gameId, idB = (bodyB.parent ?? bodyB).gameId;
+  if (idA === 'stroke' || idB === 'stroke') {
+    const other = idA === 'stroke' ? idB : idA;
+    if (other) c.strokeTouched.add(other);
   }
-  if (ids.includes('milo')) {
-    const other = bodyA.gameId === 'milo' ? bodyB : bodyA;
+  if (idA === 'milo' || idB === 'milo') {
+    const other = idA === 'milo' ? idB : idA;
     c.lastMiloContactAt = simTimeMs;
-    c.contacts.push({ id: other.gameId ?? '?', t: simTimeMs, speed });
+    c.contacts.push({ id: other ?? '?', t: simTimeMs, speed });
     if (c.contacts.length > HISTORY) c.contacts.shift();
   }
 }

@@ -27,7 +27,11 @@
 //    bee could press would be a plate the swarm decides, not the player.
 //
 // A hive is authored like any other object, x,y at its CENTRE because it has a
-// radius:  { id, type: 'hive', x, y, radius, bees, releaseAt?, every? }
+// radius:  { id, type: 'hive', x, y, radius, bees, releaseAt?, every?, attackAt? }
+//
+// `attackAt` holds the swarm: until then its bees circle the hive, which is
+// how a frozen frame says "they are about to come out" — a hive with nothing
+// round it says nothing, and one already emptied leaves nothing to shut in.
 // It has no body. It is where bees come from, drawn from its spec by both
 // renderers, and nothing can touch it.
 
@@ -89,7 +93,7 @@ function release(sim, hive, k) {
   sim.objects.set(id, { body, spec });
   // Out of the hive in a random direction, then the swarm turns on its own.
   setVelocity(body, Math.cos(a) * BEE.speed * 0.6, Math.sin(a) * BEE.speed * 0.6);
-  sim.bees.push({ id, body, born: sim.simTime, phase: R() * Math.PI * 2, rate: 0.6 + R() * 0.8 });
+  sim.bees.push({ id, body, hive, born: sim.simTime, phase: R() * Math.PI * 2, rate: 0.6 + R() * 0.8 });
 }
 
 /**
@@ -109,14 +113,21 @@ export function stepBees(sim) {
   }
   for (const bee of sim.bees) {
     const p = bee.body.position;
-    const target = nearestTarget(sim, p);
-    let dx = 0, dy = 0;
-    if (target) {
-      dx = target.position.x - p.x; dy = target.position.y - p.y;
-      const d = Math.hypot(dx, dy) || 1;
-      dx /= d; dy /= d;
+    const h = bee.hive;
+    let tx, ty, weave = 0;
+    if (t < (h.attackAt ?? 0)) {
+      // Holding: round and round the hive, each bee on its own orbit.
+      const a = bee.phase + (t / 1000) * Math.PI * 2 * bee.rate * 0.6;
+      const R = h.guard ?? h.radius * 1.6;
+      tx = h.x + Math.cos(a) * R; ty = h.y + Math.sin(a) * R * 0.75;
+    } else {
+      const target = nearestTarget(sim, p);
+      tx = target ? target.position.x : p.x; ty = target ? target.position.y : p.y;
+      weave = BEE.wander * Math.sin((t / 1000) * Math.PI * 2 * bee.rate + bee.phase);
     }
-    const weave = BEE.wander * Math.sin((t / 1000) * Math.PI * 2 * bee.rate + bee.phase);
+    let dx = tx - p.x, dy = ty - p.y;
+    const d = Math.hypot(dx, dy);
+    if (d > 1e-6) { dx /= d; dy /= d; } else { dx = 0; dy = 0; }
     const c = Math.cos(weave), s = Math.sin(weave);
     const ux = dx * c - dy * s, uy = dx * s + dy * c;
     const v = getVelocity(bee.body);
