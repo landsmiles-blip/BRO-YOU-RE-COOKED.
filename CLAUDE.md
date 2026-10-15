@@ -690,6 +690,13 @@ came out of proving it:
   any upward part, so air under a walking Milo does nothing. And stepping off
   an edge he loses his walk and drops almost straight down — beside a gust
   that starts 80 units out, not in it. GUST is built on both facts.
+- **A WALKER CANNOT STAND IN AIR THAT BEATS GRAVITY FOR LONG.** The walk
+  controller discards upward VELOCITY each step, but the upward drift inside
+  each step still integrates: at -2600 (net 800 up) a dog walking a slide
+  through a column creeps up ~7 units a second, its ground probe loses the
+  line after about one second and the air takes it. Crossing a column on foot
+  works if it takes under ~0.6 s; standing or walking in one does not. (DRIFT,
+  14 Oct.)
 - **A FREE LINE IS A THING, AND A LEVEL ABOUT IT SAYS SO.** KITE's answer is a
   dropped line, so it declares `solutionKind: 'unanchored'` like DROP and is
   held to the stricter rule (most winners must survive a hand) instead of the
