@@ -9,6 +9,9 @@
 > Saturday playtest, the time goes into the first ten minutes and a build
 > that records tries per level, and the NEXT ELEMENT is chosen from what the
 > playtest shows. The 24 open slots stay in `npm run curve` as the build list.
+> **For Saturday:** the published page is the playtest build (it logs runs
+> and time per level and shows them on the board); docs/PLAYTEST.md is how to
+> run the session and what to send back.
 
 **Status: APPROVED 2026-10-13, with the rewarded SKIP. In execution.** The
 difficulty equation (4.2), the exact build list (4.4) and the skip design
