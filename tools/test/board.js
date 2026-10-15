@@ -9,6 +9,11 @@
 // cannot swallow a stroke the player meant to draw.
 
 import { existsSync } from 'node:fs';
+// Read in NODE and handed to the page. The page used to `import('/js/solutions.js')`
+// itself, which from the default file:// build resolves to file:///js/solutions.js
+// — a file that does not exist — so this gate crashed every run after its first
+// half and the second half (the button must not eat a stroke) never ran at all.
+import { SOLUTIONS } from '../../js/solutions.js';
 const CANDIDATES = [
   '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
   '/opt/pw-browsers/chromium/chrome-linux/chrome',
@@ -53,23 +58,41 @@ for (const [label, w, h] of [['9:16', 405, 720], ['9:32', 360, 1280], ['1:1', 80
   check(`${label}: the button opens the board`, opened === 'select', opened);
 
   // Every card must be reachable, and land on the level it shows.
-  const last = await page.evaluate(async () => {
-    const { layout } = await import('/js/render/levelselect.js');
-    const B = globalThis.__byc;
-    const box = layout(B.LEVELS.length);
+  // Ask the PAGE where it drew the card. Importing levelselect.js here fetches
+  // a second copy of the module whose `view` is still 0x0, which lays the board
+  // out somewhere the board is not.
+  const last = await page.evaluate(() => {
+    const B = globalThis.__byc, box = B.boardBox;
+    if (!box || !box.cards.length) return null;
     const c = box.cards[B.LEVELS.length - 1];
+    if (!c) return null;
     return { x: c.x + c.w / 2, y: c.y + c.h / 2, id: B.LEVELS[B.LEVELS.length - 1].id, n: B.LEVELS.length };
   }).catch(() => null);
 
   if (!last) {
     check(`${label}: board layout is reachable`, false, 'could not import levelselect');
   } else {
+    // LEVELS OPEN IN ORDER (the skip needs a lock), so on a fresh save the
+    // last card must do nothing at all...
+    await page.mouse.click(last.x, last.y);
+    await page.waitForTimeout(200);
+    const locked = await page.evaluate(() => ({
+      id: globalThis.__byc.game.level.id, phase: globalThis.__byc.game.phase,
+    }));
+    check(`${label}: a LOCKED card does nothing`, locked.phase === 'select', `${locked.id} (${locked.phase})`);
+    // ...and once every level before it is beaten, it must land on the level
+    // it shows. The LIVE progress object, never a second copy of the module.
+    await page.evaluate(() => {
+      const B = globalThis.__byc;
+      for (const l of B.LEVELS) B.game.progress.best[l.id] = 1;
+    });
+    await page.waitForTimeout(120);
     await page.mouse.click(last.x, last.y);
     await page.waitForTimeout(200);
     const now = await page.evaluate(() => ({
       id: globalThis.__byc.game.level.id, phase: globalThis.__byc.game.phase,
     }));
-    check(`${label}: tapping the LAST card reaches level ${last.n}`,
+    check(`${label}: an open LAST card reaches level ${last.n}`,
           now.id === last.id && now.phase !== 'select', `${now.id} (${now.phase})`);
   }
   await page.close();
@@ -81,11 +104,11 @@ for (const [label, w, h] of [['9:16', 405, 720], ['9:32', 360, 1280], ['1:1', 80
   page.on('pageerror', (e) => errors.push('draw: ' + e.message));
   await page.goto(BASE, { waitUntil: 'load' });
   await page.waitForFunction(() => globalThis.__byc?.game?.phase === 'frozen', null, { timeout: 10000 });
-  const pts = await page.evaluate(async () => {
+  const pts = await page.evaluate((ALL) => {
     const B = globalThis.__byc, V = B.view;
-    const S = (await import('/js/solutions.js')).SOLUTIONS[B.game.level.id].solution.points;
+    const S = ALL[B.game.level.id].solution.points;
     return S.map((p) => ({ x: (p.x + V.offsetX) * V.scale, y: (p.y + V.offsetY) * V.scale }));
-  });
+  }, SOLUTIONS);
   await page.mouse.move(pts[0].x, pts[0].y);
   await page.mouse.down();
   for (let i = 1; i < pts.length; i++) { await page.mouse.move(pts[i].x, pts[i].y); await page.waitForTimeout(5); }
@@ -95,22 +118,23 @@ for (const [label, w, h] of [['9:16', 405, 720], ['9:32', 360, 1280], ['1:1', 80
   check('a normal stroke still draws — the button does not swallow it',
         st.stroke && st.phase !== 'select', `${st.phase}, stroke ${st.stroke}`);
 
-  // And the certified solutions must not START under the button.
-  const clash = await page.evaluate(async () => {
+  // And the certified solutions must not START under the button, or under
+  // the sound switch beside it.
+  const clash = await page.evaluate((S) => {
     const B = globalThis.__byc, V = B.view;
-    const S = (await import('/js/solutions.js')).SOLUTIONS;
     const s = Math.max(22, Math.min(V.cssW, V.cssH) * 0.045);
     const pad = Math.max(8, Math.min(V.cssW, V.cssH) * 0.022);
-    const box = { x: V.cssW - pad - s - 8, y: pad - 8, w: s + 16, h: s + 16 };
+    const boxes = [{ x: V.cssW - pad - s - 8, y: pad - 8, w: s + 16, h: s + 16 }];
+    if (B.soundBtn) boxes.push(B.soundBtn);
     const bad = [];
     for (const lvl of B.LEVELS) {
       const p = S[lvl.id]?.solution?.points?.[0];
       if (!p) continue;
       const sx = (p.x + V.offsetX) * V.scale, sy = (p.y + V.offsetY) * V.scale;
-      if (sx >= box.x && sx <= box.x + box.w && sy >= box.y && sy <= box.y + box.h) bad.push(lvl.id);
+      if (boxes.some((box) => sx >= box.x && sx <= box.x + box.w && sy >= box.y && sy <= box.y + box.h)) bad.push(lvl.id);
     }
     return bad;
-  });
+  }, SOLUTIONS);
   check('no certified solution STARTS under the button', clash.length === 0, clash.join(',') || 'none');
   await page.close();
 }

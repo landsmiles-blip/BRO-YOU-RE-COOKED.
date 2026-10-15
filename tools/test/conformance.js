@@ -1,4 +1,4 @@
-// CERTIFICATION CONFORMANCE GATE — docs/CERTIFICATION_CHECKLIST.md, automated.
+// CERTIFICATION CONFORMANCE GATE — docs/CERTIFICATION.md, automated.
 //
 // The checklist says every box is signed off "with evidence (a test name, a
 // measurement, a screenshot), never from memory". This IS that evidence for
@@ -56,6 +56,26 @@ const firstModule = indexHtml.indexOf('<script type="module"');
 check('1', 'SDK slot exists and precedes all game code',
       sdkSlot !== -1 && (firstModule === -1 || sdkSlot < firstModule),
       sdkSlot === -1 ? 'slot missing' : `slot@${sdkSlot} before module@${firstModule}`);
+
+// THE FILE THAT IS UPLOADED, not the dev page. The check above passed for
+// months while the built bundle carried only a COMMENTED slot — the YouTube
+// build did not exist. Google: the game "MUST load the YouTube Playables SDK
+// before any of the game code", and the upload is a ZIP with index.html at
+// its root.
+const yt = read('dist/playables/index.html');
+const scripts = [...yt.matchAll(/<script\b[^>]*>/g)].map((m) => m[0]);
+check('1', 'the YOUTUBE build loads the SDK as its FIRST script',
+      /^<script src="https:\/\/www\.youtube\.com\/game_api\/v1">$/.test(scripts[0] ?? ''),
+      scripts.length ? `first: ${scripts[0]}` : 'dist/playables/index.html missing — run tools/build.js');
+check('1', 'and the SDK is the ONLY script that loads from anywhere',
+      scripts.filter((t) => /\bsrc=/.test(t)).length === 1, `${scripts.length} scripts`);
+{
+  const { spawnSync } = await import('node:child_process');
+  const ls = spawnSync('unzip', ['-Z1', ROOT + 'dist/byc-playables.zip'], { encoding: 'utf8' });
+  const names = ls.status === 0 ? ls.stdout.trim().split('\n') : [];
+  check('7', 'the upload ZIP holds index.html at its root and nothing else',
+        names.length === 1 && names[0] === 'index.html', names.join(', ') || 'no zip');
+}
 
 const bundle = read('dist/byc.html');
 check('1', 'a built bundle exists to audit', bundle.length > 1000, `${(bundle.length / 1024).toFixed(0)} KB raw`);
@@ -127,7 +147,7 @@ const browser = await chromium.launch({
     B.goToLevel(B.game, 0);
     await new Promise((r) => setTimeout(r, 60));
     globalThis.__pause();
-    const audioMod = await import('/js/audio.js');
+    const audioMod = B.audio;   // the running module, never a re-imported copy
     const before = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
     await new Promise((r) => setTimeout(r, 450));
     const after = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
@@ -364,7 +384,11 @@ await browser.close();
 console.log('\nSTILL REQUIRES A HUMAN (no machine can sign these off):');
 for (const line of [
   '§2  60 fps on a real mid-range Android, and the physical device matrix',
-  '§4  rewarded-ad flow — NOT IMPLEMENTED YET, and must fire only on explicit request',
+  '§4  ads — interstitial WIRED at level boundaries (3-level cadence, gated by',
+  '     tools/test/ads.js). Rewarded is wired and has NO call site by design:',
+  '     see requestRewardedAd in js/platform/sdk.js. A human decides whether',
+  '     this game ever wants one — it cannot have an undo or a hint.',
+  '§4  revenue share is a LIMITED PILOT with undisclosed terms — portal onboarding',
   '§6  trademark clearance for the title (decision D4 — still outside my authority)',
   '§6  Community Guidelines / 13+ content review',
   '§7  channel onboarding, Partner Manager contact, portal "Verify and test"',

@@ -1,49 +1,19 @@
 # BRO, YOU'RE COOKED.
 ## Production Bible v1.0 — The Rebuild
 
-**Status:** Pre-production. No code is authorised by this document except the Phase 0 build described in Part 9.
+**Status (2026-10-13):** the game is built, and this is its DESIGN SPEC — Parts
+1–8 and Amendment A, which the code cites by section. The content plan, phases,
+monetisation, risks, open decisions and next steps that used to close this
+document (Part 0, §3.12, §7.4, Parts 9–12) are superseded by **`docs/PLAN.md`**;
+the original text is in git history at commit `9c073b9`.
 
-**Supersedes:** v0.2 (Design Bible), v0.3 (Spine & Build Spec), v0.4 (Addendum). All three are preserved in `docs/source/` and remain readable as lineage. Where this document contradicts them, this document wins.
+**Where this document and `CLAUDE.md` disagree, `CLAUDE.md` wins.** This was
+written before the game existed; `CLAUDE.md` holds what was measured once it
+did. One example is marked below (§3.2).
 
 **Tags used throughout:**
 - **LOCKED** — build against this. Changing it changes the game.
 - **TUNE** — a real starting number, expected to move during playtest. Owned by the build, not by debate.
-- **YOURS** — a creative or business call engineering cannot make. Listed in Part 11.
-
----
-
-# PART 0 — HOW THIS DOCUMENT CAME TO EXIST
-
-Three documents were written before this one:
-
-| Doc | Author | Length | What it is | What it's worth |
-|---|---|---|---|---|
-| v0.2 Design Bible | ChatGPT | ~3,400 lines | Philosophy, market case, principles, 105 numbered sections | The *why* is genuinely good. The game's identity is in here. |
-| v0.3 Spine & Build Spec | Claude | 237 lines | Gap audit + first concrete numbers, schema, file layout | The *how* starts here. Correctly diagnosed that v0.2 is unbuildable as written. |
-| v0.4 Addendum | Claude | 110 lines | Second-pass gap audit | Genuinely sharp. Found Milo's missing body, the missing fixed timestep, the missing camera rule. |
-
-**What this document does that they did not:** it resolves the contradiction sitting at the centre of the design that all three walked past, it fixes a physics bug that would have broken the game in week one, and it answers the question the whole project actually turns on — *why would anyone want to look at this?*
-
-## 0.1 An honest verdict on each
-
-**v0.2 is 60% padding and 40% the best thinking in the pile.** Sections 85 through 90 restate a single principle six times under six headings. Section 24 lists ten worlds nobody asked for. Section 60 lists five game modes marked "do not build." That bulk is not free — it buries the parts that matter (§11 Fair Physics, §17 the verb grammar, §69 kill criteria, §83 shareability) under enough restatement that a builder skims and misses them. But the core instinct — *the player fixes the world, not the character* — is correct and differentiated, and §99's "HELL YES test" is the single best paragraph anyone wrote about this game.
-
-**v0.3 did the hard, unglamorous job well.** It caught that the schema couldn't express the game's own headline marketing example, that "Canvas/WebGL" and "lightweight 2D physics" were non-decisions dressed as decisions, and that "expand horizontally" was a wish. Its numbers are the first buildable numbers in the project. Its `id`/`triggers` fix is correct and I have kept it.
-
-**v0.4 is the sharpest document of the three per line.** Milo had no physics body — nobody had noticed. There was no fixed timestep — nobody had noticed. It also did real arithmetic on the A4 fall trajectory instead of eyeballing it, and I re-ran that arithmetic independently: **it is correct** (x≈354 at y=1000, x≈406 at the pit floor). That is the standard the rest of the project should hold.
-
-## 0.2 What I am overriding, and why
-
-| # | v0.3/v0.4 said | v1.0 says | Why |
-|---|---|---|---|
-| 1 | Silent on whether the world is frozen while drawing | **The Freeze** — hard, explicit, and it is the game's signature | v0.2 §8.1 and §4.4 flatly contradict each other. Nobody resolved it. Part 3.1 |
-| 2 | Stroke is "static-until-release, dynamic-on-release" | **Anchored-dynamic** — strokes weld to geometry they touch | Fully-dynamic strokes topple unpredictably; that is the fairness bug the whole Fair Physics section fears. Part 3.2 |
-| 3 | Physics at 60 Hz, line thickness 14 | **120 Hz + global 900 u/s speed clamp + thickness 16** | At the spec's own gravity, hazards tunnel *straight through the player's drawing*. Verified arithmetic. Part 3.4 |
-| 4 | Slow-motion on failure | Slow-mo **plus** death-cam attribution **plus** ghost-of-last-stroke on retry | Slow-mo shows *that* you died. The game must show *why*, and let you adjust rather than redraw blind. Part 3.3 |
-| 5 | Art is a NEEDS-YOU resourcing question | Art is a **rendering-system decision**, resolved here | 8 animation states as sprite sheets is a contractor and a schedule. As a code rig it is free, reactive, and dodges the AI-art certification risk. Part 6 |
-| 6 | "60 carefully authored levels" | **24 levels is the shippable game.** 60 is upside | Unsized content targets are how projects end mid-air. Part 9 |
-| 7 | Star thresholds "data-driven per level" | Derived by a **headless solver harness** | There is no data before launch. The solver is the data. Part 7.3 |
-| 8 | `"hazards": []` in the schema | A real **lethality model** with three kinds and a grace radius | The schema had a hazards array that was never once populated or specified. Part 5.6 |
 
 ---
 
@@ -173,6 +143,13 @@ Why this is the best idea in this document:
 - A weld is rigid, not springy. It does not break. (A breakable-anchor / structural-stress system is a real World-2+ idea. It is not V1.)
 - Maximum 8 weld points per stroke, chosen as the most-separated contacts, to keep the constraint solver cheap and stable.
 - Anchor state is computed **once**, at release. A stroke that later comes to rest against the ground does not become anchored.
+
+> **AMENDED — measured, and it shipped broken first.** Welds as rigid
+> constraints made a hand-drawn stroke (a compound of up to 28 parts) jitter by
+> 177,000 units: the line vibrated and shrank on screen. An anchored stroke is
+> now made **STATIC as a whole**; an unanchored one is an ordinary dynamic body.
+> The rule the player sees is unchanged — touch something solid and it holds,
+> draw in the air and it falls. See CLAUDE.md, "Anchored means STATIC".
 
 ---
 
@@ -441,17 +418,11 @@ v0.2 §49 says the right thing ("Milo is already visible. The danger is already 
 
 ---
 
-## 3.12 "60 levels" is not a plan, and unsized plans are how games end mid-air
+## 3.12 Size the game, measure what each level costs, cut on data
 
-v0.2 §52 asks for 20–30 for MVP, 60 for first release, 100+ after. No hours attached to any of them. This is the actual mechanism by which the thing you're afraid of happens: the prototype works, everyone's excited, content production starts, each level turns out to cost three hours to author-tune-and-verify, sixty levels is a hundred and eighty hours, and the project quietly stops at level 22 with no shippable build — because nothing was ever *defined* as shippable.
-
-### THE FIX — LOCKED: name the shippable game, then measure the cost of everything past it
-
-> **The shippable game is 24 levels in one world, with a complete meta shell. That is a finished product. Everything beyond it is upside.**
-
-"Complete meta shell" is doing real work in that sentence and is defined in Part 7.5 — it is what stops the game *ending mid-air* in the literal sense of a player finishing level 24 and getting a blank screen.
-
-And **level authoring cost becomes a tracked metric from the first level of Phase 1.** Target ≤ 45 minutes per level including tuning, solver verification and star thresholds. If real cost lands at 3 hours, you do not push through — you cut to 20 excellent levels and spend the difference on feel. A level that makes someone quit is negative inventory (v0.2 §52 says this well); twenty-four good ones beat sixty tired ones, and the decision must be made on measured cost rather than optimism at month three.
+*Superseded by `docs/PLAN.md`, which sets the level target and its arithmetic.
+The principle stands: a content target with no measured cost per level is how
+a game ends mid-air, and the cut is made on measurement, not optimism.*
 
 ---
 
@@ -854,40 +825,14 @@ Fully specified in 3.8. Restating the hard gates, because these are what a level
 
 Runs as a regression suite across all levels after any physics change. Ninety seconds, headless, no renderer.
 
-## 7.4 The 24 levels — the shippable game
+## 7.4 The levels
 
-One world (Backyard Chaos). New idea every second or third level; consolidation between. Every level names the verb it teaches and the *specific* thing the player learns.
-
-| # | Name | Verb | Introduces | The lesson |
-|---|---|---|---|---|
-| 1 | WALL | BLOCK | — | The line is real matter and it stops things |
-| 2 | GAP | BRIDGE | pit / `zone` lethality | The line is terrain he can walk on |
-| 3 | HANG | BLOCK + anchor | **anchoring** | Touch something solid or it falls |
-| 4 | SLANT | REDIRECT | angle | *Shape* matters, not just presence |
-| 5 | BOWL | CATCH | **closed shapes** | You can catch him — and leave the exit open |
-| 6 | STEP | RAMP | slope | The line helps Milo *move*, not just stops threats |
-| 7 | PROP | SUPPORT | collapsing platform | Anchor both ends, or it's a see-saw |
-| 8 | JAM | WEDGE | rolling hazard | Geometry as a mechanism, not a barrier |
-| 9 | CHUTE | FUNNEL | guiding | Sometimes you steer it instead of stopping it |
-| 10 | THE SWITCH | TRIGGER | switch → gate | **One stroke, several consequences** (the bible's headline moment) |
-| 11 | DEAD WEIGHT | UNANCHOR | free-falling stroke | Not anchoring is also a tool |
-| 12 | ON TIME | timing | moving hazard | *When* matters as much as *where* |
-| 13 | YEET | LAUNCH | launching Milo | You can throw him to safety |
-| 14 | TWO JOBS | BLOCK + BRIDGE | one stroke, two roles | Efficiency starts here |
-| 15 | EITHER WAY | CHOICE | two clean solutions | There isn't one right answer |
-| 16 | LET IT GO | SACRIFICE | destructible prop | Sometimes you lose something to win |
-| 17 | THREAD IT | constrained | `denyZones` | Placement under constraint |
-| 18 | SWING | timing | pendulum | Read a rhythm before you commit |
-| 19 | DOMINO | chain | object → object | Objects act on each other, not just on Milo |
-| 20 | DON'T | inversion | — | Blocking it **kills him**. Let it through |
-| 21 | RUBE | TRIGGER ×3 | 3-step chain | The full chain-reaction payoff |
-| 22 | LESS | mastery | tight `maxLength` | Say it with less ink |
-| 23 | ALL OF IT | combined | — | Everything at once |
-| 24 | WELL DONE | finale | spectacle | The one they'll screenshot |
-
-Level 20 (DON'T) is the most important level in the set and the one most likely to be cut for being awkward — **don't cut it.** It is the level that proves the game is about *thinking* rather than about drawing walls, it inverts the habit built by the previous nineteen, and it is the level people will talk about.
-
-Hazard introduction is deliberately slow: rolling ball (1) → pit (2) → falling object (3) → boulder (4) → collapsing platform (7) → switch/gate (10) → moving hazard (12) → pendulum (18). Eight hazard types across 24 levels. v0.2 §25 lists five tiers of hazards; **most of them are not needed and adding them would be the content treadmill starting early.**
+*The 24-level ladder that stood here was the pre-production guess. The shipped
+set and its order are in `js/levels.js`, ordered by measured difficulty and held
+there by `tools/test/curve.js`; the ideas from the ladder that were never built
+(DOMINO, RUBE, LESS, LET IT GO, ALL OF IT, WELL DONE) are carried in
+`docs/PLAN.md`; the ones built and shelved are in `docs/HELD.md` — including
+DON'T, which this section called the most important level in the set.*
 
 ## 7.5 The meta shell — this is what stops the game ending mid-air
 
@@ -1000,128 +945,16 @@ Roughly 1.3% of the internal target. That is not a nice-to-have — startup time
 
 ---
 
-# PART 9 — PHASES, GATES AND CUT LINES
+# PARTS 9–12 — SUPERSEDED
 
-Phases follow v0.2 §71's structure, which was right. What is added is what the phases were missing: **a gate that can fail, and a cut line that says what happens when it does.** A phase plan without cut lines is a wish list, and a wish list is how a project ends mid-air.
-
-## Phase 0 — Mechanical proof
-**Build:** boot skeleton → adapter + fixed step → **tunneling acceptance test (3.4)** → drawing pipeline → anchoring → Milo locomotion → A1 WALL, A2 GAP, A3 REDIRECT, A4 CATCH.
-**No art. No menu. No stars. No sound.** Capsules and grey circles.
-
-A4 is included on v0.4's reasoning (§8.5), which is correct: A1–A3 never exercise the closed-shape branch, so Phase 0 could otherwise pass with a third of the drawing pipeline never having run. Its trajectory numbers were independently re-verified (3.4 preamble) and are sound.
-
-**Gate — all six, on someone who has never seen any of these documents, with no coaching beyond "play":**
-1. They draw something within 10 seconds, unprompted.
-2. When it becomes physical, they visibly react.
-3. After failing, they change the drawing *for a stated reason*.
-4. They retry without being asked.
-5. At least one moment surprises them in a good way.
-6. **They can say out loud why they died, every time.** ← new, and it is the one that matters most, because it is the one measuring 3.3.
-
-**Cut line:** if gates 1–4 fail, the mechanic is wrong. Redesign or kill (v0.2 §69). Do not add content. If only gate 6 fails, the death cam and ghost stroke are under-built — fix those before anything else, because everything downstream compounds off attribution.
-
-## Phase 1 — Feel and look
-**Build:** the boiling-line renderer **first, standalone**; Milo's rig; the freeze transition; death cam; ghost stroke; synthesised audio; the solver harness; 10 levels.
-
-**Gate:**
-- The thumbnail test (6.8) on five people who don't know the game.
-- The solver harness passes all 10 levels on all six gates in 7.3.
-- **Measured level authoring cost** (3.12).
-- Playable at 60 fps on a mid-range Android phone, in a 320-px-wide frame.
-
-**Cut line — and this is the real one:** if the stroke renderer doesn't sing after one week, **stop and switch to commissioned 2D art.** Budget: one week, decided on the thumbnail test, not on attachment to the idea. The whole procedural-art thesis is the highest-variance decision in this document and it gets exactly one week to prove itself while the fallback is still cheap.
-
-Second cut line: if authoring cost > 90 min/level, the shippable game becomes 16 levels, not 24. Decide it here, on measured data, not at month three on optimism.
-
-## Phase 2 — The complete game
-**Build:** levels 11–24. **The entire meta shell (7.5) — scheduled here, not at the end.** Save/restore. Responsive matrix. Rewarded-ad placeholders (not live ads).
-
-**Gate:** a stranger plays from cold boot to the ending screen without help and without hitting a broken state. If anything about that sentence isn't true, the game is not finished.
-
-## Phase 3 — Open-web validation (the only real data you will ever get)
-Ship instrumented to an open portal. Measure v0.2 §68's list — first-interaction rate, time to first input, L1/L3 completion, retry rate after failure, attempts per level, session length, % reaching 10+ minutes.
-
-**This is where the open questions get answered**, not by argument: v0.2 §94's Q1–Q10 and §95's A–G are all measurable here and nowhere else. Line mass, Milo speed, draw limits, star basis, failure-animation length — all of it.
-
-**Gate:** retry-after-failure rate is the single most diagnostic number in the whole project. If people fail once and leave, the loop is not addictive and no amount of levels fixes it.
-
-## Phase 4 — Playables preparation
-SDK compliance against the current official docs; payload; lifecycle; pause/mute; touch and mouse; the responsive matrix; save/load; brand and IP compliance; monetisation per current rules.
-
-## Phase 5 — Submission.
-
-## 9.1 Monetisation — deferred on purpose, and here is the shape
-
-v0.2 §34 is right that the rewarded moment should be something the player already desperately wants, and right that **UNDO DRAW** is the natural one — it is exactly the feeling the game manufactures every eight seconds.
-
-But note what the freeze does to it: with an infinite freeze and an instant retry, the player's cost of failure is already very low, which *weakens* the undo offer. That is a good trade — retention over ARPU, per v0.2 §98 — but it should be a conscious one, and the honest read is that this game's monetisation will lean on **hints on hard levels** (17, 20, 21, 23) more than on undo. Build placeholders in Phase 2, live ads only after Phase 3 data, per current platform rules. No interstitial before real investment (§35).
-
----
-
-# PART 10 — RISK REGISTER
-
-| # | Risk | Severity | Early warning sign | Mitigation | Owned by |
-|---|---|---|---|---|---|
-| 1 | **Failure is illegible; game feels random** | **Kill-level** | Phase 0 gate 6 fails; testers say "I don't know, it just died" | Death cam + causality + ghost stroke (3.3) | Phase 0 |
-| 2 | **Tunneling / physics leaks** | **Kill-level** | Objects pass through drawings intermittently | 120 Hz + clamp + thickness (3.4); acceptance test before A1; adapter escape hatch to Planck.js | Phase 0 |
-| 3 | Procedural art reads as programmer art | High | Thumbnail test fails; it looks "unfinished" not "drawn" | One-week cut line to commissioned art (Phase 1) | Phase 1 |
-| 4 | Content treadmill: levels cost too much | High | Authoring cost > 90 min | Solver harness; cut to 16 levels on measured data | Phase 1 |
-| 5 | Novelty wears off in 5 minutes | High | Session length collapses after L6 | Verb ladder (7.4): a new idea every 2–3 levels through L21 | Phase 3 |
-| 6 | Reads as another Save-the-Doge clone | High | Testers name a competitor unprompted | The freeze + the moving character + the drawn world (Part 2) | Phase 1 |
-| 7 | Anchoring feels magical or arbitrary | Medium | Testers surprised by what stuck | Anchor sparks (6.6); 6 u tolerance; test explicitly in Phase 0 | Phase 0 |
-| 8 | Drawing is fiddly with a thumb | Medium | Testers redraw repeatedly before releasing | 25 u precision floor, machine-checked (3.14) | Phase 1 |
-| 9 | Playables SDK details wrong in all four docs | Medium | Certification rejection | Verify against official docs before Phase 4 — named task, Part 11 | Pre-production |
-| 10 | Title unavailable / dates badly | Medium | — | Clearance search now; icon and first frame carry the pitch without language (Part 11) | Pre-production |
-| 11 | Blind on Playables (no analytics) | Medium | — | Open-web build is the instrumented one (3.13) | Phase 0 architecture |
-| 12 | Matter.js unmaintained | Low | Stacking instability | Adapter isolates it (5.4) | Phase 0 |
-
-Risks 1 and 2 are the two that kill this project, and **both are invisible until you build them and both were absent from all three prior documents.**
-
----
-
-# PART 11 — WHAT IS GENUINELY YOURS TO DECIDE
-
-Engineering judgement cannot close these. Everything else in this document is decided.
-
-1. **Do you accept the Freeze?** (3.1) This is the biggest single call in the document. It resolves a real contradiction, it is platform-fit, and it gives the game its own noun — but it does convert "time pressure" from a mechanic into staging. If you want live time pressure in the core mode instead, say so now, because determinism, the retry loop and the whole art direction are all built on top of the freeze.
-
-2. **Do you accept procedural art?** (Part 6) Highest-variance decision here. It buys a ~200 KB payload, free animation states, reactive comedy and no certification risk. It costs a week of risk and it demands genuine craft in one component. The alternative is commissioned 2D art: safer look, real money, real schedule, bigger payload, and Milo stops reacting.
-
-3. **Matter.js as the dependency.** (5.4) Behind an adapter, with a documented swap to Planck.js. v0.3 asked for an explicit yes on this and that was the right thing to ask.
-
-4. **Title clearance.** (v0.2 §5.4, flagged twice across two documents with no action attached either time.) Do the search now — it is cheap now and expensive later. Two separate things to check: legal/trademark collision, and platform naming policy on slang. Related and worth a real thought: *"cooked"* is current slang that may date quickly, and it does not translate for a global platform. The mitigation is not to change the title — it is to make sure **the icon and the first frozen frame sell the game with no language at all.**
-
-5. **Music: one commissioned loop, or none?** (6.7) SFX are solved procedurally. "None" is a legitimate, defensible answer for a game living inside YouTube.
-
-6. **The 24 vs 60 question** — do not decide it now. It is decided by measured authoring cost at the Phase 1 gate (3.12, Phase 1 cut line).
-
----
-
-# PART 12 — WHAT HAPPENS NEXT
-
-Pre-production is complete when these are answered. Nothing below requires code.
-
-**This week, in parallel with nothing else:**
-1. Answer Part 11 items 1, 2 and 3 — they are architectural and everything waits on them.
-2. Start the title clearance search (item 4). It runs in the background.
-3. Retrieve Google's current Playables SDK documentation and verify the lifecycle method names none of these four documents can vouch for (Risk 9).
-
-**Then Phase 0, in strict order — and the order is the point:**
-1. Boot skeleton: state machine + RAF loop, a capsule on a static ground. No physics.
-2. `physics/adapter.js` + fixed 120 Hz step + speed clamp.
-3. **The free-fall unit test and the tunneling acceptance test (3.4). Do not proceed until both pass.** This is the single most important instruction in this document — everything after it is built on the assumption that collisions actually happen.
-4. Drawing pipeline on an empty level: draw, watch shapes fall and settle. No Milo, no hazards.
-5. Anchoring: draw touching the ground, it sticks; draw floating, it falls. Sparks on release.
-6. Milo: three-state locomotion, step-up, walks to a goal on flat ground. No hazards.
-7. A1, A2, A3, A4.
-8. Death cam + ghost stroke — **inside Phase 0, not after it**, because gate 6 measures them.
-9. Run the six gates on a real stranger. Their reaction is the verdict. Not "does it run clean."
+Phases, monetisation, the risk register, the open decisions and the next steps
+are in `docs/PLAN.md` (2026-10-13). Phases 0–2 and 4 are done; Phase 3 — the
+instrumented open-web build — never happened, and the plan says why that
+matters. Monetisation as built is in CLAUDE.md, "MONETIZATION".
 
 ---
 
 ## CLOSING
-
-The prior documents got the philosophy right and left the game unbuildable; the second and third got it buildable and left two bugs in it that would have looked like the mechanic failing rather than the spec failing.
 
 What this version adds is the answer to the question underneath all of them — *why would anyone want to play this?* — and the machinery to keep answering it: a world that stops one heartbeat before disaster, a line that sticks where you put it, a game that tells you exactly why you died, and a look that costs nothing and belongs to nobody else.
 
@@ -1138,7 +971,7 @@ The rest is discipline. Build the four levels. Show them to someone who owes you
 
 **One correction is certification-blocking and it is against this document's own spec.** See A.1.
 
-Sources are listed in `EXECUTION_ROADMAP_v1.0.md` §9.
+Sources are listed in `docs/CERTIFICATION.md`.
 
 ## A.1 Responsive model — **REPLACES §8.3** (certification-blocking)
 
@@ -1231,7 +1064,7 @@ Peak JS heap **must not exceed 512 MB**, cited as a crash cause on iPhone. §5.3
 
 `js/platform/analytics.js` must compile to a **hard no-op** in the Playables build, verified by a build-time grep for `fetch`, `XMLHttpRequest`, `WebSocket` and `sendBeacon` that **fails the build** on any hit.
 
-The strategic consequence in §3.13 is not merely confirmed but promoted: the open-web build is the only instrumented version of this game that will ever exist, and it is now **Milestone 3** rather than a late validation phase — because Playables access is a limited-access program in which a working, publicly-hosted demo is itself the application artifact. See `EXECUTION_ROADMAP_v1.0.md` §1.2.
+The strategic consequence in §3.13 is not merely confirmed but promoted: the open-web build is the only instrumented version of this game that will ever exist, and it is now **Milestone 3** rather than a late validation phase — because Playables access is a limited-access program in which a working, publicly-hosted demo is itself the application artifact.
 
 ## A.8 What did not change
 

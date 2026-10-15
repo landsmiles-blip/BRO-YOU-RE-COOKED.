@@ -208,53 +208,6 @@ export const SOLUTIONS = {
       ]
     }
   },
-  "a7-prop": {
-    "id": "a7-prop",
-    "winners": 55,
-    "robust": 12,
-    "anchoredRobust": 12,
-    "handRate": 0.218,
-    "solution": {
-      "family": "span",
-      "length": 278,
-      "parts": 11,
-      "anchors": 6,
-      "points": [
-        {
-          "x": 250,
-          "y": 900
-        },
-        {
-          "x": 288.6,
-          "y": 913
-        },
-        {
-          "x": 327.1,
-          "y": 923.5
-        },
-        {
-          "x": 365.7,
-          "y": 929.2
-        },
-        {
-          "x": 404.3,
-          "y": 929.2
-        },
-        {
-          "x": 442.9,
-          "y": 923.5
-        },
-        {
-          "x": 481.4,
-          "y": 913
-        },
-        {
-          "x": 520,
-          "y": 900
-        }
-      ]
-    }
-  },
   "a8-jam": {
     "id": "a8-jam",
     "winners": 163,
@@ -464,62 +417,31 @@ export const SOLUTIONS = {
   },
   "a13-yeet": {
     "id": "a13-yeet",
-    "winners": 62,
-    "robust": 42,
-    "anchoredRobust": 42,
-    "handRate": 0.677,
+    "winners": 53,
+    "robust": 31,
+    "anchoredRobust": 31,
+    "handRate": 0.585,
     "solution": {
       "family": "line",
       "length": 390,
-      "parts": 11,
+      "parts": 12,
       "anchors": 8,
       "points": [
         {
           "x": 131.1,
-          "y": 847.5
+          "y": 636.1
         },
         {
           "x": 243.7,
-          "y": 912.5
+          "y": 701.1
         },
         {
           "x": 356.3,
-          "y": 977.5
+          "y": 766.1
         },
         {
           "x": 468.9,
-          "y": 1042.5
-        }
-      ]
-    }
-  },
-  "a14-twojobs": {
-    "id": "a14-twojobs",
-    "winners": 88,
-    "robust": 29,
-    "anchoredRobust": 1,
-    "handRate": 0.33,
-    "solution": {
-      "family": "line",
-      "length": 390,
-      "parts": 13,
-      "anchors": 8,
-      "points": [
-        {
-          "x": 228.9,
-          "y": 873.6
-        },
-        {
-          "x": 116.3,
-          "y": 938.6
-        },
-        {
-          "x": 3.7,
-          "y": 1003.6
-        },
-        {
-          "x": -108.9,
-          "y": 1068.6
+          "y": 831.1
         }
       ]
     }
@@ -563,6 +485,994 @@ export const SOLUTIONS = {
         {
           "x": 365,
           "y": 1014.6
+        }
+      ]
+    }
+  },
+  "a19-updraft": {
+    "id": "a19-updraft",
+    "winners": 119,
+    "robust": 62,
+    "anchoredRobust": 18,
+    "handRate": 0.521,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 10,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 170,
+          "y": 838.6
+        },
+        {
+          "x": 213.3,
+          "y": 869.1
+        },
+        {
+          "x": 256.7,
+          "y": 887.5
+        },
+        {
+          "x": 300,
+          "y": 893.6
+        },
+        {
+          "x": 343.3,
+          "y": 887.5
+        },
+        {
+          "x": 386.7,
+          "y": 869.1
+        },
+        {
+          "x": 430,
+          "y": 838.6
+        }
+      ]
+    }
+  },
+  "a20-spring": {
+    "id": "a20-spring",
+    "winners": 542,
+    "robust": 288,
+    "anchoredRobust": 54,
+    "handRate": 0.531,
+    "solution": {
+      "family": "span",
+      "length": 284,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 380,
+          "y": 1152
+        },
+        {
+          "x": 414.3,
+          "y": 1182.4
+        },
+        {
+          "x": 448.6,
+          "y": 1206.7
+        },
+        {
+          "x": 482.9,
+          "y": 1220.2
+        },
+        {
+          "x": 517.1,
+          "y": 1220.2
+        },
+        {
+          "x": 551.4,
+          "y": 1206.7
+        },
+        {
+          "x": 585.7,
+          "y": 1182.4
+        },
+        {
+          "x": 620,
+          "y": 1152
+        }
+      ]
+    }
+  },
+  "a21-lever": {
+    "id": "a21-lever",
+    "winners": 161,
+    "robust": 54,
+    "anchoredRobust": 45,
+    "handRate": 0.335,
+    "solution": {
+      "family": "line",
+      "length": 300,
+      "parts": 12,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 105,
+          "y": 448.7
+        },
+        {
+          "x": 155,
+          "y": 535.3
+        },
+        {
+          "x": 205,
+          "y": 621.9
+        },
+        {
+          "x": 255,
+          "y": 708.5
+        }
+      ]
+    }
+  },
+  "a28-duct": {
+    "id": "a28-duct",
+    "winners": 126,
+    "robust": 97,
+    "anchoredRobust": 87,
+    "handRate": 0.77,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 378.8,
+          "y": 705.4
+        },
+        {
+          "x": 406.3,
+          "y": 753
+        },
+        {
+          "x": 433.8,
+          "y": 800.7
+        },
+        {
+          "x": 461.3,
+          "y": 848.3
+        }
+      ]
+    }
+  },
+  "a29-rail": {
+    "id": "a29-rail",
+    "winners": 68,
+    "robust": 26,
+    "anchoredRobust": 26,
+    "handRate": 0.382,
+    "solution": {
+      "family": "corner",
+      "length": 260,
+      "parts": 12,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 300,
+          "y": 784.3
+        },
+        {
+          "x": 365,
+          "y": 784.3
+        },
+        {
+          "x": 430,
+          "y": 784.3
+        },
+        {
+          "x": 430,
+          "y": 849.3
+        },
+        {
+          "x": 430,
+          "y": 914.3
+        }
+      ]
+    }
+  },
+  "a30-float": {
+    "id": "a30-float",
+    "winners": 39,
+    "robust": 27,
+    "anchoredRobust": 27,
+    "handRate": 0.692,
+    "solution": {
+      "family": "bowl",
+      "length": 243,
+      "parts": 9,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 75,
+          "y": 635.4
+        },
+        {
+          "x": 101.3,
+          "y": 659.5
+        },
+        {
+          "x": 127.5,
+          "y": 676.7
+        },
+        {
+          "x": 153.8,
+          "y": 687
+        },
+        {
+          "x": 180,
+          "y": 690.4
+        },
+        {
+          "x": 206.3,
+          "y": 687
+        },
+        {
+          "x": 232.5,
+          "y": 676.7
+        },
+        {
+          "x": 258.8,
+          "y": 659.5
+        },
+        {
+          "x": 285,
+          "y": 635.4
+        }
+      ]
+    }
+  },
+  "a31-thorns": {
+    "id": "a31-thorns",
+    "winners": 51,
+    "robust": 28,
+    "anchoredRobust": 28,
+    "handRate": 0.549,
+    "solution": {
+      "family": "bowl",
+      "length": 295,
+      "parts": 13,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 195,
+          "y": 488
+        },
+        {
+          "x": 221.3,
+          "y": 529.6
+        },
+        {
+          "x": 247.5,
+          "y": 559.3
+        },
+        {
+          "x": 273.8,
+          "y": 577.1
+        },
+        {
+          "x": 300,
+          "y": 583
+        },
+        {
+          "x": 326.3,
+          "y": 577.1
+        },
+        {
+          "x": 352.5,
+          "y": 559.3
+        },
+        {
+          "x": 378.8,
+          "y": 529.6
+        },
+        {
+          "x": 405,
+          "y": 488
+        }
+      ]
+    }
+  },
+  "a34-sink": {
+    "id": "a34-sink",
+    "winners": 96,
+    "robust": 69,
+    "anchoredRobust": 68,
+    "handRate": 0.719,
+    "solution": {
+      "family": "span",
+      "length": 262,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 460,
+          "y": 820
+        },
+        {
+          "x": 436.7,
+          "y": 778.4
+        },
+        {
+          "x": 413.4,
+          "y": 739.4
+        },
+        {
+          "x": 390.1,
+          "y": 705
+        },
+        {
+          "x": 366.9,
+          "y": 676.5
+        },
+        {
+          "x": 343.6,
+          "y": 653.7
+        },
+        {
+          "x": 320.3,
+          "y": 635.6
+        },
+        {
+          "x": 297,
+          "y": 620
+        }
+      ]
+    }
+  },
+  "a43-crack": {
+    "id": "a43-crack",
+    "winners": 23,
+    "robust": 8,
+    "anchoredRobust": 8,
+    "handRate": 0.348,
+    "solution": {
+      "family": "span",
+      "length": 164,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 340,
+          "y": 1136
+        },
+        {
+          "x": 361.4,
+          "y": 1123
+        },
+        {
+          "x": 382.9,
+          "y": 1112.5
+        },
+        {
+          "x": 404.3,
+          "y": 1106.8
+        },
+        {
+          "x": 425.7,
+          "y": 1106.8
+        },
+        {
+          "x": 447.1,
+          "y": 1112.5
+        },
+        {
+          "x": 468.6,
+          "y": 1123
+        },
+        {
+          "x": 490,
+          "y": 1136
+        }
+      ]
+    }
+  },
+  "a52-keepaway": {
+    "id": "a52-keepaway",
+    "winners": 263,
+    "robust": 135,
+    "anchoredRobust": 50,
+    "handRate": 0.513,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 3,
+      "points": [
+        {
+          "x": 427.4,
+          "y": 771
+        },
+        {
+          "x": 480.2,
+          "y": 766.2
+        },
+        {
+          "x": 526.9,
+          "y": 772
+        },
+        {
+          "x": 567.5,
+          "y": 788.4
+        },
+        {
+          "x": 602,
+          "y": 815.3
+        },
+        {
+          "x": 630.3,
+          "y": 852.9
+        },
+        {
+          "x": 652.6,
+          "y": 901
+        }
+      ]
+    }
+  },
+  "a51-fence": {
+    "id": "a51-fence",
+    "winners": 353,
+    "robust": 168,
+    "anchoredRobust": 1,
+    "handRate": 0.476,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 10,
+      "anchors": 7,
+      "points": [
+        {
+          "x": 652.6,
+          "y": 449.3
+        },
+        {
+          "x": 599.8,
+          "y": 444.5
+        },
+        {
+          "x": 553.1,
+          "y": 450.3
+        },
+        {
+          "x": 512.5,
+          "y": 466.7
+        },
+        {
+          "x": 478,
+          "y": 493.6
+        },
+        {
+          "x": 449.7,
+          "y": 531.2
+        },
+        {
+          "x": 427.4,
+          "y": 579.3
+        }
+      ]
+    }
+  },
+  "a53-cover": {
+    "id": "a53-cover",
+    "winners": 447,
+    "robust": 246,
+    "anchoredRobust": 192,
+    "handRate": 0.55,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 10,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 235,
+          "y": 1141.8
+        },
+        {
+          "x": 230.2,
+          "y": 1194.7
+        },
+        {
+          "x": 236,
+          "y": 1241.3
+        },
+        {
+          "x": 252.4,
+          "y": 1281.9
+        },
+        {
+          "x": 279.3,
+          "y": 1316.4
+        },
+        {
+          "x": 316.9,
+          "y": 1344.8
+        },
+        {
+          "x": 365,
+          "y": 1367
+        }
+      ]
+    }
+  },
+  "a54-shelter": {
+    "id": "a54-shelter",
+    "winners": 128,
+    "robust": 40,
+    "anchoredRobust": 1,
+    "handRate": 0.313,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 5,
+      "points": [
+        {
+          "x": 307.4,
+          "y": 925.6
+        },
+        {
+          "x": 360.2,
+          "y": 920.8
+        },
+        {
+          "x": 406.9,
+          "y": 926.6
+        },
+        {
+          "x": 447.5,
+          "y": 942.9
+        },
+        {
+          "x": 482,
+          "y": 969.9
+        },
+        {
+          "x": 510.3,
+          "y": 1007.4
+        },
+        {
+          "x": 532.6,
+          "y": 1055.6
+        }
+      ]
+    }
+  },
+  "a55-protect": {
+    "id": "a55-protect",
+    "winners": 126,
+    "robust": 53,
+    "anchoredRobust": 46,
+    "handRate": 0.421,
+    "solution": {
+      "family": "bowl",
+      "length": 295,
+      "parts": 12,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 315,
+          "y": 875
+        },
+        {
+          "x": 341.3,
+          "y": 916.6
+        },
+        {
+          "x": 367.5,
+          "y": 946.3
+        },
+        {
+          "x": 393.8,
+          "y": 964.1
+        },
+        {
+          "x": 420,
+          "y": 970
+        },
+        {
+          "x": 446.3,
+          "y": 964.1
+        },
+        {
+          "x": 472.5,
+          "y": 946.3
+        },
+        {
+          "x": 498.8,
+          "y": 916.6
+        },
+        {
+          "x": 525,
+          "y": 875
+        }
+      ]
+    }
+  },
+  "a100-balloon": {
+    "id": "a100-balloon",
+    "winners": 119,
+    "robust": 67,
+    "anchoredRobust": 54,
+    "handRate": 0.563,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 365,
+          "y": 522.8
+        },
+        {
+          "x": 316.9,
+          "y": 545.1
+        },
+        {
+          "x": 279.3,
+          "y": 573.5
+        },
+        {
+          "x": 252.4,
+          "y": 607.9
+        },
+        {
+          "x": 236,
+          "y": 648.5
+        },
+        {
+          "x": 230.2,
+          "y": 695.2
+        },
+        {
+          "x": 235,
+          "y": 748
+        }
+      ]
+    }
+  },
+  "a111-tailwind": {
+    "id": "a111-tailwind",
+    "winners": 69,
+    "robust": 34,
+    "anchoredRobust": 26,
+    "handRate": 0.493,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 11,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 115,
+          "y": 787.4
+        },
+        {
+          "x": 110.2,
+          "y": 840.2
+        },
+        {
+          "x": 116,
+          "y": 886.9
+        },
+        {
+          "x": 132.4,
+          "y": 927.5
+        },
+        {
+          "x": 159.3,
+          "y": 962
+        },
+        {
+          "x": 196.9,
+          "y": 990.3
+        },
+        {
+          "x": 245,
+          "y": 1012.6
+        }
+      ]
+    }
+  },
+  "a101-low-blow": {
+    "id": "a101-low-blow",
+    "winners": 80,
+    "robust": 44,
+    "anchoredRobust": 44,
+    "handRate": 0.55,
+    "solution": {
+      "family": "arc",
+      "length": 288,
+      "parts": 10,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 427.4,
+          "y": 790.4
+        },
+        {
+          "x": 449.7,
+          "y": 838.6
+        },
+        {
+          "x": 478,
+          "y": 876.1
+        },
+        {
+          "x": 512.5,
+          "y": 903.1
+        },
+        {
+          "x": 553.1,
+          "y": 919.4
+        },
+        {
+          "x": 599.8,
+          "y": 925.2
+        },
+        {
+          "x": 652.6,
+          "y": 920.4
+        }
+      ]
+    }
+  },
+  "a90-gust": {
+    "id": "a90-gust",
+    "winners": 60,
+    "robust": 31,
+    "anchoredRobust": 25,
+    "handRate": 0.517,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 3,
+      "points": [
+        {
+          "x": 217.5,
+          "y": 1102.1
+        },
+        {
+          "x": 272.5,
+          "y": 1102.1
+        },
+        {
+          "x": 327.5,
+          "y": 1102.1
+        },
+        {
+          "x": 382.5,
+          "y": 1102.1
+        }
+      ]
+    }
+  },
+  "a91-kite": {
+    "id": "a91-kite",
+    "winners": 34,
+    "robust": 34,
+    "anchoredRobust": 0,
+    "handRate": 1,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 10,
+      "anchors": 0,
+      "points": [
+        {
+          "x": 217.5,
+          "y": 494
+        },
+        {
+          "x": 272.5,
+          "y": 494
+        },
+        {
+          "x": 327.5,
+          "y": 494
+        },
+        {
+          "x": 382.5,
+          "y": 494
+        }
+      ]
+    }
+  },
+  "a80-good-boy": {
+    "id": "a80-good-boy",
+    "winners": 135,
+    "robust": 80,
+    "anchoredRobust": 74,
+    "handRate": 0.593,
+    "solution": {
+      "family": "corner",
+      "length": 260,
+      "parts": 14,
+      "anchors": 5,
+      "points": [
+        {
+          "x": 180,
+          "y": 692.3
+        },
+        {
+          "x": 245,
+          "y": 692.3
+        },
+        {
+          "x": 310,
+          "y": 692.3
+        },
+        {
+          "x": 310,
+          "y": 757.3
+        },
+        {
+          "x": 310,
+          "y": 822.3
+        }
+      ]
+    }
+  },
+  "a81-down-boy": {
+    "id": "a81-down-boy",
+    "winners": 69,
+    "robust": 36,
+    "anchoredRobust": 36,
+    "handRate": 0.522,
+    "solution": {
+      "family": "span",
+      "length": 211,
+      "parts": 12,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 340,
+          "y": 940
+        },
+        {
+          "x": 361.4,
+          "y": 909.6
+        },
+        {
+          "x": 382.9,
+          "y": 885.3
+        },
+        {
+          "x": 404.3,
+          "y": 871.8
+        },
+        {
+          "x": 425.7,
+          "y": 871.8
+        },
+        {
+          "x": 447.1,
+          "y": 885.3
+        },
+        {
+          "x": 468.6,
+          "y": 909.6
+        },
+        {
+          "x": 490,
+          "y": 940
+        }
+      ]
+    }
+  },
+  "a82-heads-up": {
+    "id": "a82-heads-up",
+    "winners": 205,
+    "robust": 121,
+    "anchoredRobust": 67,
+    "handRate": 0.59,
+    "solution": {
+      "family": "line",
+      "length": 230,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 519.6,
+          "y": 668.5
+        },
+        {
+          "x": 453.2,
+          "y": 706.8
+        },
+        {
+          "x": 386.8,
+          "y": 745.2
+        },
+        {
+          "x": 320.4,
+          "y": 783.5
+        }
+      ]
+    }
+  },
+  "a83-incoming": {
+    "id": "a83-incoming",
+    "winners": 95,
+    "robust": 59,
+    "anchoredRobust": 55,
+    "handRate": 0.621,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 5,
+      "points": [
+        {
+          "x": 461.3,
+          "y": 899.6
+        },
+        {
+          "x": 433.8,
+          "y": 947.2
+        },
+        {
+          "x": 406.3,
+          "y": 994.8
+        },
+        {
+          "x": 378.8,
+          "y": 1042.4
+        }
+      ]
+    }
+  },
+  "a56-stay": {
+    "id": "a56-stay",
+    "winners": 102,
+    "robust": 65,
+    "anchoredRobust": 65,
+    "handRate": 0.637,
+    "solution": {
+      "family": "span",
+      "length": 243,
+      "parts": 10,
+      "anchors": 7,
+      "points": [
+        {
+          "x": 285,
+          "y": 1000
+        },
+        {
+          "x": 258.6,
+          "y": 961.1
+        },
+        {
+          "x": 232.1,
+          "y": 928.1
+        },
+        {
+          "x": 205.7,
+          "y": 906
+        },
+        {
+          "x": 179.3,
+          "y": 897.5
+        },
+        {
+          "x": 152.9,
+          "y": 902.4
+        },
+        {
+          "x": 126.4,
+          "y": 918.2
+        },
+        {
+          "x": 100,
+          "y": 940
         }
       ]
     }

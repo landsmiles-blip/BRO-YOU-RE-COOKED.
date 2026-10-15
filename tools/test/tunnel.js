@@ -14,8 +14,6 @@
 // barrier at 20 orientations and asserts 20 contacts. The CONTROL below
 // reproduces the original v0.3/v0.4 spec (60Hz, 14u line, unclamped) to
 // demonstrate that the bug was real and that these constants are what closed it.
-//
-// Roadmap §7.
 
 import Matter from '../../js/physics/matter.js';
 import { createWorld, addRect, addCircle, setVelocity, step, onCollisionStart, destroyWorld }

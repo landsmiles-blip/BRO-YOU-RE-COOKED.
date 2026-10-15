@@ -16,15 +16,20 @@ export function createCausality() {
 
 /** Record every contact involving Milo or the player's stroke. */
 export function noteContact(c, bodyA, bodyB, simTimeMs, speed) {
-  const ids = [bodyA.gameId, bodyB.gameId];
-  if (ids.includes('stroke')) {
-    const other = bodyA.gameId === 'stroke' ? bodyB : bodyA;
-    if (other.gameId) c.strokeTouched.add(other.gameId);
+  // BY THE BODY, NOT THE PART. Matter reports a compound body's contacts on
+  // the PART that touched, and only the whole body carries a game id — so a
+  // line of more than one segment, which is nearly every line a hand draws,
+  // touched nothing as far as this file knew, and a rock it had deflected
+  // into him replayed as "NOTHING STOPPED IT".
+  const idA = (bodyA.parent ?? bodyA).gameId, idB = (bodyB.parent ?? bodyB).gameId;
+  if (idA === 'stroke' || idB === 'stroke') {
+    const other = idA === 'stroke' ? idB : idA;
+    if (other) c.strokeTouched.add(other);
   }
-  if (ids.includes('milo')) {
-    const other = bodyA.gameId === 'milo' ? bodyB : bodyA;
+  if (idA === 'milo' || idB === 'milo') {
+    const other = idA === 'milo' ? idB : idA;
     c.lastMiloContactAt = simTimeMs;
-    c.contacts.push({ id: other.gameId ?? '?', t: simTimeMs, speed });
+    c.contacts.push({ id: other ?? '?', t: simTimeMs, speed });
     if (c.contacts.length > HISTORY) c.contacts.shift();
   }
 }
@@ -36,7 +41,13 @@ export function noteContact(c, bodyA, bodyB, simTimeMs, speed) {
  * `stroke` is { drawn, anchored, fell } — whether the player drew at all,
  * whether it welded to anything, and how far it has since travelled.
  */
-export function explain(c, reason, culpritId, stroke = null) {
+export function explain(c, reason, culpritId, stroke = null, cause = null) {
+  // A LOST DOG OUTRANKS EVERY EXPLANATION BELOW, the unanchored line
+  // included: whatever the line did, the run ended because the dog was lost,
+  // and that is the thing the player has to fix.
+  if (cause === 'dog')     return { label: 'NOT THE DOG!',    culpritId };
+  if (cause === 'dog-ran') return { label: 'THE DOG RAN OFF', culpritId };
+
   // THE UNANCHORED DEATH OUTRANKS EVERY OTHER EXPLANATION.
   //
   // If the line was never attached to anything, it fell, and nothing it might
@@ -56,6 +67,13 @@ export function explain(c, reason, culpritId, stroke = null) {
   if (reason === 'stuck')   return { label: "HE'S STUCK",       culpritId: null };
   if (reason === 'timeout') return { label: 'STILL OUT THERE',  culpritId: null };
   if (reason === 'fell')    return { label: "HE'S GONE",        culpritId: null };
+
+  // A blast reaches him through the air, so nothing "got through": he was
+  // simply standing too near the barrel when the fuse ran out.
+  if (cause === 'blast') return { label: 'HE WAS TOO CLOSE', culpritId };
+  // A bee does not hit him, it finds him: "it got through" would send the
+  // player looking for a gap in a wall, when the swarm came round the end.
+  if (cause === 'stung') return { label: 'STUNG!', culpritId };
 
   // Killed. Was the player's own drawing implicated in what hit him?
   if (culpritId === 'stroke')                     return { label: 'YOUR OWN LINE',   culpritId };

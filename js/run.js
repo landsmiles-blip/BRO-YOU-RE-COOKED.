@@ -14,7 +14,9 @@ export const OUTCOME = {
 };
 
 export function createRunState() {
-  return { outcome: OUTCOME.RUNNING, culpritId: null, slowSince: -1, simTime: 0 };
+  // `cause` names a death that is not a collision — a blast reaches him
+  // through the air, so the death cam needs to be told what it was.
+  return { outcome: OUTCOME.RUNNING, culpritId: null, slowSince: -1, simTime: 0, cause: null };
 }
 
 export function checkRunEnd(run, milo, level, worldH, simTimeMs, lastContactAt) {

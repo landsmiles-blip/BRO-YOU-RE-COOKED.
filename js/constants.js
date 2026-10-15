@@ -50,9 +50,72 @@ export const MILO = {
   graceShrink: 6,      // LOCKED — hitbox shrink for lethal tests
 };
 
+// THE DOG — a second walker. It walks like Milo, on the same ground probe,
+// slope rule and step-up, but it TURNS AROUND when something blocks it where
+// Milo would stand there until the stuck timer ran out. That one difference is
+// the whole noun: a line can now steer something that walks.
+//
+// Heavier than any line the player can afford to drop on a weighed plate
+// (a 400-unit budget buys about 130), so a plate that wants the dog gets it
+// with `requires: 'heavy', minMass: 150`. Slower than Milo so a stranger can
+// follow it, and low enough to read as a dog beside him.
+export const DOG = {
+  width: 44, height: 30, chamfer: 10,
+  density: 0.17, friction: 0.3, restitution: 0.1,
+  speed: 180,
+  maxStepUp: 22,       // the same lip Milo can take, so a drawn line is a floor to it too
+  maxWalkSlope: 40,
+  groundProbe: 6,
+  turnMs: 250,         // after turning, it walks this long before it may turn again
+};
+
 // ── Run-end detection ───────────────────────────────────────────────────
 export const STUCK = { speedUnder: 12, forMs: 3000, sinceContactMs: 500 };  // TUNE
 export const NEAR_MISS_DIST = 30;   // TUNE — less than Milo's 36u width
+
+// TNT: a barrel with a lit fuse that goes off at `fuse` ms WHEREVER IT IS.
+// Inside `radius` it breaks every `breakable` static and shoves every loose body
+// away from it; inside `kill` of Milo's body it kills him. A level may override
+// any of the three per barrel with `blast: { radius, kill, push }`.
+// A FUSE, NOT AN IMPACT, because an impact cannot tell a catch from a delivery:
+// measured, a line catching the barrel hits it at a normal speed of 359-479
+// while a delivery to a fence hits at 336 — an impact trigger would go off in
+// the player's hands.
+// SOLID THINGS STOP IT. A wall, a shelf, the player's line or a rock standing
+// between the barrel and a target shields that target — Milo, a board, a loose
+// body, another barrel — because that is what every explosion a player has
+// ever seen does, and what the genre's shield levels teach them to expect.
+// Breakable boards never shield one another: a fence shatters as one thing.
+// A blast that reaches another barrel LIGHTS it, and it goes off `chain` ms
+// later — a beat apart, so a chain reads as two bangs and not one.
+export const TNT = { radius: 130, kill: 90, push: 600, chain: 150 };   // TUNE
+
+// BEES (js/bees.js): a swarm from a hive that flies at the nearest living
+// walker, weaving up to `wander` radians either side of the straight line to
+// it, and kills by touch. `steer` is how much of the gap between the velocity
+// it has and the one it wants it closes each step — at 120 Hz, 0.12 turns it
+// round in under a tenth of a second. Measured on the first probe: at 260 u/s a
+// swarm released over him never caught a walking Milo, at 340 it caught him a
+// stride from the door, at 420 in the middle of the level. Fast enough that
+// outrunning it is never the answer; a line between them is.
+export const BEE = {
+  radius: 7, density: 0.001,
+  speed: 400,        // TUNE — u/s; Milo walks at 220
+  steer: 0.12,       // TUNE
+  wander: 0.6,       // TUNE — radians
+  every: 70,         // TUNE — ms between bees leaving the hive
+  group: -7,         // LOCKED — the collision group every bee shares: bees pass through bees
+};
+
+// THE CLOSE CALL. The game is called BRO, YOU'RE COOKED and it is about nearly
+// dying — and until now nearly dying looked and sounded EXACTLY like winning
+// comfortably. NEAR_MISS_DIST sat in this file, declared and read by nothing.
+export const CLOSE_CALL = {
+  minSpeed: 240,     // TUNE — a resting boulder beside him is furniture, not a scare
+  slowRate: 0.22,    // TUNE — wall-clock rate during the moment; the sim's dt never changes
+  slowMs: 420,       // TUNE — long enough to register, short enough not to drag
+  cooldownMs: 260,   // TUNE — one approach is one moment, not forty
+};
 export const GOAL_MAX_SPEED = 400;  // LOCKED — faster than this through the goal is not a rescue
 
 // ── Presentation ────────────────────────────────────────────────────────
