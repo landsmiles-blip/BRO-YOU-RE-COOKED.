@@ -178,6 +178,22 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     ctx.restore();
   }
 
+  // HIVES. Static and bodiless, so the recorder never sees them — the same
+  // trap as the plates. A swarm replayed with no hive is bees from nowhere.
+  for (const h of sim.hives ?? []) {
+    const r = h.radius, base = h.y + r * 0.3;
+    ctx.save();
+    ctx.fillStyle = C.plank; ctx.globalAlpha = 0.8;
+    ctx.strokeStyle = 'rgba(42,38,34,0.55)'; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.ellipse(h.x, base, r, r * 1.2, 0, Math.PI, Math.PI * 2);
+    ctx.lineTo(h.x + r * 0.9, h.y + r * 0.8); ctx.lineTo(h.x - r * 0.9, h.y + r * 0.8);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = C.ink;
+    ctx.beginPath(); ctx.ellipse(h.x, h.y + r * 0.58, r * 0.3, r * 0.17, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
   // WHERE HE WAS TRYING TO GET TO. Without it there is no sense of direction
   // or of how close he came.
   const g = sim.level?.goal;
@@ -236,6 +252,27 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
         ctx.moveTo(-40, 0); ctx.lineTo(40, 0);
       }
       ctx.stroke();
+    } else if (sim.objects.get(f.id)?.spec.type === 'bee') {
+      // A BEE replays as a bee — red, striped, winged — and side-on as in
+      // play, so it is drawn upright whatever its body has spun to. The one
+      // that got him is ringed: in a swarm of twelve, "which one" is the
+      // question the replay exists to answer.
+      ctx.rotate(-f.a);
+      const back = frames[Math.max(0, Math.min(frameIdx, frames.length - 1) - 4)]?.find((q) => q.id === f.id);
+      const r = sim.objects.get(f.id).spec.radius;
+      if (back && f.x < back.x - 0.3) ctx.scale(-1, 1);
+      ctx.strokeStyle = C.ink; ctx.lineWidth = 1.4;
+      ctx.fillStyle = 'rgba(246,241,230,0.9)';
+      ctx.beginPath(); ctx.ellipse(-1, -r * 1.05, r * 0.55, r * 0.6, -0.35, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = C.danger; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.ellipse(0, 0, r * 1.3, r * 0.9, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      for (const sx of [-r * 0.45, r * 0.2]) { ctx.moveTo(sx, -r * 0.82); ctx.lineTo(sx, r * 0.82); }
+      ctx.stroke();
+      if (guilty) {
+        ctx.strokeStyle = C.danger; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.arc(0, 0, r + 12, 0, Math.PI * 2); ctx.stroke();
+      }
     } else if (sim.objects.get(f.id)?.spec.type === 'dog') {
       // THE DOG, flat like everything here, facing the way it was going —
       // read from where it was a few frames earlier, since which way it walks

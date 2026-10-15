@@ -90,6 +90,23 @@ export const NEAR_MISS_DIST = 30;   // TUNE — less than Milo's 36u width
 // later — a beat apart, so a chain reads as two bangs and not one.
 export const TNT = { radius: 130, kill: 90, push: 600, chain: 150 };   // TUNE
 
+// BEES (js/bees.js): a swarm from a hive that flies at the nearest living
+// walker, weaving up to `wander` radians either side of the straight line to
+// it, and kills by touch. `steer` is how much of the gap between the velocity
+// it has and the one it wants it closes each step — at 120 Hz, 0.12 turns it
+// round in under a tenth of a second. Measured on the first probe: at 260 u/s a
+// swarm released over him never caught a walking Milo, at 340 it caught him a
+// stride from the door, at 420 in the middle of the level. Fast enough that
+// outrunning it is never the answer; a line between them is.
+export const BEE = {
+  radius: 7, density: 0.001,
+  speed: 400,        // TUNE — u/s; Milo walks at 220
+  steer: 0.12,       // TUNE
+  wander: 0.6,       // TUNE — radians
+  every: 70,         // TUNE — ms between bees leaving the hive
+  group: -7,         // LOCKED — the collision group every bee shares: bees pass through bees
+};
+
 // THE CLOSE CALL. The game is called BRO, YOU'RE COOKED and it is about nearly
 // dying — and until now nearly dying looked and sounded EXACTLY like winning
 // comfortably. NEAR_MISS_DIST sat in this file, declared and read by nothing.

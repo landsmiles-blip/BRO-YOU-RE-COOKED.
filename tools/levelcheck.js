@@ -111,6 +111,9 @@ function nounsOf(level) {
     // there is nothing else in it to keep. If the level still plays the same,
     // whatever the dog was doing, something else was doing it too.
     if (o.type === 'dog') out.push({ what: `dog "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.filter((q) => q.id !== o.id) }) });
+    // A HIVE, deleted outright: no hive, no bees. If the level plays the same
+    // without the swarm, the swarm was never what the line was for.
+    if (o.type === 'hive') out.push({ what: `hive "${o.id}"`, drop: (l) => ({ ...l, objects: l.objects.filter((q) => q.id !== o.id) }) });
   }
   return out;
 }

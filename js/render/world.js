@@ -366,6 +366,12 @@ export function drawScene(ctx, sim, opts = {}) {
     inkShape(ctx, pts, { now, fill: C.danger, ink: C.ink, width: 3, salt: 777 });
   }
 
+  // ── hives ─────────────────────────────────────────────────────────────
+  // Where the swarm comes from, drawn from its spec: a hive has no body and
+  // never moves. Straw, never the danger accent — the hive does not sting,
+  // its bees do, and they carry the red.
+  for (const h of sim.hives ?? []) drawHive(ctx, h, now, freeze);
+
   // ── goal — the only soft light in the scene ───────────────────────────
   const g = sim.goal;
   ctx.save();
@@ -429,6 +435,14 @@ export function drawScene(ctx, sim, opts = {}) {
       const dog = sim.dogs?.find((d) => d.spec.id === spec.id);
       if (dog) drawDog(ctx, dog, now);
       moving.push({ body, radius: 22 });
+      continue;
+    }
+    // A BEE, before the circle case below: it has a radius, and drawn as one
+    // it would be a red pebble — a rock that flies at him, which is not what
+    // is coming.
+    if (spec.type === 'bee') {
+      drawBee(ctx, body, spec.radius, now);
+      moving.push({ body, radius: spec.radius });
       continue;
     }
     // TNT. Gone the instant it goes off — the blast marks where it was.
@@ -577,6 +591,78 @@ export function drawScene(ctx, sim, opts = {}) {
  * so it lost half a segment at each end and visibly SHRANK the instant it
  * committed. One geometry, one renderer, no special cases.
  */
+/**
+ * A hive: a skep of coiled straw with a dark door, wider at the base. Sized by
+ * its radius; the dome rises about a radius above its centre.
+ */
+function drawHive(ctx, h, now, freeze) {
+  const { x, y } = h, r = h.radius;
+  const base = y + r * 0.3;                 // where the dome meets its sides
+  const pts = [];
+  for (let i = 0; i <= 16; i++) {
+    const a = Math.PI + (i / 16) * Math.PI;   // left, over the top, right
+    pts.push({ x: x + Math.cos(a) * r, y: base + Math.sin(a) * r * 1.2 });
+  }
+  pts.push({ x: x + r * 0.9, y: y + r * 0.8 }, { x: x - r * 0.9, y: y + r * 0.8 });
+  inkShape(ctx, pts, {
+    now, fill: drain(C.plank, freeze * 0.45), ink: drain(C.ink, freeze * 0.35), width: 3, salt: (x | 0) + 41,
+  });
+  // The coils of straw, so it reads as a hive and not a bell or a rock.
+  const ink = drain(C.ink, 0.35 + freeze * 0.3);
+  for (let k = 1; k <= 3; k++) {
+    const yy = base - r * 1.2 * (k / 4);
+    const half = r * Math.sqrt(1 - (k / 4) ** 2) * 0.92;
+    inkPath(ctx, [{ x: x - half, y: yy }, { x, y: yy + 3 }, { x: x + half, y: yy }],
+      { now, colour: ink, width: 1.8, salt: (x | 0) + 43 + k, passes: 1 });
+  }
+  inkPath(ctx, [{ x: x - r * 0.95, y: base + r * 0.25 }, { x, y: base + r * 0.3 }, { x: x + r * 0.95, y: base + r * 0.25 }],
+    { now, colour: ink, width: 1.8, salt: (x | 0) + 47, passes: 1 });
+  ctx.save();
+  ctx.fillStyle = drain(C.ink, freeze * 0.3);
+  ctx.beginPath();
+  ctx.ellipse(x, y + r * 0.58, r * 0.3, r * 0.17, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+/**
+ * A bee: a body in the danger accent — one touch kills — with two ink stripes,
+ * a sting, and pale wings that beat. Seen side-on, facing the way it flies and
+ * tipped a little with its climb, never upside down. Drawn a touch larger than
+ * its body so it can be seen on a phone; still well inside the grace Milo is
+ * given for every touch.
+ */
+export function drawBee(ctx, body, r, now) {
+  const { x, y } = body.position;
+  const vx = body.velocity.x, vy = body.velocity.y;
+  const dir = vx < 0 ? -1 : 1;
+  const tilt = Math.max(-0.6, Math.min(0.6, Math.atan2(vy, Math.abs(vx) + 1e-6)));
+  const beat = Math.sin(now * 0.11 + x * 0.37);
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(dir, 1);
+  ctx.rotate(tilt);
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.strokeStyle = C.ink;
+  ctx.fillStyle = 'rgba(246,241,230,0.9)';
+  ctx.lineWidth = 1.4;
+  for (const [wx, k] of [[-2.5, 1], [2, 0.8]]) {
+    ctx.beginPath();
+    ctx.ellipse(wx, -r * 1.05, r * 0.5, r * (0.55 + 0.25 * beat) * k, -0.35, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+  }
+  ctx.fillStyle = C.danger;
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.ellipse(0, 0, r * 1.3, r * 0.9, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.beginPath();
+  for (const sx of [-r * 0.45, r * 0.2]) { ctx.moveTo(sx, -r * 0.82); ctx.lineTo(sx, r * 0.82); }
+  ctx.moveTo(-r * 1.3, 0); ctx.lineTo(-r * 1.85, 0.5);
+  ctx.stroke();
+  ctx.fillStyle = C.ink;
+  ctx.beginPath(); ctx.arc(r * 0.85, -r * 0.2, 1.6, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
 /**
  * A barrel of TNT: red because it kills, two bands and its name so it never
  * reads as a rock, and a fuse that BURNS DOWN — its length is the time left,

@@ -31,8 +31,10 @@ import * as CH6 from './levels/ch6-all.js';
 
 /** Objects that act on the world rather than threatening Milo. */
 // The dog is neither a hazard nor a prop: it is a second walker, and like
-// Milo it declares no lethality of its own.
-const MECHANISM_TYPES = new Set(['switch', 'gate', 'dog']);
+// Milo it declares no lethality of its own. A hive does not kill either — the
+// bees it releases do, and every bee kills by touch (js/bees.js), so there is
+// nothing for a level to declare.
+const MECHANISM_TYPES = new Set(['switch', 'gate', 'dog', 'hive']);
 
 // ─────────────────────────────────────────────────────────────────────────
 // A1 — WALL.  Teaches: your line is real, solid matter.
@@ -1410,6 +1412,10 @@ export function assertLevel(level) {
     // with no size to be caught by, is a bug and not a level.
     if (o.type === 'tnt' && !(o.fuse > 0)) problems.push(`tnt "${o.id}" has no fuse`);
     if (o.type === 'tnt' && !(o.radius > 0)) problems.push(`tnt "${o.id}" has no radius`);
+    // A hive with no bees is scenery, and one with no size cannot be drawn
+    // or checked against the goal and Milo's start.
+    if (o.type === 'hive' && !(o.bees > 0)) problems.push(`hive "${o.id}" releases no bees`);
+    if (o.type === 'hive' && !(o.radius > 0)) problems.push(`hive "${o.id}" has no radius`);
     for (const t of o.triggers ?? []) {
       const exists = level.objects.some((x) => x.id === t) || level.static.some((x) => x.id === t);
       if (!exists) problems.push(`"${o.id}" triggers missing target "${t}"`);

@@ -21,6 +21,7 @@ import { buildStrokeBody } from './drawing/bodyFactory.js';
 import { anchorStroke } from './physics/anchor.js';
 import * as audio from './audio.js';
 import { simplify } from './drawing/simplify.js';
+import { createSwarms, stepBees, isBee } from './bees.js';
 import { PHYSICS_DT, LINE, MILO, DOG, SAFE_BOX, NEAR_MISS_DIST, CLOSE_CALL, TNT } from './constants.js';
 
 export function buildSim(level) {
@@ -136,6 +137,9 @@ export function buildSim(level) {
   }
 
   for (const o of level.objects) {
+    // A HIVE HAS NO BODY. It is where bees come from (js/bees.js builds them
+    // as they leave it), and both renderers draw it from its spec.
+    if (o.type === 'hive') continue;
     // THE DOG walks on Milo's legs (js/milo.js), so it is built there and its
     // walk state kept in sim.dogs — and it is registered as an object like any
     // other, so plates, the recorder and both renderers find it by its id.
@@ -175,6 +179,7 @@ export function buildSim(level) {
   }
 
   sim.milo = createMilo(ctx, level);
+  createSwarms(sim, level);
 
   onCollisionStart(ctx, (a, b, pair) => {
     const speed = normalSpeed(a, b, pair);
@@ -184,7 +189,11 @@ export function buildSim(level) {
     // is what nearly killed him. Milo's own footsteps are excluded: he makes
     // ground contact every step at 220 u/s of tangential motion, and the normal
     // component of a footfall is small but not zero.
-    if (a.gameId !== 'milo' && b.gameId !== 'milo') {
+    // A bee is not an impact: a swarm pressing on a line would be a drum roll.
+    const bee = isBee(sim.objects.get(a.gameId)?.spec) || isBee(sim.objects.get(b.gameId)?.spec);
+    if (bee) {
+      audio.buzz();
+    } else if (a.gameId !== 'milo' && b.gameId !== 'milo') {
       audio.impact(speed, { heavy: (a.mass ?? 0) + (b.mass ?? 0) > 120 });
     } else if (speed > 140) {
       audio.impact(speed, { heavy: false });
@@ -196,6 +205,9 @@ export function buildSim(level) {
       const entry = sim.objects.get(hit.gameId);
       if (!entry || entry.spec.type !== 'switch') continue;
       if (other.isSensor) continue;
+      // A bee weighs nothing. A plate it could press would be one the swarm
+      // decides, not the player.
+      if (isBee(sim.objects.get(other.gameId)?.spec)) continue;
       if (entry.spec.requires === 'heavy' && (other.mass ?? 0) < (entry.spec.minMass ?? 40)) continue;
       fireSwitch(sim, entry, (other.parent ?? other).gameId ?? other.gameId);
     }
@@ -234,6 +246,7 @@ export function buildSim(level) {
       // any sane threshold: a step is 220 u/s of TANGENTIAL motion and the
       // normal component of it is small.
       if (other.isSensor) continue;
+      if (isBee(sim.objects.get(other.gameId)?.spec)) continue;    // weighs nothing
       const pane = sim.statics.find((st) => st.body === hit && st.spec.brittle);
       if (!pane || sim.shattered.has(pane.spec.id)) continue;
       if (speed <= pane.spec.brittle) continue;
@@ -261,7 +274,10 @@ export function buildSim(level) {
 
     const entry = sim.objects.get(other.gameId);
     if (entry && isFatal(miloBody, other, entry.spec.lethal, pair)) {
+      const running = sim.run.outcome === OUTCOME.RUNNING;
       kill(sim.run, other.gameId);
+      // Nothing hit him hard: a bee got to him, and the label has to say so.
+      if (running && isBee(entry.spec)) sim.run.cause = 'stung';
       return;
     }
     // Non-fatal but hard enough to stagger him — unless it is the dog, which
@@ -301,6 +317,7 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
 
   updateMilo(sim.ctx, sim.milo, sim.simTime);
   for (const dog of sim.dogs) updateDog(sim.ctx, dog, sim.simTime);
+  stepBees(sim);
   physStep(sim.ctx);
   sim.simTime += PHYSICS_DT;
 

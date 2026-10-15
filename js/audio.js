@@ -248,6 +248,12 @@ export function blast() {
   blip('sine', 62, 0.45, 0.28, { sweepTo: 28 });
 }
 
+/** A bee hitting something: a short dry buzz, throttled so a swarm hums. */
+export function buzz() {
+  if (!ok() || !throttled('buzz', 70)) return;
+  blip('sawtooth', 210 + Math.random() * 60, 0.06, 0.035, { sweepTo: 180 });
+}
+
 export function closeCall(speed = 400) {
   if (!ok() || !throttled('closeCall', 200)) return;
   const s = Math.max(0, Math.min(1, speed / 800));

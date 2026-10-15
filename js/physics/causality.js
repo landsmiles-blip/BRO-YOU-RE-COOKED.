@@ -66,6 +66,9 @@ export function explain(c, reason, culpritId, stroke = null, cause = null) {
   // A blast reaches him through the air, so nothing "got through": he was
   // simply standing too near the barrel when the fuse ran out.
   if (cause === 'blast') return { label: 'HE WAS TOO CLOSE', culpritId };
+  // A bee does not hit him, it finds him: "it got through" would send the
+  // player looking for a gap in a wall, when the swarm came round the end.
+  if (cause === 'stung') return { label: 'STUNG!', culpritId };
 
   // Killed. Was the player's own drawing implicated in what hit him?
   if (culpritId === 'stroke')                     return { label: 'YOUR OWN LINE',   culpritId };

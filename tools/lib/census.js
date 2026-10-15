@@ -61,6 +61,12 @@ export function story(level, points) {
   // was steered onto and one a dropped line fell on are different levels.
   for (const [plate, by] of sim.pressedBy) words.push(`${plate}<-${by}`);
   for (const dog of sim.dogs) words.push(`${dog.spec.id}:${dog.turns ? `turned${dog.turns}` : 'straight'}${dog.alive ? '' : ':LOST'}`);
+  // THE SWARM: how much of it the line actually stopped. A bee level won with
+  // no bee ever touching the line was won by something other than a shield.
+  if (sim.bees?.length) {
+    const hit = sim.bees.filter((b) => sim.causality.strokeTouched.has(b.id)).length;
+    words.push(`bees:${hit === 0 ? 'NONE-ON-LINE' : hit * 2 >= sim.bees.length ? 'most-on-line' : 'some-on-line'}`);
+  }
   words.push(committed.anchors ? 'anchored' : 'dropped');
   if (through) words.push('THROUGH');
   destroySim(sim);
