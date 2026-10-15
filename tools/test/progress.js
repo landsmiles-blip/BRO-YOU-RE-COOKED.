@@ -9,7 +9,7 @@ import {
   createProgress, record, starsOn, totalStars, maxStars, cleared, isComplete,
   perfect, firstUnclearedIndex, serialise, deserialise,
   frontier, isOpen, isDone, isSkipped, markSkipped, resumeIndex, grantToken, spendToken, MAX_TOKENS,
-  noteRun,
+  noteRun, noteTry, noteTime, triesOn,
 } from '../../js/progress.js';
 import { LEVELS } from '../../js/levels.js';
 
@@ -142,6 +142,42 @@ check('keeps the valid stars alongside the junk', starsOn(dirty, ids[0]) === 3);
   check('a junk stat is dropped on its own; the rest are kept',
         bad.stats.wins === 0 && bad.stats.deaths === 0 && bad.stats.ink === 0 && bad.stats.calls === 7,
         JSON.stringify(bad.stats));
+}
+
+// ── tries per level, for the playtest ───────────────────────────────────
+// The numbers a playtest sends back to refit the curve. Runs to the FIRST win
+// and the time to it; anything after that win is the player replaying.
+{
+  const q = createProgress();
+  check('a fresh save has tried nothing', triesOn(q, ids[0]) === null);
+  noteTime(q, ids[0], 1500);
+  noteTry(q, ids[0], false); noteTry(q, ids[0], false);
+  noteTime(q, ids[0], 2500);
+  noteTry(q, ids[0], true);
+  noteTime(q, ids[0], 9999);          // after the first win: not counted
+  noteTry(q, ids[0], true);           // a replay: counted as a run, the first win stays at 3
+  const t = triesOn(q, ids[0]);
+  check('runs to the first win and the time to it are kept', t.runs === 4 && t.won === 3 && t.ms === 4000,
+        JSON.stringify(t));
+  noteTry(q, ids[1], false);
+  const back = deserialise(serialise(q));
+  check('tries survive a save and a load', JSON.stringify(back.tries) === JSON.stringify(q.tries),
+        JSON.stringify(back.tries));
+
+  // Junk in the tries is dropped entry by entry, never clamped, and never
+  // takes the rest of the save with it.
+  const raw = JSON.parse(serialise(q));
+  raw.tries[ids[2]] = { runs: 2, won: 5, ms: 10 };          // a first win after more runs than there were
+  raw.tries[ids[3]] = { runs: -1, won: 0, ms: 0 };
+  raw.tries[ids[4]] = { runs: 3, won: 1, ms: 'soon' };
+  raw.tries['not-a-level'] = { runs: 1, won: 1, ms: 1 };
+  const j = deserialise(JSON.stringify(raw));
+  check('a nonsense tries entry is dropped, not clamped',
+        !j.tries[ids[2]] && !j.tries[ids[3]] && !j.tries[ids[4]] && !j.tries['not-a-level']
+        && j.tries[ids[0]]?.won === 3 && starsOn(j, ids[0]) === starsOn(back, ids[0]),
+        Object.keys(j.tries).join(','));
+  const old = deserialise(JSON.stringify({ v: 3, best: { [ids[0]]: 2 } }));
+  check('a save from before tries existed loads with none', JSON.stringify(old.tries) === '{}' && starsOn(old, ids[0]) === 2);
 }
 
 console.log(failed ? `\n${failed} progress check(s) FAILED\n` : '\nprogress OK\n');

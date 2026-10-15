@@ -17,6 +17,7 @@ import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
 import {
   load as loadProgress, save as saveProgress, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped, resumeIndex,
+  triesOn, noteTime,
 } from './progress.js';
 import { A1, LEVELS, assertLevel, chapterOf } from './levels.js';
 import { POOL } from './dailyPool.js';
@@ -142,6 +143,8 @@ let firstFrameDone = false;
 let walkPhase = 0;          // DISTANCE-driven, so his feet never skate
 let lastMiloX = null;
 
+const ON_LEVEL = new Set([PHASE.LIVE, PHASE.FROZEN, PHASE.SIM, PHASE.DEATHCAM]);
+
 function frame(now) {
   requestAnimationFrame(frame);
 
@@ -149,6 +152,13 @@ function frame(now) {
   last = now;
 
   if (game.paused) return;             // nothing steps, nothing renders
+
+  // TIME ON THE LEVEL, for the playtest's minutes-per-level: wall-clock time
+  // while a campaign level is on screen — watching, drawing, the run and its
+  // replay — and not while the board, a result card or a pause is up.
+  if (game.levelIndex >= 0 && !game.isDaily && ON_LEVEL.has(game.phase)) {
+    noteTime(game.progress, game.level.id, Math.min(dt, 250));
+  }
 
   if (isSteppingPhase(game)) {
     // TIME DILATION. The sim keeps its fixed PHYSICS_DT; only the rate at which
@@ -210,6 +220,9 @@ function render() {
       chapterAt: (i) => chapterOf(i),
       skippedOf: (id) => isSkipped(g.progress, id),
       tokens: g.progress.tokens || 0,
+      // Only the playtest build (the published page) shows what each level
+      // took; the game itself shows stars.
+      triesOf: globalThis.BYC_PLAYTEST ? (id) => triesOn(g.progress, id) : null,
       current: g.levelIndex,
       total: totalStars(g.progress),
       max: maxStars(),

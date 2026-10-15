@@ -21,7 +21,7 @@ import { DEATH_CAM_MS } from './render/deathcam.js';
 import { track } from './platform/analytics.js';
 import {
   createProgress, record, save, isComplete, firstUnclearedIndex, recordDaily, resumeIndex,
-  isDone, markSkipped, grantToken, spendToken, noteRun,
+  isDone, markSkipped, grantToken, spendToken, noteRun, noteTry,
 } from './progress.js';
 import { dayNumber, dailyLevel } from './daily.js';
 import * as audio from './audio.js';
@@ -110,6 +110,14 @@ export function tick(g, dtMs) {
       track('run_end', { level: g.level.id, outcome: o, attempt: g.attempt });
       noteRun(g.progress, { won: o === OUTCOME.SUCCESS, died: o !== OUTCOME.SUCCESS && o !== OUTCOME.ABORTED,
                             ink: g.lastLength, calls: g.sim.closeCalls.length });
+      if (o !== OUTCOME.ABORTED && g.levelIndex >= 0 && !g.isDaily) {
+        noteTry(g.progress, g.level.id, o === OUTCOME.SUCCESS);
+        // A playtest's most useful numbers are on the levels nobody beat, and
+        // those are exactly the runs no win would ever save, so the playtest
+        // build writes every loss too. The others keep the old rule: a run of
+        // deaths is held in memory and written with the next win.
+        if (o !== OUTCOME.SUCCESS && globalThis.BYC_PLAYTEST) save(g.progress);
+      }
       if (o === OUTCOME.SUCCESS) {
         g.stars = starsFor(g.level.id, g.lastLength);
         // A DAILY WIN EXTENDS THE STREAK, and only a daily win. The budget is

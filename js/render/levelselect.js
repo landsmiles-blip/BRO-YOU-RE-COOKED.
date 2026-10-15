@@ -90,7 +90,7 @@ const inside = (r, x, y) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y +
 
 export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
                                   openAt = () => true, skippedOf = () => false, tokens = 0,
-                                  chapterAt = () => null }) {
+                                  chapterAt = () => null, triesOf = null }) {
   const box = layout(levels.length);
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
 
@@ -98,8 +98,11 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
   ctx.fillRect(0, 0, view.cssW, view.cssH);
 
   drawText(ctx, `${total} / ${max}`, 0.5, 0.075, Math.max(20, view.cssH * 0.042), C.anchor);
-  drawText(ctx, tokens > 0 ? `stars · ${tokens} skip token${tokens > 1 ? 's' : ''}` : 'stars',
-           0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.55)');
+  // THE PLAYTEST BUILD says what the session cost, in runs and minutes, where
+  // the rest of the game says "stars".
+  const sub = triesOf ? playtestLine(levels, triesOf)
+    : tokens > 0 ? `stars · ${tokens} skip token${tokens > 1 ? 's' : ''}` : 'stars';
+  drawText(ctx, sub, 0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.55)');
 
   // Close: an X drawn, like everything else in this game.
   ctx.strokeStyle = 'rgba(232,226,214,0.6)';
@@ -192,8 +195,19 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
     if (locked) continue;
 
     // The verb, when there is room for it to be readable rather than a smudge.
+    // In the playtest build, what a person actually took instead: runs to the
+    // first win and the time it took, or runs and a cross if nobody beat it —
+    // so a tester can screenshot the board and the curve can be refit from
+    // people rather than from the sweep.
     const vSize = Math.min(card.w * 0.16, Math.max(7, card.h * 0.13));
-    if (vSize >= 8 && card.w > 54) {
+    const t = triesOf?.(lvl.id);
+    if (t && t.runs > 0) {
+      const tSize = Math.max(8, Math.min(card.w * 0.17, card.h * 0.15));
+      ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = t.won ? C.anchor : 'rgba(232,226,214,0.75)';   // never the danger red: this is not danger
+      ctx.fillText(t.won ? `${t.won}× ${clock(t.ms)}` : `${t.runs}× ✗`,
+                   card.x + card.w / 2, card.y + card.h * 0.60, card.w - 4);
+    } else if (vSize >= 8 && card.w > 54) {
       ctx.font = `700 ${vSize}px ui-sans-serif, system-ui, sans-serif`;
       ctx.fillStyle = 'rgba(232,226,214,0.5)';
       ctx.fillText(lvl.verb, card.x + card.w / 2, card.y + card.h * 0.60);
@@ -219,4 +233,18 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
     }
   }
   return box;
+}
+
+const clock = (ms) => `${Math.floor(ms / 60000)}:${String(Math.floor(ms / 1000) % 60).padStart(2, '0')}`;
+
+/** "playtest · 23 won · 61 runs · 18:40", over every level played. */
+function playtestLine(levels, triesOf) {
+  let won = 0, runs = 0, ms = 0;
+  for (const l of levels) {
+    const t = triesOf(l.id);
+    if (!t) continue;
+    runs += t.runs; ms += t.ms;
+    if (t.won) won += 1;
+  }
+  return `playtest · ${won} won · ${runs} runs · ${clock(ms)}`;
 }

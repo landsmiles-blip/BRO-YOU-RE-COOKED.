@@ -41,8 +41,38 @@ export const MAX_TOKENS = 3;
  */
 export function createProgress() {
   return { v: SCHEMA, best: {}, finishedAt: 0, streak: 0, lastDailyDay: 0, skipped: {}, tokens: 0,
-           stats: freshStats(), muted: false };
+           stats: freshStats(), muted: false, tries: {} };
 }
+
+// ── tries per level, for the playtest ───────────────────────────────────
+//
+// THE CURVE IS SIMULATED UNTIL A PERSON PLAYS IT. Every slot's target comes
+// from tries = 1 / (breadth x hand rate), measured with random strokes and a
+// model hand, and docs/PLAN.md says to refit it the day real attempt counts
+// exist. This is where they come from: for each level, how many runs a person
+// took before the first win, and how long they spent getting there. It never
+// leaves the device — the playtest build shows it on the board and the tester
+// screenshots it.
+//
+//   runs   every run that ended in a win or a loss (a refused stroke is not one)
+//   won    runs taken to the FIRST win, 0 until there is one
+//   ms     time on the level up to that first win, play and replay included
+const freshTry = () => ({ runs: 0, won: 0, ms: 0 });
+
+/** Count one finished run on a level. */
+export function noteTry(p, levelId, won) {
+  const t = (p.tries ??= {})[levelId] ??= freshTry();
+  t.runs += 1;
+  if (won && !t.won) t.won = t.runs;
+}
+
+/** Time spent on a level, counted only until it is first won. */
+export function noteTime(p, levelId, ms) {
+  const t = (p.tries ??= {})[levelId] ??= freshTry();
+  if (!t.won) t.ms += ms;
+}
+
+export const triesOn = (p, levelId) => p.tries?.[levelId] ?? null;
 
 // ── lifetime stats, for the ending's card ───────────────────────────────
 //
@@ -144,7 +174,7 @@ export function serialise(p) {
     v: SCHEMA, best: p.best, finishedAt: p.finishedAt || 0,
     streak: p.streak || 0, lastDailyDay: p.lastDailyDay || 0,
     skipped: Object.keys(p.skipped || {}).filter((id) => p.skipped[id]), tokens: p.tokens || 0,
-    stats: p.stats ?? freshStats(), muted: !!p.muted,
+    stats: p.stats ?? freshStats(), muted: !!p.muted, tries: p.tries ?? {},
   });
 }
 
@@ -217,6 +247,16 @@ export function deserialise(text) {
   for (const k of Object.keys(fresh.stats)) {
     const n = Number(raw.stats?.[k]);
     fresh.stats[k] = (Number.isFinite(n) && n >= 0 && n < 1e12) ? n : 0;
+  }
+  // Tries, the same way: unknown ids and nonsense entries are DROPPED whole,
+  // and a first win can never be later than the runs it is counted in.
+  for (const [id, t] of Object.entries(raw.tries && typeof raw.tries === 'object' ? raw.tries : {})) {
+    if (!known.has(id) || !t || typeof t !== 'object') continue;
+    const runs = Number(t.runs), won = Number(t.won), ms = Number(t.ms);
+    if (!Number.isInteger(runs) || runs < 0 || runs > 1e6) continue;
+    if (!Number.isInteger(won) || won < 0 || won > runs) continue;
+    if (!Number.isFinite(ms) || ms < 0 || ms > 1e10) continue;
+    fresh.tries[id] = { runs, won, ms };
   }
   return fresh;
 }

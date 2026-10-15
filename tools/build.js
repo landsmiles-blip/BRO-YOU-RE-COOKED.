@@ -105,6 +105,11 @@ const gz = gzipSync(html).length;
 // so this variant ships the page CONTENTS only. Same game, same bundle, same
 // zero-request guarantee — just no outer tags to collide with the wrapper.
 //
+// IT IS ALSO THE PLAYTEST BUILD. The published page is what people are handed
+// to play, so it sets BYC_PLAYTEST: every run is saved, losses included, and
+// the level board shows runs to the first win and the time it took on each
+// level, for the tester to screenshot. Nothing leaves the device.
+//
 // Deliberately single-theme: this is a paper-and-ink world, so every colour is
 // painted explicitly (including the body ground) rather than inheriting the
 // host's, which is what keeps it holding on a light or a dark host.
@@ -123,6 +128,7 @@ html, body {
 #stage { display: block; width: 100%; height: 100%; background: #E8E2D6; }
 </style>
 <canvas id="stage"></canvas>
+<script>globalThis.BYC_PLAYTEST = true;</script>
 <script>${matter}</script>
 <script>${gameJs}</script>
 `;
