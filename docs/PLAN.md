@@ -1,18 +1,14 @@
 # PLAN — from 21 levels to a game one person comes back to
 
-> **Status, 13 Oct, late.** 31 levels. Since the morning: COVER, KEEP AWAY,
-> FENCE, SHELTER and PROTECT (chapter 3); BALLOON, the balloon chapter's
-> intro, and LOW BLOW, a floating barrel held down at the fence (chapter 5);
-> GUST, where the air carries Milo, and KITE, where it carries the player's
-> own line (chapter 4); TAILWIND (chapter 6). Plus all of section 7, the daily
-> re-baked with them, and a render fix: ceiling plates were drawn pressed from
-> above. Every brief that died, and why, is in docs/batch/levels.md. The
-> pattern holds: an old noun gives a new decision only when it acts on new
-> CARGO (Milo, the line) or when two nouns make a constraint neither has alone
-> (LOW BLOW's height window). Chapters 4–6 have 15 open slots; most
-> combinations measured so far collapse into decisions already asked, so the
-> rest wait on the Saturday checkpoint: new nouns, or a looser twin rule.
-
+> **Status, 15 Oct. DECIDED: playtest first, at 36 levels.** Added since the
+> 13th: the dog (a second walker the line can steer) and its levels GOOD BOY,
+> DOWN BOY, HEADS UP, INCOMING and STAY; the step-up fix (a straight ramp was
+> a wall); the twin rule amended so a new element may re-ask an old question.
+> Re-asks then ran dry — one keeper in seven sketches on the 14th, every dead
+> one logged in docs/batch/levels.md — so content is frozen at 36 for the
+> Saturday playtest, the time goes into the first ten minutes and a build
+> that records tries per level, and the NEXT ELEMENT is chosen from what the
+> playtest shows. The 24 open slots stay in `npm run curve` as the build list.
 
 **Status: APPROVED 2026-10-13, with the rewarded SKIP. In execution.** The
 difficulty equation (4.2), the exact build list (4.4) and the skip design

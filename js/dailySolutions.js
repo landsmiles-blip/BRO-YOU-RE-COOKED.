@@ -582,6 +582,38 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a56-stay": {
+    "id": "a56-stay",
+    "ink": 165,
+    "winners": 25,
+    "robust": 10,
+    "anchoredRobust": 10,
+    "handRate": 0.4,
+    "solution": {
+      "family": "line",
+      "length": 110,
+      "parts": 9,
+      "anchors": 1,
+      "points": [
+        {
+          "x": 300,
+          "y": 879
+        },
+        {
+          "x": 300,
+          "y": 915.7
+        },
+        {
+          "x": 300,
+          "y": 952.3
+        },
+        {
+          "x": 300,
+          "y": 989
+        }
+      ]
+    }
+  },
   "a55-protect": {
     "id": "a55-protect",
     "ink": 230,

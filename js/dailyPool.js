@@ -3401,6 +3401,7 @@ export const DAILY_CAMPAIGN = [
   "a11-deadweight",
   "a53-cover",
   "a52-keepaway",
+  "a56-stay",
   "a55-protect",
   "a90-gust",
   "a4-catch",
