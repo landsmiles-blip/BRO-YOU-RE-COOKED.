@@ -216,14 +216,14 @@ export const SOLVER = {
   },
   "a34-sink": {
     "solvable": true,
-    "solutionBreadth": 0.0204,
-    "precisionFloor": 30,
+    "solutionBreadth": 0.0544,
+    "precisionFloor": 45,
     "worstJitter": 1,
     "distinctFamilies": 4,
     "twoStarLength": 288,
-    "threeStarLength": 230,
+    "threeStarLength": 222,
     "shortestWin": 102,
-    "measuredAt": "2026-09-16"
+    "measuredAt": "2026-10-15"
   },
   "a43-crack": {
     "solvable": true,

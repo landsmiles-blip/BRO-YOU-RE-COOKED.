@@ -806,6 +806,38 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a34-sink": {
+    "id": "a34-sink",
+    "ink": 222,
+    "winners": 20,
+    "robust": 8,
+    "anchoredRobust": 8,
+    "handRate": 0.4,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 371.4,
+          "y": 734.8
+        },
+        {
+          "x": 323.8,
+          "y": 762.3
+        },
+        {
+          "x": 276.2,
+          "y": 789.8
+        },
+        {
+          "x": 228.6,
+          "y": 817.3
+        }
+      ]
+    }
+  },
   "a30-float": {
     "id": "a30-float",
     "ink": 229,
@@ -898,54 +930,6 @@ export const DAILY_SOLUTIONS = {
         {
           "x": 399.6,
           "y": 791.1
-        }
-      ]
-    }
-  },
-  "a34-sink": {
-    "id": "a34-sink",
-    "ink": 230,
-    "winners": 9,
-    "robust": 4,
-    "anchoredRobust": 4,
-    "handRate": 0.444,
-    "solution": {
-      "family": "span",
-      "length": 166,
-      "parts": 8,
-      "anchors": 5,
-      "points": [
-        {
-          "x": 300,
-          "y": 820
-        },
-        {
-          "x": 311.4,
-          "y": 789.6
-        },
-        {
-          "x": 322.9,
-          "y": 765.3
-        },
-        {
-          "x": 334.3,
-          "y": 751.8
-        },
-        {
-          "x": 345.7,
-          "y": 751.8
-        },
-        {
-          "x": 357.1,
-          "y": 765.3
-        },
-        {
-          "x": 368.6,
-          "y": 789.6
-        },
-        {
-          "x": 380,
-          "y": 820
         }
       ]
     }

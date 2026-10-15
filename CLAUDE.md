@@ -697,6 +697,14 @@ came out of proving it:
   line after about one second and the air takes it. Crossing a column on foot
   works if it takes under ~0.6 s; standing or walking in one does not. (DRIFT,
   14 Oct.)
+- **THE FREEZE MUST LEAVE ROOM TO DRAW, AND SOMETHING TO DRAW FROM.** SINK
+  passed every gate at 90 tries and a person called it unplayable: at the
+  freeze its balloon was 55 units — about 30 pixels on a phone — above the pan
+  it had to be tilted off, and a slope drawn in that open air touched nothing,
+  fell flat and did nothing. The solver drew the few strokes that happened to
+  start on the pan; a person draws where the problem looks like it is. Ask of
+  every frozen frame: is there a finger's width of room where the answer goes,
+  and does a line drawn there touch something that holds it?
 - **A FREE LINE IS A THING, AND A LEVEL ABOUT IT SAYS SO.** KITE's answer is a
   dropped line, so it declares `solutionKind: 'unanchored'` like DROP and is
   held to the stricter rule (most winners must survive a hand) instead of the

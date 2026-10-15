@@ -1192,6 +1192,20 @@ export const A31 = {
 // So doing nothing is a DEAD END rather than a death, the same shape level 18
 // uses, and the stroke is the tilted floor underneath.
 //
+// PLAYTEST, 15 OCT: "UNPLAYABLE". It measured 90 tries, the hardest level in
+// the game, and the film said why in one frame. At the freeze the balloon was
+// 55 units above its pan — a sliver about 30 pixels tall on a phone — and it
+// landed 200 ms later, so the only winning stroke was a slope drawn into that
+// sliver without touching the balloon. Worse, a slope drawn in the open air
+// above the pan touches nothing, so it FALLS and lies flat, and the balloon
+// just sits on it: every stroke a person would draw failed, and only lines
+// that happened to start on the pan itself worked. Two changes, the decision
+// untouched: the balloon starts 100 units higher, so there is room to draw
+// under it, and a POST at the pan's left end gives a slope something to hang
+// from. Every natural slope from the post down across the pan now wins (five
+// of five tried); 81% of the sweep's wins are exactly that. 26 tries, so it
+// left the boss slot for an early one.
+//
 // The plate is weight-gated rather than lidded because the gap under a lid is
 // wide enough to draw a line in and drop it — the fault A30 caught. Density is
 // free here for the third time running: the column and gravity are both
@@ -1215,9 +1229,12 @@ export const A34 = {
     // automatically a better one. 160 is where a short, ordinary stroke does
     // the job.
     { id: 'pan',    type: 'platform', x: 300, y: 820, w: 160, h: 18 },
+    // The post a slope hangs from. Without it a line drawn under the balloon
+    // touches nothing, falls flat on the pan and changes nothing.
+    { id: 'post',   type: 'platform', x: 288, y: 620, w: 18,  h: 218 },
   ],
   objects: [
-    { id: 'balloon', type: 'boulder', x: 380, y: 700, radius: 24,
+    { id: 'balloon', type: 'boulder', x: 380, y: 600, radius: 24,
       density: 0.30, restitution: 0.05, friction: 0.1, lift: 2400,
       lethal: { kind: 'none' } },
     // Off to the right and high, so it is only reachable by a balloon that got
@@ -1327,7 +1344,7 @@ export const CHAPTERS = [
   { name: 'AIR',            tag: 'it carries whatever is in it',
     slots: [A28,  CH4.A90, null, null, A4,   CH4.A91, A19,  null, null, A29] },
   { name: 'BALLOONS',       tag: 'it only goes up',
-    slots: [CH5.A100, null, null, null, A30,  null, CH5.A101, A13, null, A34] },
+    slots: [CH5.A100, A34, null, null, A30,  null, CH5.A101, A13, null, null] },
   { name: 'ALL OF IT',      tag: 'everything at once',
     slots: [null, null, null, CH6.A111, A31, null, A43,  A21,  null, null] },
 ];

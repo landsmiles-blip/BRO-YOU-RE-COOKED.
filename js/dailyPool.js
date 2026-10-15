@@ -3408,10 +3408,10 @@ export const DAILY_CAMPAIGN = [
   "a19-updraft",
   "a29-rail",
   "a100-balloon",
+  "a34-sink",
   "a30-float",
   "a101-low-blow",
   "a13-yeet",
-  "a34-sink",
   "a111-tailwind",
   "a31-thorns",
   "a21-lever"
