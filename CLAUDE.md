@@ -799,6 +799,21 @@ touch. js/bees.js; tools/test/bees.js holds the rules.
   Close calls now need a clear line of sight from the bee to him.
 - **IT WEIGHS NOTHING.** No plate, no pane: a plate a bee could press would be
   one the swarm decides, not the player.
+- **A SWARM BEHIND HIM NEVER CATCHES HIM.** Bees fly at ~1.8x his speed but
+  weave, and a swarm that is behind him when he passes closes too slowly to
+  reach him before the door. TWO HOLES died of it: the hole nearer the door
+  was never lethal, even with a hive over each hole. **The danger must be
+  AHEAD of him or above him on the way, never behind.**
+- **A BEE LEVEL'S ID IS ITS SEED.** The weave comes from a generator seeded
+  from the level id, so renaming a level re-rolls its swarm: HIVE measured 35
+  tries as a sketch and 46 under its real id. **Sketch bee levels under their
+  final id** (spread a shipped level and change one thing, as the bee sketches
+  in docs/batch/levels.md did).
+- **THE DOG RACES THE SWARM.** A dog the line has not saved can still be alive
+  when Milo reaches the door — DOGHOUSE's first build "won" 19% of the time
+  with the dog stung a moment after the finish. Hold Milo at a gate the dog
+  opens, so a dog that is not saved never lets him out (the dog section's own
+  rule, which the bees made urgent).
 - **A LINE'S CONTACTS ARE THE BODY'S, NOT THE PART'S** — found while counting
   bees on the line. Matter reports a compound body's contacts on the PART that
   touched, and only the whole stroke carries a game id, so a line of more than
@@ -1001,7 +1016,9 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
 - **A new level must fit the curve, not just pass its own gates.** Place it,
   run the curve gate, and move it until it passes.
 - **EVERY SLOT HAS A TARGET NOW, FROM ONE EQUATION** (tools/lib/difficulty.js):
-  `T(c, k) = 8.6 · 1.26^c · 4.0^p(k)` over six chapters of ten, the same
+  `T(c, k) = 8.6 · 1.26^c · 4.0^p(k)` over seven chapters of ten (six until
+  BEES was inserted as chapter 3 on 18 Oct — checked first: every built level
+  stays in its band when the later chapters move up one), the same
   sawtooth in each (INTRO, three DEVELOPs, SPIKE, BREATHER, two DEVELOPs,
   BREATHER, BOSS) — two hard levels in ten, a breather after each, the first
   boss at level 10, which is where the industry puts them. T0, G and S are the

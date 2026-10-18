@@ -192,7 +192,31 @@ console.log('\nBEES — a swarm from a hive, stopped only by something solid');
   destroySim(sim);
 }
 
-// 10. A hive is checked like any other object.
+// 10. A bee behind a line is not a near miss. He walks a bridge over a pit
+//     full of bees: they press up under his feet, within a body's width of
+//     him, all the way across — and none of it is a close call. Counted, the
+//     first such level filmed five CLOSE banners and five slow-motions.
+{
+  const lvl = level({
+    milo: { start: { x: 40, y: 1000 }, speed: MILO.speed },
+    freezeAt: 400,
+    goal: { id: 'goal', x: 650, y: 1000, w: 70, h: 140 },
+    static: [
+      { id: 'bankL', type: 'platform', x: 0, y: 1000, w: 220, h: 280 },
+      { id: 'bankR', type: 'platform', x: 500, y: 1000, w: 220, h: 280 },
+      { id: 'pitFloor', type: 'platform', x: 220, y: 1240, w: 280, h: 40 },
+    ],
+    objects: [{ id: 'hive', type: 'hive', x: 360, y: 1180, radius: 24, bees: 12, attackAt: 600, guard: 50 }],
+  });
+  const { sim, c } = play(lvl, line([200, 1000], [360, 1000], [520, 1000]));
+  const under = [...sim.causality.strokeTouched].filter((id) => sim.objects.get(id)?.spec.type === 'bee').length;
+  check('a bee pressed under the bridge he walks on is not a close call',
+    c.ok && sim.run.outcome === OUTCOME.SUCCESS && under >= 6 && sim.closeCalls.length === 0,
+    `${sim.run.outcome}, ${under} bees under the line, ${sim.closeCalls.length} close calls`);
+  destroySim(sim);
+}
+
+// 11. A hive is checked like any other object.
 {
   let threw = false;
   try { assertLevel(level({ objects: [{ id: 'hive', type: 'hive', x: 380, y: 646, radius: 26, bees: 0 }] })); } catch { threw = true; }

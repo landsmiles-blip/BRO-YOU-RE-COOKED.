@@ -14,7 +14,8 @@
 // far fewer attempts than a random stroke would. Real players' data replaces
 // it the day there is any; until then it is the best measurement there is.
 //
-// WHERE A LEVEL SHOULD SIT. The game is six chapters of ten. Slot k of chapter c
+// WHERE A LEVEL SHOULD SIT. The game is seven chapters of ten (BEES went in as
+// chapter 3 on 18 Oct; every built level kept its band). Slot k of chapter c
 // (both counted from 0) has a target:
 //
 //     T(c, k) = T0 · G^c · S^p(k)

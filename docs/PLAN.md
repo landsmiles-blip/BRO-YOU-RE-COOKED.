@@ -1,5 +1,15 @@
 # PLAN — from 21 levels to a game one person comes back to
 
+> **Status, 18 Oct. BEES ADDED: 42 levels in seven chapters.** The case study
+> (docs/CASE_STUDY.md) picked Save the Doge's swarm as the next element; it is
+> built (js/bees.js) and has its own chapter, inserted as chapter 3 between
+> PLATES & GATES and TNT — checked before moving anything: every built level
+> stays inside its slot's band. Six bee levels pass every gate, are filmed won
+> and lost, and fill slots 21, 24, 25, 27, 28 and 30 (SWARM, STAIRS, DOGHOUSE,
+> HIVE, TOP DOG, WALKIES); slots 22, 23, 26 and 29 are open. The game is now
+> seventy slots; the other additions from the case study — variants, the star
+> shop, reunion levels — come next.
+>
 > **Status, 15 Oct. DECIDED: playtest first, at 36 levels.** Added since the
 > 13th: the dog (a second walker the line can steer) and its levels GOOD BOY,
 > DOWN BOY, HEADS UP, INCOMING and STAY; the step-up fix (a straight ramp was
