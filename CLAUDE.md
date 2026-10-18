@@ -763,6 +763,49 @@ came out of proving it:
   needle too, but every bridge drawn by hand wins: the sweep's winners are
   edge-to-edge spans in a small corner of a big level. Parked, not dead.
 
+## THE BEES — a swarm, added 2026-10-15
+
+The case study's element (docs/CASE_STUDY.md): Save the Doge's twist on the
+draw-a-line formula. A hive releases bees that fly at the NEAREST living walker
+(Milo or a dog), weaving either side of the straight line to it, and kill by
+touch. js/bees.js; tools/test/bees.js holds the rules.
+
+- **THEY ARE DUMB HOMERS, AND THAT IS THE NOUN.** A bee flies straight at him
+  and has no idea how to get round anything. Measured: a hive in a pot below
+  him never came out — the swarm pressed against the pot's floor toward him
+  for the whole run — and a flat line hung right under a hive held all eight
+  bees while he walked the whole level. They only find a way round a line by
+  SLIDING along it as he moves, so a shield works while it stays between them
+  and him, and fails at its END. A window off their straight line is never
+  found (the window sketch: doing nothing won).
+- **A SEAL IN THIN GEOMETRY IS A NEEDLE; A SLOT IN THICK GEOMETRY IS NOT.**
+  Eight to twelve chaotic bees find any gap a shaky line leaves. Closing a 340u
+  gap between two 20u roofs measured 146 tries; a 120u slot in a 60u-thick roof
+  measured 18, because any line laid in the slot, at any height in it, seals it,
+  and a line dropped above it falls in and seals it too. Bee size changed
+  nothing (radius 7 and 10 measured identical). **Put the gap the line must
+  close in something thick.**
+- **THE SOLVER AIMS AT TOP CORNERS.** Its span family draws between the top
+  edges of visible things, so a seal whose ends are BOTTOM corners (a cork under
+  a hollow's mouth) is never proposed and measures 275 tries however easy it
+  looks. Design the answer to start and end on something's top.
+- **IN A CORRIDOR THEY ARE SLOW.** Weaving off the walls, a swarm chasing him
+  down a tunnel closes at ~140 u/s, not the 180 its speed promises, so "shut
+  them in behind him" either never catches him or leaves a window to draw in
+  narrower than the solver's grid. Dead.
+- **A BEE BEHIND A LINE IS NOT A NEAR MISS.** A swarm pressed under the bridge
+  he walks on passes within a body's width of him all the way across; counted
+  as close calls, it filmed five CLOSE banners and five slow-motions in one run.
+  Close calls now need a clear line of sight from the bee to him.
+- **IT WEIGHS NOTHING.** No plate, no pane: a plate a bee could press would be
+  one the swarm decides, not the player.
+- **A LINE'S CONTACTS ARE THE BODY'S, NOT THE PART'S** — found while counting
+  bees on the line. Matter reports a compound body's contacts on the PART that
+  touched, and only the whole stroke carries a game id, so a line of more than
+  one segment touched nothing as far as the death explanation knew: a rock it
+  had deflected into him replayed as "NOTHING STOPPED IT". Read through
+  `part.parent`.
+
 ## THE HAND MODEL
 
 `tools/test/lib/hand.js` is the ONE definition of what a real stroke looks like.
