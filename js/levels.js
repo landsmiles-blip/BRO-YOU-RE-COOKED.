@@ -24,6 +24,7 @@ import { LETHAL_KINDS } from './hazards.js';
 // file. Each is placed into its slot in CHAPTERS below as CH3.A51 and so on.
 import * as CH1 from './levels/ch1-line.js';
 import * as CH2 from './levels/ch2-plates.js';
+import * as BEES from './levels/ch-bees.js';
 import * as CH3 from './levels/ch3-tnt.js';
 import * as CH4 from './levels/ch4-air.js';
 import * as CH5 from './levels/ch5-balloons.js';
@@ -1341,6 +1342,8 @@ export const CHAPTERS = [
     slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
   { name: 'PLATES & GATES', tag: 'something has to press it',
     slots: [A9,   CH2.A80, null, null, A10,  CH2.A82, CH2.A83, CH2.A81, null, A11] },
+  { name: 'BEES',           tag: 'they fly straight at whatever is alive',
+    slots: [BEES.A120, BEES.A121, BEES.A122, null, BEES.A123, null, BEES.A125, BEES.A124, null, BEES.A126] },
   { name: 'TNT',            tag: 'it goes off wherever it is',
     slots: [CH3.A53, CH3.A52, CH3.A56, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
   { name: 'AIR',            tag: 'it carries whatever is in it',

@@ -400,5 +400,82 @@ export const SOLVER = {
     "threeStarLength": 165,
     "shortestWin": 96,
     "measuredAt": "2026-10-14"
+  },
+  "a120-swarm": {
+    "solvable": true,
+    "solutionBreadth": 0.0956,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 6,
+    "twoStarLength": 315,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-18"
+  },
+  "a121-two-holes": {
+    "solvable": true,
+    "solutionBreadth": 0.0642,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 326,
+    "threeStarLength": 250,
+    "shortestWin": 100,
+    "measuredAt": "2026-10-18"
+  },
+  "a122-doghouse": {
+    "solvable": true,
+    "solutionBreadth": 0.0464,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 4,
+    "twoStarLength": 230,
+    "threeStarLength": 201,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-18"
+  },
+  "a123-hive": {
+    "solvable": true,
+    "solutionBreadth": 0.0384,
+    "precisionFloor": 45,
+    "worstJitter": 1,
+    "distinctFamilies": 5,
+    "twoStarLength": 290,
+    "threeStarLength": 260,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-18"
+  },
+  "a124-top-dog": {
+    "solvable": true,
+    "solutionBreadth": 0.0253,
+    "precisionFloor": 65,
+    "worstJitter": 4,
+    "distinctFamilies": 4,
+    "twoStarLength": 270,
+    "threeStarLength": 224,
+    "shortestWin": 165,
+    "measuredAt": "2026-10-18"
+  },
+  "a126-walkies": {
+    "solvable": true,
+    "solutionBreadth": 0.0207,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 290,
+    "threeStarLength": 230,
+    "shortestWin": 120,
+    "measuredAt": "2026-10-18"
+  },
+  "a125-stairs": {
+    "solvable": true,
+    "solutionBreadth": 0.0307,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 6,
+    "twoStarLength": 300,
+    "threeStarLength": 184,
+    "shortestWin": 100,
+    "measuredAt": "2026-10-18"
   }
 };
