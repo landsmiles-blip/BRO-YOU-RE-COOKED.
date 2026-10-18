@@ -61,38 +61,6 @@ export const A120 = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────
-// A121 — TWO HOLES.  SWARM's question, twice over.
-//
-// A long roof over a long walk, with two gaps and the hive over the middle
-// section between them. Closing one gap is not enough: they go for the other.
-// One line has to cover both — laid along the roof's top, or a sag that dips
-// into each. A variant of SWARM in the case study's sense: the same decision,
-// and a longer line, on a different frame.
-// ─────────────────────────────────────────────────────────────────────────
-export const A121 = {
-  id: 'a121-two-holes',
-  hint: 'THERE ARE TWO WAYS IN',
-  world: 'backyard',
-  verb: 'TWO HOLES',
-  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
-  freezeAt: 500,
-  goal: { id: 'goal', x: 620, y: 1152, w: 70, h: 140 },
-  static: [
-    ground,
-    { id: 'post', type: 'platform', x: 0, y: 960, w: 20, h: 192 },
-    { id: 'roofL', type: 'platform', x: 0, y: 960, w: 180, h: 60 },
-    { id: 'roofM', type: 'platform', x: 280, y: 960, w: 120, h: 60 },
-    { id: 'roofR', type: 'platform', x: 500, y: 960, w: 220, h: 60 },
-    { id: 'wall', type: 'platform', x: 700, y: 960, w: 20, h: 192 },
-    { id: 'branch', type: 'platform', x: 260, y: 694, w: 160, h: 16 },
-  ],
-  objects: [{ id: 'hive', type: 'hive', x: 340, y: 740, radius: 26, bees: 6 }],
-  zones: [],
-  drawing: { maxLength: 420 },
-  solver: null,
-};
-
-// ─────────────────────────────────────────────────────────────────────────
 // A122 — DOGHOUSE.  Bees and the dog: shut it in.
 //
 // The dog is trotting out of its house along the deck, into the open under the
@@ -100,30 +68,43 @@ export const A121 = {
 // so it is the dog they want. A line across the house's long front, anywhere
 // ahead of the dog, turns it back inside and shuts the swarm out at once.
 //
-// The house's awning is the dial: from 360 units long, 46 tries; 400, 36;
-// 440, 29 — a longer awning is more room ahead of the dog to draw in. There is
+// The house's awning is the dial — a longer one is more room ahead of the dog
+// to draw in — and it measures as this chapter's spike, not an early level:
+// honest (below), 46 tries at 480 units with the freeze at 300ms. There is
 // a post at the deck's far end so a dog that gets out still has somewhere to
 // pace rather than walking off the world.
+//
+// MILO WAITS AT A GATE, AND THE DOG OPENS IT ON ITS WAY BACK IN. The first
+// build had him walk straight home, and the race check found 19% of its wins
+// were a dog still out in the swarm when he reached the door, stung a moment
+// later — a win a player redrawing the same line loses half the time. The
+// plate at the back of the house fires only for a dog the line has turned
+// round, so a dog left outside never lets him out. It cost the level its easy
+// wins: 29 tries with the races counted, 46-55 without. The gate is right by
+// his start so his walk home is long: with it 120 units further on, a line
+// that leaked slowly still lost the dog after the finish in 6% of the wins.
 // ─────────────────────────────────────────────────────────────────────────
 export const A122 = {
   id: 'a122-doghouse',
   hint: 'THE DOG IS HEADING OUT',
   world: 'backyard',
   verb: 'DOGHOUSE',
-  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
-  freezeAt: 400,
+  milo: { start: { x: 40, y: 1152 }, speed: MILO.speed },
+  freezeAt: 300,
   goal: { id: 'goal', x: 665, y: 1152, w: 70, h: 140 },
   static: [
     ground,
     { id: 'deck', type: 'platform', x: 0, y: 800, w: 720, h: 60 },
     { id: 'back', type: 'platform', x: 0, y: 650, w: 30, h: 150 },
-    { id: 'house', type: 'platform', x: 0, y: 650, w: 440, h: 50 },
+    { id: 'house', type: 'platform', x: 0, y: 650, w: 480, h: 50 },
     { id: 'end', type: 'platform', x: 700, y: 700, w: 20, h: 100 },
-    { id: 'branch', type: 'platform', x: 440, y: 474, w: 160, h: 16 },
+    { id: 'branch', type: 'platform', x: 490, y: 474, w: 160, h: 16 },
   ],
   objects: [
-    { id: 'hive', type: 'hive', x: 520, y: 520, radius: 26, bees: 8 },
-    { id: 'dog', type: 'dog', x: 110, y: 800, dir: 1 },
+    { id: 'hive', type: 'hive', x: 570, y: 520, radius: 26, bees: 8 },
+    { id: 'dog', type: 'dog', x: 130, y: 800, dir: 1 },
+    { id: 'plate', type: 'switch', x: 35, y: 788, w: 70, h: 12, triggers: ['gate'] },
+    { id: 'gate', type: 'gate', x: 80, y: 1012, w: 20, h: 140 },
   ],
   zones: [],
   drawing: { maxLength: 260 },
@@ -142,6 +123,7 @@ export const A122 = {
 //
 // One hook measured 40-58 tries (the swarm's weave decides how soon they slide
 // off a short lid); two, a lid can hang from either and they are 140 apart.
+// Their length is the dial: 110 units, 45 tries; 150, 39.
 // ─────────────────────────────────────────────────────────────────────────
 export const A123 = {
   id: 'a123-hive',
@@ -154,8 +136,8 @@ export const A123 = {
   static: [
     ground,
     { id: 'bough', type: 'platform', x: 240, y: 560, w: 240, h: 18 },
-    { id: 'hookL', type: 'platform', x: 282, y: 578, w: 16, h: 110 },
-    { id: 'hookR', type: 'platform', x: 422, y: 578, w: 16, h: 110 },
+    { id: 'hookL', type: 'platform', x: 282, y: 578, w: 16, h: 150 },
+    { id: 'hookR', type: 'platform', x: 422, y: 578, w: 16, h: 150 },
   ],
   objects: [{ id: 'hive', type: 'hive', x: 360, y: 620, radius: 24, bees: 8, attackAt: 700, guard: 34 }],
   zones: [],

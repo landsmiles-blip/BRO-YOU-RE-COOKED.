@@ -1508,59 +1508,12 @@ export const SOLUTIONS = {
       ]
     }
   },
-  "a121-two-holes": {
-    "id": "a121-two-holes",
-    "winners": 161,
-    "robust": 141,
-    "anchoredRobust": 132,
-    "handRate": 0.876,
-    "solution": {
-      "family": "span",
-      "length": 301,
-      "parts": 12,
-      "anchors": 7,
-      "points": [
-        {
-          "x": 20,
-          "y": 960
-        },
-        {
-          "x": 57.1,
-          "y": 929.6
-        },
-        {
-          "x": 94.3,
-          "y": 905.3
-        },
-        {
-          "x": 131.4,
-          "y": 891.8
-        },
-        {
-          "x": 168.6,
-          "y": 891.8
-        },
-        {
-          "x": 205.7,
-          "y": 905.3
-        },
-        {
-          "x": 242.9,
-          "y": 929.6
-        },
-        {
-          "x": 280,
-          "y": 960
-        }
-      ]
-    }
-  },
   "a122-doghouse": {
     "id": "a122-doghouse",
-    "winners": 47,
-    "robust": 36,
-    "anchoredRobust": 35,
-    "handRate": 0.766,
+    "winners": 28,
+    "robust": 21,
+    "anchoredRobust": 21,
+    "handRate": 0.75,
     "solution": {
       "family": "line",
       "length": 230,
@@ -1568,19 +1521,19 @@ export const SOLUTIONS = {
       "anchors": 8,
       "points": [
         {
-          "x": 122.5,
+          "x": 362.5,
           "y": 590.8
         },
         {
-          "x": 160.8,
+          "x": 400.8,
           "y": 657.2
         },
         {
-          "x": 199.2,
+          "x": 439.2,
           "y": 723.6
         },
         {
-          "x": 237.5,
+          "x": 477.5,
           "y": 790
         }
       ]
@@ -1588,10 +1541,10 @@ export const SOLUTIONS = {
   },
   "a123-hive": {
     "id": "a123-hive",
-    "winners": 73,
-    "robust": 42,
-    "anchoredRobust": 38,
-    "handRate": 0.575,
+    "winners": 76,
+    "robust": 49,
+    "anchoredRobust": 45,
+    "handRate": 0.645,
     "solution": {
       "family": "arc",
       "length": 288,

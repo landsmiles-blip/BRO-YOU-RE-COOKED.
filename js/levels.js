@@ -1343,7 +1343,7 @@ export const CHAPTERS = [
   { name: 'PLATES & GATES', tag: 'something has to press it',
     slots: [A9,   CH2.A80, null, null, A10,  CH2.A82, CH2.A83, CH2.A81, null, A11] },
   { name: 'BEES',           tag: 'they fly straight at whatever is alive',
-    slots: [BEES.A120, BEES.A121, BEES.A122, null, BEES.A123, null, BEES.A125, BEES.A124, null, BEES.A126] },
+    slots: [BEES.A120, null, null, BEES.A125, BEES.A122, null, BEES.A123, BEES.A124, null, BEES.A126] },
   { name: 'TNT',            tag: 'it goes off wherever it is',
     slots: [CH3.A53, CH3.A52, CH3.A56, CH3.A51, CH3.A54, null, null, null, null, CH3.A55] },
   { name: 'AIR',            tag: 'it carries whatever is in it',
