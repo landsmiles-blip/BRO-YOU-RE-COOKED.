@@ -518,6 +518,262 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a120-swarm": {
+    "id": "a120-swarm",
+    "ink": 230,
+    "winners": 52,
+    "robust": 26,
+    "anchoredRobust": 22,
+    "handRate": 0.5,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 2,
+      "points": [
+        {
+          "x": 371.4,
+          "y": 881.8
+        },
+        {
+          "x": 323.8,
+          "y": 909.3
+        },
+        {
+          "x": 276.2,
+          "y": 936.8
+        },
+        {
+          "x": 228.6,
+          "y": 964.3
+        }
+      ]
+    }
+  },
+  "a125-stairs": {
+    "id": "a125-stairs",
+    "ink": 184,
+    "winners": 14,
+    "robust": 10,
+    "anchoredRobust": 9,
+    "handRate": 0.714,
+    "solution": {
+      "family": "span",
+      "length": 119,
+      "parts": 8,
+      "anchors": 7,
+      "points": [
+        {
+          "x": 260,
+          "y": 860
+        },
+        {
+          "x": 274.3,
+          "y": 847
+        },
+        {
+          "x": 288.6,
+          "y": 836.5
+        },
+        {
+          "x": 302.9,
+          "y": 830.8
+        },
+        {
+          "x": 317.1,
+          "y": 830.8
+        },
+        {
+          "x": 331.4,
+          "y": 836.5
+        },
+        {
+          "x": 345.7,
+          "y": 847
+        },
+        {
+          "x": 360,
+          "y": 860
+        }
+      ]
+    }
+  },
+  "a122-doghouse": {
+    "id": "a122-doghouse",
+    "ink": 225,
+    "winners": 9,
+    "robust": 5,
+    "anchoredRobust": 5,
+    "handRate": 0.556,
+    "solution": {
+      "family": "span",
+      "length": 197,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 360,
+          "y": 800
+        },
+        {
+          "x": 342.9,
+          "y": 765.6
+        },
+        {
+          "x": 325.7,
+          "y": 733.7
+        },
+        {
+          "x": 308.6,
+          "y": 706.5
+        },
+        {
+          "x": 291.4,
+          "y": 685
+        },
+        {
+          "x": 274.3,
+          "y": 669.4
+        },
+        {
+          "x": 257.1,
+          "y": 658.4
+        },
+        {
+          "x": 240,
+          "y": 650
+        }
+      ]
+    }
+  },
+  "a123-hive": {
+    "id": "a123-hive",
+    "ink": 277,
+    "winners": 16,
+    "robust": 9,
+    "anchoredRobust": 9,
+    "handRate": 0.563,
+    "solution": {
+      "family": "line",
+      "length": 230,
+      "parts": 10,
+      "anchors": 5,
+      "points": [
+        {
+          "x": 519.6,
+          "y": 688.2
+        },
+        {
+          "x": 453.2,
+          "y": 726.5
+        },
+        {
+          "x": 386.8,
+          "y": 764.9
+        },
+        {
+          "x": 320.4,
+          "y": 803.2
+        }
+      ]
+    }
+  },
+  "a124-top-dog": {
+    "id": "a124-top-dog",
+    "ink": 224,
+    "winners": 10,
+    "robust": 2,
+    "anchoredRobust": 2,
+    "handRate": 0.2,
+    "solution": {
+      "family": "span",
+      "length": 212,
+      "parts": 11,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 260,
+          "y": 820
+        },
+        {
+          "x": 290.3,
+          "y": 820
+        },
+        {
+          "x": 320.6,
+          "y": 820
+        },
+        {
+          "x": 350.9,
+          "y": 820
+        },
+        {
+          "x": 381.1,
+          "y": 820
+        },
+        {
+          "x": 411.4,
+          "y": 820
+        },
+        {
+          "x": 441.7,
+          "y": 820
+        },
+        {
+          "x": 472,
+          "y": 820
+        }
+      ]
+    }
+  },
+  "a126-walkies": {
+    "id": "a126-walkies",
+    "ink": 230,
+    "winners": 11,
+    "robust": 5,
+    "anchoredRobust": 5,
+    "handRate": 0.455,
+    "solution": {
+      "family": "span",
+      "length": 137,
+      "parts": 8,
+      "anchors": 6,
+      "points": [
+        {
+          "x": 200,
+          "y": 650
+        },
+        {
+          "x": 217.1,
+          "y": 663
+        },
+        {
+          "x": 234.3,
+          "y": 673.5
+        },
+        {
+          "x": 251.4,
+          "y": 679.2
+        },
+        {
+          "x": 268.6,
+          "y": 679.2
+        },
+        {
+          "x": 285.7,
+          "y": 673.5
+        },
+        {
+          "x": 302.9,
+          "y": 663
+        },
+        {
+          "x": 320,
+          "y": 650
+        }
+      ]
+    }
+  },
   "a53-cover": {
     "id": "a53-cover",
     "ink": 180,
