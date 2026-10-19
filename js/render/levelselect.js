@@ -6,16 +6,15 @@
 // correct at 9:16 and unusable at 32:9, and text legibility across resolutions
 // is a named certification rejection cause.
 //
-// IT DOES NOT LOCK ANYTHING, and that is a considered call rather than a
-// shortcut. The ladder in §7.4 teaches deliberately — a new idea every two or
-// three levels — so there is a real argument for gating. Against it: this game
-// is played inside YouTube by a distracted audience in short bursts, every
-// level is self-contained physics rather than a dependency chain, and friction
-// on a returning player is the one thing a playable cannot afford. So the
-// ladder is expressed as EMPHASIS instead of as a wall: cleared levels are
-// solid, unplayed ones are dimmed, and the board opens scrolled to where you
-// actually are. Someone who jumps to 14 without learning anchoring will fail
-// and come back — which costs them one attempt, not a session.
+// IT LOCKS NOW, AND IT DID NOT FOR A LONG TIME, on purpose both times. The
+// first version argued for emphasis instead of a wall: a distracted audience,
+// self-contained levels, and friction on a returning player being the one thing
+// a playable cannot afford. What changed is the SKIP (docs/PLAN.md section 7):
+// an open board gives away for free exactly what the skip charges for, and
+// every game with a skip is linear. So the next level opens when this one is
+// beaten or skipped. The ladder is still shown as emphasis too — cleared cards
+// solid, skipped ones hollow, locked ones dim and inert — and the board still
+// opens on where the player actually is.
 
 import { view } from '../view.js';
 import { C } from './palette.js';
@@ -29,7 +28,23 @@ import { drawText } from './hud.js';
 export function layout(count) {
   const W = view.cssW, H = view.cssH;
   const pad = Math.max(10, Math.min(W, H) * 0.03);
-  const top = H * 0.17;
+  // THE DAILY IS A STRIP, NOT A CARD IN THE GRID. As a card it would be one
+  // tile among twenty-one, which is exactly how much attention it would get;
+  // the whole point of the thing is that it is the reason you opened the game
+  // today. A full-width band reads first and is the easiest target on the
+  // board at every one of the nine ratios.
+  const dailyH = Math.max(34, Math.min(H * 0.085, 66));
+  const dailyY = H * 0.155;
+  // AT THE WIDE RATIOS THE VIEWPORT IS SHORT AND THE STRIP RIDES UP INTO THE
+  // CLOSE BUTTON. Measured across all nine: at 16:9, 21:9 and 32:9 the band
+  // and the X shared space, and since hitTest checks close first, the strip's
+  // top-right corner was simply dead. Stop the band short of the X whenever
+  // they overlap vertically — full width everywhere it is safe.
+  const closeX = W - pad - 36, closeBottom = pad * 0.6 + 36;
+  const clashes = dailyY < closeBottom;
+  const dailyW = (clashes ? closeX - pad - pad : W - pad * 2);
+  const daily = { x: pad, y: dailyY, w: dailyW, h: dailyH };
+  const top = dailyY + dailyH + pad;
   const bottom = H * 0.92;
   const availW = W - pad * 2;
   const availH = bottom - top;
@@ -60,19 +75,22 @@ export function layout(count) {
   }
   // The close affordance is a real rectangle, not a guess at where the text is.
   const close = { x: W - pad - 36, y: pad * 0.6, w: 36, h: 36 };
-  return { cards, close, pad, rows };
+  return { cards, close, daily, pad, rows };
 }
 
 /** Which card is under this point? null for none. */
 export function hitTest(box, x, y) {
   if (inside(box.close, x, y)) return { close: true };
-  for (const c of box.cards) if (inside(c, x, y)) return { index: c.i };
+  if (box.daily && inside(box.daily, x, y)) return { daily: true };
+  for (const c of box.cards) if (inside(c, x, y)) return { index: c.i, locked: !!c.locked };
   return null;
 }
 
 const inside = (r, x, y) => x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
 
-export function drawBoard(ctx, { levels, starsOf, current, total, max }) {
+export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
+                                  openAt = () => true, skippedOf = () => false, tokens = 0,
+                                  chapterAt = () => null, triesOf = null }) {
   const box = layout(levels.length);
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
 
@@ -80,7 +98,11 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max }) {
   ctx.fillRect(0, 0, view.cssW, view.cssH);
 
   drawText(ctx, `${total} / ${max}`, 0.5, 0.075, Math.max(20, view.cssH * 0.042), C.anchor);
-  drawText(ctx, 'stars', 0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.55)');
+  // THE PLAYTEST BUILD says what the session cost, in runs and minutes, where
+  // the rest of the game says "stars".
+  const sub = triesOf ? playtestLine(levels, triesOf)
+    : tokens > 0 ? `stars · ${tokens} skip token${tokens > 1 ? 's' : ''}` : 'stars';
+  drawText(ctx, sub, 0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.55)');
 
   // Close: an X drawn, like everything else in this game.
   ctx.strokeStyle = 'rgba(232,226,214,0.6)';
@@ -91,43 +113,138 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max }) {
   ctx.moveTo(cx + r, cy - r); ctx.lineTo(cx - r, cy + r);
   ctx.stroke();
 
+  // ── the daily strip ────────────────────────────────────────────────────
+  if (daily && box.daily) {
+    const d = box.daily;
+    ctx.fillStyle = daily.done ? 'rgba(232,226,214,0.08)' : 'rgba(214,138,58,0.20)';
+    ctx.fillRect(d.x, d.y, d.w, d.h);
+    ctx.strokeStyle = daily.done ? 'rgba(232,226,214,0.22)' : C.anchor;
+    ctx.lineWidth = daily.done ? 1.2 : 2.4;
+    ctx.strokeRect(d.x, d.y, d.w, d.h);
+
+    const tSize = Math.max(11, Math.min(d.h * 0.32, 20));
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+    ctx.fillStyle = daily.done ? 'rgba(232,226,214,0.55)' : C.paper;
+    ctx.fillText('DAILY', d.x + d.h * 0.32, d.y + d.h * 0.36);
+
+    ctx.font = `600 ${tSize * 0.72}px ui-sans-serif, system-ui, sans-serif`;
+    ctx.fillStyle = 'rgba(232,226,214,0.58)';
+    // Done or not, the line says what the challenge IS: which level, and the
+    // budget. A daily whose difficulty is invisible until you start it cannot
+    // be the thing that makes someone open the game.
+    ctx.fillText(daily.done ? 'done — come back tomorrow'
+                            : `${daily.verb} in ${daily.ink} of ink`,
+      d.x + d.h * 0.32, d.y + d.h * 0.70);
+
+    if (daily.streak > 0) {
+      ctx.textAlign = 'right';
+      ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = C.anchor;
+      ctx.fillText(`${daily.streak}`, d.x + d.w - d.h * 0.34, d.y + d.h * 0.36);
+      ctx.font = `600 ${tSize * 0.55}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = 'rgba(232,226,214,0.5)';
+      ctx.fillText('day streak', d.x + d.w - d.h * 0.34, d.y + d.h * 0.72);
+    }
+  }
+
   for (const card of box.cards) {
     const lvl = levels[card.i];
     const stars = starsOf(lvl.id);
     const played = stars > 0;
     const here = card.i === current;
+    const locked = !openAt(card.i);
+    const skipped = !played && skippedOf(lvl.id);
+    card.locked = locked;
 
-    ctx.fillStyle = played ? 'rgba(232,226,214,0.14)' : 'rgba(232,226,214,0.05)';
+    // Locked: barely there, and tapping it does nothing. Skipped: HOLLOW — no
+    // fill and a dashed edge — unfinished business, still playable, the first
+    // thing the 3-star chase brings a player back for.
+    ctx.fillStyle = played ? 'rgba(232,226,214,0.14)' : (skipped || locked ? 'rgba(232,226,214,0)' : 'rgba(232,226,214,0.05)');
     ctx.fillRect(card.x, card.y, card.w, card.h);
-    ctx.strokeStyle = here ? C.anchor : (played ? 'rgba(232,226,214,0.32)' : 'rgba(232,226,214,0.13)');
+    ctx.strokeStyle = here ? C.anchor : (played ? 'rgba(232,226,214,0.32)' : skipped ? 'rgba(232,226,214,0.38)' : 'rgba(232,226,214,0.13)');
     ctx.lineWidth = here ? 2.6 : 1.2;
+    if (skipped && !here) ctx.setLineDash([5, 4]);
     ctx.strokeRect(card.x, card.y, card.w, card.h);
+    ctx.setLineDash([]);
 
     const nSize = Math.max(12, Math.min(card.w, card.h) * 0.30);
     ctx.font = `700 ${nSize}px ui-sans-serif, system-ui, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = played ? C.paper : 'rgba(232,226,214,0.45)';
+    ctx.fillStyle = played ? C.paper : locked ? 'rgba(232,226,214,0.16)' : 'rgba(232,226,214,0.45)';
     ctx.fillText(String(card.i + 1), card.x + card.w / 2, card.y + card.h * 0.36);
 
+    // THE CHAPTERS, on the card that opens each one: a small accent tab over
+    // its top edge. The grid stays a grid at every ratio; the ladder of six
+    // chapters is still readable on it, including the ones not reached yet.
+    const ch = chapterAt(card.i);
+    if (ch?.first) {
+      const tSize = Math.max(7, Math.min(card.w * 0.13, card.h * 0.12, 12));
+      ctx.font = `800 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      const label = card.w > 54 ? ch.name : String(ch.n);
+      const tw = Math.min(card.w - 4, ctx.measureText(label).width + tSize);
+      ctx.fillStyle = locked ? 'rgba(214,138,58,0.35)' : C.anchor;
+      ctx.fillRect(card.x + 2, card.y - tSize * 0.6, tw, tSize * 1.25);
+      ctx.fillStyle = 'rgba(42,38,34,0.95)';
+      ctx.textAlign = 'left';
+      ctx.fillText(label, card.x + 2 + tSize * 0.5, card.y + tSize * 0.03, tw - tSize * 0.6);
+      ctx.textAlign = 'center';
+    }
+    if (locked) continue;
+
     // The verb, when there is room for it to be readable rather than a smudge.
+    // In the playtest build, what a person actually took instead: runs to the
+    // first win and the time it took, or runs and a cross if nobody beat it —
+    // so a tester can screenshot the board and the curve can be refit from
+    // people rather than from the sweep.
     const vSize = Math.min(card.w * 0.16, Math.max(7, card.h * 0.13));
-    if (vSize >= 8 && card.w > 54) {
+    const t = triesOf?.(lvl.id);
+    if (t && t.runs > 0) {
+      const tSize = Math.max(8, Math.min(card.w * 0.17, card.h * 0.15));
+      ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = t.won ? C.anchor : 'rgba(232,226,214,0.75)';   // never the danger red: this is not danger
+      ctx.fillText(t.won ? `${t.won}× ${clock(t.ms)}` : `${t.runs}× ✗`,
+                   card.x + card.w / 2, card.y + card.h * 0.60, card.w - 4);
+    } else if (vSize >= 8 && card.w > 54) {
       ctx.font = `700 ${vSize}px ui-sans-serif, system-ui, sans-serif`;
       ctx.fillStyle = 'rgba(232,226,214,0.5)';
       ctx.fillText(lvl.verb, card.x + card.w / 2, card.y + card.h * 0.60);
     }
 
-    // Three star pips. Shape carries it, not colour alone.
+    // Three star pips. Shape carries it, not colour alone. A skipped level
+    // says so in words where it has the room, rather than showing three empty
+    // pips that read exactly like a level never played.
     const pw = Math.min(card.w * 0.17, card.h * 0.16);
     const gap = pw * 0.45;
     const totalW = pw * 3 + gap * 2;
     const px = card.x + (card.w - totalW) / 2;
     const py = card.y + card.h * 0.80;
+    if (skipped && vSize >= 8 && card.w > 54) {
+      ctx.font = `700 ${vSize * 0.9}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.fillStyle = 'rgba(232,226,214,0.42)';
+      ctx.fillText('SKIPPED', card.x + card.w / 2, py + pw * 0.2);
+      continue;
+    }
     for (let k = 0; k < 3; k++) {
       ctx.fillStyle = k < stars ? C.anchor : 'rgba(232,226,214,0.16)';
       ctx.fillRect(px + k * (pw + gap), py, pw, Math.max(3, pw * 0.34));
     }
   }
   return box;
+}
+
+const clock = (ms) => `${Math.floor(ms / 60000)}:${String(Math.floor(ms / 1000) % 60).padStart(2, '0')}`;
+
+/** "playtest · 23 won · 61 runs · 18:40", over every level played. */
+function playtestLine(levels, triesOf) {
+  let won = 0, runs = 0, ms = 0;
+  for (const l of levels) {
+    const t = triesOf(l.id);
+    if (!t) continue;
+    runs += t.runs; ms += t.ms;
+    if (t.won) won += 1;
+  }
+  return `playtest · ${won} won · ${runs} runs · ${clock(ms)}`;
 }

@@ -14,10 +14,26 @@
 //
 // Usage:  node tools/build.js
 //         node tools/build.js --check   (verify, do not write)
+//
+// THREE FLAVOURS OF ONE GAME:
+//   dist/byc.html                 the open web and every test: NO SDK tag, so
+//                                 nothing is ever requested from anywhere
+//   dist/artifact.html            the same, as page contents for the publisher
+//   dist/playables/index.html     the YouTube build: the Playables SDK as the
+//   dist/byc-playables.zip        FIRST script, zipped with index.html at the
+//                                 root — the shape the developer portal takes
+//
+// THE YOUTUBE BUILD DID NOT EXIST, and every gate was green. The bundle carried
+// only a COMMENTED slot where the SDK goes, and the conformance check read the
+// slot in the dev page rather than the file that would be uploaded — so the
+// first integration requirement on Google's list ("MUST load the YouTube
+// Playables SDK before any of the game code") was unmet in the only file that
+// mattered, and nothing said so.
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { gzipSync } from 'node:zlib';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 let esbuild;
@@ -74,12 +90,25 @@ if (hits.length) {
   process.exit(1);
 }
 
+// The YouTube build: identical, except the SDK slot is filled. It is a <script
+// src>, not a fetch, and it is the one load Google REQUIRES — the banned-
+// primitive check above guards the game code, which this does not touch.
+export const SDK_TAG = '<script src="https://www.youtube.com/game_api/v1"></script>';
+const SLOT = '<!-- Playables SDK slot — must precede all game code. -->';
+if (!html.includes(SLOT)) { console.error('BUILD FAILED — the SDK slot is missing from the template'); process.exit(1); }
+const playables = html.replace(SLOT, SDK_TAG);
+
 const raw = Buffer.byteLength(html);
 const gz = gzipSync(html).length;
 
 // Artifact flavour: the publish wrapper supplies <!doctype>, <head> and <body>,
 // so this variant ships the page CONTENTS only. Same game, same bundle, same
 // zero-request guarantee — just no outer tags to collide with the wrapper.
+//
+// IT IS ALSO THE PLAYTEST BUILD. The published page is what people are handed
+// to play, so it sets BYC_PLAYTEST: every run is saved, losses included, and
+// the level board shows runs to the first win and the time it took on each
+// level, for the tester to screenshot. Nothing leaves the device.
 //
 // Deliberately single-theme: this is a paper-and-ink world, so every colour is
 // painted explicitly (including the body ground) rather than inheriting the
@@ -99,14 +128,37 @@ html, body {
 #stage { display: block; width: 100%; height: 100%; background: #E8E2D6; }
 </style>
 <canvas id="stage"></canvas>
+<script>globalThis.BYC_PLAYTEST = true;</script>
 <script>${matter}</script>
 <script>${gameJs}</script>
 `;
 
+let zipNote = '';
 if (!process.argv.includes('--check')) {
-  mkdirSync(new URL('dist/', root), { recursive: true });
+  mkdirSync(new URL('dist/playables/', root), { recursive: true });
+  mkdirSync(new URL('dist/web/', root), { recursive: true });
   writeFileSync(new URL('dist/byc.html', root), html);
   writeFileSync(new URL('dist/artifact.html', root), artifact);
+  writeFileSync(new URL('dist/playables/index.html', root), playables);
+  // The open web (itch.io, any static host): the standalone page, named the
+  // way every HTML5 host expects. No SDK — off YouTube it would only be a
+  // request to a page that has no ytgame to give.
+  writeFileSync(new URL('dist/web/index.html', root), html);
+
+  // index.html at the ROOT of each archive, nothing else in it: the whole game
+  // is one file. -j drops the directory, -X drops platform metadata so the
+  // same build always produces the same archive.
+  for (const [name, dir, what] of [
+    ['byc-playables.zip', 'playables', 'YouTube upload'],
+    ['byc-web.zip', 'web', 'open web: itch.io or any static host'],
+  ]) {
+    const zip = new URL(`dist/${name}`, root).pathname;
+    if (existsSync(zip)) rmSync(zip);
+    const z = spawnSync('zip', ['-q', '-X', '-j', zip, new URL(`dist/${dir}/index.html`, root).pathname]);
+    zipNote += z.status === 0
+      ? `  → dist/${name} (${what}: index.html at the root)\n`
+      : `  !! zip not found — dist/${dir}/ is built but NOT archived\n`;
+  }
 }
 
 console.log(`\nsingle-file build`);
@@ -116,4 +168,5 @@ console.log(`  gzipped                ${(gz / 1024).toFixed(1)} KB`);
 console.log(`  vs 15 MiB recommended  ${((gz / (15 * 1024 * 1024)) * 100).toFixed(2)}%`);
 console.log(process.argv.includes('--check')
   ? '  (check only, nothing written)\n'
-  : '  → dist/byc.html (standalone)\n  → dist/artifact.html (publish flavour)\n');
+  : '  → dist/byc.html (standalone)\n  → dist/artifact.html (publish flavour)\n'
+    + '  → dist/playables/index.html (YouTube: SDK first)\n' + zipNote);

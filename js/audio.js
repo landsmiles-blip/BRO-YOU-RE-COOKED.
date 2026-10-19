@@ -40,11 +40,18 @@ let suspended = false;
 const lastAt = new Map();
 
 /**
- * Build the context. MUST be called from inside a user-gesture handler.
+ * Build the context. Called from every user gesture, and inside Playables
+ * also at start (js/main.js), where YouTube may already allow sound and a
+ * game that waits for a tap is the commonest audio failure in certification.
+ * A context built before the browser allows sound starts suspended, so a
+ * gesture resumes one that already exists. Never while paused: onPause holds
+ * the sound down, and onResume comes first.
  * Safe to call repeatedly; safe to call in environments with no WebAudio.
  */
 export function unlock() {
-  if (ctx || !enabled) return;
+  if (suspended) return;
+  if (ctx) { if (ctx.state === 'suspended') quietly(ctx.resume?.()); return; }
+  if (!enabled) return;
   const AC = globalThis.AudioContext || globalThis.webkitAudioContext;
   if (!AC) { enabled = false; return; }
   try {
@@ -233,6 +240,36 @@ export function success(stars = 1) {
     blip('triangle', root * Math.pow(2, semi / 12), 0.30, 0.085, { delay: i * 0.085 });
   });
   noise(0.22, 0.05, { type: 'highpass', freq: 1800, sweepTo: 5200 });
+}
+
+/**
+ * A CLOSE CALL. A doppler whoosh past the ear, then one heartbeat thump.
+ *
+ * Pitched by how fast the thing was going, so a boulder at terminal velocity
+ * and a ball drifting past do not sound alike — the same principle as impact().
+ */
+/** The barrel going off: a low thump under a falling roar. */
+export function blast() {
+  if (!ok()) return;
+  noise(0.55, 0.34, { type: 'lowpass', freq: 2200, sweepTo: 70 });
+  blip('sine', 62, 0.45, 0.28, { sweepTo: 28 });
+}
+
+/** A bee hitting something: a short dry buzz, throttled so a swarm hums. */
+export function buzz() {
+  if (!ok() || !throttled('buzz', 70)) return;
+  blip('sawtooth', 210 + Math.random() * 60, 0.06, 0.035, { sweepTo: 180 });
+}
+
+export function closeCall(speed = 400) {
+  if (!ok() || !throttled('closeCall', 200)) return;
+  const s = Math.max(0, Math.min(1, speed / 800));
+  // The pass: a band of noise sweeping down past you.
+  noise(0.26, 0.07 + s * 0.10, {
+    type: 'bandpass', freq: 900 + s * 1800, sweepTo: 260, q: 2.2,
+  });
+  // The heart: one low thump, just after, because the fright lands late.
+  blip('sine', 62, 0.22, 0.10, { sweepTo: 40, delay: 0.13 });
 }
 
 /** The whole game is finished. The only sound that is allowed to be big. */

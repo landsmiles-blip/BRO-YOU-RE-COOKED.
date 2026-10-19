@@ -1,4 +1,4 @@
-// CERTIFICATION CONFORMANCE GATE — docs/CERTIFICATION_CHECKLIST.md, automated.
+// CERTIFICATION CONFORMANCE GATE — docs/CERTIFICATION.md, automated.
 //
 // The checklist says every box is signed off "with evidence (a test name, a
 // measurement, a screenshot), never from memory". This IS that evidence for
@@ -56,6 +56,26 @@ const firstModule = indexHtml.indexOf('<script type="module"');
 check('1', 'SDK slot exists and precedes all game code',
       sdkSlot !== -1 && (firstModule === -1 || sdkSlot < firstModule),
       sdkSlot === -1 ? 'slot missing' : `slot@${sdkSlot} before module@${firstModule}`);
+
+// THE FILE THAT IS UPLOADED, not the dev page. The check above passed for
+// months while the built bundle carried only a COMMENTED slot — the YouTube
+// build did not exist. Google: the game "MUST load the YouTube Playables SDK
+// before any of the game code", and the upload is a ZIP with index.html at
+// its root.
+const yt = read('dist/playables/index.html');
+const scripts = [...yt.matchAll(/<script\b[^>]*>/g)].map((m) => m[0]);
+check('1', 'the YOUTUBE build loads the SDK as its FIRST script',
+      /^<script src="https:\/\/www\.youtube\.com\/game_api\/v1">$/.test(scripts[0] ?? ''),
+      scripts.length ? `first: ${scripts[0]}` : 'dist/playables/index.html missing — run tools/build.js');
+check('1', 'and the SDK is the ONLY script that loads from anywhere',
+      scripts.filter((t) => /\bsrc=/.test(t)).length === 1, `${scripts.length} scripts`);
+{
+  const { spawnSync } = await import('node:child_process');
+  const ls = spawnSync('unzip', ['-Z1', ROOT + 'dist/byc-playables.zip'], { encoding: 'utf8' });
+  const names = ls.status === 0 ? ls.stdout.trim().split('\n') : [];
+  check('7', 'the upload ZIP holds index.html at its root and nothing else',
+        names.length === 1 && names[0] === 'index.html', names.join(', ') || 'no zip');
+}
 
 const bundle = read('dist/byc.html');
 check('1', 'a built bundle exists to audit', bundle.length > 1000, `${(bundle.length / 1024).toFixed(0)} KB raw`);
@@ -119,6 +139,15 @@ const browser = await chromium.launch({
   // onPause must halt EVERYTHING. Measured, not asserted: sim time must not
   // advance by a single step while paused.
   await page.waitForFunction(() => globalThis.__byc?.game);
+
+  // Inside Playables the sound must not wait for a tap: Google's FAQ names
+  // that as the most common audio failure. No gesture has happened yet here.
+  // Whether the browser lets it play is the browser's call; asking is ours.
+  const bootAudio = await page.waitForFunction(() => globalThis.__byc.audio.__stateForTest().ctx, null, { timeout: 3000 })
+    .then((h) => h.jsonValue()).catch(() => null);
+  check('1', 'inside Playables, sound starts without waiting for a tap', bootAudio !== null,
+        `context ${bootAudio ?? 'never built'} before any gesture`);
+
   await page.mouse.move(200, 400); await page.mouse.down(); await page.mouse.up();
   await page.waitForTimeout(120);
 
@@ -127,7 +156,7 @@ const browser = await chromium.launch({
     B.goToLevel(B.game, 0);
     await new Promise((r) => setTimeout(r, 60));
     globalThis.__pause();
-    const audioMod = await import('/js/audio.js');
+    const audioMod = B.audio;   // the running module, never a re-imported copy
     const before = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
     await new Promise((r) => setTimeout(r, 450));
     const after = { t: B.game.sim.simTime, phaseTime: B.game.phaseTime };
@@ -335,6 +364,9 @@ console.log('\n1. INTEGRATION — cloud save round-trip and version ladder');
   const ladder = await page.evaluate(async () => {
     const P = await import('/js/progress.js');
     const out = {};
+    // Load first: the platform refuses a save until a load has landed, and
+    // this may be a second copy of the module that has never loaded.
+    await P.load();
     const p = P.createProgress();
     P.record(p, globalThis.__byc.LEVELS[0].id, 3);
     await P.save(p);
@@ -358,13 +390,96 @@ console.log('\n1. INTEGRATION — cloud save round-trip and version ladder');
   await page.close();
 }
 
+// ── 1. The save waits for the load, and the cloud is the only save ────────
+//
+// "Game MUST NOT use any other mechanism to save user progress" and "MUST
+// await loadData before calling saveData". The load is HELD here while the
+// player presses the sound switch, which asks for a save; then a real save
+// with a star in it arrives. Nothing may reach the cloud before the load,
+// the switch must survive it, the star must survive the switch, and nothing
+// may touch the browser's own storage at any point.
+console.log('\n1. INTEGRATION — the save waits for the load; the cloud is the only save');
+{
+  const page = await browser.newPage({ viewport: { width: 405, height: 720 } });
+  const errs = [];
+  page.on('pageerror', (e) => errs.push(e.message));
+  await page.addInitScript(() => {
+    globalThis.__log = [];
+    globalThis.__storage = 0;
+    for (const k of ['getItem', 'setItem', 'removeItem', 'clear']) {
+      const orig = Storage.prototype[k];
+      Storage.prototype[k] = function (...a) { globalThis.__storage++; return orig.apply(this, a); };
+    }
+    let release;
+    const held = new Promise((r) => { release = r; });
+    globalThis.__releaseLoad = () => release();
+    globalThis.__cloud = '';
+    globalThis.ytgame = {
+      IN_PLAYABLES_ENV: true,
+      game: {
+        firstFrameReady() {}, gameReady() {},
+        saveData: (t) => { globalThis.__log.push('save'); globalThis.__cloud = t; return Promise.resolve(); },
+        loadData: () => {
+          globalThis.__log.push('load');
+          return held.then(() => { globalThis.__log.push('loaded'); return globalThis.__cloud; });
+        },
+      },
+      system: { onPause() {}, onResume() {} },
+    };
+  });
+  await page.goto(BASE, { waitUntil: 'load' });
+  await page.waitForFunction(() => globalThis.__byc?.game, null, { timeout: 10000 });
+
+  // The sound switch, pressed in the first freeze, before the save arrives.
+  await page.waitForFunction(() => globalThis.__byc.game.phase === globalThis.__byc.PHASE.FROZEN &&
+    globalThis.__byc.soundBtn, null, { timeout: 10000 });
+  const btn = await page.evaluate(() => globalThis.__byc.soundBtn);
+  await page.mouse.click(btn.x + btn.w / 2, btn.y + btn.h / 2);
+  await page.waitForTimeout(150);
+  const early = await page.evaluate(() => ({ log: globalThis.__log.slice(), muted: globalThis.__byc.game.progress.muted }));
+
+  // Now the player's real save arrives, holding a star.
+  const starId = await page.evaluate(() => {
+    const id = globalThis.__byc.LEVELS[1].id;
+    globalThis.__cloud = JSON.stringify({ v: 3, best: { [id]: 2 }, muted: false });
+    globalThis.__releaseLoad();
+    return id;
+  });
+  await page.waitForFunction(() => globalThis.__log.includes('loaded') &&
+    globalThis.__log.indexOf('save') > globalThis.__log.indexOf('loaded'), null, { timeout: 5000 }).catch(() => {});
+  const after = await page.evaluate(() => ({
+    log: globalThis.__log.slice(), cloud: globalThis.__cloud, storage: globalThis.__storage,
+    muted: globalThis.__byc.game.progress.muted,
+  }));
+  let cloud = {};
+  try { cloud = JSON.parse(after.cloud); } catch { /* checked below */ }
+
+  check('1', 'the sound switch works before the save has arrived', early.muted === true);
+  check('1', 'but no save is sent before the load completes',
+        !early.log.includes('save') && after.log.indexOf('save') > after.log.indexOf('loaded'), after.log.join(' → '));
+  check('1', 'the early switch is folded into the save, not lost', after.muted === true && cloud.muted === true);
+  check('1', "and the save's own stars survive it", cloud.best?.[starId] === 2, JSON.stringify(cloud.best));
+  check('1', 'inside Playables nothing touches browser storage', after.storage === 0, `${after.storage} calls`);
+
+  // Certification SHOULD: a dialog closes on Esc. The board is the one dialog.
+  const esc = await page.evaluate(() => { const B = globalThis.__byc; B.openSelect(B.game); return B.game.phase; });
+  await page.keyboard.press('Escape');
+  const closed = await page.evaluate(() => globalThis.__byc.game.phase);
+  check('3', 'Esc closes the level board', esc === 'select' && closed !== 'select', `${esc} → ${closed}`);
+  check('1', 'no errors through a held load', errs.length === 0, errs.slice(0, 2).join('; '));
+  await page.close();
+}
+
 await browser.close();
 
 // ── what remains HUMAN ────────────────────────────────────────────────────
 console.log('\nSTILL REQUIRES A HUMAN (no machine can sign these off):');
 for (const line of [
   '§2  60 fps on a real mid-range Android, and the physical device matrix',
-  '§4  rewarded-ad flow — NOT IMPLEMENTED YET, and must fire only on explicit request',
+  '§4  ads — interstitial WIRED at level boundaries (3-level cadence) and the',
+  '     one rewarded ad is the SKIP on the fail card (docs/PLAN.md section 7),',
+  '     both gated by tools/test/ads.js. Fill and frequency need the portal.',
+  '§4  revenue share is a LIMITED PILOT with undisclosed terms — portal onboarding',
   '§6  trademark clearance for the title (decision D4 — still outside my authority)',
   '§6  Community Guidelines / 13+ content review',
   '§7  channel onboarding, Partner Manager contact, portal "Verify and test"',

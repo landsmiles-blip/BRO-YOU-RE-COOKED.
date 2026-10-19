@@ -18,14 +18,14 @@ export const SOLVER = {
   },
   "a2-gap": {
     "solvable": true,
-    "solutionBreadth": 0.0743,
+    "solutionBreadth": 0.0716,
     "precisionFloor": 65,
     "worstJitter": 2,
-    "distinctFamilies": 6,
+    "distinctFamilies": 5,
     "twoStarLength": 300,
     "threeStarLength": 253,
     "shortestWin": 165,
-    "measuredAt": "2026-09-14"
+    "measuredAt": "2026-10-14"
   },
   "a3-redirect": {
     "solvable": true,
@@ -56,17 +56,6 @@ export const SOLVER = {
     "worstJitter": 3,
     "distinctFamilies": 5,
     "twoStarLength": 300,
-    "threeStarLength": 230,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-14"
-  },
-  "a7-prop": {
-    "solvable": true,
-    "solutionBreadth": 0.0279,
-    "precisionFloor": 45,
-    "worstJitter": 0,
-    "distinctFamilies": 4,
-    "twoStarLength": 390,
     "threeStarLength": 230,
     "shortestWin": 110,
     "measuredAt": "2026-09-14"
@@ -126,28 +115,6 @@ export const SOLVER = {
     "shortestWin": 110,
     "measuredAt": "2026-09-14"
   },
-  "a13-yeet": {
-    "solvable": true,
-    "solutionBreadth": 0.0307,
-    "precisionFloor": 65,
-    "worstJitter": 0,
-    "distinctFamilies": 4,
-    "twoStarLength": 390,
-    "threeStarLength": 288,
-    "shortestWin": 230,
-    "measuredAt": "2026-09-14"
-  },
-  "a14-twojobs": {
-    "solvable": true,
-    "solutionBreadth": 0.0419,
-    "precisionFloor": 65,
-    "worstJitter": 2,
-    "distinctFamilies": 5,
-    "twoStarLength": 295,
-    "threeStarLength": 165,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-14"
-  },
   "a15-eitherway": {
     "solvable": true,
     "solutionBreadth": 0.0828,
@@ -158,5 +125,346 @@ export const SOLVER = {
     "threeStarLength": 184,
     "shortestWin": 110,
     "measuredAt": "2026-09-14"
+  },
+  "a13-yeet": {
+    "solvable": true,
+    "solutionBreadth": 0.0256,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 5,
+    "twoStarLength": 390,
+    "threeStarLength": 288,
+    "shortestWin": 165,
+    "measuredAt": "2026-09-14"
+  },
+  "a19-updraft": {
+    "solvable": true,
+    "solutionBreadth": 0.0488,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
+  },
+  "a20-spring": {
+    "solvable": true,
+    "solutionBreadth": 0.2903,
+    "precisionFloor": 65,
+    "worstJitter": 4,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-14"
+  },
+  "a21-lever": {
+    "solvable": true,
+    "solutionBreadth": 0.0433,
+    "precisionFloor": 30,
+    "worstJitter": 0,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 177,
+    "shortestWin": 105,
+    "measuredAt": "2026-09-15"
+  },
+  "a28-duct": {
+    "solvable": true,
+    "solutionBreadth": 0.2107,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 3,
+    "twoStarLength": 181,
+    "threeStarLength": 110,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
+  },
+  "a29-rail": {
+    "solvable": true,
+    "solutionBreadth": 0.0386,
+    "precisionFloor": 45,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 300,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
+  },
+  "a30-float": {
+    "solvable": true,
+    "solutionBreadth": 0.0238,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 4,
+    "twoStarLength": 288,
+    "threeStarLength": 229,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
+  },
+  "a31-thorns": {
+    "solvable": true,
+    "solutionBreadth": 0.0204,
+    "precisionFloor": 45,
+    "worstJitter": 1,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-09-15"
+  },
+  "a34-sink": {
+    "solvable": true,
+    "solutionBreadth": 0.0544,
+    "precisionFloor": 45,
+    "worstJitter": 1,
+    "distinctFamilies": 4,
+    "twoStarLength": 288,
+    "threeStarLength": 222,
+    "shortestWin": 102,
+    "measuredAt": "2026-10-15"
+  },
+  "a43-crack": {
+    "solvable": true,
+    "solutionBreadth": 0.0446,
+    "precisionFloor": 45,
+    "worstJitter": 1,
+    "distinctFamilies": 2,
+    "twoStarLength": 165,
+    "threeStarLength": 110,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-14"
+  },
+  "a52-keepaway": {
+    "solvable": true,
+    "solutionBreadth": 0.128,
+    "precisionFloor": 65,
+    "worstJitter": 6,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a51-fence": {
+    "solvable": true,
+    "solutionBreadth": 0.0745,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a53-cover": {
+    "solvable": true,
+    "solutionBreadth": 0.1997,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 6,
+    "twoStarLength": 300,
+    "threeStarLength": 180,
+    "shortestWin": 73,
+    "measuredAt": "2026-10-14"
+  },
+  "a54-shelter": {
+    "solvable": true,
+    "solutionBreadth": 0.0628,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 6,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a55-protect": {
+    "solvable": true,
+    "solutionBreadth": 0.0383,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 6,
+    "twoStarLength": 300,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a100-balloon": {
+    "solvable": true,
+    "solutionBreadth": 0.0589,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 300,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a111-tailwind": {
+    "solvable": true,
+    "solutionBreadth": 0.0285,
+    "precisionFloor": 45,
+    "worstJitter": 3,
+    "distinctFamilies": 4,
+    "twoStarLength": 300,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a101-low-blow": {
+    "solvable": true,
+    "solutionBreadth": 0.036,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 5,
+    "twoStarLength": 300,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a90-gust": {
+    "solvable": true,
+    "solutionBreadth": 0.0785,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 2,
+    "twoStarLength": 230,
+    "threeStarLength": 165,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a91-kite": {
+    "solvable": true,
+    "solutionBreadth": 0.0643,
+    "precisionFloor": 65,
+    "worstJitter": 3,
+    "distinctFamilies": 2,
+    "twoStarLength": 165,
+    "threeStarLength": 110,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-13"
+  },
+  "a80-good-boy": {
+    "solvable": true,
+    "solutionBreadth": 0.0882,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 4,
+    "twoStarLength": 288,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-14"
+  },
+  "a81-down-boy": {
+    "solvable": true,
+    "solutionBreadth": 0.0509,
+    "precisionFloor": 30,
+    "worstJitter": 0,
+    "distinctFamilies": 3,
+    "twoStarLength": 219,
+    "threeStarLength": 163,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-14"
+  },
+  "a82-heads-up": {
+    "solvable": true,
+    "solutionBreadth": 0.0922,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 98,
+    "measuredAt": "2026-10-14"
+  },
+  "a83-incoming": {
+    "solvable": true,
+    "solutionBreadth": 0.0828,
+    "precisionFloor": 65,
+    "worstJitter": 1,
+    "distinctFamilies": 4,
+    "twoStarLength": 230,
+    "threeStarLength": 110,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-14"
+  },
+  "a56-stay": {
+    "solvable": true,
+    "solutionBreadth": 0.0699,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 165,
+    "shortestWin": 96,
+    "measuredAt": "2026-10-14"
+  },
+  "a120-swarm": {
+    "solvable": true,
+    "solutionBreadth": 0.0956,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 6,
+    "twoStarLength": 315,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-18"
+  },
+  "a122-doghouse": {
+    "solvable": true,
+    "solutionBreadth": 0.0273,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 4,
+    "twoStarLength": 230,
+    "threeStarLength": 225,
+    "shortestWin": 192,
+    "measuredAt": "2026-10-18"
+  },
+  "a123-hive": {
+    "solvable": true,
+    "solutionBreadth": 0.04,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 5,
+    "twoStarLength": 294,
+    "threeStarLength": 277,
+    "shortestWin": 165,
+    "measuredAt": "2026-10-18"
+  },
+  "a124-top-dog": {
+    "solvable": true,
+    "solutionBreadth": 0.0253,
+    "precisionFloor": 65,
+    "worstJitter": 4,
+    "distinctFamilies": 4,
+    "twoStarLength": 270,
+    "threeStarLength": 224,
+    "shortestWin": 165,
+    "measuredAt": "2026-10-18"
+  },
+  "a126-walkies": {
+    "solvable": true,
+    "solutionBreadth": 0.0207,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 290,
+    "threeStarLength": 230,
+    "shortestWin": 120,
+    "measuredAt": "2026-10-18"
+  },
+  "a125-stairs": {
+    "solvable": true,
+    "solutionBreadth": 0.0307,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 6,
+    "twoStarLength": 300,
+    "threeStarLength": 184,
+    "shortestWin": 100,
+    "measuredAt": "2026-10-18"
   }
 };

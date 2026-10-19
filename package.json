@@ -6,13 +6,23 @@
   "description": "A physics rescue puzzle. One line. One shot. Get him out.",
   "scripts": {
     "test": "node --import ./tools/node-matter.js tools/test/run-all.js",
-    "test:levels": "node --import ./tools/node-matter.js tools/test/levels-solve.js",
-    "test:browser": "node tools/test/browser.js",
+    "levelcheck": "node --import ./tools/node-matter.js tools/levelcheck.js",
+    "sketch": "node --import ./tools/node-matter.js tools/lib/sketch.js",
+    "race": "node --import ./tools/node-matter.js tools/lib/race.js",
+    "census": "node --import ./tools/node-matter.js tools/lib/census.js",
     "solver": "node --import ./tools/node-matter.js tools/solver",
+    "certify": "node --import ./tools/node-matter.js tools/solver/representative.js",
+    "curve": "node --import ./tools/node-matter.js tools/test/curve.js",
+    "test:levels": "node --import ./tools/node-matter.js tools/test/levels-solve.js",
     "build": "node tools/build.js",
     "serve": "node tools/serve.js",
+    "film": "node tools/test/filmstrip.js",
+    "frozen": "node tools/test/frozen.js",
+    "test:browser": "node tools/test/browser.js",
     "test:audio": "node tools/test/audio.js",
+    "test:board": "node tools/test/board.js",
     "test:conformance": "node tools/test/conformance.js",
-    "test:board": "node tools/test/board.js"
+    "generate": "node --import ./tools/node-matter.js tools/levelgen/generate.js",
+    "bake": "node --import ./tools/node-matter.js tools/levelgen/bake.js"
   }
 }
