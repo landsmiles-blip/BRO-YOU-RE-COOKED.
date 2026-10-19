@@ -1039,6 +1039,17 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
 - **No information carried by audio alone.** It is played inside YouTube, muted.
 - **DPR is budgeted by pixel AREA, not capped.** A flat cap at 2 blurred 3x
   phones — a named rejection cause.
+- **Inside Playables the cloud save is the ONLY save.** Google: "Game MUST NOT
+  use any other mechanism to save user progress". Every save was mirrored to
+  localStorage as a "backup" — exactly another mechanism — while the checklist
+  read PASS, because it only asked whether the cloud worked. localStorage is
+  for off the platform only, decided by `IN_PLAYABLES_ENV`. `tools/test/save.js`.
+- **Nothing is saved until a load has LANDED.** The platform rejects an early
+  save, and the rule protects the player: progress loads in the background, so
+  a save sent first writes a fresh progress over the real one. What the player
+  did before it arrived is folded in (`absorb` in js/progress.js), not lost.
+- **Sound does not wait for a tap inside Playables** — the FAQ's most common
+  audio failure. It starts once the save says whether the player muted it.
 
 ## COMMANDS
 

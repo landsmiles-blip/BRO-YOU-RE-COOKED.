@@ -28,6 +28,18 @@ Legend: **PASS** with evidence Â· **PROXY** measured here, needs a real device Â
 - **The board gate never ran its second half.** It crashed fetching a file the
   page cannot reach; the "button never swallows a stroke" check had never run.
   Fixed; it passes.
+- **Found 2026-10-19, from Google's save rules: progress went to TWO places.**
+  Every save was mirrored to `localStorage` as a backup, inside Playables too,
+  and Google's wording is "Game MUST NOT use any other mechanism to save user
+  progress". The old row below said PASS because it only checked that the
+  cloud save worked. Inside Playables the cloud is now the only save and
+  `localStorage` is used only off the platform, as in Google's own sample.
+  The same walk found that a save could be asked for before `loadData` had
+  landed (the sound switch, pressed early), which the platform rejects â€” and
+  which, if it were accepted, would write a fresh progress over the player's
+  real one. Nothing is sent now until a load has succeeded, and what the player
+  did first is folded into the save when it arrives. `tools/test/save.js` and
+  conformance both check it; the test fails ten checks on the old code.
 
 ## 1. Integration
 
@@ -37,8 +49,11 @@ Legend: **PASS** with evidence Â· **PROXY** measured here, needs a real device Â
 | PASS | `firstFrameReady` on first meaningful frame | conformance: called, and before `gameReady` |
 | PASS | `gameReady` when input is accepted | conformance: time to interactive 82 ms |
 | PASS | Cloud save via `saveData`/`loadData` | conformance: round-trip through the cloud; `loadData` used on boot |
+| PASS | No other mechanism saves progress | inside Playables the browser's storage is never touched, read or write: conformance counts every `Storage` call through boot, a save and a load (0), and `tools/test/save.js` asserts it on and off the platform |
+| PASS | `loadData` completes before any `saveData` | conformance holds the load, presses the sound switch, and sees no save until the load lands â€” then one save carrying the switch AND the stars already in the cloud; `save.js`: a save before or during the load, or after a failed one, is never sent |
 | PASS | Save versioned; old loads; unknown degrades | conformance: versioned payload, unknown version and malformed data degrade without throwing; `tools/test/daily.js`: a v1 save migrates; `tools/test/progress.js`: v1 and v2 saves migrate to v3 (skips and tokens), an old save keeps every level up to its furthest open, and impossible token counts are dropped |
 | PASS | Follows YouTube's sound setting | `ytgame.system.isAudioEnabled()` sets the starting state and `onAudioEnabledChange` is followed live (`js/main.js`); the player's own switch can only turn sound further OFF; `ads.js` asserts both calls on a mocked platform and audio-on off it |
+| PASS | Audio does not wait for a tap | Google's FAQ calls this the most common audio failure. Inside Playables the sound starts once the save says whether the player muted it, and a tap resumes it if the browser held it back; conformance: an audio context exists before any gesture |
 | PASS | `onPause` halts everything | conformance: physics frozen (simTime unchanged), phase clock stopped, audio context SUSPENDED; `audio.js`: pause suspends, resume restores |
 | PASS | `onResume` restores, no catch-up | conformance: 100 ms of simulation in 120 ms of wall clock after resume |
 | PASS | Zero external network calls | build gate (5 primitives) + conformance grep: clean |
@@ -71,6 +86,7 @@ Legend: **PASS** with evidence Â· **PROXY** measured here, needs a real device Â
 | PASS | Text legible at 1x/2x/3x DPR | conformance: canvas backing at native resolution for each; the 3x screenshot read by eye |
 | PASS | Graphics clear at all resolutions | same 3x screenshot |
 | PASS | Small embed 320 x 480 | conformance: legible AND a stroke committed |
+| PASS | Esc closes a dialog (SHOULD) | the level board is the one dialog; conformance opens it and presses Escape |
 
 ## 4. Monetization
 

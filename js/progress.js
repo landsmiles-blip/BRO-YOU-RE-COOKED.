@@ -265,6 +265,30 @@ export function load() {
   return Promise.resolve(loadData()).then(deserialise).catch(createProgress);
 }
 
+/**
+ * Fold what this session did BEFORE the save arrived into the save. Returns
+ * true if that changed anything, which is then worth a save of its own.
+ *
+ * Progress loads in the background and the first level is playable before it
+ * lands (js/main.js), but inside Playables nothing may be SAVED until it has
+ * (js/platform/sdk.js) — so anything earned in that window exists only in
+ * memory, and swapping memory for the save would throw it away. Stars keep the
+ * better of the two, skips are joined, and the sound switch keeps the
+ * player's last word if they touched it. Counters, the streak and tokens stay
+ * as saved: a second of play is not worth a merge that could mint a token.
+ */
+export function absorb(saved, session, { soundTouched = false } = {}) {
+  let changed = false;
+  for (const [id, stars] of Object.entries(session.best)) {
+    if (record(saved, id, stars)) changed = true;
+  }
+  for (const id of Object.keys(session.skipped || {})) {
+    if (session.skipped[id] && markSkipped(saved, id)) changed = true;
+  }
+  if (soundTouched && saved.muted !== !!session.muted) { saved.muted = !!session.muted; changed = true; }
+  return changed;
+}
+
 // Writes are coalesced: a 3-star run can record a best, finish a level and
 // complete the game in the same frame, and that is one save, not three.
 let pending = null;

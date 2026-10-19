@@ -40,11 +40,18 @@ let suspended = false;
 const lastAt = new Map();
 
 /**
- * Build the context. MUST be called from inside a user-gesture handler.
+ * Build the context. Called from every user gesture, and inside Playables
+ * also at start (js/main.js), where YouTube may already allow sound and a
+ * game that waits for a tap is the commonest audio failure in certification.
+ * A context built before the browser allows sound starts suspended, so a
+ * gesture resumes one that already exists. Never while paused: onPause holds
+ * the sound down, and onResume comes first.
  * Safe to call repeatedly; safe to call in environments with no WebAudio.
  */
 export function unlock() {
-  if (ctx || !enabled) return;
+  if (suspended) return;
+  if (ctx) { if (ctx.state === 'suspended') quietly(ctx.resume?.()); return; }
+  if (!enabled) return;
   const AC = globalThis.AudioContext || globalThis.webkitAudioContext;
   if (!AC) { enabled = false; return; }
   try {

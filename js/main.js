@@ -16,7 +16,7 @@ import { dayNumber, dailyFor, asDaily } from './daily.js';
 import { dailyDone } from './progress.js';
 import { drawBoard, hitTest } from './render/levelselect.js';
 import {
-  load as loadProgress, save as saveProgress, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped, resumeIndex,
+  load as loadProgress, save as saveProgress, absorb, totalStars, maxStars, perfect, starsOn, isOpen, isSkipped, resumeIndex,
   triesOn, noteTime,
 } from './progress.js';
 import { A1, LEVELS, assertLevel, chapterOf } from './levels.js';
@@ -64,9 +64,18 @@ let soundBtn = null;
 // is moved to the first level they have neither beaten nor skipped — but only
 // if they have not touched anything yet, so the save can never yank a level out
 // from under a finger that is already drawing.
+//
+// Anything they DID do first — a star, the sound switch — could not be saved
+// yet (js/platform/sdk.js), so it is folded into the save as it arrives and
+// saved with it, rather than overwritten by it.
+let saveArrived = false;
+let soundTouched = false;
 loadProgress().then((p) => {
+  const folded = absorb(p, game.progress, { soundTouched });
   game.progress = p;
+  saveArrived = true;
   applySound();
+  if (folded) saveProgress(p);
   const at = resumeIndex(p);
   const untouched = game.levelIndex === 0 && !game.isDaily && game.attempt <= 1 &&
     !game.stroke.active && !game.stroke.points.length &&
@@ -102,6 +111,7 @@ attachInput(canvas, {
     if (soundBtn && inside(soundBtn, pt.cssX, pt.cssY) &&
         (game.phase === PHASE.FROZEN || game.phase === PHASE.RESULT || game.phase === PHASE.ENDING)) {
       game.progress.muted = !game.progress.muted;
+      soundTouched = true;
       applySound();
       saveProgress(game.progress);
       return;
@@ -127,15 +137,31 @@ const insideBtn = (x, y) => inside(boardBtn, x, y);
 // AUDIO. Suspending the AudioContext is the difference between a paused game
 // and one that keeps humming in a backgrounded tab, which fails review.
 sdk.onPause(() => { game.paused = true; audio.pause(); });
-sdk.onResume(() => { game.paused = false; acc = 0; last = performance.now(); audio.resume(); });
+sdk.onResume(() => { game.paused = false; acc = 0; last = performance.now(); audio.resume(); applySound(); });
 
 // SOUND IS ON ONLY IF YOUTUBE SAYS SO AND THE PLAYER HAS NOT SWITCHED IT OFF.
 // YouTube's setting comes first and is followed live; the switch, top right,
 // is the player's own and is saved with their progress.
+//
+// INSIDE PLAYABLES, SOUND DOES NOT WAIT FOR A TAP. Google's certification FAQ
+// names a game that waits for a user gesture before starting audio as the
+// most common audio failure, because YouTube may hand a Playable focus
+// itself. So once the save has said whether the player muted the game, the
+// sound starts on its own; if the browser still holds it back, the first
+// touch starts it (audio.unlock). Off the platform a page may not start
+// sound unprompted, and the first touch is still what does it.
 let platformAudio = sdk.isAudioEnabled();
-const applySound = () => audio.setEnabled(platformAudio && !game.progress.muted);
+const applySound = () => {
+  audio.setEnabled(platformAudio && !game.progress.muted);
+  if (sdk.isPlayables && saveArrived) audio.unlock();
+};
 applySound();
 sdk.onAudioEnabledChange((on) => { platformAudio = on; applySound(); });
+
+// Certification asks that a dialog close on Esc. The board is the only one.
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && game.phase === PHASE.SELECT) { closeSelect(game); _resetPhase(); }
+});
 
 let last = performance.now();
 let acc = 0;
