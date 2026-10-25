@@ -550,6 +550,70 @@ export const DAILY_SOLUTIONS = {
       ]
     }
   },
+  "a127-log": {
+    "id": "a127-log",
+    "ink": 224,
+    "winners": 29,
+    "robust": 26,
+    "anchoredRobust": 26,
+    "handRate": 0.897,
+    "solution": {
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 217.5,
+          "y": 835.7
+        },
+        {
+          "x": 272.5,
+          "y": 835.7
+        },
+        {
+          "x": 327.5,
+          "y": 835.7
+        },
+        {
+          "x": 382.5,
+          "y": 835.7
+        }
+      ]
+    }
+  },
+  "a129-window": {
+    "id": "a129-window",
+    "ink": 260,
+    "winners": 45,
+    "robust": 6,
+    "anchoredRobust": 6,
+    "handRate": 0.133,
+    "solution": {
+      "family": "line",
+      "length": 230,
+      "parts": 12,
+      "anchors": 2,
+      "points": [
+        {
+          "x": 602.5,
+          "y": 826.4
+        },
+        {
+          "x": 640.8,
+          "y": 892.8
+        },
+        {
+          "x": 679.2,
+          "y": 959.2
+        },
+        {
+          "x": 717.5,
+          "y": 1025.6
+        }
+      ]
+    }
+  },
   "a125-stairs": {
     "id": "a125-stairs",
     "ink": 184,
@@ -642,6 +706,54 @@ export const DAILY_SOLUTIONS = {
         {
           "x": 240,
           "y": 650
+        }
+      ]
+    }
+  },
+  "a130-chimney": {
+    "id": "a130-chimney",
+    "ink": 230,
+    "winners": 35,
+    "robust": 18,
+    "anchoredRobust": 18,
+    "handRate": 0.514,
+    "solution": {
+      "family": "span",
+      "length": 173,
+      "parts": 11,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 280,
+          "y": 760
+        },
+        {
+          "x": 302.9,
+          "y": 773
+        },
+        {
+          "x": 325.7,
+          "y": 783.5
+        },
+        {
+          "x": 348.6,
+          "y": 789.2
+        },
+        {
+          "x": 371.4,
+          "y": 789.2
+        },
+        {
+          "x": 394.3,
+          "y": 783.5
+        },
+        {
+          "x": 417.1,
+          "y": 773
+        },
+        {
+          "x": 440,
+          "y": 760
         }
       ]
     }
