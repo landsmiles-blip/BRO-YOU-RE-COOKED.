@@ -10,6 +10,8 @@ back saying the game did not work. Read it before changing anything.
 levels, where they come from, who builds them (proposed 2026-10-13; check its
 status line before acting on it). `docs/HELD.md` is every level already built
 and shelved, with the measured reason. Read both before designing anything.
+`docs/DIFFICULTY.md` is the difficulty curve in plain words: what a level's
+number means, the 60 ceiling, and how real players' attempts will replace it.
 
 ---
 
