@@ -17,6 +17,17 @@ from this shelf — measure, then shelve with the reason, so it returns as a
 better version rather than the same one — still stands. A level shelved from
 now on is recorded here, not kept in the code.
 
+## A lesson that moved, not a level
+
+**A1 WALL used to teach anchoring by accident** — a line drawn floating, touching
+neither shelf, fell with the ball and Milo died, and the old header called that
+its bonus. On 25 Oct it was rebuilt as the teaching level (thick shelves, the
+ball just above the slot): a floating line now falls INTO the slot and seals it,
+so level 1 says only "your line is solid and stops things". Anchoring is taught
+by A5 HANG, level 2, which was built to teach it. The old geometry is in any
+commit before this note (shelves 90x32 and 100x32 at y 800, ball from y 300,
+freeze 700ms).
+
 ## Worth a better build
 
 The reasons for these three say the IDEA is good and the build was not.

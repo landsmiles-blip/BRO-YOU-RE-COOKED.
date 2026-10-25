@@ -7,14 +7,14 @@
 export const SOLVER = {
   "a1-wall": {
     "solvable": true,
-    "solutionBreadth": 0.1268,
+    "solutionBreadth": 0.2089,
     "precisionFloor": 65,
     "worstJitter": 3,
     "distinctFamilies": 6,
-    "twoStarLength": 300,
-    "threeStarLength": 226,
-    "shortestWin": 110,
-    "measuredAt": "2026-09-14"
+    "twoStarLength": 295,
+    "threeStarLength": 230,
+    "shortestWin": 90,
+    "measuredAt": "2026-10-25"
   },
   "a2-gap": {
     "solvable": true,

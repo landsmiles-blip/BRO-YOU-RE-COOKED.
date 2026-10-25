@@ -14,7 +14,8 @@
 // new player decides whether to stay. Air was introduced by UPDRAFT (39) while
 // DUCT (6) waited three levels behind it. Five rules now hold the order:
 //
-//   1. GENTLE START   levels 1-3 sit in the easiest band.
+//   1. GENTLE START   levels 1-3 sit in the easiest band, and level 1 — the
+//                     teaching level — is the easiest of them.
 //   2. GENTLE INTRO   the first level that uses a noun is the easiest level that
 //                     uses it — a mechanic is met before it is tested.
 //   3. NO WALLS       no level is more than 3x the median of the four before it.
@@ -89,10 +90,13 @@ CHAPTERS.forEach((ch, c) => {
 });
 console.log(`\n  ${built} of ${n} slots built, ${n - built} to build\n`);
 
-// 1. gentle start
+// 1. gentle start — and level 1, the teaching level, the easiest of the three
+//    (25 Oct: it measured the HARDEST of them, 11.7 against 9.5 and 10.5).
 const start = T.slice(0, 3);
 check(`levels 1-3 are in the easiest band (<= ${START_MAX} tries)`, start.every((t) => t <= START_MAX),
   start.map((t) => t.toFixed(0)).join(', '));
+check('level 1 is the easiest of levels 1-3', T[0] < Math.min(T[1], T[2]),
+  start.map((t) => t.toFixed(1)).join(', '));
 
 // 2. gentle intro, for every noun the campaign uses
 const bad2 = [];

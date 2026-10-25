@@ -137,6 +137,11 @@ measurement first; the measurement is usually the finding.
 - **A hint per level names the PROBLEM, never the solution.** A verb in the
   corner is not communication. If a hint needs to say two things, the level is
   two puzzles wearing one costume — that is what put A14 on the shelf.
+  **One written exception (25 Oct, the owner): level 1 shows the GESTURE.**
+  After 2.5s of looking at the frozen frame without touching, a pencil traces
+  the line across its slot (`tutorial` on A1, drawn in js/main.js, never in the
+  daily or the death cam). Level 1's job is to teach drawing itself, which is
+  what every draw game's first level does. No other level gets one.
 - **A held level is not a deleted one.** `docs/HELD.md` keeps every shelved
   level's measured reason and the commit where its code lives, so it returns as
   a better version rather than the same one. Shelved code does not stay in
@@ -1001,8 +1006,10 @@ execution, not comprehension. Measured on 2026-10-12, the shipped order had:
 - **Air introduced by UPDRAFT (39) while DUCT (6) waited three levels behind.**
 - **BRIDGE at level 2 (28)** above the two levels after it.
 
-`tools/test/curve.js` now holds the order to five rules (the fifth: every level inside its slot's band), each a principle and
-not a fitted number: levels 1-3 in the easiest band (<=15); every noun first
+`tools/test/curve.js` now holds the order to six rules (the fifth: every level inside its slot's band; the sixth: the ceiling below), each a principle and
+not a fitted number: levels 1-3 in the easiest band (<=15), and level 1 the
+easiest of the three — it is the teaching level (25 Oct: rebuilt from 11.7
+tries, the hardest of the three, to 6.0); every noun first
 met at its EASIEST level (nouns detected from the data — a new level is held to
 it the moment it uses one); no level over 3x the median of the four before it;
 each third harder than the last. The re-order passes all four with no level's

@@ -38,48 +38,53 @@ import * as CH6 from './levels/ch6-all.js';
 const MECHANISM_TYPES = new Set(['switch', 'gate', 'dog', 'hive']);
 
 // ─────────────────────────────────────────────────────────────────────────
-// A1 — WALL.  Teaches: your line is real, solid matter.
+// A1 — WALL.  Teaches: your line is real, solid matter. THE TEACHING LEVEL.
 //
-// REDESIGNED from the v0.3/v1.0 spec, which was unsolvable. That version drops
-// a ball into Milo's walking path; verified timing shows it lands at t=1.166s
-// while Milo arrives at t=1.409s, so it comes to rest as a 56-unit obstacle on
-// the walk line. Milo's step-up is 22 units. He can never reach the goal — the
-// level dead-ends in a STUCK timeout EVEN WHEN THE PLAYER BLOCKS IT CORRECTLY.
+// Rebuilt 25 Oct 2026 as the game's first lesson (the owner: "that is the
+// level we want to teach the player how to play the game, so it has to be
+// simple"). The difficulty research found it the HARDEST of the first three
+// levels (11.7 tries against 9.5 and 10.5) — every portal's advice is the
+// opposite. One idea only: your line is solid and stops things. Doing nothing
+// still kills him (the stakes); any deliberate line across the slot wins.
 //
-// Here the ball falls through a gap between two shelves and never reaches the
-// walk line at all. Caught, it rests ~280 units above Milo's head and he walks
-// under it. Uncaught, it lands on him at t≈1.086s, when he is at x≈399 and the
-// ball is at x=400. Dead-centre.
+// The ball falls through a slot between two shelves onto Milo's walk; caught,
+// it rests on the line and he walks under it. Measured before choosing (the
+// sweep showed 1,861 of 2,201 losing strokes simply never met the ball):
+//   - THICK SHELVES (120): any line laid in the slot, at any height in it,
+//     seals it, and a line dropped above it falls in and seals it too — the
+//     bee chapter's "a slot in thick geometry is not a needle". On its own it
+//     moved the level from 12 to 10 tries.
+//   - THE BALL STARTS JUST ABOVE THE SLOT (y 550, was 300), Milo further on so
+//     they still meet: the danger is where the eye is, and the space a random
+//     line has to land in shrinks. 6 tries, hand rate 80%.
+// It no longer teaches "a line touching nothing falls" by accident — A5 HANG,
+// right after it, teaches that outright, which its own header already said.
 //
-// The bonus: a stroke drawn floating, touching neither shelf, falls WITH the
-// ball and Milo still dies. That teaches anchoring in a single attempt, by
-// consequence, with no text — on level one.
+// The first version (v0.3/v1.0) dropped the ball INTO the walk path and was
+// unsolvable: it came to rest as a 56-unit obstacle against a 22-unit step.
 // ─────────────────────────────────────────────────────────────────────────
 export const A1 = {
   id: 'a1-wall',
   hint: 'STOP IT REACHING HIM',
   world: 'backyard',
   verb: 'BLOCK',
-  milo: { start: { x: 160, y: 1152 }, speed: MILO.speed },
+  milo: { start: { x: 245, y: 1152 }, speed: MILO.speed },
 
-  // THE FREEZE must land before the danger does — "one heartbeat before it
-  // happens". Measured: uncaught, the ball kills Milo at t=1108ms. The global
-  // default of 1200ms would freeze the world AFTER he is already dead. At 700ms
-  // the ball hangs just above the gap and Milo is mid-stride at x=313: the
-  // problem and the solution are both visible, with 400ms of dramatic margin.
-  // Per-level, because every level's beat is different.
-  freezeAt: 700,
+  // THE FREEZE must land before the danger does. Uncaught, the ball reaches
+  // him at 842ms; at 280ms it hangs 180 units above the slot and he is
+  // mid-stride at x=307 — the problem and where to draw are both in view.
+  freezeAt: 280,
   goal: { id: 'goal', x: 620, y: 1152, w: 80, h: 140 },
 
   static: [
     { id: 'ground',  type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'shelfL',  type: 'platform', x: 250, y: 800,  w: 90,  h: 32  },
-    { id: 'shelfR',  type: 'platform', x: 460, y: 800,  w: 100, h: 32  },
+    { id: 'shelfL',  type: 'platform', x: 250, y: 800,  w: 105, h: 120 },
+    { id: 'shelfR',  type: 'platform', x: 445, y: 800,  w: 115, h: 120 },
   ],
 
   objects: [
     {
-      id: 'ball1', type: 'boulder', x: 400, y: 300, radius: 28,
+      id: 'ball1', type: 'boulder', x: 400, y: 550, radius: 28,
       density: 0.03, restitution: 0.15, friction: 0.4,
       // minSpeed, not the Bible's minImpulse — see hazards.js. The old key
       // was dead weight here: isFatal reads minSpeed and fell back to the
@@ -90,6 +95,14 @@ export const A1 = {
 
   zones: [],
   drawing: { maxLength: LINE.maxLengthDefault },
+
+  // THE ONE LEVEL THAT SHOWS THE GESTURE. Every successful draw game's first
+  // level shows a finger drawing; this one shows a pencil tracing across the
+  // slot once the player has looked at the frozen frame for a moment without
+  // touching (js/main.js). It is the single, written exception to "a hint
+  // names the problem, never the solution": level 1's job is to teach the
+  // gesture itself.
+  tutorial: { from: { x: 300, y: 796 }, to: { x: 505, y: 796 } },
 
   // Written by the solver harness at M1 — never typed by hand (Bible §3.8).
   solver: null,

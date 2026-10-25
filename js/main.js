@@ -323,6 +323,14 @@ function render() {
         drawText(ctx, `CHAPTER ${ch.n} — ${ch.name}  ·  ${ch.tag}`, 0.5, 0.148,
                  Math.max(12, view.cssH * 0.02), C.ink);
       }
+      // THE GESTURE, on the one level that teaches it (its `tutorial` path,
+      // js/levels.js A1): after a moment of looking without touching, a pencil
+      // traces the line, again every few seconds, until the first touch. The
+      // single written exception to "a hint names the problem, never the
+      // solution" — level 1's job is to teach the gesture itself.
+      if (g.level.tutorial && !g.isDaily && g.phaseTime > TUTORIAL_WAIT) {
+        drawTutorial(ctx, g.level.tutorial, g.phaseTime - TUTORIAL_WAIT);
+      }
     }
     drawInk(ctx, inkUsed(g), inkMax(g));
   }
@@ -352,6 +360,53 @@ function render() {
     drawText(ctx, rejectText(g.rejectReason), 0.5, 0.82,
              Math.max(14, view.cssH * 0.022), C.danger);
   }
+}
+
+// THE TUTORIAL CUE. Long enough a wait that a player who already knows what
+// to do never sees it; a trace slow enough to follow; a pause, then again.
+const TUTORIAL_WAIT = 2500, TRACE_MS = 1100, LOOP_MS = 2600;
+
+/**
+ * A pencil drawing the level's tutorial path in blue-pen dashes, in world
+ * units so it sits on the geometry at every aspect ratio. Reduced motion gets
+ * the whole path and the pencil at its end, still.
+ */
+function drawTutorial(ctx, { from, to }, t) {
+  const p = reducedMotion ? 1 : Math.min(1, (t % LOOP_MS) / TRACE_MS);
+  const x = from.x + (to.x - from.x) * p, y = from.y + (to.y - from.y) * p;
+  ctx.save();
+  applyTransform(ctx);
+  ctx.lineCap = 'round';
+  ctx.setLineDash([14, 12]);
+  ctx.globalAlpha = 0.6;
+  ctx.strokeStyle = C.stroke;
+  ctx.lineWidth = 9;
+  ctx.beginPath();
+  ctx.moveTo(from.x, from.y);
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+  // The pencil, its point on the head of the trace, leaning up and to the right.
+  ctx.translate(x, y);
+  ctx.rotate(-0.62);
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = C.ink;
+  ctx.lineJoin = 'round';
+  const part = (fill, pts) => {
+    ctx.beginPath();
+    pts.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+    ctx.closePath();
+    ctx.fillStyle = fill;
+    ctx.fill();
+    ctx.stroke();
+  };
+  part('#E9CFA8', [[0, 0], [24, -9], [24, 9]]);                    // sharpened wood
+  part(C.ink, [[0, 0], [8, -3], [8, 3]]);                          // the lead
+  part(C.anchor, [[24, -9], [96, -9], [96, 9], [24, 9]]);           // the body
+  part('#B9BDC4', [[96, -9], [106, -9], [106, 9], [96, 9]]);        // the band
+  part(C.margin, [[106, -9], [118, -9], [118, 9], [106, 9]]);       // the eraser
+  ctx.restore();
 }
 
 /**

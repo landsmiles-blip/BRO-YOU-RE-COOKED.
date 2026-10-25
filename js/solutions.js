@@ -7,43 +7,43 @@
 export const SOLUTIONS = {
   "a1-wall": {
     "id": "a1-wall",
-    "winners": 279,
-    "robust": 188,
-    "anchoredRobust": 133,
-    "handRate": 0.674,
+    "winners": 447,
+    "robust": 358,
+    "anchoredRobust": 253,
+    "handRate": 0.801,
     "solution": {
       "family": "arc",
       "length": 288,
-      "parts": 11,
-      "anchors": 8,
+      "parts": 10,
+      "anchors": 3,
       "points": [
         {
-          "x": 485,
-          "y": 760.8
+          "x": 235,
+          "y": 850.1
         },
         {
-          "x": 489.8,
-          "y": 813.7
+          "x": 230.2,
+          "y": 902.9
         },
         {
-          "x": 484,
-          "y": 860.3
+          "x": 236,
+          "y": 949.6
         },
         {
-          "x": 467.6,
-          "y": 900.9
+          "x": 252.4,
+          "y": 990.2
         },
         {
-          "x": 440.7,
-          "y": 935.4
+          "x": 279.3,
+          "y": 1024.7
         },
         {
-          "x": 403.1,
-          "y": 963.8
+          "x": 316.9,
+          "y": 1053
         },
         {
-          "x": 355,
-          "y": 986
+          "x": 365,
+          "y": 1075.3
         }
       ]
     }
