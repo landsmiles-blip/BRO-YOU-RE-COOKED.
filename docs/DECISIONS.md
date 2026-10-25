@@ -66,6 +66,9 @@ If clearance later comes back bad, the title changes and nothing else does — b
 
 ## D6 — Content scale · **DECIDED 2026-10-13: 60 levels, six chapters of ten**
 
+**Amended 2026-10-18: 70 slots, seven chapters** — BEES went in as chapter 3
+(docs/PLAN.md status of that date). 42 are built as of 2026-10-25.
+
 Was: 24 shippable, 60 the upside, decided on measured authoring cost. Decided
 now on what one player needs: a sitting is ~10 minutes and 8–15 levels, so 21
 levels is two sittings and 60 is a week of daily play — the week a habit forms.

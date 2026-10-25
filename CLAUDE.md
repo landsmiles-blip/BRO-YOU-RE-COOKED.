@@ -998,7 +998,7 @@ execution, not comprehension. Measured on 2026-10-12, the shipped order had:
 - **Air introduced by UPDRAFT (39) while DUCT (6) waited three levels behind.**
 - **BRIDGE at level 2 (28)** above the two levels after it.
 
-`tools/test/curve.js` now holds the order to four rules, each a principle and
+`tools/test/curve.js` now holds the order to five rules (the fifth: every level inside its slot's band), each a principle and
 not a fitted number: levels 1-3 in the easiest band (<=15); every noun first
 met at its EASIEST level (nouns detected from the data — a new level is held to
 it the moment it uses one); no level over 3x the median of the four before it;
@@ -1021,10 +1021,13 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
   stays in its band when the later chapters move up one), the same
   sawtooth in each (INTRO, three DEVELOPs, SPIKE, BREATHER, two DEVELOPs,
   BREATHER, BOSS) — two hard levels in ten, a breather after each, the first
-  boss at level 10, which is where the industry puts them. T0, G and S are the
-  least-squares fit to the shipped levels (`python3 tools/lib/fit-curve.py`
-  reproduces them); a level must measure within x1.5 of its slot's target
-  (intros and breathers may be easier). `npm run curve` prints all sixty slots
+  boss at level 10, which is where the industry puts them. T0, G and S were
+  fitted on 13 Oct to the 21 levels of that day; `python3 tools/lib/fit-curve.py`
+  now fits them to every level where it sits, weighted by how many winning
+  strokes each number rests on, and prints the drift (25 Oct: T0 7.06, G 1.22,
+  S 5.52, typical miss x1.21 — the constants are NOT yet changed, pending the
+  difficulty research); a level must measure within x1.5 of its slot's target
+  (intros and breathers may be easier). `npm run curve` prints all seventy slots
   with their targets: it is the build list. Refit when real players' attempt
   counts exist — simulated difficulty is least accurate on the hardest levels.
 

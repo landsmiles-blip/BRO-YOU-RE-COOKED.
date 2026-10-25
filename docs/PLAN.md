@@ -305,8 +305,10 @@ hardest levels. The progression they build is a sawtooth, not a straight line:
 - **The three numbers are fitted, not chosen.** They are the least-squares fit
   to the 21 shipped levels, each kept in its own chapter, with the final boss
   held to 90–110 (the hardest shipped level measures 90).
-  `tools/lib/fit-curve.py` reproduces them, and every shipped level sits
-  inside its slot's band.
+  Every shipped level sits inside its slot's band. *(25 Oct: the original
+  fitter searched placements and constants together and so could not fail;
+  it was rewritten to measure the drift of the levels as placed — see
+  CLAUDE.md, THE DIFFICULTY CURVE.)*
 - **The band:** a level fits its slot within ×1.5 either way. An intro or a
   breather may be as easy as it likes, because an easy level is never a wall.
 - **The result:** the game climbs from 9 tries to 109. The first chapter's boss

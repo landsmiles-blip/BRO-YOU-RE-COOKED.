@@ -23,13 +23,13 @@
 //   5. ON TARGET      every level measures inside the band of its chapter slot,
 //                     from the difficulty equation in tools/lib/difficulty.js.
 //
-// It also prints all sixty slots, built or not, with each one's target: the
+// It also prints all seventy slots, built or not, with each one's target: the
 // list of what is left to build, and how hard each one has to be.
 //
 //   npm run curve
 
 import { LEVELS, CHAPTERS, SLOT_ROLES } from '../../js/levels.js';
-import { band, nounsOf, triesOf } from '../lib/difficulty.js';
+import { band, nounsOf, triesOf, noiseOf } from '../lib/difficulty.js';
 
 const START_MAX = 15;      // rule 1: tries for each of the first three levels
 const INTRO_SLACK = 1.25;  // rule 2: measurement noise between near-equal levels
@@ -54,7 +54,7 @@ check('every level has measured breadth and hand rate', missing.length === 0, mi
 if (missing.length) process.exit(1);
 const tries = new Map(LEVELS.map((l, i) => [l.id, T[i]]));
 
-// The sixty slots, in play order. A built slot shows its measurement against
+// The seventy slots, in play order. A built slot shows its measurement against
 // its band; an empty one shows what the level that fills it has to measure.
 const seen = new Set();
 const offTarget = [];
@@ -73,8 +73,12 @@ CHAPTERS.forEach((ch, c) => {
     if (!inBand) offTarget.push(`${l.verb} ${t.toFixed(0)} in slot ${n} [${range.trim()}]`);
     const intro = nounsOf(l).filter((x) => !seen.has(x));
     intro.forEach((x) => seen.add(x));
-    console.log(`${head}   ${l.verb.padEnd(10)} ${t.toFixed(0).padStart(3)}${inBand ? '' : '  OFF TARGET'}` +
-      (intro.length ? `   new: ${intro.join(', ')}` : ''));
+    // ± is how far this number can be trusted (difficulty.js noiseOf). Where
+    // it is wider than the band, the level's place on the curve is a guess.
+    const noise = noiseOf(l.id);
+    const pm = `±${Math.round(noise * 100)}%`.padStart(5);
+    console.log(`${head}   ${l.verb.padEnd(10)} ${t.toFixed(0).padStart(3)} ${pm}${inBand ? '' : '  OFF TARGET'}` +
+      (noise > Math.log(1.5) ? '  noisy' : '') + (intro.length ? `   new: ${intro.join(', ')}` : ''));
   });
 });
 console.log(`\n  ${built} of ${n} slots built, ${n - built} to build\n`);

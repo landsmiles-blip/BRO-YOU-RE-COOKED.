@@ -1310,7 +1310,7 @@ export const A43 = {
   solver: null,
 };
 
-// THE GAME IS SIX CHAPTERS OF TEN, AND EVERY SLOT HAS A MEASURED TARGET.
+// THE GAME IS SEVEN CHAPTERS OF TEN, AND EVERY SLOT HAS A MEASURED TARGET.
 //
 // The order is not taste and it is not creation order. Each chapter follows the
 // same sawtooth (SLOT_ROLES): an INTRO that teaches the chapter's new thing on

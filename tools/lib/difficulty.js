@@ -65,6 +65,17 @@ export function band(c, k) {
   return { t, lo: easyOk ? 0 : t / TOLERANCE, hi: t * TOLERANCE };
 }
 
+/**
+ * How far a level's tries can be trusted: its relative error, from the number
+ * of hand-robust winning strokes it rests on (a count, so about 1/sqrt(R)).
+ * BLOCK rests on 188 and is good to ±7%; CRACK rests on 8 and is good only to
+ * ±35% — as wide as the band itself. null when unmeasured.
+ */
+export function noiseOf(id) {
+  const r = SOLUTIONS[id]?.robust;
+  return r > 0 ? 1 / Math.sqrt(r) : null;
+}
+
 /** Measured tries for a level id, or null if it has not been measured. */
 export function triesOf(id) {
   const s = SOLVER[id], h = SOLUTIONS[id];
