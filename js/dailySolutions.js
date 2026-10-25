@@ -8,11 +8,11 @@
 export const DAILY_SOLUTIONS = {
   "a1-wall": {
     "id": "a1-wall",
-    "ink": 226,
-    "winners": 56,
-    "robust": 30,
-    "anchoredRobust": 18,
-    "handRate": 0.536,
+    "ink": 230,
+    "winners": 120,
+    "robust": 67,
+    "anchoredRobust": 47,
+    "handRate": 0.558,
     "solution": {
       "family": "line",
       "length": 165,
@@ -20,20 +20,20 @@ export const DAILY_SOLUTIONS = {
       "anchors": 3,
       "points": [
         {
-          "x": 378.8,
-          "y": 654.6
+          "x": 348.6,
+          "y": 921.5
         },
         {
-          "x": 406.3,
-          "y": 702.2
+          "x": 396.2,
+          "y": 949
         },
         {
-          "x": 433.8,
-          "y": 749.8
+          "x": 443.8,
+          "y": 976.5
         },
         {
-          "x": 461.3,
-          "y": 797.4
+          "x": 491.4,
+          "y": 1004
         }
       ]
     }
@@ -1225,31 +1225,31 @@ export const DAILY_SOLUTIONS = {
   "a31-thorns": {
     "id": "a31-thorns",
     "ink": 165,
-    "winners": 10,
-    "robust": 2,
-    "anchoredRobust": 2,
-    "handRate": 0.2,
+    "winners": 12,
+    "robust": 7,
+    "anchoredRobust": 7,
+    "handRate": 0.583,
     "solution": {
       "family": "line",
       "length": 110,
       "parts": 9,
-      "anchors": 7,
+      "anchors": 8,
       "points": [
         {
-          "x": 347.6,
-          "y": 576.5
-        },
-        {
-          "x": 315.9,
-          "y": 594.8
+          "x": 252.4,
+          "y": 521.5
         },
         {
           "x": 284.1,
-          "y": 613.2
+          "y": 539.8
         },
         {
-          "x": 252.4,
-          "y": 631.5
+          "x": 315.9,
+          "y": 558.2
+        },
+        {
+          "x": 347.6,
+          "y": 576.5
         }
       ]
     }
