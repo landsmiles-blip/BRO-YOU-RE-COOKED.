@@ -488,5 +488,16 @@ export const SOLVER = {
     "threeStarLength": 260,
     "shortestWin": 165,
     "measuredAt": "2026-10-25"
+  },
+  "a130-chimney": {
+    "solvable": true,
+    "solutionBreadth": 0.0768,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 230,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-25"
   }
 };

@@ -332,3 +332,43 @@ export const A129 = {
   drawing: { maxLength: 320 },
   solver: null,
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// A130 — CHIMNEY.  A breather: the nest is in his chimney.
+//
+// The only way out of the chimney is down, into his house, ahead of him; any
+// line across the shaft below the nest shuts it, and the shaft's walls are 40
+// thick, so a line laid anywhere in it holds (CLAUDE.md, a slot in thick
+// geometry). A variant of LOG's question — stop them where they start — in a
+// frame that stands up instead of lying down.
+//
+// Sketched first with the hive hung ABOVE the chimney: the swarm slid off its
+// walls onto the roof beside it and sat there for the whole run, because the
+// walls stand above the roof and they are dumb homers — doing nothing won.
+// The nest had to be inside. Measured 25 Oct under this id: a TALL shaft is
+// the easy one — 220 tall, 20 tries — because there is more of it to lay a
+// line in (180 measured 29, and 140 measured 31 with a 30u precision floor).
+// Of 144 winning strokes, 89 keep five or six bees in the chimney; most of
+// the rest are a line in the house shielding him to the door.
+// ─────────────────────────────────────────────────────────────────────────
+export const A130 = {
+  id: 'a130-chimney',
+  hint: "THERE'S A NEST IN THE CHIMNEY",
+  world: 'backyard',
+  verb: 'CHIMNEY',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  freezeAt: 400,
+  goal: { id: 'goal', x: 560, y: 1152, w: 70, h: 140 },
+  static: [
+    ground,
+    { id: 'roofL', type: 'platform', x: 100, y: 760, w: 180, h: 60 },
+    { id: 'chimL', type: 'platform', x: 280, y: 600, w: 40, h: 220 },
+    { id: 'chimR', type: 'platform', x: 400, y: 600, w: 40, h: 220 },
+    { id: 'roofR', type: 'platform', x: 440, y: 760, w: 220, h: 60 },
+    { id: 'wallR', type: 'platform', x: 640, y: 820, w: 20, h: 332 },
+  ],
+  objects: [{ id: 'hive', type: 'hive', x: 360, y: 650, radius: 24, bees: 6, attackAt: 500, guard: 30 }],
+  zones: [],
+  drawing: { maxLength: 300 },
+  solver: null,
+};

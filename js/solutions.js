@@ -1804,5 +1804,52 @@ export const SOLUTIONS = {
         }
       ]
     }
+  },
+  "a130-chimney": {
+    "id": "a130-chimney",
+    "winners": 144,
+    "robust": 95,
+    "anchoredRobust": 95,
+    "handRate": 0.66,
+    "solution": {
+      "family": "span",
+      "length": 259,
+      "parts": 12,
+      "anchors": 8,
+      "points": [
+        {
+          "x": 190,
+          "y": 760
+        },
+        {
+          "x": 225.7,
+          "y": 747
+        },
+        {
+          "x": 261.4,
+          "y": 736.5
+        },
+        {
+          "x": 297.1,
+          "y": 730.8
+        },
+        {
+          "x": 332.9,
+          "y": 730.8
+        },
+        {
+          "x": 368.6,
+          "y": 736.5
+        },
+        {
+          "x": 404.3,
+          "y": 747
+        },
+        {
+          "x": 440,
+          "y": 760
+        }
+      ]
+    }
   }
 };
