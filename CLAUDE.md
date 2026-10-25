@@ -908,9 +908,12 @@ Both halves are needed: the daily and the campaign. See docs/PLAN.md section 3.
 actives x sessions x ad impressions, so with nothing to come back FOR the
 audience decays to zero after day one no matter how many levels exist. Four
 sessions of chasing level 22 did not move that number, because three more
-minutes of content in a game nobody reopens is worth nothing. Google's own
-Playables guidance says the same thing from the other end: aim for ~10 minute
-sessions, persist progress, and **add a new challenge each day**.
+minutes of content in a game nobody reopens is worth nothing. The portals say
+the same thing from the other end: aim for ~10 minute sessions, persist
+progress, and **add a new challenge each day**. *(Corrected 25 Oct: this was
+credited to Google's Playables guidance; the difficulty research could not
+trace the ~10 minutes to any Google page — it comes from CrazyGames and
+GameAnalytics benchmarks. Persisting progress IS a Google requirement.)*
 
 **THE TWIST IS THE INK, NOT A NEW LEVEL.** The daily runs one of the shipped
 levels at its measured THREE-STAR length from `js/solverData.js` — the 20th

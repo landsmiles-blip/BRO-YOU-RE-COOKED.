@@ -390,6 +390,43 @@ console.log('\n1. INTEGRATION — cloud save round-trip and version ladder');
   await page.close();
 }
 
+// ── 2. A viewport that starts at 0x0 ─────────────────────────────────────
+//
+// Google's certification FAQ: a game that renders in the test suite but not
+// in the Android WebView usually broke because the WebView starts at 0x0. The
+// game must run without waiting for a size and pick the real one up when it
+// arrives — here it arrives WITHOUT a resize event, the harsher case.
+console.log('\n2. STABILITY — a viewport that starts at 0x0');
+{
+  const page = await browser.newPage({ viewport: { width: 405, height: 720 } });
+  const errs = [];
+  page.on('pageerror', (e) => errs.push(e.message));
+  await page.addInitScript(() => {
+    globalThis.__w = 0; globalThis.__h = 0;
+    Object.defineProperty(window, 'innerWidth', { get: () => globalThis.__w, configurable: true });
+    Object.defineProperty(window, 'innerHeight', { get: () => globalThis.__h, configurable: true });
+  });
+  await page.goto(BASE, { waitUntil: 'load' });
+  await page.waitForFunction(() => globalThis.__byc?.game, null, { timeout: 10000 });
+  await page.waitForTimeout(300);
+  const atZero = await page.evaluate(() => {
+    const v = globalThis.__byc.view;
+    return { scale: v.scale, worldW: v.worldW, offsetX: v.offsetX };
+  });
+  await page.evaluate(() => { globalThis.__w = 405; globalThis.__h = 720; });   // no resize event
+  await page.waitForTimeout(300);
+  const grown = await page.evaluate(() => {
+    const v = globalThis.__byc.view;
+    return { scale: v.scale, cssW: v.cssW, cw: v.canvas.width, phase: globalThis.__byc.game.phase };
+  });
+  check('2', 'at 0x0 the layout stays finite (no zero scale, no NaN)',
+        atZero.scale > 0 && Number.isFinite(atZero.worldW) && Number.isFinite(atZero.offsetX), JSON.stringify(atZero));
+  check('2', 'and it takes the real size when it arrives, even with no resize event',
+        grown.cssW === 405 && grown.cw >= 405 && Math.abs(grown.scale - 405 / 720) < 1e-6, JSON.stringify(grown));
+  check('2', 'no errors through a 0x0 start', errs.length === 0, errs.slice(0, 2).join('; '));
+  await page.close();
+}
+
 // ── 1. The save waits for the load, and the cloud is the only save ────────
 //
 // "Game MUST NOT use any other mechanism to save user progress" and "MUST

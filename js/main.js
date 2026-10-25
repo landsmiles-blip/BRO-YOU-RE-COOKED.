@@ -6,7 +6,7 @@
 // catch-up. Fabricating 400ms of physics in one frame to hide a stutter nobody
 // was watching breaks determinism for nothing.
 
-import { initView, view, applyTransform } from './view.js';
+import { initView, view, applyTransform, resize } from './view.js';
 import { attachInput } from './input.js';
 import {
   createGame, tick, onDown, onMove, onUp, retry, nextLevel, goToLevel, isSteppingPhase,
@@ -179,6 +179,10 @@ const ON_LEVEL = new Set([PHASE.LIVE, PHASE.FROZEN, PHASE.SIM, PHASE.DEATHCAM]);
 
 function frame(now) {
   requestAnimationFrame(frame);
+
+  // A WebView that starts at 0x0 does not always say when it grows. Two
+  // reads a frame are the whole cost of never trusting the resize event alone.
+  if (window.innerWidth !== view.cssW || window.innerHeight !== view.cssH) resize();
 
   const dt = now - last;
   last = now;

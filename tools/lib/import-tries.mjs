@@ -8,10 +8,11 @@
 // (a header row is skipped; level is the id, e.g. a1-wall, the number on
 // screen, e.g. 12 for "12/42", or the verb on the card when only one level
 // carries it — two levels are called BLOCK, so that one is refused). Where the
-// rows come from does not matter — a Playgama
-// analytics export (run_end events where outcome is success: level, player,
-// attempt), or a tester reading the playtest board — which is why the format
-// is the plainest one there is.
+// rows come from does not matter — a Playgama analytics export (EVERY
+// run_end event, failures and quits included: per level and player, the
+// runs and whether one of them won), or a tester reading the playtest board —
+// which is why the format is the plainest one there is. An export of wins
+// alone brings back the bias this file exists to remove.
 //
 // Out: per level, `mean` = ALL runs by everyone ÷ the number who won. That is
 // the censored estimate the difficulty research calls for: averaging only
