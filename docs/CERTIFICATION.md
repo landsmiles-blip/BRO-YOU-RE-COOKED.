@@ -115,6 +115,8 @@ Legend: **PASS** with evidence · **PROXY** measured here, needs a real device �
 | PASS | No copyrighted music or SFX | every sound is synthesised in `js/audio.js` |
 | HUMAN | Title cleared (trademark) | decision D4 — a real trademark search is yours to commission |
 | PASS | Art original | procedural ink rendering; nothing generated |
+| HUMAN | Not "substantially identical" to another Playable (policy of 25 Aug 2026) | Undefined test, so judged by eye. Closest rival: **Save The Pets** (draw a line to shield a dog from bees, ~38M plays) now that BYC has a dog and a bee chapter. The decisions differ — Milo must walk out alive, not sit out a timer, and the game spans air, balloons, TNT and brittle floors — but lead the listing's thumbnail and first frame with what no bee game has. Confirm with the Partner Manager; re-read the live page before submitting |
+| HUMAN | Accessibility tags declared (added 24 Aug 2026) | Set in the portal at submission. Facts for them: no information carried by audio alone (it plays muted), one-finger play, no time pressure while drawing (the world is frozen), reduced motion honoured. Re-read the live page for the tag list before submitting |
 
 ## 7. Packaging & submission
 

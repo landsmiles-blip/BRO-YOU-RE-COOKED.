@@ -24,6 +24,10 @@ like Claude Code) shows a game to real players and reports what they do.
   own, and `tools/test/playgama.js` proves the reporting stays off inside
   YouTube even if the SDK were somehow present.
 - **Ads on Playgama are off.** Turning them on is a separate decision.
+- **The SDK is Playgama's moving `stable` channel**
+  (`https://bridge.playgama.com/v2/stable/playgama-bridge.js`), so it can change
+  under the build without a commit here. That is acceptable for a test build on
+  their platform; it is one more reason the YouTube build never loads it.
 
 ## What you do (about 15 minutes)
 
@@ -52,6 +56,14 @@ like Claude Code) shows a game to real players and reports what they do.
 
 Each level's number is all runs by everyone divided by the number who won.
 Read the winner counts down the campaign as the drop-off.
+
+## Never pick YouTube as a Playgama target
+
+Playgama can distribute a game to other platforms, YouTube Playables among
+them. **Do not tick YouTube there** while the direct Playables application
+stands: it would put a second copy of this game on the same shelf, which is
+what the duplicate rule polices, and through a build with someone else's SDK
+in it. The YouTube release goes through our own `byc-playables.zip` only.
 
 ## Open questions, checked before upload
 
