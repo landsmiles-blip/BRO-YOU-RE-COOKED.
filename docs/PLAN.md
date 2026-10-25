@@ -1,12 +1,14 @@
 # PLAN — from 21 levels to a game one person comes back to
 
-> **Status, 25 Oct. 44 levels; the curve capped at 60.** The difficulty
+> **Status, 25 Oct. 45 levels; the curve capped at 60.** The difficulty
 > research (reports/, docs/DIFFICULTY.md) set a 60-try ceiling with a watch
 > list; level 1 was rebuilt as the teaching level (6 tries, a pencil shows the
-> gesture) and THORNS eased from 89 to 48. Two bee VARIANTS fill slots 22 and
-> 23: LOG (HIVE's question, a door instead of a cup) and WINDOW (SWARM's,
-> upright instead of flat). Slots 26 and 29, the chapter's breathers, are open.
-> The real scale waits on real players (docs/PLAYGAMA.md).
+> gesture) and THORNS eased from 89 to 48. Three bee VARIANTS fill slots 22,
+> 23 and 26: LOG (HIVE's question, a door instead of a cup), WINDOW (SWARM's,
+> upright instead of flat) and the breather CHIMNEY (the nest in his chimney).
+> Slot 29, the chapter's second breather, is open: every easy idea left
+> repeats a decision AND a line shape already in the chapter. The real scale
+> waits on real players (docs/PLAYGAMA.md).
 >
 > **Status, 18 Oct. BEES ADDED: 42 levels in seven chapters.** The case study
 > (docs/CASE_STUDY.md) picked Save the Doge's swarm as the next element; it is
