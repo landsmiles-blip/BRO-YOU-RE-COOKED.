@@ -17,7 +17,7 @@
 // opens on where the player actually is.
 
 import { view } from '../view.js';
-import { C } from './palette.js';
+import { C, HAND } from './palette.js';
 import { drawText } from './hud.js';
 
 /**
@@ -94,7 +94,7 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
   const box = layout(levels.length);
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
 
-  ctx.fillStyle = 'rgba(42,38,34,0.96)';
+  ctx.fillStyle = 'rgba(51,54,59,0.96)';
   ctx.fillRect(0, 0, view.cssW, view.cssH);
 
   drawText(ctx, `${total} / ${max}`, 0.5, 0.075, Math.max(20, view.cssH * 0.042), C.anchor);
@@ -102,10 +102,10 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
   // the rest of the game says "stars".
   const sub = triesOf ? playtestLine(levels, triesOf)
     : tokens > 0 ? `stars · ${tokens} skip token${tokens > 1 ? 's' : ''}` : 'stars';
-  drawText(ctx, sub, 0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.55)');
+  drawText(ctx, sub, 0.5, 0.118, Math.max(10, view.cssH * 0.016), 'rgba(247,246,242,0.55)');
 
   // Close: an X drawn, like everything else in this game.
-  ctx.strokeStyle = 'rgba(232,226,214,0.6)';
+  ctx.strokeStyle = 'rgba(247,246,242,0.6)';
   ctx.lineWidth = 2.4; ctx.lineCap = 'round';
   const cx = box.close.x + box.close.w / 2, cy = box.close.y + box.close.h / 2, r = 8;
   ctx.beginPath();
@@ -116,21 +116,21 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
   // ── the daily strip ────────────────────────────────────────────────────
   if (daily && box.daily) {
     const d = box.daily;
-    ctx.fillStyle = daily.done ? 'rgba(232,226,214,0.08)' : 'rgba(214,138,58,0.20)';
+    ctx.fillStyle = daily.done ? 'rgba(247,246,242,0.08)' : 'rgba(214,138,58,0.20)';
     ctx.fillRect(d.x, d.y, d.w, d.h);
-    ctx.strokeStyle = daily.done ? 'rgba(232,226,214,0.22)' : C.anchor;
+    ctx.strokeStyle = daily.done ? 'rgba(247,246,242,0.22)' : C.anchor;
     ctx.lineWidth = daily.done ? 1.2 : 2.4;
     ctx.strokeRect(d.x, d.y, d.w, d.h);
 
     const tSize = Math.max(11, Math.min(d.h * 0.32, 20));
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
-    ctx.fillStyle = daily.done ? 'rgba(232,226,214,0.55)' : C.paper;
+    ctx.font = `700 ${tSize}px ${HAND}`;
+    ctx.fillStyle = daily.done ? 'rgba(247,246,242,0.55)' : C.paper;
     ctx.fillText('DAILY', d.x + d.h * 0.32, d.y + d.h * 0.36);
 
-    ctx.font = `600 ${tSize * 0.72}px ui-sans-serif, system-ui, sans-serif`;
-    ctx.fillStyle = 'rgba(232,226,214,0.58)';
+    ctx.font = `600 ${tSize * 0.72}px ${HAND}`;
+    ctx.fillStyle = 'rgba(247,246,242,0.58)';
     // Done or not, the line says what the challenge IS: which level, and the
     // budget. A daily whose difficulty is invisible until you start it cannot
     // be the thing that makes someone open the game.
@@ -140,11 +140,11 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
 
     if (daily.streak > 0) {
       ctx.textAlign = 'right';
-      ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.font = `700 ${tSize}px ${HAND}`;
       ctx.fillStyle = C.anchor;
       ctx.fillText(`${daily.streak}`, d.x + d.w - d.h * 0.34, d.y + d.h * 0.36);
-      ctx.font = `600 ${tSize * 0.55}px ui-sans-serif, system-ui, sans-serif`;
-      ctx.fillStyle = 'rgba(232,226,214,0.5)';
+      ctx.font = `600 ${tSize * 0.55}px ${HAND}`;
+      ctx.fillStyle = 'rgba(247,246,242,0.5)';
       ctx.fillText('day streak', d.x + d.w - d.h * 0.34, d.y + d.h * 0.72);
     }
   }
@@ -161,19 +161,19 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
     // Locked: barely there, and tapping it does nothing. Skipped: HOLLOW — no
     // fill and a dashed edge — unfinished business, still playable, the first
     // thing the 3-star chase brings a player back for.
-    ctx.fillStyle = played ? 'rgba(232,226,214,0.14)' : (skipped || locked ? 'rgba(232,226,214,0)' : 'rgba(232,226,214,0.05)');
+    ctx.fillStyle = played ? 'rgba(247,246,242,0.14)' : (skipped || locked ? 'rgba(247,246,242,0)' : 'rgba(247,246,242,0.05)');
     ctx.fillRect(card.x, card.y, card.w, card.h);
-    ctx.strokeStyle = here ? C.anchor : (played ? 'rgba(232,226,214,0.32)' : skipped ? 'rgba(232,226,214,0.38)' : 'rgba(232,226,214,0.13)');
+    ctx.strokeStyle = here ? C.anchor : (played ? 'rgba(247,246,242,0.32)' : skipped ? 'rgba(247,246,242,0.38)' : 'rgba(247,246,242,0.13)');
     ctx.lineWidth = here ? 2.6 : 1.2;
     if (skipped && !here) ctx.setLineDash([5, 4]);
     ctx.strokeRect(card.x, card.y, card.w, card.h);
     ctx.setLineDash([]);
 
     const nSize = Math.max(12, Math.min(card.w, card.h) * 0.30);
-    ctx.font = `700 ${nSize}px ui-sans-serif, system-ui, sans-serif`;
+    ctx.font = `700 ${nSize}px ${HAND}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = played ? C.paper : locked ? 'rgba(232,226,214,0.16)' : 'rgba(232,226,214,0.45)';
+    ctx.fillStyle = played ? C.paper : locked ? 'rgba(247,246,242,0.16)' : 'rgba(247,246,242,0.45)';
     ctx.fillText(String(card.i + 1), card.x + card.w / 2, card.y + card.h * 0.36);
 
     // THE CHAPTERS, on the card that opens each one: a small accent tab over
@@ -182,12 +182,12 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
     const ch = chapterAt(card.i);
     if (ch?.first) {
       const tSize = Math.max(7, Math.min(card.w * 0.13, card.h * 0.12, 12));
-      ctx.font = `800 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
+      ctx.font = `800 ${tSize}px ${HAND}`;
       const label = card.w > 54 ? ch.name : String(ch.n);
       const tw = Math.min(card.w - 4, ctx.measureText(label).width + tSize);
       ctx.fillStyle = locked ? 'rgba(214,138,58,0.35)' : C.anchor;
       ctx.fillRect(card.x + 2, card.y - tSize * 0.6, tw, tSize * 1.25);
-      ctx.fillStyle = 'rgba(42,38,34,0.95)';
+      ctx.fillStyle = 'rgba(51,54,59,0.95)';
       ctx.textAlign = 'left';
       ctx.fillText(label, card.x + 2 + tSize * 0.5, card.y + tSize * 0.03, tw - tSize * 0.6);
       ctx.textAlign = 'center';
@@ -203,13 +203,13 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
     const t = triesOf?.(lvl.id);
     if (t && t.runs > 0) {
       const tSize = Math.max(8, Math.min(card.w * 0.17, card.h * 0.15));
-      ctx.font = `700 ${tSize}px ui-sans-serif, system-ui, sans-serif`;
-      ctx.fillStyle = t.won ? C.anchor : 'rgba(232,226,214,0.75)';   // never the danger red: this is not danger
+      ctx.font = `700 ${tSize}px ${HAND}`;
+      ctx.fillStyle = t.won ? C.anchor : 'rgba(247,246,242,0.75)';   // never the danger red: this is not danger
       ctx.fillText(t.won ? `${t.won}× ${clock(t.ms)}` : `${t.runs}× ✗`,
                    card.x + card.w / 2, card.y + card.h * 0.60, card.w - 4);
     } else if (vSize >= 8 && card.w > 54) {
-      ctx.font = `700 ${vSize}px ui-sans-serif, system-ui, sans-serif`;
-      ctx.fillStyle = 'rgba(232,226,214,0.5)';
+      ctx.font = `700 ${vSize}px ${HAND}`;
+      ctx.fillStyle = 'rgba(247,246,242,0.5)';
       ctx.fillText(lvl.verb, card.x + card.w / 2, card.y + card.h * 0.60);
     }
 
@@ -222,13 +222,13 @@ export function drawBoard(ctx, { levels, starsOf, current, total, max, daily,
     const px = card.x + (card.w - totalW) / 2;
     const py = card.y + card.h * 0.80;
     if (skipped && vSize >= 8 && card.w > 54) {
-      ctx.font = `700 ${vSize * 0.9}px ui-sans-serif, system-ui, sans-serif`;
-      ctx.fillStyle = 'rgba(232,226,214,0.42)';
+      ctx.font = `700 ${vSize * 0.9}px ${HAND}`;
+      ctx.fillStyle = 'rgba(247,246,242,0.42)';
       ctx.fillText('SKIPPED', card.x + card.w / 2, py + pw * 0.2);
       continue;
     }
     for (let k = 0; k < 3; k++) {
-      ctx.fillStyle = k < stars ? C.anchor : 'rgba(232,226,214,0.16)';
+      ctx.fillStyle = k < stars ? C.anchor : 'rgba(247,246,242,0.16)';
       ctx.fillRect(px + k * (pw + gap), py, pw, Math.max(3, pw * 0.34));
     }
   }

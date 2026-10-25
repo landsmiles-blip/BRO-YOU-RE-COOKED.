@@ -76,7 +76,7 @@ function trace(ctx, pts, close) {
  * the change conveyed nothing. Multiply through here instead.
  */
 export function inkPath(ctx, points, {
-  now = 0, colour = '#2A2622', width = 3, close = false, amp = WOBBLE, salt = 0, passes = 2,
+  now = 0, colour = '#33363B', width = 3, close = false, amp = WOBBLE, salt = 0, passes = 2,
   alpha = 1, dash = null,
 } = {}) {
   if (points.length < 2) return;
@@ -101,8 +101,8 @@ export function inkPath(ctx, points, {
  * a cheap misprinted-comic cue that does an enormous amount of work.
  */
 export function inkShape(ctx, points, {
-  now = 0, fill = '#C6BCA9', ink = '#2A2622', width = 3, amp = WOBBLE, salt = 0,
-  offset = { x: 2.5, y: 2.5 },
+  now = 0, fill = '#E8ECF2', ink = '#33363B', width = 3, amp = WOBBLE, salt = 0,
+  offset = { x: 2.5, y: 2.5 }, hatch = null,
 } = {}) {
   if (points.length < 3) return;
   const src = resample(points);
@@ -114,7 +114,43 @@ export function inkShape(ctx, points, {
   ctx.fill();
   ctx.restore();
 
+  // Hatching goes between the wash and the outline, so the pencil edge stays
+  // on top. `hatch` is { colour } and applies to the shape's bounding box,
+  // which for the rectangles it is used on is the shape.
+  if (hatch) {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const p of points) { x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y); x1 = Math.max(x1, p.x); y1 = Math.max(y1, p.y); }
+    hatchRect(ctx, x0, y0, x1 - x0, y1 - y0, hatch.colour);
+  }
+
   inkPath(ctx, src, { now, colour: ink, width, close: true, amp, salt });
+}
+
+const HATCH = 11;   // world units between pencil strokes
+
+/**
+ * Diagonal pencil hatching across a rectangle. It does NOT boil: a page of
+ * shading that crawled ten times a second would be a level that vibrates,
+ * which is the one complaint this project has paid for twice. The strokes sit
+ * on a world-fixed diagonal grid, so neighbouring blocks hatch in step.
+ */
+export function hatchRect(ctx, x, y, w, h, colour, width = 1.5) {
+  if (w <= 0 || h <= 0) return;
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
+  ctx.strokeStyle = colour;
+  ctx.lineWidth = width;
+  ctx.lineCap = 'butt';
+  ctx.beginPath();
+  // Lines x + y = k, from the top edge down-left to the bottom edge.
+  for (let k = Math.floor((x + y) / HATCH) * HATCH; k <= x + w + y + h; k += HATCH) {
+    ctx.moveTo(k - y, y);
+    ctx.lineTo(k - (y + h), y + h);
+  }
+  ctx.stroke();
+  ctx.restore();
 }
 
 /** Rectangle helper — most level geometry is rectangular. */

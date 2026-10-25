@@ -68,7 +68,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>BRO, YOU'RE COOKED.</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E8E2D6'/%3E%3Ccircle cx='16' cy='10' r='6' fill='%23E0452B'/%3E%3Crect x='11' y='19' width='10' height='10' rx='4' fill='%232A2622'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F7F6F2'/%3E%3Ccircle cx='16' cy='10' r='6' fill='%23E0452B'/%3E%3Crect x='11' y='19' width='10' height='10' rx='4' fill='%2333363B'/%3E%3C/svg%3E">
 <style>${css}</style>
 <!-- Playables SDK slot — must precede all game code. -->
 </head>
@@ -119,13 +119,13 @@ html, body {
   width: 100%; height: 100%;
   margin: 0; padding: 0;
   overflow: hidden;
-  background: #E8E2D6;
+  background: #F7F6F2;
   overscroll-behavior: none;
   touch-action: none;
   -webkit-user-select: none; user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-#stage { display: block; width: 100%; height: 100%; background: #E8E2D6; }
+#stage { display: block; width: 100%; height: 100%; background: #F7F6F2; }
 </style>
 <canvas id="stage"></canvas>
 <script>globalThis.BYC_PLAYTEST = true;</script>

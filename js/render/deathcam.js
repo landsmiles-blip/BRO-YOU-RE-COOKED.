@@ -22,17 +22,16 @@
 // the replay show the same LEVEL the player was just looking at.
 
 import { applyTransform } from '../view.js';
-import { C } from './palette.js';
+import { C, HAND } from './palette.js';
 import { MILO, LINE, DEATH_CAM, SAFE_BOX, PHYSICS_DT } from '../constants.js';
 import { drawBanner } from './hud.js';
-import { blastPath, plateShape } from './world.js';
+import { blastPath, plateShape, drawPaper } from './world.js';
+import { hatchRect } from './stroke.js';
 
 export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   applyTransform(ctx);
-  ctx.fillStyle = C.paper;
-  ctx.fillRect(-2000, -2000, 8000, 8000);
-  ctx.fillStyle = C.paperDark;
-  ctx.fillRect(0, 0, SAFE_BOX.w, SAFE_BOX.h);
+  // The same page as the level, a shade greyer, so a replay reads as one.
+  drawPaper(ctx, { x0: -2000, y0: -2000, x1: 6000, y1: 6000 }, 0.6);
 
   // The sim time this frame shows. The recorder keeps every step, newest
   // last, so frame i is (n-1-i) steps before the end of the run. Anything that
@@ -42,8 +41,8 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   const tFrame = sim.simTime - (nFrames - 1 - Math.min(frameIdx, nFrames - 1)) * PHYSICS_DT;
 
   // static geometry stays put
-  ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(42,38,34,0.35)';
-  ctx.fillStyle = 'rgba(198,188,169,0.5)';
+  ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(51,54,59,0.45)';
+  ctx.fillStyle = C.staticFill;
   for (const s of sim.statics) {
     // EVERY NEW KIND OF THING HAS TO BE ADDED HERE TOO. The default for
     // anything new is INVISIBLE, and that has now cost two replays that
@@ -61,10 +60,11 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     }
     // A breakable board is wood here too: the replay must say which part of
     // the wall a blast could take down.
-    if (s.spec.breakable) ctx.fillStyle = 'rgba(183,154,110,0.75)';
+    if (s.spec.breakable) ctx.fillStyle = 'rgba(203,174,130,0.75)';
     ctx.fillRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
+    if (!s.spec.breakable) hatchRect(ctx, s.spec.x, s.spec.y, s.spec.w, s.spec.h, C.hatch);
     ctx.strokeRect(s.spec.x, s.spec.y, s.spec.w, s.spec.h);
-    if (s.spec.breakable) ctx.fillStyle = 'rgba(198,188,169,0.5)';
+    if (s.spec.breakable) ctx.fillStyle = C.staticFill;
     if (s.spec.brittle) {
       const n = Math.max(2, Math.round(s.spec.w / 58));
       for (let c = 0; c < n; c++) {
@@ -90,7 +90,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     const fired = sim.triggered?.has(spec.id);
     ctx.save();
     ctx.lineWidth = 3;
-    ctx.strokeStyle = 'rgba(42,38,34,0.55)';
+    ctx.strokeStyle = 'rgba(51,54,59,0.55)';
     ctx.fillStyle = C.plank;
     if (spec.type === 'switch') {
       // The same shape and arrows as live play, from the one definition —
@@ -184,7 +184,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     const r = h.radius, base = h.y + r * 0.3;
     ctx.save();
     ctx.fillStyle = C.plank; ctx.globalAlpha = 0.8;
-    ctx.strokeStyle = 'rgba(42,38,34,0.55)'; ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(51,54,59,0.55)'; ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.ellipse(h.x, base, r, r * 1.2, 0, Math.PI, Math.PI * 2);
     ctx.lineTo(h.x + r * 0.9, h.y + r * 0.8); ctx.lineTo(h.x - r * 0.9, h.y + r * 0.8);
@@ -198,9 +198,9 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   // or of how close he came.
   const g = sim.level?.goal;
   if (g) {
-    ctx.fillStyle = 'rgba(63,169,107,0.45)';
+    ctx.fillStyle = 'rgba(76,179,119,0.45)';
     ctx.fillRect(g.x - g.w / 2, g.y - g.h, g.w, g.h);
-    ctx.strokeStyle = 'rgba(42,38,34,0.35)';
+    ctx.strokeStyle = 'rgba(51,54,59,0.35)';
     ctx.strokeRect(g.x - g.w / 2, g.y - g.h, g.w, g.h);
   }
 
@@ -213,7 +213,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     if (bl.t > tFrame) continue;
     ctx.save();
     ctx.setLineDash([8, 8]);
-    ctx.strokeStyle = 'rgba(42,38,34,0.45)'; ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(51,54,59,0.45)'; ctx.lineWidth = 2;
     blastPath(ctx, bl, bl.radius); ctx.stroke();
     ctx.setLineDash([]);
     ctx.strokeStyle = C.danger; ctx.lineWidth = 4;
@@ -240,7 +240,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
       // the same geometry the live renderer uses, so the replay shows THEIR
       // line rather than a stand-in for it.
       const path = sim.stroke?.strokePath;
-      ctx.strokeStyle = guilty ? C.danger : 'rgba(42,38,34,0.55)';
+      ctx.strokeStyle = guilty ? C.danger : 'rgba(51,54,59,0.55)';
       ctx.lineWidth = LINE.thickness;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -262,7 +262,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
       const r = sim.objects.get(f.id).spec.radius;
       if (back && f.x < back.x - 0.3) ctx.scale(-1, 1);
       ctx.strokeStyle = C.ink; ctx.lineWidth = 1.4;
-      ctx.fillStyle = 'rgba(246,241,230,0.9)';
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
       ctx.beginPath(); ctx.ellipse(-1, -r * 1.05, r * 0.55, r * 0.6, -0.35, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       ctx.fillStyle = C.danger; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.ellipse(0, 0, r * 1.3, r * 0.9, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
@@ -282,7 +282,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
       const spec = sim.objects.get(f.id).spec;
       const dir = back && Math.abs(f.x - back.x) > 0.5 ? Math.sign(f.x - back.x) : (spec.dir ?? 1);
       ctx.scale(dir, 1);
-      ctx.fillStyle = C.milo; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5;
+      ctx.fillStyle = C.dog; ctx.strokeStyle = C.ink; ctx.lineWidth = 2.5;
       ctx.lineCap = 'round';
       ctx.beginPath();
       for (const x of [11, 5, -9, -15]) { ctx.moveTo(x, 1); ctx.lineTo(x, 15); }
@@ -306,7 +306,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
       // INVISIBLE, so a thing that falls upwards would replay as a grey ball
       // dropping — the replay explaining the opposite of what happened.
       if (spec?.lift) {
-        ctx.strokeStyle = guilty ? C.ink : 'rgba(42,38,34,0.4)';
+        ctx.strokeStyle = guilty ? C.ink : 'rgba(51,54,59,0.4)';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(0, spec.radius);
@@ -315,7 +315,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
         ctx.lineTo(-3, spec.radius + 26);
         ctx.stroke();
       }
-      ctx.strokeStyle = guilty ? C.ink : 'rgba(42,38,34,0.4)';
+      ctx.strokeStyle = guilty ? C.ink : 'rgba(51,54,59,0.4)';
       ctx.lineWidth = guilty ? 4 : 2;
       // Rectangles were being replayed as radius-20 circles, so a plank or a
       // gate turned into a small ball in the replay — the one moment the
@@ -334,7 +334,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
         ctx.fillStyle = C.danger;
         ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = C.paper;
-        ctx.font = `900 ${Math.round(r * 0.62)}px ui-sans-serif, system-ui, sans-serif`;
+        ctx.font = `900 ${Math.round(r * 0.62)}px ${HAND}`;
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         ctx.fillText('TNT', 0, 1);
       } else {

@@ -5,7 +5,7 @@
 // ceiling in a programme that prioritises fast loading.
 
 import { view, applyTransform, visibleBounds } from '../view.js';
-import { C } from './palette.js';
+import { C, HAND } from './palette.js';
 import { LINE, SAFE_BOX, TNT } from '../constants.js';
 import { inkPath, inkShape, rectPoints, circlePoints } from './stroke.js';
 import { drawMilo, drawDog } from './rig.js';
@@ -18,11 +18,42 @@ export function clear(ctx) {
   ctx.fillRect(0, 0, view.canvas.width, view.canvas.height);
 }
 
+const GRID = 40;       // world units per graph-paper square
+const MARGIN_X = 34;  // the notebook's margin line
+
+/**
+ * THE PAGE: graph-paper squares inside the play area, a margin line down its
+ * left side, and the plain desk round it. Everything here comes from fixed
+ * numbers in world units, never from a random draw, so nothing on the page
+ * can shimmer — and the squares stay put as the view scales, like real paper.
+ * The death cam draws the same page, so a replay is the level they just saw.
+ */
+export function drawPaper(ctx, vb, freeze = 0) {
+  ctx.fillStyle = drain(C.paperDark, freeze * 0.5);
+  ctx.fillRect(vb.x0, vb.y0, vb.x1 - vb.x0, vb.y1 - vb.y0);
+  ctx.fillStyle = drain(C.paper, freeze * 0.5);
+  ctx.fillRect(0, 0, SAFE_BOX.w, SAFE_BOX.h);
+  ctx.save();
+  ctx.strokeStyle = drain(C.grid, freeze * 0.5);
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  for (let x = GRID; x < SAFE_BOX.w; x += GRID) { ctx.moveTo(x, 0); ctx.lineTo(x, SAFE_BOX.h); }
+  for (let y = GRID; y < SAFE_BOX.h; y += GRID) { ctx.moveTo(0, y); ctx.lineTo(SAFE_BOX.w, y); }
+  ctx.stroke();
+  ctx.strokeStyle = drain(C.margin, freeze * 0.5);
+  ctx.lineWidth = 2.4;
+  ctx.beginPath();
+  ctx.moveTo(MARGIN_X, 0);
+  ctx.lineTo(MARGIN_X, SAFE_BOX.h);
+  ctx.stroke();
+  ctx.restore();
+}
+
 /** Paper grain — a few hundred faint specks, seeded so it never shimmers. */
 function grain(ctx, vb) {
   ctx.save();
-  ctx.globalAlpha = 0.045;
-  ctx.fillStyle = '#6B5E4C';
+  ctx.globalAlpha = 0.035;
+  ctx.fillStyle = C.ink;
   let s = 1337;
   const rnd = () => ((s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
   for (let i = 0; i < 420; i++) {
@@ -47,10 +78,7 @@ export function drawScene(ctx, sim, opts = {}) {
   const vb = visibleBounds();
 
   // Slack outside the safe box is background only — never puzzle geometry.
-  ctx.fillStyle = drain(C.paperDark, freeze * 0.5);
-  ctx.fillRect(vb.x0, vb.y0, vb.x1 - vb.x0, vb.y1 - vb.y0);
-  ctx.fillStyle = drain(C.paper, freeze * 0.5);
-  ctx.fillRect(0, 0, SAFE_BOX.w, SAFE_BOX.h);
+  drawPaper(ctx, vb, freeze);
   grain(ctx, vb);
 
   // ── static geometry ───────────────────────────────────────────────────
@@ -100,9 +128,12 @@ export function drawScene(ctx, sim, opts = {}) {
     const cx = b.x + b.w / 2, cy = b.y + b.h / 2;
     for (let k = 0; k < blades; k++) {
       if (k) { ctx.translate(cx, cy); ctx.rotate(Math.PI / blades); ctx.translate(-cx, -cy); }
+      // Solid ground is hatched in pencil; a breakable board is wood, with
+      // its own grain below, so the two can never be mistaken for each other.
       inkShape(ctx, rectPoints(b.x, b.y, b.w, b.h), {
         now, fill: drain(b.breakable ? C.plank : C.staticFill, freeze * 0.55), ink: drain(C.ink, freeze * 0.35),
         width: 3.4, salt: b.x | 0,
+        hatch: b.breakable ? null : { colour: drain(C.hatch, freeze * 0.4) },
       });
       // BREAKABLE: planks, so a fence a blast can take down never looks like
       // the ground beside it that it cannot. Grain lines at a fixed spacing.
@@ -644,7 +675,7 @@ export function drawBee(ctx, body, r, now) {
   ctx.rotate(tilt);
   ctx.lineJoin = 'round'; ctx.lineCap = 'round';
   ctx.strokeStyle = C.ink;
-  ctx.fillStyle = 'rgba(246,241,230,0.9)';
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
   ctx.lineWidth = 1.4;
   for (const [wx, k] of [[-2.5, 1], [2, 0.8]]) {
     ctx.beginPath();
@@ -700,7 +731,7 @@ function drawTnt(ctx, body, spec, simTime, now, freeze) {
   ctx.save();
   ctx.translate(x, y); ctx.rotate(a);
   ctx.fillStyle = C.paper;
-  ctx.font = `900 ${Math.round(r * 0.62)}px ui-sans-serif, system-ui, sans-serif`;
+  ctx.font = `900 ${Math.round(r * 0.62)}px ${HAND}`;
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   ctx.fillText('TNT', 0, 1);
   ctx.restore();
@@ -761,7 +792,7 @@ function drawBlast(ctx, bl, simTime, now) {
   const age = simTime - bl.t;
   if (age < 0) return;
   ctx.save();
-  ctx.fillStyle = 'rgba(42,38,34,0.16)';
+  ctx.fillStyle = 'rgba(51,54,59,0.16)';
   ctx.beginPath(); ctx.ellipse(bl.x, bl.y, 34, 24, 0, 0, Math.PI * 2); ctx.fill();
   if (age < 480) {
     const f = 1 - age / 480;

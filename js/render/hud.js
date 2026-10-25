@@ -3,7 +3,7 @@
 // certification rejection cause.
 
 import { view } from '../view.js';
-import { C } from './palette.js';
+import { C, HAND } from './palette.js';
 
 /**
  * Draw text, shrinking it until it fits.
@@ -17,7 +17,7 @@ export function drawText(ctx, text, xFrac, yFrac, sizePx, colour = C.ink, align 
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   const maxW = view.cssW * maxFrac;
   let size = sizePx;
-  const font = (px) => `700 ${px}px ui-sans-serif, system-ui, -apple-system, sans-serif`;
+  const font = (px) => `700 ${px}px ${HAND}`;
   ctx.font = font(size);
   let guard = 0;
   while (ctx.measureText(text).width > maxW && size > 8 && guard++ < 60) {
@@ -34,10 +34,10 @@ export function drawText(ctx, text, xFrac, yFrac, sizePx, colour = C.ink, align 
 export function drawBanner(ctx, text, sub, yFrac = 0.5) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   const h = Math.max(64, view.cssH * 0.13);
-  ctx.fillStyle = 'rgba(42,38,34,0.86)';
+  ctx.fillStyle = 'rgba(51,54,59,0.86)';
   ctx.fillRect(0, view.cssH * yFrac - h / 2, view.cssW, h);
   drawText(ctx, text, 0.5, yFrac - 0.018, Math.max(20, view.cssH * 0.035), C.paper);
-  if (sub) drawText(ctx, sub, 0.5, yFrac + 0.032, Math.max(12, view.cssH * 0.018), 'rgba(232,226,214,0.75)');
+  if (sub) drawText(ctx, sub, 0.5, yFrac + 0.032, Math.max(12, view.cssH * 0.018), 'rgba(247,246,242,0.75)');
 }
 
 /** Remaining-ink meter. Nothing should hit an invisible wall mid-stroke. */
@@ -46,7 +46,7 @@ export function drawInk(ctx, used, max) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   const w = view.cssW * 0.34, x = view.cssW * 0.5 - w / 2, y = view.cssH * 0.035;
   const frac = Math.max(0, Math.min(1, 1 - used / max));
-  ctx.fillStyle = 'rgba(42,38,34,0.15)';
+  ctx.fillStyle = 'rgba(51,54,59,0.15)';
   ctx.fillRect(x, y, w, 6);
   ctx.fillStyle = frac < 0.2 ? C.danger : C.ink;
   ctx.fillRect(x, y, w * frac, 6);

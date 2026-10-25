@@ -27,10 +27,11 @@ import { wouldAnchor } from './physics/anchor.js';
 import { freezeAmount, reducedMotion } from './render/freeze.js';
 import { drawBanner, drawText, drawInk } from './render/hud.js';
 import { drawReplay, replayFrame, DEATH_CAM_MS } from './render/deathcam.js';
-import { C } from './render/palette.js';
+import { C, HAND } from './render/palette.js';
 import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
 import * as audio from './audio.js';
+import { loadHandFont } from './render/handfont.js';
 
 // The daily pool too: a malformed pool level would otherwise surface only on
 // the one day it is dealt, as a blank page for everybody at once.
@@ -38,6 +39,8 @@ for (const lvl of [...LEVELS, ...POOL]) assertLevel(lvl);
 
 const canvas = document.getElementById('stage');
 initView(canvas);
+// The handwriting decodes in the background; nothing waits for it.
+loadHandFont();
 const ctx = view.ctx;
 const game = createGame(A1);
 
@@ -298,7 +301,7 @@ function render() {
       const lead = g.attempt > 1 ? 'DRAW AGAIN' : 'DRAW';
       if (g.level.hint) {
         drawText(ctx, g.level.hint, 0.5, 0.062, Math.max(15, view.cssH * 0.029), C.ink);
-        drawText(ctx, lead, 0.5, 0.105, Math.max(11, view.cssH * 0.019), 'rgba(42,38,34,0.55)');
+        drawText(ctx, lead, 0.5, 0.105, Math.max(11, view.cssH * 0.019), 'rgba(51,54,59,0.55)');
       } else {
         drawText(ctx, lead, 0.5, 0.07, Math.max(17, view.cssH * 0.032), C.ink);
       }
@@ -307,10 +310,10 @@ function render() {
       // named, it reads as the game opening up.
       const ch = !g.isDaily && g.attempt <= 1 ? chapterOf(g.levelIndex) : null;
       if (ch?.first) {
-        // The progress accent, not the danger red: red is reserved for what
-        // can hurt him and for the near miss.
+        // Graphite, like the rest of the page: the old yellow accent nearly
+        // vanished on white paper, and red is reserved for what can hurt him.
         drawText(ctx, `CHAPTER ${ch.n} — ${ch.name}  ·  ${ch.tag}`, 0.5, 0.148,
-                 Math.max(11, view.cssH * 0.018), C.anchor);
+                 Math.max(12, view.cssH * 0.02), C.ink);
       }
     }
     drawInk(ctx, inkUsed(g), inkMax(g));
@@ -334,7 +337,7 @@ function render() {
     // be a daily, however it was loaded.
     const daily = g.isDaily || g.levelIndex < 0;
     drawText(ctx, daily ? `DAILY  ${g.level.verb}` : `${g.levelIndex + 1}/${LEVELS.length}  ${g.level.verb}`,
-             0.06, 0.035, Math.max(11, view.cssH * 0.016), 'rgba(42,38,34,0.45)', 'left');
+             0.06, 0.035, Math.max(11, view.cssH * 0.016), 'rgba(51,54,59,0.45)', 'left');
   }
 
   if (g.rejectFlash > 0) {
@@ -355,7 +358,7 @@ function drawResult(ctx, g) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
   const h = Math.max(150, view.cssH * 0.30);
   const top = view.cssH * 0.36;
-  ctx.fillStyle = 'rgba(42,38,34,0.92)';
+  ctx.fillStyle = 'rgba(51,54,59,0.92)';
   ctx.fillRect(0, top, view.cssW, h);
 
   const mid = (top + h * 0.22) / view.cssH;
@@ -373,14 +376,14 @@ function drawResult(ctx, g) {
     : `${Math.round(g.lastLength)}u of ink · ${next}`;
   drawText(ctx, line, 0.5, (top + h * 0.74) / view.cssH,
            Math.max(11, view.cssH * 0.018),
-           calls ? C.danger : 'rgba(232,226,214,0.72)');
+           calls ? C.danger : 'rgba(247,246,242,0.72)');
   // After a daily there is no "next one" — the tap goes back to the board — and
   // this card is the moment the streak went up, so it says that instead.
   const onward = g.isDaily
     ? `daily done · ${g.progress.streak || 1}-day streak · tap for the board`
     : 'tap for the next one';
   drawText(ctx, onward, 0.5, (top + h * 0.90) / view.cssH,
-           Math.max(10, view.cssH * 0.016), 'rgba(232,226,214,0.45)');
+           Math.max(10, view.cssH * 0.016), 'rgba(247,246,242,0.45)');
 }
 
 /**
@@ -451,7 +454,7 @@ function drawBoardButton(ctx, quiet) {
   // for a finger, and the glyph itself should stay visually quiet.
   boardBtn = { x: x - 8, y: y - 8, w: s + 16, h: s + 16 };
   const cell = s / 2 - 2;
-  ctx.fillStyle = quiet ? 'rgba(42,38,34,0.30)' : 'rgba(232,226,214,0.55)';
+  ctx.fillStyle = quiet ? 'rgba(51,54,59,0.30)' : 'rgba(247,246,242,0.55)';
   for (let r = 0; r < 2; r++) {
     for (let c = 0; c < 2; c++) ctx.fillRect(x + c * (cell + 4), y + r * (cell + 4), cell, cell);
   }
@@ -469,7 +472,7 @@ function drawSoundButton(ctx, quiet, on) {
   const pad = Math.max(8, Math.min(view.cssW, view.cssH) * 0.022);
   const x = view.cssW - pad - s - pad - 16 - s, y = pad;
   soundBtn = { x: x - 8, y: y - 8, w: s + 16, h: s + 16 };
-  const col = quiet ? 'rgba(42,38,34,0.30)' : 'rgba(232,226,214,0.55)';
+  const col = quiet ? 'rgba(51,54,59,0.30)' : 'rgba(247,246,242,0.55)';
   ctx.fillStyle = col;
   ctx.strokeStyle = col;
   ctx.lineWidth = Math.max(1.6, s * 0.08);
@@ -508,7 +511,7 @@ function drawSoundButton(ctx, quiet, on) {
  */
 function drawEnding(ctx, g) {
   ctx.setTransform(view.dpr, 0, 0, view.dpr, 0, 0);
-  ctx.fillStyle = 'rgba(42,38,34,0.95)';
+  ctx.fillStyle = 'rgba(51,54,59,0.95)';
   ctx.fillRect(0, 0, view.cssW, view.cssH);
 
   const got = totalStars(g.progress), max = maxStars();
@@ -522,7 +525,7 @@ function drawEnding(ctx, g) {
            0.5, 0.17, Math.max(19, view.cssH * 0.034), C.paper);
   drawText(ctx, `${got} / ${max}`, 0.5, 0.28, Math.max(30, view.cssH * 0.064), C.anchor);
   drawText(ctx, all ? 'stars — all of them' : 'stars', 0.5, 0.345,
-           Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.6)');
+           Math.max(11, view.cssH * 0.018), 'rgba(247,246,242,0.6)');
 
   // A per-level star strip: the 3-star chase, made concrete. It shows exactly
   // WHICH levels still owe the player something, which a bare total cannot.
@@ -532,7 +535,7 @@ function drawEnding(ctx, g) {
   for (let i = 0; i < n; i++) {
     const s = starsOn(g.progress, LEVELS[i].id);
     for (let k = 0; k < 3; k++) {
-      ctx.fillStyle = k < s ? C.anchor : 'rgba(232,226,214,0.16)';
+      ctx.fillStyle = k < s ? C.anchor : 'rgba(247,246,242,0.16)';
       ctx.fillRect(x0 + i * cw + cw * 0.18, y + k * 7, cw * 0.64, 4.5);
     }
   }
@@ -545,20 +548,20 @@ function drawEnding(ctx, g) {
   const small = Math.max(11, Math.min(view.cssH * 0.019, 20));
   drawText(ctx, `MILO SURVIVED ${fmt(st.wins)} DISASTERS`, 0.5, 0.51,
            Math.max(16, view.cssH * 0.030), C.paper);
-  drawText(ctx, `you drew ${fmt(st.ink / 60)} m of line`, 0.5, 0.56, small, 'rgba(232,226,214,0.78)');
-  drawText(ctx, `he nearly died ${fmt(st.calls)} times`, 0.5, 0.595, small, 'rgba(232,226,214,0.78)');
-  drawText(ctx, `and he got cooked ${fmt(st.deaths)} times`, 0.5, 0.63, small, 'rgba(232,226,214,0.55)');
+  drawText(ctx, `you drew ${fmt(st.ink / 60)} m of line`, 0.5, 0.56, small, 'rgba(247,246,242,0.78)');
+  drawText(ctx, `he nearly died ${fmt(st.calls)} times`, 0.5, 0.595, small, 'rgba(247,246,242,0.78)');
+  drawText(ctx, `and he got cooked ${fmt(st.deaths)} times`, 0.5, 0.63, small, 'rgba(247,246,242,0.55)');
 
   // MORE COMING, and the reason to come back before it does.
   drawText(ctx, 'MORE LEVELS ARE COMING', 0.5, 0.715, Math.max(13, view.cssH * 0.024), C.anchor);
   drawText(ctx, 'and a new daily challenge every day', 0.5, 0.755,
-           Math.max(10, Math.min(view.cssH * 0.017, 18)), 'rgba(232,226,214,0.6)');
+           Math.max(10, Math.min(view.cssH * 0.017, 18)), 'rgba(247,246,242,0.6)');
 
   drawText(ctx,
     all ? 'tap to play it again' : 'tap to go back for the stars you left',
-    0.5, 0.86, Math.max(11, view.cssH * 0.018), 'rgba(232,226,214,0.55)');
+    0.5, 0.86, Math.max(11, view.cssH * 0.018), 'rgba(247,246,242,0.55)');
   drawText(ctx, 'or pick a level, top right', 0.5, 0.90,
-           Math.max(10, view.cssH * 0.015), 'rgba(232,226,214,0.35)');
+           Math.max(10, view.cssH * 0.015), 'rgba(247,246,242,0.35)');
 }
 
 /**
@@ -582,16 +585,16 @@ function drawSkip(ctx, g, bannerY) {
     : view.cssH * bannerY - bannerH / 2 - h * 0.75;
   const x = (view.cssW - w) / 2;
   skipBtn = { x, y: cy - h / 2, w, h };
-  ctx.fillStyle = 'rgba(42,38,34,0.80)';
+  ctx.fillStyle = 'rgba(51,54,59,0.80)';
   ctx.fillRect(x, cy - h / 2, w, h);
-  ctx.strokeStyle = 'rgba(232,226,214,0.40)';
+  ctx.strokeStyle = 'rgba(247,246,242,0.40)';
   ctx.lineWidth = 1.5;
   ctx.strokeRect(x, cy - h / 2, w, h);
   const label = g.skipping ? 'one moment…'
     : offer.via === 'token' ? `SKIP THIS ONE · use a token (${offer.tokens} held)`
     : 'SKIP THIS ONE · watch an ad';
   drawText(ctx, label, 0.5, cy / view.cssH, Math.max(12, view.cssH * 0.019),
-           'rgba(232,226,214,0.85)', 'center', (w / view.cssW) * 0.9);
+           'rgba(247,246,242,0.85)', 'center', (w / view.cssW) * 0.9);
 }
 
 /** Three ink stars, filled to the rating. Drawn, like everything else. */
@@ -611,7 +614,7 @@ function drawStars(ctx, stars, cyPx) {
     }
     ctx.closePath();
     ctx.lineWidth = 2.4;
-    ctx.strokeStyle = i < stars ? C.ink : 'rgba(232,226,214,0.4)';
+    ctx.strokeStyle = i < stars ? C.ink : 'rgba(247,246,242,0.4)';
     if (i < stars) { ctx.fillStyle = C.anchor; ctx.fill(); }
     ctx.stroke();
   }

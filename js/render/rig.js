@@ -189,10 +189,10 @@ export function drawDog(ctx, dog, now) {
   inkPath(ctx, [{ x: -18, y: -4 }, { x: -24, y: -10 + wag * 3 }, { x: -26 + wag * 3, y: -18 }],
           { now, colour: C.ink, width: 3.6, amp: 0.8, salt: 505 });
   // body
-  inkShape(ctx, rectPoints(-20, -10, 34, 15), { now, fill: C.milo, ink: C.ink, width: 3.2, amp: 1, salt: 506 });
+  inkShape(ctx, rectPoints(-20, -10, 34, 15), { now, fill: C.dog, ink: C.ink, width: 3.2, amp: 1, salt: 506 });
   // head, snout, ear
-  inkShape(ctx, circlePoints(15, -13, 10), { now, fill: C.milo, ink: C.ink, width: 3.2, amp: 1, salt: 507 });
-  inkShape(ctx, rectPoints(20, -13, 10, 8), { now, fill: C.milo, ink: C.ink, width: 2.8, amp: 0.8, salt: 508 });
+  inkShape(ctx, circlePoints(15, -13, 10), { now, fill: C.dog, ink: C.ink, width: 3.2, amp: 1, salt: 507 });
+  inkShape(ctx, rectPoints(20, -13, 10, 8), { now, fill: C.dog, ink: C.ink, width: 2.8, amp: 0.8, salt: 508 });
   inkShape(ctx, [{ x: 8, y: -21 }, { x: 14, y: -22 }, { x: 11, y: -8 }, { x: 6, y: -12 }],
            { now, fill: C.ink, ink: C.ink, width: 2.4, amp: 0.6, salt: 509 });
   ctx.fillStyle = C.ink;

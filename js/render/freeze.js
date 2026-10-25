@@ -56,7 +56,7 @@ export function drawMotionStreaks(ctx, bodies, amount) {
     for (let k = 0; k < 3; k++) {
       const off = (k - 1) * (radius ?? 12) * 0.55;
       ctx.globalAlpha = 0.16 * amount * (1 - Math.abs(k - 1) * 0.3);
-      ctx.strokeStyle = '#2A2622';
+      ctx.strokeStyle = '#33363B';
       ctx.lineWidth = 3.5 - Math.abs(k - 1);
       ctx.beginPath();
       ctx.moveTo(body.position.x - ny * off, body.position.y + nx * off);
