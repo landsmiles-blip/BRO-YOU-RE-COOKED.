@@ -5,6 +5,8 @@ Every YouTube Playables requirement, with the evidence that it is met. Walked
 `dist/byc-playables.zip` (one file: `index.html`). **Machine half re-run 2026-10-13**
 on the purged build — 185 KB raw / 53 KB gzipped, shelved levels out of the
 bundle — and every row still passes; the figures below are that run's.
+**Re-run 2026-10-25** after the notebook theme, level 1 and THORNS: conformance,
+board and `npm test` all pass; the bundle row is updated.
 **Re-run the machine half:** `npm run build && npm run serve &` then
 `npm run test:conformance`, `npm run test:board`, `npm run test:audio`, `npm test`.
 
@@ -63,7 +65,7 @@ Legend: **PASS** with evidence · **PROXY** measured here, needs a real device �
 
 | | Requirement | Evidence |
 |---|---|---|
-| PASS | Bundle < 30 MiB (< 15 recommended) | 53.2 KB gzipped — 0.35% of 15 MiB |
+| PASS | Bundle < 30 MiB (< 15 recommended) | 91.4 KB gzipped, 263 KB raw (25 Oct, with the handwritten font embedded) — 0.6% of 15 MiB |
 | PASS | Peak heap < 512 MB | conformance 200-retry soak: peak 5.5 MB |
 | PASS | Time to interactive < 5 s | 82 ms local; **1.46 s on Slow 4G (1.6 Mbps, 150 ms RTT) with CPU x4, cold cache, uncompressed**; 2.13 s on Fast 3G (throttled figures measured 2026-10-12 on the larger 67 KB build) |
 | PASS | No leak across 200 retries | 3.5 → 4.5 MB |
@@ -80,7 +82,7 @@ Legend: **PASS** with evidence · **PROXY** measured here, needs a real device �
 | PASS | State survives resize mid-simulation | conformance: t 700 → 942 ms, stroke kept, phase sim |
 | PASS | Never locks orientation | conformance grep: clean |
 | PASS | Fills viewport or letterboxes | nine-ratio screenshots |
-| PASS | Touch input works | real touch events (CDP) drew the certified stroke and WON a1-wall and a31-thorns |
+| PASS | Touch input works | real touch events (CDP) drew the certified stroke and WON a1-wall and a31-thorns — re-run 25 Oct on both levels' new certificates, 0 errors |
 | PASS | Mouse input works | every filmstrip, the board gate |
 | PASS | Both on a hybrid device | input is Pointer Events only (`js/input.js`), one path for touch, mouse and pen |
 | PASS | Text legible at 1x/2x/3x DPR | conformance: canvas backing at native resolution for each; the 3x screenshot read by eye |
@@ -133,7 +135,7 @@ Legend: **PASS** with evidence · **PROXY** measured here, needs a real device �
 Google names these as the common reasons a Playable is sent back: text
 rendering on high-density screens (§3: legible at 1x/2x/3x), crashes on
 specific devices (§2: needs real devices), pause/resume lifecycle failures
-(§1: `onPause` halts everything), and initial load size (§2: 53 KB gzipped).
+(§1: `onPause` halts everything), and initial load size (§2: 91 KB gzipped).
 
 ## Sources
 
