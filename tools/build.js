@@ -98,6 +98,18 @@ const SLOT = '<!-- Playables SDK slot — must precede all game code. -->';
 if (!html.includes(SLOT)) { console.error('BUILD FAILED — the SDK slot is missing from the template'); process.exit(1); }
 const playables = html.replace(SLOT, SDK_TAG);
 
+// The Playgama build: identical again, with Playgama Bridge in the same slot,
+// loaded from Playgama's CDN (it is LGPL-3.0, so it is loaded, never bundled).
+// It is the one build that reports runs anywhere — real players' attempts per
+// level, for the difficulty curve (js/platform/playgama.js). The game code is
+// unchanged, so the banned-primitive check above still holds for it; the
+// network calls are the SDK's own, on a portal that expects them.
+export const PLAYGAMA_TAG = '<script src="https://bridge.playgama.com/v2/stable/playgama-bridge.js"></script>';
+const playgama = html.replace(SLOT, PLAYGAMA_TAG);
+// The SDK reads this from beside index.html. Its own analytics on; nothing
+// else configured, so ads and the rest stay off until the owner chooses.
+const PLAYGAMA_CONFIG = JSON.stringify({ sendAnalyticsEvents: true }, null, 2) + '\n';
+
 const raw = Buffer.byteLength(html);
 const gz = gzipSync(html).length;
 
@@ -137,6 +149,9 @@ let zipNote = '';
 if (!process.argv.includes('--check')) {
   mkdirSync(new URL('dist/playables/', root), { recursive: true });
   mkdirSync(new URL('dist/web/', root), { recursive: true });
+  mkdirSync(new URL('dist/playgama/', root), { recursive: true });
+  writeFileSync(new URL('dist/playgama/index.html', root), playgama);
+  writeFileSync(new URL('dist/playgama/playgama-bridge-config.json', root), PLAYGAMA_CONFIG);
   writeFileSync(new URL('dist/byc.html', root), html);
   writeFileSync(new URL('dist/artifact.html', root), artifact);
   writeFileSync(new URL('dist/playables/index.html', root), playables);
@@ -151,10 +166,13 @@ if (!process.argv.includes('--check')) {
   for (const [name, dir, what] of [
     ['byc-playables.zip', 'playables', 'YouTube upload'],
     ['byc-web.zip', 'web', 'open web: itch.io or any static host'],
+    ['byc-playgama.zip', 'playgama', 'Playgama: real players\' attempts'],
   ]) {
     const zip = new URL(`dist/${name}`, root).pathname;
     if (existsSync(zip)) rmSync(zip);
-    const z = spawnSync('zip', ['-q', '-X', '-j', zip, new URL(`dist/${dir}/index.html`, root).pathname]);
+    const files = [new URL(`dist/${dir}/index.html`, root).pathname];
+    if (dir === 'playgama') files.push(new URL('dist/playgama/playgama-bridge-config.json', root).pathname);
+    const z = spawnSync('zip', ['-q', '-X', '-j', zip, ...files]);
     zipNote += z.status === 0
       ? `  → dist/${name} (${what}: index.html at the root)\n`
       : `  !! zip not found — dist/${dir}/ is built but NOT archived\n`;
@@ -169,4 +187,5 @@ console.log(`  vs 15 MiB recommended  ${((gz / (15 * 1024 * 1024)) * 100).toFixe
 console.log(process.argv.includes('--check')
   ? '  (check only, nothing written)\n'
   : '  → dist/byc.html (standalone)\n  → dist/artifact.html (publish flavour)\n'
-    + '  → dist/playables/index.html (YouTube: SDK first)\n' + zipNote);
+    + '  → dist/playables/index.html (YouTube: SDK first)\n'
+    + '  → dist/playgama/ (Playgama Bridge first, + its config)\n' + zipNote);

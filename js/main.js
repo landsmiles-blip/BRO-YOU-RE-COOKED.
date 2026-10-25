@@ -32,6 +32,7 @@ import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
 import * as audio from './audio.js';
 import { loadHandFont } from './render/handfont.js';
+import { initPlaygama, playgamaGameReady } from './platform/playgama.js';
 
 // The daily pool too: a malformed pool level would otherwise surface only on
 // the one day it is dealt, as a blank page for everybody at once.
@@ -41,6 +42,8 @@ const canvas = document.getElementById('stage');
 initView(canvas);
 // The handwriting decodes in the background; nothing waits for it.
 loadHandFont();
+// Playgama's SDK, in the Playgama build only; a no-op everywhere else.
+initPlaygama();
 const ctx = view.ctx;
 const game = createGame(A1);
 
@@ -218,6 +221,7 @@ function frame(now) {
     // Input is accepted from here, and bundle size is measured to gameReady —
     // so it is called now, before any deferrable warm-up (Amendment A.4).
     sdk.gameReady();
+    playgamaGameReady();
   }
 }
 
