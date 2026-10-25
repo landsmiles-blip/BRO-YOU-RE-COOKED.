@@ -1033,6 +1033,20 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
   (intros and breathers may be easier). `npm run curve` prints all seventy slots
   with their targets: it is the build list. Refit when real players' attempt
   counts exist — simulated difficulty is least accurate on the hardest levels.
+- **THE CEILING IS 60 TRIES (25 Oct, the owner, on the difficulty research).**
+  The equation climbed to 138 for the final boss while the only human evidence
+  — SINK, "unplayable" at 90 — says ~60 is already a wall; King eases any
+  level past ~50 real attempts; this game sells no continues, so nothing pays
+  for steep spikes. No target or band passes 60 and no new level may measure
+  above it (rule 6). The nine levels above it that day are on `WATCH` in
+  tools/lib/difficulty.js: each may only get easier, and comes off the list
+  when it drops below 60. The top of the curve is a stated plateau at 60
+  until real players set the scale. **The research's other finding stands
+  behind it: these numbers are a ranking, not a measurement** — a spike is
+  only 1.52x the level before it while the band is x1.5 and the hard levels'
+  noise is ±15–42%, so the gate cannot tell a sawtooth from a plateau. Real
+  attempts (docs/PLAYGAMA.md, `fit-curve.py --real`) are the fix, not a
+  cleverer formula.
 
 ## PLATFORM CONSTRAINTS (non-negotiable)
 
@@ -1063,7 +1077,7 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
     npm test                      level data, physics, levels, curve, daily — fast, run always
     npm run solver [id ...]       the gates, and writes measured star thresholds
     npm run certify [id]          certifies a hand-robust solution per level
-    npm run curve                 all 60 slots: each target, what is built, what is left
+    npm run curve                 all 70 slots: each target, what is built, what is left
     npm run sketch -- f.js [slot] measure several candidate levels against a slot's band
     npm run census -- f.js [EXP]  sort every winning stroke by WHAT HAPPENED in it
     npm run race -- id ...        a dog level: does the dog die just after the finish?

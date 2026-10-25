@@ -311,7 +311,8 @@ hardest levels. The progression they build is a sawtooth, not a straight line:
   CLAUDE.md, THE DIFFICULTY CURVE.)*
 - **The band:** a level fits its slot within ×1.5 either way. An intro or a
   breather may be as easy as it likes, because an easy level is never a wall.
-- **The result:** the game climbs from 9 tries to 109. The first chapter's boss
+- **The result** *(superseded 25 Oct: every target is now capped at 60 — see
+  DECISIONS D10)*: the game climbs from 9 tries to 109. The first chapter's boss
   sits at level 10, and every chapter starts below where the last one ended.
 - **Enforced by `npm test`** (rule 5 of the difficulty gate).
   **`npm run curve` prints all 60 slots**, built or not, each with its target:

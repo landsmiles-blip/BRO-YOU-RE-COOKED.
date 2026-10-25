@@ -22,6 +22,10 @@
 //   4. RISING WAVES   each third of the game is harder than the one before.
 //   5. ON TARGET      every level measures inside the band of its chapter slot,
 //                     from the difficulty equation in tools/lib/difficulty.js.
+//   6. THE CEILING    no level measures above 60 tries (25 Oct, from the
+//                     difficulty research). The levels already above it are
+//                     on WATCH: each may only get easier, and leaves the list
+//                     when it drops below 60.
 //
 // It also prints all seventy slots, built or not, with each one's target: the
 // list of what is left to build, and how hard each one has to be.
@@ -29,7 +33,7 @@
 //   npm run curve
 
 import { LEVELS, CHAPTERS, SLOT_ROLES } from '../../js/levels.js';
-import { band, nounsOf, triesOf, noiseOf } from '../lib/difficulty.js';
+import { band, nounsOf, triesOf, noiseOf, CEILING, WATCH } from '../lib/difficulty.js';
 
 const START_MAX = 15;      // rule 1: tries for each of the first three levels
 const INTRO_SLACK = 1.25;  // rule 2: measurement noise between near-equal levels
@@ -69,7 +73,8 @@ CHAPTERS.forEach((ch, c) => {
     if (!l) { console.log(`${head}   ·· to build ··`); return; }
     built++;
     const t = tries.get(l.id);
-    const inBand = t >= b.lo && t <= b.hi;
+    // A watched level is judged by rule 6, not by the capped top of its band.
+    const inBand = t >= b.lo && (t <= b.hi || WATCH[l.id] != null);
     if (!inBand) offTarget.push(`${l.verb} ${t.toFixed(0)} in slot ${n} [${range.trim()}]`);
     const intro = nounsOf(l).filter((x) => !seen.has(x));
     intro.forEach((x) => seen.add(x));
@@ -78,7 +83,8 @@ CHAPTERS.forEach((ch, c) => {
     const noise = noiseOf(l.id);
     const pm = `±${Math.round(noise * 100)}%`.padStart(5);
     console.log(`${head}   ${l.verb.padEnd(10)} ${t.toFixed(0).padStart(3)} ${pm}${inBand ? '' : '  OFF TARGET'}` +
-      (noise > Math.log(1.5) ? '  noisy' : '') + (intro.length ? `   new: ${intro.join(', ')}` : ''));
+      (noise > Math.log(1.5) ? '  noisy' : '') + (WATCH[l.id] != null ? '  WATCH' : '') +
+      (intro.length ? `   new: ${intro.join(', ')}` : ''));
   });
 });
 console.log(`\n  ${built} of ${n} slots built, ${n - built} to build\n`);
@@ -118,6 +124,20 @@ check('each third of the game is harder than the one before',
 
 // 5. on target
 check('every level measures inside its slot\'s band', offTarget.length === 0, offTarget.join('; '));
+
+// 6. the ceiling, and the watch list that may only shrink
+const over = LEVELS.filter((l) => tries.get(l.id) > CEILING && WATCH[l.id] == null);
+check(`no new level measures above ${CEILING} tries`, over.length === 0,
+  over.map((l) => `${l.verb} ${tries.get(l.id).toFixed(0)}`).join('; '));
+const harder = Object.entries(WATCH).filter(([id, was]) => tries.has(id) && tries.get(id) > was + 0.05);
+check('every watched level is no harder than when it was listed', harder.length === 0,
+  harder.map(([id, was]) => `${id} ${tries.get(id).toFixed(1)} (was ${was})`).join('; '));
+const stale = Object.keys(WATCH).filter((id) => !tries.has(id) || tries.get(id) <= CEILING);
+check('the watch list holds only levels still above the ceiling', stale.length === 0,
+  stale.map((id) => `${id} is under ${CEILING} now — take it off`).join('; '));
+console.log(`  watch list (${Object.keys(WATCH).length}): ` + Object.keys(WATCH)
+  .filter((id) => tries.has(id)).sort((a, b) => tries.get(b) - tries.get(a))
+  .map((id) => `${LEVELS.find((l) => l.id === id).verb} ${tries.get(id).toFixed(0)}`).join(', '));
 
 console.log(failed === 0 ? '\nCURVE: PASS\n' : `\nCURVE: ${failed} FAILED\n`);
 process.exit(failed === 0 ? 0 : 1);

@@ -43,6 +43,18 @@
 // THE BAND. A level fits its slot within a factor of 1.5 either way. An INTRO
 // or a BREATHER may be as easy as it likes — an easy level is never a wall —
 // but never more than 1.5x its target.
+//
+// THE CEILING — 60 tries, decided 25 Oct 2026 (owner, on the difficulty
+// research: reports/Progressive difficulty in puzzle games.md). The equation
+// climbed to 138 for the final boss while the only human evidence this game
+// has — SINK, called "unplayable" at 90 — says ~60 is already a wall; King
+// eases any level that passes ~50 real attempts; the game sells no continues,
+// so it has no reason for steep spikes; and players stay longer on easier
+// versions. So no target and no band reaches past 60, and no NEW level may
+// measure above it. The levels already above it are on the WATCH list: they
+// may only get easier, and leave the list when they drop under 60. The top
+// of the curve is flat at 60 until real players set the scale (the research's
+// step 7) — a plateau, stated rather than hidden.
 
 import { SLOT_ROLES } from '../../js/levels.js';
 import { SOLVER } from '../../js/solverData.js';
@@ -53,16 +65,32 @@ export const G = 1.26;
 export const S = 4.0;
 export const PROFILE = [0, 0.20, 0.35, 0.50, 0.80, 0.30, 0.55, 0.70, 0.45, 1];
 export const TOLERANCE = 1.5;
+export const CEILING = 60;
+
+/**
+ * Levels that measured above the ceiling on the day it was set, with that
+ * day's tries. Each may only get easier; ease it below 60 and take it off.
+ * THORNS first (the owner's order), the rest as they are next touched.
+ */
+export const WATCH = {
+  'a31-thorns': 89.3, 'a111-tailwind': 71.2, 'a21-lever': 68.9, 'a29-rail': 67.8,
+  'a13-yeet': 66.8, 'a43-crack': 64.4, 'a126-walkies': 62.3, 'a55-protect': 62.0, 'a30-float': 60.7,
+};
+
+/** The equation, before the ceiling — for the fitter, which studies its shape. */
+export function rawTarget(c, k) {
+  return T0 * G ** c * S ** PROFILE[k];
+}
 
 export function target(c, k) {
-  return T0 * G ** c * S ** PROFILE[k];
+  return Math.min(rawTarget(c, k), CEILING);
 }
 
 /** The band a level must measure inside to take slot k of chapter c. */
 export function band(c, k) {
   const t = target(c, k);
   const easyOk = SLOT_ROLES[k] === 'INTRO' || SLOT_ROLES[k] === 'BREATHER';
-  return { t, lo: easyOk ? 0 : t / TOLERANCE, hi: t * TOLERANCE };
+  return { t, lo: easyOk ? 0 : t / TOLERANCE, hi: Math.min(t * TOLERANCE, CEILING) };
 }
 
 /**

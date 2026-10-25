@@ -283,3 +283,11 @@ each, the first boss at level 10. T0, G and S are the least-squares fit to the
 inside its slot's band (x1.5; intros and breathers may be easier). Refit when
 real players' numbers exist. tools/lib/difficulty.js, tools/lib/fit-curve.py,
 rule 5 of tools/test/curve.js.
+
+**Amended 2026-10-25 (owner): a ceiling of 60 tries.** The difficulty research
+(reports/Progressive difficulty in puzzle games.md) found the equation climbing
+to 138 against the only human evidence (SINK "unplayable" at 90), and nothing
+in this ad-funded game that pays for steep spikes. No target or band passes 60;
+no new level may measure above it; the nine levels above it on that day are on
+a WATCH list that may only shrink, THORNS first. Rule 6 of tools/test/curve.js.
+The top of the curve is flat at 60 until real players set the scale.

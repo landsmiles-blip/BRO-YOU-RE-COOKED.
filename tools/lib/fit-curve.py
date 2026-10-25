@@ -35,14 +35,13 @@ import json, math, re, subprocess, sys
 ROLES = ['INTRO', 'DEVELOP', 'DEVELOP', 'DEVELOP', 'SPIKE', 'BREATHER', 'DEVELOP', 'DEVELOP', 'BREATHER', 'BOSS']
 FITTED = ('DEVELOP', 'SPIKE', 'BOSS')
 TOL = 1.5
-CEILING = 60     # docs/CASE_STUDY.md A: no level above ~60 measured tries
 
 
 def constants():
     src = open('tools/lib/difficulty.js').read()
     get = lambda n: float(re.search(rf'export const {n} = ([0-9.]+);', src).group(1))
     prof = [float(x) for x in re.search(r'PROFILE = \[([^\]]+)\]', src).group(1).split(',')]
-    return get('T0'), get('G'), get('S'), prof
+    return get('T0'), get('G'), get('S'), prof, get('CEILING')
 
 
 def solve3(A, b):
@@ -92,18 +91,21 @@ def main():
     out = subprocess.run(['node', '--import', './tools/node-matter.js', 'tools/lib/dump-tries.mjs'],
                          capture_output=True, text=True, check=True).stdout
     D = [L for L in json.loads(out) if L['tries'] and L['chapter'] is not None]
-    T0, G, S, prof = constants()
+    T0, G, S, prof, CEILING = constants()
     for L in D:
         L['w'] = max(1, L['robust'] or 1)
         L['err'] = 1 / math.sqrt(L['w'])            # relative error, in log units
-        L['target'] = T0 * G ** L['chapter'] * S ** prof[L['k']]
+        # The slot's target as the curve gate uses it: the equation, capped at
+        # the ceiling (25 Oct). The fit below studies the equation's shape.
+        L['target'] = min(T0 * G ** L['chapter'] * S ** prof[L['k']], CEILING)
     core = [L for L in D if L['role'] in FITTED]
     fT0, fG, fS = fit(core, prof, 'tries')
     resid = [math.log(L['tries'] / (fT0 * fG ** L['chapter'] * fS ** prof[L['k']])) for L in core]
     rms = math.sqrt(sum(r * r for r in resid) / len(resid))
 
     print('DIFFICULTY FIT — simulated tries, each level in the slot it occupies')
-    print(f'  in use   T0 = {T0:5.2f}   G = {G:.3f}   S = {S:.2f}   final boss {T0 * G ** 6 * S:6.1f}')
+    print(f'  in use   T0 = {T0:5.2f}   G = {G:.3f}   S = {S:.2f}   final boss {T0 * G ** 6 * S:6.1f}'
+          f' (every target capped at {CEILING:.0f})')
     print(f'  fitted   T0 = {fT0:5.2f}   G = {fG:.3f}   S = {fS:.2f}   final boss {fT0 * fG ** 6 * fS:6.1f}'
           f'   ({len(core)} levels, typical miss x{math.exp(rms):.2f})')
     print()
