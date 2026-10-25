@@ -41,16 +41,17 @@ like Claude Code) shows a game to real players and reports what they do.
 
 ## What happens to the numbers
 
-1. Export the runs from Playgama's dashboard: level, player, attempts to the
-   first win.
+1. Export the runs from Playgama's dashboard: per level and player, how many
+   runs they made and whether they won. Players who quit count too: leaving
+   them out flatters exactly the levels that stop people.
 2. Run `node tools/lib/import-tries.mjs export.csv > data/playtests/attempts.json`.
 3. Run `python3 tools/lib/fit-curve.py --real data/playtests/attempts.json`. It
    prints real against simulated attempts, level by level, and once five
    levels have data it fits the line that turns simulated tries into a
    prediction for people.
 
-Levels that stop people show up as fewer players, not as more attempts. Read
-the player counts down the campaign as the drop-off.
+Each level's number is all runs by everyone divided by the number who won.
+Read the winner counts down the campaign as the drop-off.
 
 ## Open questions, checked before upload
 
