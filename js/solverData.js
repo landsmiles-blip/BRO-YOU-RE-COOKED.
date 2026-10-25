@@ -205,14 +205,14 @@ export const SOLVER = {
   },
   "a31-thorns": {
     "solvable": true,
-    "solutionBreadth": 0.0204,
-    "precisionFloor": 45,
-    "worstJitter": 1,
+    "solutionBreadth": 0.0299,
+    "precisionFloor": 65,
+    "worstJitter": 0,
     "distinctFamilies": 5,
     "twoStarLength": 288,
     "threeStarLength": 165,
     "shortestWin": 110,
-    "measuredAt": "2026-09-15"
+    "measuredAt": "2026-10-25"
   },
   "a34-sink": {
     "solvable": true,

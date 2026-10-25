@@ -1144,14 +1144,24 @@ export const A31 = {
   freezeAt: 300,
   static: [
     { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
-    { id: 'jamb',   type: 'platform', x: 282, y: 520,  w: 18,  h: 160 },
+    // THE ROOF IS 70 HIGHER THAN IT WAS (25 Oct), and that alone took the level
+    // from 89 tries to 48 — under the 60 ceiling, inside its slot's band. Two
+    // rounds of sketches measured it first. A wider mouth and a closer balloon,
+    // the levers that rescued this level once, did nothing this time (81–119),
+    // and a bigger balloon was worse (114). Sorting every stroke by what the
+    // balloon did said why: 81% never meet it at all, and of those that do,
+    // the winners were losing to pops that fell short. A taller room under the
+    // teeth gives the shield more slope to work with before it bursts: the
+    // hand rate went 55% → 70% and every win still pops it on the thorns, at
+    // anywhere from x=350 to x=517 — the player's choice, as before.
+    { id: 'jamb',   type: 'platform', x: 282, y: 450,  w: 18,  h: 230 },
     // SHARP END TO END, and that is the whole level. The first build split the
     // ceiling into a safe half and a sharp half, which put the pop point in the
     // LEVEL's hands rather than the player's: the balloon popped wherever the
     // safe roof happened to stop, so the only decision left was "make it move
     // at all". With teeth the whole way the player's line IS the shield, and
     // where their line ends is where it bursts. That is the decision.
-    { id: 'thorns', type: 'platform', x: 220, y: 520,  w: 380, h: 16, sharp: true },
+    { id: 'thorns', type: 'platform', x: 220, y: 450,  w: 380, h: 16, sharp: true },
     // AND IT STARTS CLOSE. Widening the mouth took breadth from 0.1% to 1.2%
     // and it was still under the floor, because the other half of the filter is
     // stroke LENGTH: a shield spanning 300 units is a rare thing for a hand to

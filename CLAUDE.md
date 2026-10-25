@@ -356,6 +356,13 @@ came out of proving it:
   the whole ink budget. Moving the balloon 80 units closer, so a 60–220 unit
   shield does the job, took it to 2.0%. **Ask how long the winning stroke has to
   be, not just how big the target is.**
+  **And the same two levers did nothing the second time (25 Oct, easing it from
+  89 tries under the 60 ceiling): 81–119 tries.** Sorting every stroke by what
+  the balloon did showed why — 81% never meet it, and that share did not move —
+  while raising the thorn roof 70 units took it to 48: more headroom under the
+  teeth turned short pops into deliveries (hand rate 55% → 70%). **Sort the
+  losing strokes by what happened before choosing a lever** (the census idea,
+  applied to losses).
 - **A POP IS NOT A VERTICAL DELIVERY.** A burst balloon keeps every unit of
   horizontal speed its shield gave it and carries up to 330 units after
   bursting — measured. So it cannot feed a see-saw: a ball that lands still

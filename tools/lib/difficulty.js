@@ -71,9 +71,10 @@ export const CEILING = 60;
  * Levels that measured above the ceiling on the day it was set, with that
  * day's tries. Each may only get easier; ease it below 60 and take it off.
  * THORNS first (the owner's order), the rest as they are next touched.
+ * THORNS came off on 25 Oct: 89.3 -> 48 (its roof raised 70, js/levels.js).
  */
 export const WATCH = {
-  'a31-thorns': 89.3, 'a111-tailwind': 71.2, 'a21-lever': 68.9, 'a29-rail': 67.8,
+  'a111-tailwind': 71.2, 'a21-lever': 68.9, 'a29-rail': 67.8,
   'a13-yeet': 66.8, 'a43-crack': 64.4, 'a126-walkies': 62.3, 'a55-protect': 62.0, 'a30-float': 60.7,
 };
 
