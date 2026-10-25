@@ -253,3 +253,82 @@ export const A126 = {
   drawing: { maxLength: 320 },
   solver: null,
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// A127 — LOG.  A variant of HIVE's question: stop them where they start.
+//
+// The nest is inside a hollow log lying over his walk, its mouth facing him.
+// HIVE is won with a cup hung under the hive; this is won with a DOOR — a
+// short upright line across the mouth, between two thick lips — and the
+// opening frame is a log, not a branch (the case study's variant rule, D).
+//
+// THE MOUTH FACES HIM, because they are dumb homers. Sketched first with the
+// mouth facing him but the log right over his start: by the time they came
+// out he was already under it, and the swarm sat pressed against the log's
+// floor, directly above him, for the whole run — doing nothing won. With the
+// log further on and the swarm let out at 500ms, they come out while he is
+// still in the open in front of it: the danger is ahead of him, never behind.
+//
+// Measured 25 Oct under this id (the id seeds the swarm): 19 tries, hand rate
+// 65%, five families. Of 140 winning strokes, 83 keep all six bees in the
+// log and 134 keep at least half of them in.
+// ─────────────────────────────────────────────────────────────────────────
+export const A127 = {
+  id: 'a127-log',
+  hint: 'THE LOG IS FULL OF BEES',
+  world: 'backyard',
+  verb: 'LOG',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  freezeAt: 400,
+  goal: { id: 'goal', x: 640, y: 1152, w: 70, h: 140 },
+  static: [
+    ground,
+    { id: 'logTop', type: 'platform', x: 300, y: 700, w: 420, h: 60 },
+    { id: 'logBottom', type: 'platform', x: 300, y: 840, w: 420, h: 60 },
+    { id: 'logEnd', type: 'platform', x: 500, y: 760, w: 220, h: 80 },
+  ],
+  objects: [{ id: 'hive', type: 'hive', x: 400, y: 800, radius: 22, bees: 6, attackAt: 500, guard: 30 }],
+  zones: [],
+  drawing: { maxLength: 300 },
+  solver: null,
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// A129 — WINDOW.  A variant of SWARM's question: close the way in.
+//
+// SWARM's gap is in his roof and the hive is above it; here the nest hangs
+// outside the end wall of his house and the way in is a window in that wall,
+// so the line that closes it stands UPRIGHT instead of lying flat. Different
+// frame, differently shaped line (the census families are spans and arcs
+// standing in the window, not lids).
+//
+// THE WINDOW IS 200 TALL. At 100 it measured 11 tries — easier than SWARM,
+// which must stay the easiest bee level — and at 160 it measured 15; at 200
+// it measures 23, this slot's target. The wall either side is 60 thick, so
+// any line laid in the window seals it.
+//
+// Of 133 winning strokes, 75 shut every bee out of the house. Most of the
+// rest are a line dropped inside the room that falls between him and the
+// swarm long enough for him to reach the door — a shield, which is this
+// chapter's other answer, not a bypass.
+// ─────────────────────────────────────────────────────────────────────────
+export const A129 = {
+  id: 'a129-window',
+  hint: "THEY'LL COME IN THE WINDOW",
+  world: 'backyard',
+  verb: 'WINDOW',
+  milo: { start: { x: 60, y: 1152 }, speed: MILO.speed },
+  freezeAt: 400,
+  goal: { id: 'goal', x: 470, y: 1152, w: 70, h: 140 },
+  static: [
+    ground,
+    { id: 'roof', type: 'platform', x: 120, y: 700, w: 500, h: 60 },
+    { id: 'wallTop', type: 'platform', x: 560, y: 760, w: 60, h: 60 },
+    { id: 'wallBottom', type: 'platform', x: 560, y: 1020, w: 60, h: 132 },
+    { id: 'branch', type: 'platform', x: 630, y: 700, w: 90, h: 16 },
+  ],
+  objects: [{ id: 'hive', type: 'hive', x: 676, y: 746, radius: 24, bees: 6 }],
+  zones: [],
+  drawing: { maxLength: 320 },
+  solver: null,
+};

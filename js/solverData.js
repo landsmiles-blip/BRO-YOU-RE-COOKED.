@@ -466,5 +466,27 @@ export const SOLVER = {
     "threeStarLength": 184,
     "shortestWin": 100,
     "measuredAt": "2026-10-18"
+  },
+  "a127-log": {
+    "solvable": true,
+    "solutionBreadth": 0.0816,
+    "precisionFloor": 65,
+    "worstJitter": 0,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 224,
+    "shortestWin": 110,
+    "measuredAt": "2026-10-25"
+  },
+  "a129-window": {
+    "solvable": true,
+    "solutionBreadth": 0.0733,
+    "precisionFloor": 65,
+    "worstJitter": 2,
+    "distinctFamilies": 5,
+    "twoStarLength": 288,
+    "threeStarLength": 260,
+    "shortestWin": 165,
+    "measuredAt": "2026-10-25"
   }
 };
