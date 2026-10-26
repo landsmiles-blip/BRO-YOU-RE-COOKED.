@@ -329,31 +329,31 @@ export const DAILY_SOLUTIONS = {
   "a80-good-boy": {
     "id": "a80-good-boy",
     "ink": 230,
-    "winners": 39,
-    "robust": 17,
-    "anchoredRobust": 17,
-    "handRate": 0.436,
+    "winners": 40,
+    "robust": 20,
+    "anchoredRobust": 20,
+    "handRate": 0.5,
     "solution": {
       "family": "line",
       "length": 165,
-      "parts": 10,
+      "parts": 11,
       "anchors": 7,
       "points": [
         {
-          "x": 180,
-          "y": 778.9
+          "x": 251.4,
+          "y": 735.6
         },
         {
-          "x": 180,
-          "y": 833.9
+          "x": 203.8,
+          "y": 763.1
         },
         {
-          "x": 180,
-          "y": 888.9
+          "x": 156.2,
+          "y": 790.6
         },
         {
-          "x": 180,
-          "y": 943.9
+          "x": 108.6,
+          "y": 818.1
         }
       ]
     }
@@ -362,9 +362,9 @@ export const DAILY_SOLUTIONS = {
     "id": "a10-switch",
     "ink": 192,
     "winners": 18,
-    "robust": 6,
-    "anchoredRobust": 6,
-    "handRate": 0.333,
+    "robust": 12,
+    "anchoredRobust": 7,
+    "handRate": 0.667,
     "solution": {
       "family": "span",
       "length": 139,
@@ -377,27 +377,27 @@ export const DAILY_SOLUTIONS = {
         },
         {
           "x": 294.3,
-          "y": 701.6
+          "y": 675.6
         },
         {
           "x": 308.6,
-          "y": 700.6
+          "y": 653.7
         },
         {
           "x": 322.9,
-          "y": 695
+          "y": 636.5
         },
         {
           "x": 337.1,
-          "y": 683.5
+          "y": 625
         },
         {
           "x": 351.4,
-          "y": 666.3
+          "y": 619.4
         },
         {
           "x": 365.7,
-          "y": 644.4
+          "y": 618.4
         },
         {
           "x": 380,
