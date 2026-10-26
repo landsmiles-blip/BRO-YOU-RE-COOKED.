@@ -64,6 +64,10 @@ export function explain(c, reason, culpritId, stroke = null, cause = null) {
     return { label: 'NOTHING HELD IT UP', culpritId: 'stroke' };
   }
 
+  // HE WAITED AT A GATE NOTHING OPENED. The commonest loss on every
+  // plate-and-gate level, and it used to read "HE'S STUCK" — blaming him, when
+  // what failed is whatever was meant to press the plate (sim.js, shutGateAt).
+  if (cause === 'gate')     return { label: 'THE GATE STAYED SHUT', culpritId };
   if (reason === 'stuck')   return { label: "HE'S STUCK",       culpritId: null };
   if (reason === 'timeout') return { label: 'STILL OUT THERE',  culpritId: null };
   if (reason === 'fell')    return { label: "HE'S GONE",        culpritId: null };

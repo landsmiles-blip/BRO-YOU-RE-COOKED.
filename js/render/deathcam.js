@@ -122,6 +122,13 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
         ctx.moveTo(spec.x, y); ctx.lineTo(spec.x + spec.w, y);
       }
       ctx.stroke();
+      // THE GATE THAT STAYED SHUT, when that is what ended the run: outlined
+      // in the danger accent, as the bee that got him is ringed.
+      if (spec.id === culpritId) {
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = C.danger; ctx.lineWidth = 4;
+        ctx.strokeRect(spec.x - 6, spec.y - 6, spec.w + 12, spec.h + 12);
+      }
     }
     ctx.restore();
   }
@@ -221,6 +228,21 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     ctx.restore();
   }
 
+  // THE PLAYER'S LINE, WHEN IT WAS ANCHORED. An anchored line is a STATIC
+  // body and the recorder keeps only what moves, so every loss with a line
+  // that held replayed without it — on every level, and the fourth time a
+  // static thing has been invisible here. The owner's GOOD BOY replay showed
+  // the dog standing on nothing in mid-air. Drawn from the moment it was put
+  // down, at the place it was welded.
+  const s = sim.stroke;
+  if (s?.isStatic && (sim.strokeAt == null || tFrame >= sim.strokeAt)) {
+    ctx.save();
+    ctx.translate(s.position.x, s.position.y);
+    ctx.rotate(s.angle);
+    strokeLine(ctx, sim, culpritId === 'stroke');
+    ctx.restore();
+  }
+
   const frames = sim.recorder.frames;
   const frame = frames[Math.min(frameIdx, frames.length - 1)];
   if (!frame) return;
@@ -236,22 +258,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
       ctx.rect(-MILO.width / 2, -MILO.height / 2, MILO.width, MILO.height);
       ctx.fill(); ctx.stroke();
     } else if (f.id === 'stroke') {
-      // The shape the player actually drew, in the body's own local space —
-      // the same geometry the live renderer uses, so the replay shows THEIR
-      // line rather than a stand-in for it.
-      const path = sim.stroke?.strokePath;
-      ctx.strokeStyle = guilty ? C.danger : 'rgba(51,54,59,0.55)';
-      ctx.lineWidth = LINE.thickness;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.beginPath();
-      if (path && path.length > 1) {
-        ctx.moveTo(path[0].x, path[0].y);
-        for (let i = 1; i < path.length; i++) ctx.lineTo(path[i].x, path[i].y);
-      } else {
-        ctx.moveTo(-40, 0); ctx.lineTo(40, 0);
-      }
-      ctx.stroke();
+      strokeLine(ctx, sim, guilty);
     } else if (sim.objects.get(f.id)?.spec.type === 'bee') {
       // A BEE replays as a bee — red, striped, winged — and side-on as in
       // play, so it is drawn upright whatever its body has spun to. The one
@@ -361,6 +368,27 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
   // Where the banner went, so anything that belongs beside it (the skip) can
   // sit next to it rather than on top of the death.
   return bannerY;
+}
+
+/**
+ * The shape the player actually drew, in the stroke body's own local space —
+ * the same geometry the live renderer uses, so the replay shows THEIR line
+ * rather than a stand-in for it. The caller has placed the body's frame.
+ */
+function strokeLine(ctx, sim, guilty) {
+  const path = sim.stroke?.strokePath;
+  ctx.strokeStyle = guilty ? C.danger : 'rgba(51,54,59,0.55)';
+  ctx.lineWidth = LINE.thickness;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  if (path && path.length > 1) {
+    ctx.moveTo(path[0].x, path[0].y);
+    for (let i = 1; i < path.length; i++) ctx.lineTo(path[i].x, path[i].y);
+  } else {
+    ctx.moveTo(-40, 0); ctx.lineTo(40, 0);
+  }
+  ctx.stroke();
 }
 
 /** Which recorded frame to show, given elapsed ms since the death cam started. */

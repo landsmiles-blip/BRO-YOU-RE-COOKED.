@@ -336,6 +336,8 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   );
 
   if (outcome !== OUTCOME.RUNNING && outcome !== OUTCOME.SUCCESS && !sim.death) {
+    const shut = outcome === OUTCOME.STUCK && !sim.run.cause ? shutGateAt(sim) : null;
+    if (shut) { sim.run.cause = 'gate'; sim.run.culpritId = shut; }
     sim.death = explain(sim.causality, outcome, sim.run.culpritId, strokeState(sim), sim.run.cause);
     audio.death();
   }
@@ -356,6 +358,7 @@ export function commitStroke(sim, rawPoints) {
   if (!body) return { ok: false, reason: 'degenerate' };
 
   sim.stroke = body;
+  sim.strokeAt = sim.simTime;           // the replay draws it from here on
   sim.strokePoints = pts;
   sim.strokeShape = classified.shape;
   sim.anchors = anchorStroke(sim.ctx, body, pts);
@@ -627,6 +630,24 @@ function checkDogs(sim, worldH) {
     if (p.x < -DOG.width || p.x > SAFE_BOX.w + DOG.width) loseDog(sim, dog, 'dog-ran');
     else if (p.y - DOG.height > worldH + 200 || inLethalZone(dog.body, sim.zones, DOG)) loseDog(sim, dog, 'dog');
   }
+}
+
+/**
+ * The shut gate he is standing at, if that is what stopped him. "HE'S STUCK"
+ * was the caption on the commonest loss in the game — on every plate-and-gate
+ * level most losing lines end with him waiting at a gate the plate never
+ * opened (LEVER: 3,242 of 3,717 swept strokes) — and it blamed HIM, when the
+ * thing to fix is whatever was meant to open the gate.
+ */
+function shutGateAt(sim) {
+  const m = sim.milo.body.position;
+  for (const { spec } of sim.objects.values()) {
+    if (spec.type !== 'gate' || sim.triggered.has(spec.id)) continue;
+    const front = m.x + MILO.width / 2;
+    if (front > spec.x - 40 && m.x < spec.x + spec.w &&
+        m.y + MILO.height / 2 > spec.y && m.y - MILO.height / 2 < spec.y + spec.h) return spec.id;
+  }
+  return null;
 }
 
 function strokeState(sim) {

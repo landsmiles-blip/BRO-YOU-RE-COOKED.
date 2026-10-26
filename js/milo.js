@@ -45,13 +45,17 @@ export function createMilo(ctx, level) {
  * Ground probe. Also captures the SURFACE NORMAL, which is what makes slopes
  * work — see updateMilo.
  */
-function groundCheck(ctx, milo, dims = MILO) {
+function groundCheck(ctx, milo, dims = MILO, offsets = [0]) {
   const b = milo.body;
   const feetY = b.position.y + dims.height / 2;
-  const hits = raycast(
-    ctx, b.position.x, feetY - 4, b.position.x, feetY + dims.groundProbe,
-    (o) => o !== b,
-  );
+  let hits = [];
+  for (const dx of offsets) {
+    hits = raycast(
+      ctx, b.position.x + dx, feetY - 4, b.position.x + dx, feetY + dims.groundProbe,
+      (o) => o !== b,
+    );
+    if (hits.length) break;
+  }
   if (!hits.length) { milo.groundNormal = null; return false; }
 
   // Matter's ray normals can point either way; force it to face upward.
@@ -226,6 +230,13 @@ export function createDog(ctx, spec) {
     w: DOG.width, h: DOG.height, chamfer: DOG.chamfer,
     density: DOG.density, friction: DOG.friction, restitution: DOG.restitution,
     frictionAir: 0.01,
+    // IT NEVER TIPS OVER. Free to rotate, one bump off the foot of a line
+    // stood it on its end (92 degrees); lying like that its feet-ray never
+    // reached the floor, so it counted as airborne for the rest of the run and
+    // never walked or turned again — and stood up, it walked into the same
+    // bump and went over again. Milo knocked flat is a loss; the dog's whole
+    // job is to keep walking, so its body cannot turn over at all.
+    inertia: Infinity,
   });
   return {
     body, spec,
@@ -235,6 +246,9 @@ export function createDog(ctx, spec) {
     grounded: true,
     groundNormal: { x: 0, y: -1 },
     lastX: null,        // where it was last step, to tell walking from being held
+    progressX: null,    // where it last got somewhere, and when (the stall watch)
+    progressAt: 0,
+    groundAt: 0,        // when it was last held up: standing, or at rest
     turnAfter: 0,       // simTime before which it may not turn again
     turns: 0,           // how many times it has turned, for the census
     alive: true,
@@ -251,16 +265,50 @@ export function updateDog(ctx, dog, simTimeMs) {
   const x = dog.body.position.x;
   const moved = dog.lastX == null ? Infinity : (x - dog.lastX) * dog.dir;
   dog.lastX = x;
-  dog.grounded = groundCheck(ctx, dog, DOG);
+  // ITS FRONT FEET COUNT. Milo's probe looks under his middle only. The dog's
+  // body cannot tip (createDog), so walking into the rounded foot of a line it
+  // came to rest propped on that foot by its front, its middle a few units too
+  // high for the probe: airborne by the rules, so it neither walked nor turned
+  // — and it rocked or hung there instead of climbing a ramp it should climb.
+  // At an edge or the tip of a line the front leaves first, so walking off an
+  // end is unchanged.
+  dog.grounded = groundCheck(ctx, dog, DOG, [0, dog.dir * (DOG.width / 2 - 8)]);
+  const vel = getVelocity(dog.body);
+  if (dog.grounded || Math.hypot(vel.x, vel.y) < DOG.restSpeed) dog.groundAt = simTimeMs;
+
+  // A DOG THAT GETS NOWHERE TURNS, WHATEVER STOPPED IT. The turn below needs
+  // a grounded step that stalled AND a wall the rays can see, and a line can
+  // beat both: walked up a curve to a tip that flattens out, the dog found
+  // the line under its middle for one step, walked, lost it, slid back, and
+  // did that for ever — perched on the player's line until the run timed
+  // out. The owner's own wall on GOOD BOY did exactly this (26 Oct), and the
+  // sweep found it on five other dog levels. Where Milo would stop, the dog
+  // turns: held up by something (standing, or at rest — nothing in free fall
+  // is at rest) and getting nowhere is enough.
+  if (dog.progressX == null || (x - dog.progressX) * dog.dir > DOG.stallStep) {
+    dog.progressX = x;
+    dog.progressAt = simTimeMs;
+  } else if (simTimeMs - dog.groundAt < DOG.supportMs &&
+             simTimeMs - dog.progressAt > DOG.stallMs && simTimeMs >= dog.turnAfter) {
+    turnDog(dog, simTimeMs);
+    return;
+  }
+
   if (!dog.grounded) { dog.state = STATE.AIRBORNE; return; }
   dog.state = STATE.WALKING;
   const v = walk(dog, DOG);
   const stalled = Math.abs(v.x) < dog.speed * 0.35 || moved < dog.speed * (PHYSICS_DT / 1000) * 0.35;
   if (!stalled || tryStepUp(ctx, dog, DOG)) return;
   if (simTimeMs < dog.turnAfter || !blockedAhead(ctx, dog, DOG)) return;
+  turnDog(dog, simTimeMs);
+}
+
+function turnDog(dog, simTimeMs) {
   dog.dir = -dog.dir;
   dog.turnAfter = simTimeMs + DOG.turnMs;
   dog.turns += 1;
+  dog.progressX = dog.body.position.x;
+  dog.progressAt = simTimeMs;
 }
 
 /**
