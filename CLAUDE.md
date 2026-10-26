@@ -48,6 +48,15 @@ opened it. It was invisible in every capture until a loss was filmed on a level
 whose whole puzzle is the gate. Anything STATIC that is not in `sim.statics` —
 a switch, a gate — must be drawn from its spec.
 
+A FOURTH time, from the owner's own screenshot of GOOD BOY (26 Oct): **the
+player's line was missing from every replay in which it had held.** An anchored
+line is STATIC, so the recorder skipped it, and the replay showed the dog
+standing on nothing in mid-air. It is drawn from `sim.stroke` now, from the
+moment it was put down. And a run that ends with Milo waiting at a gate nothing
+opened — the commonest loss in the game, 3,242 of LEVER's 3,717 swept strokes —
+reads **THE GATE STAYED SHUT** with the gate ringed, not "HE'S STUCK", which
+blamed him for the plate's failure. `tools/test/deathcam.js` holds both.
+
 ## THE GATES MEASURE FAIR. THEY CANNOT MEASURE MEANINGFUL.
 
 Proved twice, from both directions:
@@ -762,6 +771,21 @@ came out of proving it:
   dog dies within a second of the finish. The fix is a post to pace against
   or a KENNEL to drop into: it fails "turn the dog back early" exactly as
   spikes did (a dog in its kennel presses nothing) and keeps the dog alive.
+- **A HAND-DRAWN LINE HAS A ROUNDED FOOT, AND THE DOG HUNG ON IT.** The owner
+  called GOOD BOY unplayable (26 Oct, a video of two attempts), and by hand it
+  nearly was: an upright wall in front of the dog — its most natural answer —
+  won 12 times in 36 when the hand model drew it. The dog walked onto the
+  line's rounded foot with its front feet, came to rest propped a few units up
+  with its middle over air (airborne, because the probe looks under the middle
+  only), and never walked or turned again; the run ended "HE'S STUCK". The
+  owner's curve did the same at its TIP. None of it showed in any gate,
+  because the sweep draws ideal lines and the hand rate only re-draws winners.
+  Fixed for the dog alone — its front feet count as standing, its body cannot
+  tip over, and held up by something while getting nowhere for 1s it turns
+  (where Milo would stop, the dog turns). Upright, leaning and hooked walls
+  now win 36 of 36 by hand, the owner's own line 12 of 12. **Measure the
+  natural answer drawn by a HAND, not just the sweep's** — and `npm run losses`
+  now fails any level where a dog is held still for 2s or more.
 - **HOLD MILO AT A GATE BY HIS START** on a dog level, so that a lost dog is
   always lost before he could have finished.
 - **NO LINE THROUGH THE DOG, TESTED ALONG THE SEGMENTS** — a simplified
@@ -1097,6 +1121,7 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
     npm run sketch -- f.js [slot] measure several candidate levels against a slot's band
     npm run census -- f.js [EXP]  sort every winning stroke by WHAT HAPPENED in it
     npm run race -- id ...        a dog level: does the dog die just after the finish?
+    npm run losses -- id ...      sort every LOSING stroke by why it lost — run beside census
     npm run film                  films every level being WON — READ THE IMAGES
     FILM_IDLE=1 npm run film      films it being LOST — read those too
     npm run frozen                every opening frame in ONE grid — READ IT

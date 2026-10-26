@@ -17,8 +17,9 @@
 
 import { buildSim, stepSim, commitStroke, destroySim, OUTCOME } from '../../js/sim.js';
 import { DOG, LINE, MILO } from '../../js/constants.js';
-import { assertLevel } from '../../js/levels.js';
+import { assertLevel, LEVELS } from '../../js/levels.js';
 import { STATE } from '../../js/milo.js';
+import { handDrawn } from './lib/hand.js';
 
 let failed = 0;
 const check = (label, cond, detail = '') => {
@@ -194,6 +195,52 @@ console.log('\nTHE DOG — walks, turns at walls, presses plates, can be lost');
   check('it turns when it meets Milo', d.turns >= 1 && d.dir === 1, `turns ${d.turns}`);
   check('and Milo is not staggered by it', !stunned);
   destroySim(sim);
+}
+
+// 10. A HAND-DRAWN wall turns it. The owner filmed GOOD BOY "unplayable" (26
+// Oct), and by hand it nearly was: a drawn line has a rounded foot, the dog
+// walked onto it with its front feet and hung there, propped up with its
+// middle over air — airborne by the rules — for the rest of the run. An
+// upright wall, the level's most natural answer, won 12 times in 36.
+for (const [spacing, waver, und] of [[8, 5.5, 2.3], [7, 7, 1.4], [10, 4.5, 3.1]]) {
+  const sim = buildSim(level());
+  runTo(sim, 300);
+  const c = commitStroke(sim, handDrawn([{ x: 300, y: 1152 }, { x: 300, y: 1072 }], spacing, waver, und));
+  runTo(sim, 2200);
+  const d = dogOf(sim);
+  check(`a hand-drawn upright wall turns it (tremor ${spacing}/${waver})`,
+        c.ok && d.turns >= 1 && d.dir === 1 && d.body.position.x > 340,
+        `ok ${c.ok}, turns ${d.turns}, x ${d.body.position.x.toFixed(0)}`);
+  destroySim(sim);
+}
+
+// 11. It cannot tip over: free to rotate, one bump stood it on its end for good.
+{
+  const sim = buildSim(level());
+  check('its body cannot tip over', dogOf(sim).body.inertia === Infinity);
+  destroySim(sim);
+}
+
+// 12. The owner's own line on GOOD BOY, read off the video frame by frame:
+// a curve lying along the shelf in front of the dog and rising steeply to a
+// tip. The dog climbed it and perched on the tip, never turning, until the
+// run ended "HE'S STUCK" — six times in twelve, redrawn by the hand model.
+{
+  const L = LEVELS.find((l) => l.id === 'a80-good-boy');
+  const owner = [[249, 757], [257, 761], [265, 776], [273, 783], [281, 785], [289, 789], [297, 791],
+                 [305, 795], [313, 797], [321, 797], [329, 797], [337, 798]].map(([x, y]) => ({ x, y }));
+  let wins = 0, runs = 0;
+  for (const t of [null, [8, 5.5, 2.3], [7, 7, 1.4], [10, 4.5, 3.1]]) for (const dx of [-6, 0, 6]) {
+    const pts = (t ? handDrawn(owner, ...t) : owner).map((p) => ({ x: p.x + dx, y: p.y }));
+    const sim = buildSim(L);
+    runTo(sim, L.freezeAt);
+    const c = commitStroke(sim, pts);
+    let out = OUTCOME.RUNNING;
+    while (c.ok && out === OUTCOME.RUNNING) out = stepSim(sim);
+    runs++; if (out === OUTCOME.SUCCESS) wins++;
+    destroySim(sim);
+  }
+  check("the owner's GOOD BOY line wins, however the hand draws it", wins === runs, `${wins} of ${runs}`);
 }
 
 console.log(failed === 0 ? '\nDOG: PASS\n' : `\nDOG: ${failed} FAILED\n`);

@@ -9,6 +9,7 @@
     "levelcheck": "node --import ./tools/node-matter.js tools/levelcheck.js",
     "sketch": "node --import ./tools/node-matter.js tools/lib/sketch.js",
     "race": "node --import ./tools/node-matter.js tools/lib/race.js",
+    "losses": "node --import ./tools/node-matter.js tools/lib/losses.js",
     "census": "node --import ./tools/node-matter.js tools/lib/census.js",
     "solver": "node --import ./tools/node-matter.js tools/solver",
     "certify": "node --import ./tools/node-matter.js tools/solver/representative.js",
