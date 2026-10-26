@@ -12,9 +12,9 @@
 //
 // Each losing stroke is filed under its death label (what the player reads),
 // and two things no label says are counted beside it:
-//   - DOG HELD: a dog standing still on something for 2s or more without
-//     turning — the trap above; the dog now turns after 1s, so any of these
-//     is a regression;
+//   - DOG HELD: a dog standing still on something for 3s or more without
+//     turning — the trap above; the dog now turns after 2s (DOG.stallMs), so
+//     any of these is a regression;
 //   - and the share of losses that are THE GATE STAYED SHUT, the commonest
 //     loss on every plate-and-gate level, where what failed is whatever was
 //     meant to press the plate.
@@ -29,7 +29,7 @@ import { samplingRegion } from '../solver/solve.js';
 import { sweep } from '../solver/families.js';
 
 const MAX_STEPS = Math.ceil(RUN_TIMEOUT / PHYSICS_DT) + 600;
-const HELD_MS = 2000;
+const HELD_MS = 3000;
 
 const ids = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const levels = ids.length ? LEVELS.filter((l) => ids.includes(l.id)) : LEVELS;

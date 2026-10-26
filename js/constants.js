@@ -65,14 +65,17 @@ export const DOG = {
   speed: 180,
   maxStepUp: 22,       // the same lip Milo can take, so a drawn line is a floor to it too
   maxWalkSlope: 40,
-  groundProbe: 6,      // Milo's: 12 walked it off the tip of a ramp instead of turning
+  groundProbe: 6,
   turnMs: 250,         // after turning, it walks this long before it may turn again
   // A dog held up by something that gets nowhere for stallMs turns round
   // (js/milo.js). Held up means standing, or at rest — under restSpeed u/s —
-  // within the last supportMs, so a dog in free fall is never turned.
-  stallMs: 1000,
+  // within the last supportMs, so a dog in free fall is never turned. Two
+  // seconds because a dog rocking on the rounded foot of a ramp it is about
+  // to climb settles within 1.8s (measured) and must be left to climb it.
+  stallMs: 2000,
   supportMs: 400,
   restSpeed: 15,       // u/s; Milo's stuck test uses 12
+  restMs: 300,         // at rest this long, tipped over, it gets back up
   stallStep: 10,       // units forward that count as getting somewhere
 };
 

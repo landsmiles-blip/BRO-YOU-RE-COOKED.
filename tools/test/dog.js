@@ -20,6 +20,7 @@ import { DOG, LINE, MILO } from '../../js/constants.js';
 import { assertLevel, LEVELS } from '../../js/levels.js';
 import { STATE } from '../../js/milo.js';
 import { handDrawn } from './lib/hand.js';
+import { setAngle, setPosition } from '../../js/physics/adapter.js';
 
 let failed = 0;
 const check = (label, cond, detail = '') => {
@@ -201,12 +202,14 @@ console.log('\nTHE DOG — walks, turns at walls, presses plates, can be lost');
 // Oct), and by hand it nearly was: a drawn line has a rounded foot, the dog
 // walked onto it with its front feet and hung there, propped up with its
 // middle over air — airborne by the rules — for the rest of the run. An
-// upright wall, the level's most natural answer, won 12 times in 36.
+// upright wall, the level's most natural answer, won 12 times in 36. Now a
+// dog held up and getting nowhere turns after DOG.stallMs, so the run is
+// long enough for that.
 for (const [spacing, waver, und] of [[8, 5.5, 2.3], [7, 7, 1.4], [10, 4.5, 3.1]]) {
   const sim = buildSim(level());
   runTo(sim, 300);
   const c = commitStroke(sim, handDrawn([{ x: 300, y: 1152 }, { x: 300, y: 1072 }], spacing, waver, und));
-  runTo(sim, 2200);
+  runTo(sim, 900 + DOG.stallMs + 1500);
   const d = dogOf(sim);
   check(`a hand-drawn upright wall turns it (tremor ${spacing}/${waver})`,
         c.ok && d.turns >= 1 && d.dir === 1 && d.body.position.x > 340,
@@ -214,10 +217,19 @@ for (const [spacing, waver, und] of [[8, 5.5, 2.3], [7, 7, 1.4], [10, 4.5, 3.1]]
   destroySim(sim);
 }
 
-// 11. It cannot tip over: free to rotate, one bump stood it on its end for good.
+// 11. Knocked over, it gets back up. One bump off the foot of a line stood it
+// on its end, where its feet-ray never reaches the floor: airborne by the
+// rules, for good. Laid on its side here, it must be up and walking again.
 {
   const sim = buildSim(level());
-  check('its body cannot tip over', dogOf(sim).body.inertia === Infinity);
+  const b = dogOf(sim).body;
+  setAngle(b, Math.PI / 2);
+  setPosition(b, 400, 1152 - DOG.width / 2);
+  runTo(sim, 1500);
+  const d = dogOf(sim);
+  const tilt = Math.abs(Math.atan2(Math.sin(d.body.angle), Math.cos(d.body.angle)));
+  check('knocked onto its side, it gets back up and walks on', tilt < 0.2 && d.body.position.x < 330,
+        `tilt ${(tilt * 57.3).toFixed(0)} deg, x ${d.body.position.x.toFixed(0)}`);
   destroySim(sim);
 }
 

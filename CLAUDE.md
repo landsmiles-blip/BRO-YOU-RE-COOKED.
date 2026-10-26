@@ -780,12 +780,19 @@ came out of proving it:
   only), and never walked or turned again; the run ended "HE'S STUCK". The
   owner's curve did the same at its TIP. None of it showed in any gate,
   because the sweep draws ideal lines and the hand rate only re-draws winners.
-  Fixed for the dog alone — its front feet count as standing, its body cannot
-  tip over, and held up by something while getting nowhere for 1s it turns
-  (where Milo would stop, the dog turns). Upright, leaning and hooked walls
-  now win 36 of 36 by hand, the owner's own line 12 of 12. **Measure the
-  natural answer drawn by a HAND, not just the sweep's** — and `npm run losses`
-  now fails any level where a dog is held still for 2s or more.
+  Fixed for the dog alone: held up by something (standing, or at rest) and
+  getting nowhere for 2s, it turns — where Milo would stop, the dog turns —
+  and knocked onto its side, it gets back up. Upright, leaning and hooked
+  walls now win 36 of 36 by hand, the owner's own line 12 of 12. Two
+  stronger fixes were measured and rejected: letting its FRONT feet count as
+  standing walked it off edges it used to hang on (DOWN BOY and STAY became
+  races, 6%), and locking its rotation slid it slowly off HEADS UP's shelf
+  onto the rock in its kennel (45 races where there had been one). Two
+  seconds, not one, because a dog rocking on the rounded foot of a ramp it is
+  about to climb settles within 1.8s. **Measure the natural answer drawn by a
+  HAND, not just the sweep's, and re-run `npm run race` after touching how
+  the dog walks** — `npm run losses` now fails any level where a dog is held
+  still for 3s or more.
 - **HOLD MILO AT A GATE BY HIS START** on a dog level, so that a lost dog is
   always lost before he could have finished.
 - **NO LINE THROUGH THE DOG, TESTED ALONG THE SEGMENTS** — a simplified

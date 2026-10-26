@@ -1280,10 +1280,10 @@ export const SOLUTIONS = {
   },
   "a80-good-boy": {
     "id": "a80-good-boy",
-    "winners": 135,
-    "robust": 80,
-    "anchoredRobust": 74,
-    "handRate": 0.593,
+    "winners": 140,
+    "robust": 87,
+    "anchoredRobust": 82,
+    "handRate": 0.621,
     "solution": {
       "family": "corner",
       "length": 260,
@@ -1315,46 +1315,46 @@ export const SOLUTIONS = {
   },
   "a81-down-boy": {
     "id": "a81-down-boy",
-    "winners": 69,
-    "robust": 36,
-    "anchoredRobust": 36,
-    "handRate": 0.522,
+    "winners": 111,
+    "robust": 56,
+    "anchoredRobust": 56,
+    "handRate": 0.505,
     "solution": {
       "family": "span",
-      "length": 211,
-      "parts": 12,
-      "anchors": 8,
+      "length": 205,
+      "parts": 10,
+      "anchors": 6,
       "points": [
         {
-          "x": 340,
-          "y": 940
+          "x": 470,
+          "y": 920
         },
         {
-          "x": 361.4,
-          "y": 909.6
+          "x": 450,
+          "y": 892.5
         },
         {
-          "x": 382.9,
-          "y": 885.3
+          "x": 430,
+          "y": 871
         },
         {
-          "x": 404.3,
-          "y": 871.8
+          "x": 410,
+          "y": 860.3
         },
         {
-          "x": 425.7,
-          "y": 871.8
+          "x": 390,
+          "y": 863.2
         },
         {
-          "x": 447.1,
-          "y": 885.3
+          "x": 370,
+          "y": 879.6
         },
         {
-          "x": 468.6,
-          "y": 909.6
+          "x": 350,
+          "y": 906.8
         },
         {
-          "x": 490,
+          "x": 330,
           "y": 940
         }
       ]
@@ -1362,10 +1362,10 @@ export const SOLUTIONS = {
   },
   "a82-heads-up": {
     "id": "a82-heads-up",
-    "winners": 205,
-    "robust": 121,
-    "anchoredRobust": 67,
-    "handRate": 0.59,
+    "winners": 206,
+    "robust": 118,
+    "anchoredRobust": 66,
+    "handRate": 0.573,
     "solution": {
       "family": "line",
       "length": 230,
@@ -1393,78 +1393,66 @@ export const SOLUTIONS = {
   },
   "a83-incoming": {
     "id": "a83-incoming",
-    "winners": 95,
+    "winners": 96,
     "robust": 59,
-    "anchoredRobust": 55,
-    "handRate": 0.621,
+    "anchoredRobust": 56,
+    "handRate": 0.615,
     "solution": {
       "family": "line",
       "length": 165,
-      "parts": 9,
-      "anchors": 5,
+      "parts": 10,
+      "anchors": 8,
       "points": [
         {
-          "x": 461.3,
-          "y": 899.6
+          "x": 581.3,
+          "y": 744.7
         },
         {
-          "x": 433.8,
-          "y": 947.2
+          "x": 553.8,
+          "y": 792.3
         },
         {
-          "x": 406.3,
-          "y": 994.8
+          "x": 526.3,
+          "y": 840
         },
         {
-          "x": 378.8,
-          "y": 1042.4
+          "x": 498.8,
+          "y": 887.6
         }
       ]
     }
   },
   "a56-stay": {
     "id": "a56-stay",
-    "winners": 102,
-    "robust": 65,
-    "anchoredRobust": 65,
-    "handRate": 0.637,
+    "winners": 97,
+    "robust": 66,
+    "anchoredRobust": 66,
+    "handRate": 0.68,
     "solution": {
-      "family": "span",
-      "length": 243,
-      "parts": 10,
-      "anchors": 7,
+      "family": "corner",
+      "length": 260,
+      "parts": 12,
+      "anchors": 4,
       "points": [
         {
-          "x": 285,
-          "y": 1000
+          "x": 180,
+          "y": 878
         },
         {
-          "x": 258.6,
-          "y": 961.1
+          "x": 245,
+          "y": 878
         },
         {
-          "x": 232.1,
-          "y": 928.1
+          "x": 310,
+          "y": 878
         },
         {
-          "x": 205.7,
-          "y": 906
+          "x": 310,
+          "y": 943
         },
         {
-          "x": 179.3,
-          "y": 897.5
-        },
-        {
-          "x": 152.9,
-          "y": 902.4
-        },
-        {
-          "x": 126.4,
-          "y": 918.2
-        },
-        {
-          "x": 100,
-          "y": 940
+          "x": 310,
+          "y": 1008
         }
       ]
     }
@@ -1502,10 +1490,10 @@ export const SOLUTIONS = {
   },
   "a122-doghouse": {
     "id": "a122-doghouse",
-    "winners": 28,
-    "robust": 21,
-    "anchoredRobust": 21,
-    "handRate": 0.75,
+    "winners": 29,
+    "robust": 24,
+    "anchoredRobust": 24,
+    "handRate": 0.828,
     "solution": {
       "family": "line",
       "length": 230,
@@ -1577,9 +1565,9 @@ export const SOLUTIONS = {
   "a124-top-dog": {
     "id": "a124-top-dog",
     "winners": 45,
-    "robust": 39,
+    "robust": 37,
     "anchoredRobust": 30,
-    "handRate": 0.867,
+    "handRate": 0.822,
     "solution": {
       "family": "span",
       "length": 245,
@@ -1623,10 +1611,10 @@ export const SOLUTIONS = {
   },
   "a126-walkies": {
     "id": "a126-walkies",
-    "winners": 40,
+    "winners": 41,
     "robust": 31,
     "anchoredRobust": 30,
-    "handRate": 0.775,
+    "handRate": 0.756,
     "solution": {
       "family": "arc",
       "length": 288,

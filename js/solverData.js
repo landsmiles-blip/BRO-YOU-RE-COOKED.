@@ -348,58 +348,58 @@ export const SOLVER = {
   },
   "a80-good-boy": {
     "solvable": true,
-    "solutionBreadth": 0.0882,
+    "solutionBreadth": 0.0914,
     "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 4,
     "twoStarLength": 288,
     "threeStarLength": 230,
     "shortestWin": 110,
-    "measuredAt": "2026-10-14"
+    "measuredAt": "2026-10-26"
   },
   "a81-down-boy": {
     "solvable": true,
-    "solutionBreadth": 0.0509,
-    "precisionFloor": 30,
+    "solutionBreadth": 0.0819,
+    "precisionFloor": 45,
     "worstJitter": 0,
-    "distinctFamilies": 3,
+    "distinctFamilies": 4,
     "twoStarLength": 219,
     "threeStarLength": 163,
     "shortestWin": 110,
-    "measuredAt": "2026-10-14"
+    "measuredAt": "2026-10-26"
   },
   "a82-heads-up": {
     "solvable": true,
-    "solutionBreadth": 0.0922,
+    "solutionBreadth": 0.0927,
     "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 5,
     "twoStarLength": 288,
     "threeStarLength": 165,
     "shortestWin": 98,
-    "measuredAt": "2026-10-14"
+    "measuredAt": "2026-10-26"
   },
   "a83-incoming": {
     "solvable": true,
-    "solutionBreadth": 0.0828,
-    "precisionFloor": 65,
+    "solutionBreadth": 0.0837,
+    "precisionFloor": 30,
     "worstJitter": 1,
     "distinctFamilies": 4,
     "twoStarLength": 230,
     "threeStarLength": 110,
     "shortestWin": 110,
-    "measuredAt": "2026-10-14"
+    "measuredAt": "2026-10-26"
   },
   "a56-stay": {
     "solvable": true,
-    "solutionBreadth": 0.0699,
+    "solutionBreadth": 0.0664,
     "precisionFloor": 65,
     "worstJitter": 2,
     "distinctFamilies": 5,
     "twoStarLength": 288,
     "threeStarLength": 165,
     "shortestWin": 96,
-    "measuredAt": "2026-10-14"
+    "measuredAt": "2026-10-26"
   },
   "a120-swarm": {
     "solvable": true,
@@ -414,14 +414,14 @@ export const SOLVER = {
   },
   "a122-doghouse": {
     "solvable": true,
-    "solutionBreadth": 0.0273,
+    "solutionBreadth": 0.0283,
     "precisionFloor": 65,
     "worstJitter": 0,
     "distinctFamilies": 4,
     "twoStarLength": 230,
     "threeStarLength": 225,
     "shortestWin": 192,
-    "measuredAt": "2026-10-18"
+    "measuredAt": "2026-10-26"
   },
   "a123-hive": {
     "solvable": true,
@@ -443,18 +443,18 @@ export const SOLVER = {
     "twoStarLength": 270,
     "threeStarLength": 224,
     "shortestWin": 165,
-    "measuredAt": "2026-10-18"
+    "measuredAt": "2026-10-26"
   },
   "a126-walkies": {
     "solvable": true,
-    "solutionBreadth": 0.0207,
-    "precisionFloor": 65,
+    "solutionBreadth": 0.0212,
+    "precisionFloor": 30,
     "worstJitter": 2,
     "distinctFamilies": 5,
-    "twoStarLength": 290,
+    "twoStarLength": 291,
     "threeStarLength": 230,
     "shortestWin": 120,
-    "measuredAt": "2026-10-18"
+    "measuredAt": "2026-10-26"
   },
   "a125-stairs": {
     "solvable": true,
