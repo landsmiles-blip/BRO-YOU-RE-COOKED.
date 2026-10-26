@@ -378,7 +378,13 @@ export const A10 = {
     { id: 'shelfR', type: 'platform', x: 380, y: 620, w: 130, h: 26 },
   ],
   objects: [
-    { id: 'rock', type: 'boulder', x: 330, y: 170, radius: 26,
+    // x 310, was 330 (26 Oct): GOOD BOY, the level before it, got easier once
+    // the dog stopped hanging on hand-drawn walls (19 tries to 16), and that
+    // left this spike more than 3x the four levels before it (40 against a
+    // median of 12). Twenty units nearer the plate's shelf measured 31, on
+    // slot 15's target; 320 measured 37 and a wider shelf 43. It still falls
+    // clear of the shelf's end, so doing nothing still drops it on him.
+    { id: 'rock', type: 'boulder', x: 310, y: 170, radius: 26,
       density: 0.03, restitution: 0.12, friction: 0.35,
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
     // The plate sits ON THE LEFT SHELF, out of Milo's reach. It was on the

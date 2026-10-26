@@ -84,14 +84,14 @@ export const SOLVER = {
   },
   "a10-switch": {
     "solvable": true,
-    "solutionBreadth": 0.0422,
+    "solutionBreadth": 0.0458,
     "precisionFloor": 65,
     "worstJitter": 1,
-    "distinctFamilies": 5,
-    "twoStarLength": 288,
+    "distinctFamilies": 6,
+    "twoStarLength": 295,
     "threeStarLength": 192,
     "shortestWin": 110,
-    "measuredAt": "2026-09-14"
+    "measuredAt": "2026-10-26"
   },
   "a11-deadweight": {
     "solvable": true,
@@ -348,7 +348,7 @@ export const SOLVER = {
   },
   "a80-good-boy": {
     "solvable": true,
-    "solutionBreadth": 0.0914,
+    "solutionBreadth": 0.0927,
     "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 4,
@@ -359,18 +359,18 @@ export const SOLVER = {
   },
   "a81-down-boy": {
     "solvable": true,
-    "solutionBreadth": 0.0819,
-    "precisionFloor": 45,
+    "solutionBreadth": 0.0531,
+    "precisionFloor": 30,
     "worstJitter": 0,
-    "distinctFamilies": 4,
-    "twoStarLength": 219,
+    "distinctFamilies": 3,
+    "twoStarLength": 221,
     "threeStarLength": 163,
     "shortestWin": 110,
     "measuredAt": "2026-10-26"
   },
   "a82-heads-up": {
     "solvable": true,
-    "solutionBreadth": 0.0927,
+    "solutionBreadth": 0.0922,
     "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 5,
@@ -381,8 +381,8 @@ export const SOLVER = {
   },
   "a83-incoming": {
     "solvable": true,
-    "solutionBreadth": 0.0837,
-    "precisionFloor": 30,
+    "solutionBreadth": 0.0828,
+    "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 4,
     "twoStarLength": 230,
@@ -392,7 +392,7 @@ export const SOLVER = {
   },
   "a56-stay": {
     "solvable": true,
-    "solutionBreadth": 0.0664,
+    "solutionBreadth": 0.0699,
     "precisionFloor": 65,
     "worstJitter": 2,
     "distinctFamilies": 5,
@@ -414,7 +414,7 @@ export const SOLVER = {
   },
   "a122-doghouse": {
     "solvable": true,
-    "solutionBreadth": 0.0283,
+    "solutionBreadth": 0.0273,
     "precisionFloor": 65,
     "worstJitter": 0,
     "distinctFamilies": 4,
@@ -447,11 +447,11 @@ export const SOLVER = {
   },
   "a126-walkies": {
     "solvable": true,
-    "solutionBreadth": 0.0212,
-    "precisionFloor": 30,
+    "solutionBreadth": 0.0207,
+    "precisionFloor": 65,
     "worstJitter": 2,
     "distinctFamilies": 5,
-    "twoStarLength": 291,
+    "twoStarLength": 290,
     "threeStarLength": 230,
     "shortestWin": 120,
     "measuredAt": "2026-10-26"
