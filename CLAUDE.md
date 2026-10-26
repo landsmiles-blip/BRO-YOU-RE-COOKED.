@@ -798,10 +798,12 @@ came out of proving it:
 - **NO LINE THROUGH THE DOG, TESTED ALONG THE SEGMENTS** — a simplified
   stroke can have two points 300 units apart either side of it.
 - **A NEW THING'S FIRST LEVEL MUST STAY ITS EASIEST**, and with chapter 2 half
-  empty that pins it from both sides: GOOD BOY must be at least 18.7 tries or
-  TRIGGER is more than 3x the four before it, and at most 1.25x the easiest
-  dog level after it. Every later dog level was tuned up to meet that, never
-  GOOD BOY down. Filling slots 13–14 frees it.
+  empty that pins it from both sides: GOOD BOY low enough to stay under every
+  dog level after it, high enough that TRIGGER is not 3x the four before it.
+  When the hang fix took GOOD BOY from 19 tries to 16 (26 Oct), TRIGGER at 40
+  broke the wall rule, and TRIGGER was eased to 31 — the spike moved, not the
+  first dog level, which a person had just called unplayable. Filling slots
+  13–14 frees it.
 - **WHAT DIED: a pen is a needle** (two feet in two windows: 2 wins in 1,900),
   **and a trapdoor is answered by a floor** (draw under the hatch and let the
   dog press the trap plate — the KEEP OFF finding). A dog BRIDGE measured as a
