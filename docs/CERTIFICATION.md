@@ -7,6 +7,9 @@ on the purged build — 185 KB raw / 53 KB gzipped, shelved levels out of the
 bundle — and every row still passes; the figures below are that run's.
 **Re-run 2026-10-25** after the notebook theme, level 1 and THORNS: conformance,
 board and `npm test` all pass; the bundle row is updated.
+**Re-run 2026-10-27 for v1.0** (after the dog, the weighed plates and the
+re-bake): conformance (51 PASS), board, `npm test`, curve and plates all pass,
+and all 45 levels were filmed won and lost in the browser. Zips are 92 KB.
 **Re-run the machine half:** `npm run build && npm run serve &` then
 `npm run test:conformance`, `npm run test:board`, `npm run test:audio`, `npm test`.
 

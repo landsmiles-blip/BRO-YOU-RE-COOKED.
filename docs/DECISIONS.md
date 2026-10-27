@@ -291,3 +291,41 @@ in this ad-funded game that pays for steep spikes. No target or band passes 60;
 no new level may measure above it; the nine levels above it on that day are on
 a WATCH list that may only shrink, THORNS first. Rule 6 of tools/test/curve.js.
 The top of the curve is flat at 60 until real players set the scale.
+
+---
+
+## D11 — Launch · **LOCKED 2026-10-27 (owner): ship v1.0 now, to real players, and let them decide what comes next**
+
+The owner played it and asked whether to ship, for an independent view rather
+than agreement. The view: yes, and not to YouTube first. Three reasons.
+
+- **The build is ready.** Every machine-checkable certification row passes,
+  and all 45 levels were filmed won and lost in the real browser on 27 Oct.
+- **YouTube is not ours to open.** Playables is early access, our interest
+  form is pending with no published timeline, and revenue sharing is a pilot
+  with no published split.
+- **"Perfect" rests on one player.** Every difficulty number is simulated, and
+  eight levels sit over the ceiling. The last two times a person played
+  closely they found walls every gate missed.
+
+Building levels 46–70 against a model that has never met a player is the
+expensive mistake. Shipping costs a session.
+
+So v1.0 is the 45 levels, tagged and frozen. It goes, in order, to:
+1. Playgama's Sandbox, for real attempts per level;
+2. itch.io, for a public link;
+3. CrazyGames, which is not exclusive;
+4. YouTube, after two weeks of numbers to show.
+
+No new content until those numbers decide it. Order and reading list:
+docs/launch/LAUNCH.md.
+
+**Honest about the money:** small and uncertain at first. A well-performing
+casual web game is reported at $200–2,000 a month (a vendor estimate,
+unverified), and Playables pays through an unpublished pilot. The decision
+is profitable because it is cheap and it buys the information every later
+spend depends on, not because of a revenue forecast.
+
+**Reversal cost:** low. Each portal can be withdrawn. Changing the campaign
+after launch reshuffles every future daily challenge, so changes come in
+batches.
