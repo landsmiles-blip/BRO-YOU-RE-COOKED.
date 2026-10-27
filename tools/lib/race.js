@@ -49,7 +49,7 @@ export function raceMargins(level, window = 6000) {
   return margins;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   let bad = 0;
   for (const id of process.argv.slice(2)) {
     const level = LEVELS.find((l) => l.id === id);

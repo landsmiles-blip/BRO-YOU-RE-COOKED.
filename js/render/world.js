@@ -845,15 +845,19 @@ function drawRectBody(ctx, body, fill, now, salt) {
 
 /** A pressure plate. Visibly depresses and lights once it has fired. */
 function drawPlate(ctx, spec, fired, now, freeze) {
-  const { y, h, arrows } = plateShape(spec, fired);
+  const { y, h, arrows, weight } = plateShape(spec, fired);
   inkShape(ctx, rectPoints(spec.x, y, spec.w, h), {
     now, fill: fired ? C.anchor : drain(C.plank, freeze * 0.3), ink: C.ink, width: 3.2, salt: 411,
   });
   // two arrows pressing on it from the side it is pressed from — reads as
-  // "put something heavy here", or under a roof "push something up into here"
+  // "put something here", or under a roof "push something up into here"
   for (const a of arrows) {
     inkPath(ctx, a.shaft, { now, colour: C.ink, width: 2.6, salt: 412, passes: 1 });
     inkPath(ctx, a.head, { now, colour: C.ink, width: 2.6, salt: 413, passes: 1 });
+  }
+  if (weight) {
+    inkShape(ctx, weight.body, { now, fill: C.ink, ink: C.ink, width: 2.4, salt: 414 });
+    inkPath(ctx, weight.handle, { now, colour: C.ink, width: 2.6, salt: 415, passes: 1 });
   }
 }
 
@@ -873,8 +877,28 @@ export function plateShape(spec, fired) {
   const y = spec.y + (fired && !up ? 8 : 0);
   const h = spec.h - (fired ? 8 : 0);
   const arrows = [];
+  // A WEIGHED PLATE LOOKED LIKE EVERY OTHER PLATE. A dropped line lay on it and
+  // nothing happened, and nothing said why: 357 of RAIL's losing strokes, 73 of
+  // DOWN BOY's, 28 of GOOD BOY's (27 Oct). It carries a weight between its
+  // arrows now — "something HEAVY here". Only on a plate pressed from above:
+  // under a roof the thing that rises into it is a balloon or a ball on the
+  // air, and a weight hung there would say the opposite; a line carried up
+  // into one is named by the replay instead (TOO LIGHT FOR THE PLATE).
+  const weighed = spec.requires === 'heavy' && !up;
+  let weight = null;
+  if (!fired && weighed) {
+    const cx = spec.x + spec.w / 2, e = y;
+    weight = {
+      body: [{ x: cx - 9, y: e - 4 }, { x: cx + 9, y: e - 4 }, { x: cx + 6, y: e - 17 }, { x: cx - 6, y: e - 17 }],
+      handle: Array.from({ length: 7 }, (_, i) => {
+        const a = Math.PI * (1 - i / 6);
+        return { x: cx + 5 * Math.cos(a), y: e - 17 - 6 * Math.sin(a) };
+      }),
+    };
+  }
   if (!fired) {
-    for (const fx of [0.3, 0.7]) {
+    // a weighed plate's arrows stand wider apart, to make room for its weight
+    for (const fx of weighed ? [0.2, 0.8] : [0.3, 0.7]) {
       const x = spec.x + spec.w * fx;
       // s = which way the arrow points: +1 down onto the top, -1 up into the bottom
       const s = up ? -1 : 1, e = up ? y + h : y;
@@ -884,7 +908,7 @@ export function plateShape(spec, fired) {
       });
     }
   }
-  return { y, h, arrows };
+  return { y, h, arrows, weight };
 }
 
 /** A gate. Barred when shut; swung aside and ghosted once open. */

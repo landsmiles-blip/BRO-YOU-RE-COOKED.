@@ -75,5 +75,50 @@ console.log('\nTHE REPLAY — draws the anchored line, names a shut gate');
   destroySim(sim);
 }
 
+// 3. A WEIGHED PLATE SAYS SO, AND A LINE TOO LIGHT FOR IT IS NAMED. A weighed
+//    plate was drawn like every other, and a dropped line that lay on it ended
+//    "NOTHING HELD IT UP" or "THE GATE STAYED SHUT" — 357 of RAIL's losses
+//    (27 Oct). The line did what it was aimed to do; the plate refused it.
+{
+  const L = LEVELS.find((l) => l.id === 'a29-rail');
+  const p = L.objects.find((o) => o.type === 'switch');
+  const sim = buildSim(L);
+  while (sim.simTime < L.freezeAt) stepSim(sim);
+  const c = commitStroke(sim, [{ x: p.x + 40, y: p.y - 40 }, { x: p.x + 160, y: p.y - 40 }]);
+  let out = OUTCOME.RUNNING;
+  while (out === OUTCOME.RUNNING) out = stepSim(sim);
+  check('a line dropped on a weighed plate reads TOO LIGHT FOR THE PLATE',
+        c.ok && !c.anchors && sim.death?.label === 'TOO LIGHT FOR THE PLATE' && sim.death?.culpritId === p.id,
+        `${out}: ${sim.death?.label} (${sim.death?.culpritId})`);
+  const { ctx, calls } = recordingContext();
+  drawReplay(ctx, sim, sim.recorder.frames.length - 1, sim.death?.label, sim.death?.culpritId);
+  const ringed = calls.some((k) => k[0] === 'strokeRect' && Math.abs(k[1] - (p.x - 6)) < 1e-6 && Math.abs(k[3] - (p.w + 12)) < 1e-6);
+  check('the replay rings the plate', ringed);
+  destroySim(sim);
+}
+{
+  // An ANCHORED line can never press a plate (two static bodies), so lying on
+  // one is not "too light" — it is the shut gate.
+  const L = LEVELS.find((l) => l.id === 'a29-rail');
+  const p = L.objects.find((o) => o.type === 'switch');
+  const sim = buildSim(L);
+  while (sim.simTime < L.freezeAt) stepSim(sim);
+  const c = commitStroke(sim, [{ x: p.x + 40, y: p.y - 4 }, { x: p.x + 160, y: p.y - 4 }]);
+  let out = OUTCOME.RUNNING;
+  while (out === OUTCOME.RUNNING) out = stepSim(sim);
+  check('an anchored line on the plate is not called too light',
+        c.ok && c.anchors > 0 && sim.death?.label !== 'TOO LIGHT FOR THE PLATE',
+        `anchors ${c.anchors}, ${out}: ${sim.death?.label}`);
+  destroySim(sim);
+}
+{
+  const { plateShape } = await import('../../js/render/world.js');
+  const heavy = LEVELS.flatMap((l) => l.objects).filter((o) => o.type === 'switch');
+  const wrong = heavy.filter((o) => !!plateShape(o, false).weight !== (o.requires === 'heavy' && o.from !== 'below'));
+  check('a plate carries a weight exactly when it is weighed and pressed from above', wrong.length === 0,
+        wrong.map((o) => o.id).join(', '));
+  check('a fired plate carries no weight', heavy.every((o) => !plateShape(o, true).weight));
+}
+
 console.log(failed === 0 ? '\nDEATHCAM: PASS\n' : `\nDEATHCAM: ${failed} FAILED\n`);
 process.exit(failed === 0 ? 0 : 1);

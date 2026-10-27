@@ -91,7 +91,7 @@ export function census(level) {
   return { wins, tried, tally: [...tally].sort((a, b) => b[1].n - a[1].n) };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [file, ...names] = process.argv.slice(2);
   const mod = await import(pathToFileURL(resolve(file)).href);
   const levels = Object.entries(mod).filter(([k, v]) => v?.id && v.static && (!names.length || names.includes(k)));

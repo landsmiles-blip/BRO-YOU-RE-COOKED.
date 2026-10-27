@@ -1469,6 +1469,16 @@ export function assertLevel(level) {
       if (floored && o.from === 'below') {
         problems.push(`switch "${o.id}" sits on a floor but says from: 'below'`);
       }
+      // A WEIGHED PLATE IS ONLY A GATE IF NO LINE CAN CLEAR IT. A line weighs
+      // what its ink buys — measured 0.33 a unit straight, 0.39 curved (27 Oct)
+      // — so a threshold under 0.40 x the budget is a plate a dropped line can
+      // press, which is the back door the weight was put there to close.
+      if (o.requires === 'heavy') {
+        const ink = level.drawing?.maxLength ?? LINE.maxLengthDefault;
+        if (!(o.minMass > 0.4 * ink)) {
+          problems.push(`switch "${o.id}" weighs ${o.minMass} but ${ink} of ink buys a line of ${Math.round(0.4 * ink)} — raise minMass or cut the ink`);
+        }
+      }
     }
   }
   if (!inBox(level.milo.start.x - MILO.width / 2, level.milo.start.y - MILO.height,

@@ -47,6 +47,10 @@ export function explain(c, reason, culpritId, stroke = null, cause = null) {
   // and that is the thing the player has to fix.
   if (cause === 'dog')     return { label: 'NOT THE DOG!',    culpritId };
   if (cause === 'dog-ran') return { label: 'THE DOG RAN OFF', culpritId };
+  // A LINE DROPPED ON A WEIGHED PLATE fell, and falling was the point: it
+  // landed where it was aimed and the plate would not take it. "NOTHING HELD
+  // IT UP" would send the player off to anchor it; the plate is the reason.
+  if (cause === 'light')   return { label: 'TOO LIGHT FOR THE PLATE', culpritId };
 
   // THE UNANCHORED DEATH OUTRANKS EVERY OTHER EXPLANATION.
   //

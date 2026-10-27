@@ -10,6 +10,7 @@
     "sketch": "node --import ./tools/node-matter.js tools/lib/sketch.js",
     "race": "node --import ./tools/node-matter.js tools/lib/race.js",
     "losses": "node --import ./tools/node-matter.js tools/lib/losses.js",
+    "plates": "node --import ./tools/node-matter.js tools/lib/plates.js",
     "census": "node --import ./tools/node-matter.js tools/lib/census.js",
     "solver": "node --import ./tools/node-matter.js tools/solver",
     "certify": "node --import ./tools/node-matter.js tools/solver/representative.js",

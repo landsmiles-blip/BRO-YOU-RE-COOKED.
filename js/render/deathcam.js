@@ -95,7 +95,7 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
     if (spec.type === 'switch') {
       // The same shape and arrows as live play, from the one definition —
       // including which side a plate is pressed from.
-      const { y, h, arrows } = plateShape(spec, fired);
+      const { y, h, arrows, weight } = plateShape(spec, fired);
       if (fired) ctx.fillStyle = C.anchor;
       ctx.globalAlpha = 0.8;
       ctx.fillRect(spec.x, y, spec.w, h);
@@ -106,6 +106,22 @@ export function drawReplay(ctx, sim, frameIdx, label, culpritId) {
         a.shaft.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
         a.head.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
         ctx.stroke();
+      }
+      if (weight) {
+        ctx.beginPath();
+        weight.body.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+        ctx.closePath();
+        ctx.fillStyle = ctx.strokeStyle;
+        ctx.fill();
+        ctx.beginPath();
+        weight.handle.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+        ctx.stroke();
+      }
+      // THE PLATE A DROPPED LINE WAS TOO LIGHT FOR, ringed like a shut gate.
+      if (spec.id === culpritId) {
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = C.danger; ctx.lineWidth = 4;
+        ctx.strokeRect(spec.x - 6, y - 6, spec.w + 12, h + 12);
       }
     } else {
       ctx.globalAlpha = fired ? 0.22 : 0.8;

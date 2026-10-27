@@ -44,6 +44,8 @@ export function buildSim(level) {
     // Who pressed each plate first — the census reads it to tell a plate the
     // dog pressed from one a dropped line pressed.
     pressedBy: new Map(),
+    // Weighed plates a dropped line lay on and was too light to press.
+    tooLight: new Set(),
     // Which balloons have been burst. On the SIM and never on the spec: level
     // data is shared across every run in a solver sweep, so mutating a spec
     // would leak one run's pop into the next 2500.
@@ -208,8 +210,19 @@ export function buildSim(level) {
       // A bee weighs nothing. A plate it could press would be one the swarm
       // decides, not the player.
       if (isBee(sim.objects.get(other.gameId)?.spec)) continue;
-      if (entry.spec.requires === 'heavy' && (other.mass ?? 0) < (entry.spec.minMass ?? 40)) continue;
-      fireSwitch(sim, entry, (other.parent ?? other).gameId ?? other.gameId);
+      // The WHOLE body's weight. Matter reports the part that touched, so a
+      // curved line of a hundred units counted about a twelfth of itself while
+      // a straight one counted all of it — the same ink, two different weights,
+      // and nothing on screen to say which. (27 Oct; no level changed, because
+      // every weighed plate is above the heaviest line its ink can buy.)
+      const presser = other.parent ?? other;
+      if (entry.spec.requires === 'heavy' && (presser.mass ?? 0) < (entry.spec.minMass ?? 40)) {
+        // A dropped line that lay on a weighed plate and could not press it —
+        // the death cam names it if that is why the gate stayed shut.
+        if (presser.gameId === 'stroke') sim.tooLight.add(entry.spec.id);
+        continue;
+      }
+      fireSwitch(sim, entry, presser.gameId ?? other.gameId);
     }
 
     // SHARP → POP. The other half of the balloon, and the thing that gives it
@@ -338,6 +351,11 @@ export function stepSim(sim, worldH = SAFE_BOX.h) {
   if (outcome !== OUTCOME.RUNNING && outcome !== OUTCOME.SUCCESS && !sim.death) {
     const shut = outcome === OUTCOME.STUCK && !sim.run.cause ? shutGateAt(sim) : null;
     if (shut) { sim.run.cause = 'gate'; sim.run.culpritId = shut; }
+    // ...and if the player's own line lay on the weighed plate that works it,
+    // that is the reason, and the plate is what to look at.
+    const light = shut && [...sim.objects.values()].find(({ spec }) =>
+      spec.type === 'switch' && sim.tooLight.has(spec.id) && spec.triggers?.includes(shut));
+    if (light) { sim.run.cause = 'light'; sim.run.culpritId = light.spec.id; }
     sim.death = explain(sim.causality, outcome, sim.run.culpritId, strokeState(sim), sim.run.cause);
     audio.death();
   }
