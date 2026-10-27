@@ -284,10 +284,10 @@ export const SOLUTIONS = {
   },
   "a10-switch": {
     "id": "a10-switch",
-    "winners": 102,
-    "robust": 71,
-    "anchoredRobust": 55,
-    "handRate": 0.696,
+    "winners": 82,
+    "robust": 62,
+    "anchoredRobust": 56,
+    "handRate": 0.756,
     "solution": {
       "family": "arc",
       "length": 288,

@@ -384,19 +384,27 @@ export const A10 = {
     // median of 12). Twenty units nearer the plate's shelf measured 31, on
     // slot 15's target; 320 measured 37 and a wider shelf 43. It still falls
     // clear of the shelf's end, so doing nothing still drops it on him.
+    // Density 0.09, was 0.03 (27 Oct), so the plate can weigh it: see below.
+    // Gravity is an acceleration and the shelves are static, so a heavier rock
+    // falls and rolls exactly as the light one did.
     { id: 'rock', type: 'boulder', x: 310, y: 170, radius: 26,
-      density: 0.03, restitution: 0.12, friction: 0.35,
+      density: 0.09, restitution: 0.12, friction: 0.35,
       lethal: { kind: 'impact', minSpeed: 400, graceRadius: 6 } },
     // The plate sits ON THE LEFT SHELF, out of Milo's reach. It was on the
     // ground across his walking line, so he pressed it himself during the live
     // beat and the gate was already open before the player drew anything — the
     // identical flaw I fixed in A9 and never re-checked for here. The filmstrip
     // showed it instantly: the plate renders gold (fired) in frame one.
-    { id: 'plate', type: 'switch', x: 160, y: 674, w: 120, h: 26, triggers: ['gate'] },
+    // WEIGHED (27 Oct): the hint said only the rock could reach it, and 20 of
+    // 102 wins were an arch dropped on it that knocked the rock past the gate.
+    // A rock of 191 presses 170; 400 of ink buys a line of at most 160. Ink
+    // cut from 900 to pay for that measured 34 tries against 31, in band.
+    { id: 'plate', type: 'switch', x: 160, y: 674, w: 120, h: 26, triggers: ['gate'],
+      requires: 'heavy', minMass: 170 },
     { id: 'gate',  type: 'gate',   x: 470, y: 1012, w: 34, h: 140 },
   ],
   zones: [],
-  drawing: { maxLength: LINE.maxLengthDefault },
+  drawing: { maxLength: 400 },
   solver: null,
 };
 

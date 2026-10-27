@@ -84,14 +84,14 @@ export const SOLVER = {
   },
   "a10-switch": {
     "solvable": true,
-    "solutionBreadth": 0.0458,
+    "solutionBreadth": 0.0385,
     "precisionFloor": 65,
     "worstJitter": 1,
     "distinctFamilies": 6,
-    "twoStarLength": 295,
-    "threeStarLength": 192,
+    "twoStarLength": 288,
+    "threeStarLength": 230,
     "shortestWin": 110,
-    "measuredAt": "2026-10-26"
+    "measuredAt": "2026-10-27"
   },
   "a11-deadweight": {
     "solvable": true,
