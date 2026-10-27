@@ -889,10 +889,11 @@ export function plateShape(spec, fired) {
   if (!fired && weighed) {
     const cx = spec.x + spec.w / 2, e = y;
     weight = {
-      body: [{ x: cx - 9, y: e - 4 }, { x: cx + 9, y: e - 4 }, { x: cx + 6, y: e - 17 }, { x: cx - 6, y: e - 17 }],
+      // as tall as the arrows beside it: half that was ten pixels on a phone
+      body: [{ x: cx - 11, y: e - 4 }, { x: cx + 11, y: e - 4 }, { x: cx + 7, y: e - 21 }, { x: cx - 7, y: e - 21 }],
       handle: Array.from({ length: 7 }, (_, i) => {
         const a = Math.PI * (1 - i / 6);
-        return { x: cx + 5 * Math.cos(a), y: e - 17 - 6 * Math.sin(a) };
+        return { x: cx + 6 * Math.cos(a), y: e - 21 - 8 * Math.sin(a) };
       }),
     };
   }

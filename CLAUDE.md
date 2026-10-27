@@ -282,6 +282,9 @@ line arrive from different directions:
 
 - **A19 UPDRAFT** — the ball rises INSIDE the chimney and presses the plate from
   underneath, so a cap resting on top of it never touches the ball's path. Free.
+  **Correction, 27 Oct: the cap closed the top and not the door.** A dropped
+  line slides in under the chimney the way the ball does and the air carries
+  it up: 21 of 119 wins. Left open on purpose — see the audit below.
 - **A21 LEVER** — the rock arrives ROLLING at y=854 (top edge 828), so a lid
   hanging to 796 leaves it 32 units of headroom and stops anything dropped.
 - **A9 FUNNEL resists it** and is still open: its rock enters at y=771 and a line
@@ -306,6 +309,47 @@ came out of proving it:
 - **Density is free where the forces are accelerations.** Gravity and the
   updraft are both accelerations, so making that rock three times denser did not
   move it by a unit. Weight-gating costs nothing in a level built on air.
+  **Unless a dropped line has to SHOVE the cargo** (27 Oct): UPDRAFT's ball made
+  heavy enough to gate lost 45 of the 73 wins where a falling line pushed it
+  into the chimney, and the level went from 39 tries to 101.
+
+## THE AUDIT, RUN FOR THE FIRST TIME — `npm run plates`
+
+"Re-run the drop-on-the-plate audit" stood above for weeks with no tool, so it
+was never run. Run by hand on 27 Oct, over every plate level, counting the wins
+whose plate was pressed by the player's own line:
+
+- **FUNNEL, the plate INTRO, 636 of 668 (95%).** The rock lands on the lip and
+  never moves; a dropped line slides off the lip onto the plate. Its 4 tries
+  were the back door. Weighed, it measures 135; seven honest redesigns (a ledge
+  over the plate, no ledge and a ramp off the shelf) measured 76 to 527 against
+  an intro band of 16 — **getting a rock onto a plate is a needle here.** The
+  rock is decoration in the level that introduces plates. OPEN, owner's call.
+- **TRIGGER 20 of 102** — an arch dropped on the plate that also knocked the
+  rock past. Closed by weight (rock 191, plate 170, ink 400): 0 of 82, 31 → 34.
+- **UPDRAFT 18%, LEVER 14%: allowed.** The line rides the air or the lever —
+  the noun is still the answer, as KITE's line is. Closing either costs a WATCH
+  level or 2.5x its tries.
+- WALKIES 1 of 40, DOGHOUSE and the nine weighed plates 0.
+
+`npm run plates` counts it now and fails over 5%, except `solutionKind:
+'unanchored'` levels, an ALLOWED list with reasons and an OPEN list that prints
+but does not fail — the curve's WATCH list, for back doors.
+
+Three things came out of it, all now enforced:
+
+- **A PLATE WEIGHED THE SEGMENT, NOT THE LINE.** Matter reports the part that
+  touched, so a curved line counted about a twelfth of its mass and a straight
+  one all of it. It reads the whole body now. No level changed.
+- **A WEIGHT GATE MUST BEAT THE HEAVIEST LINE THE INK BUYS** — 0.33 a unit
+  straight, 0.39 curved, so `assertLevel` wants `minMass > 0.4 x maxLength`.
+- **A WEIGHED PLATE LOOKED LIKE ANY OTHER.** 357 of RAIL's losing strokes, 73
+  of DOWN BOY's and 28 of GOOD BOY's lay a line on one and nothing said why.
+  A weighed plate pressed from above carries a weight as tall as its arrows,
+  and a dropped line lying on one ends **TOO LIGHT FOR THE PLATE** with the
+  plate ringed — ranked above "NOTHING HELD IT UP", because falling was the
+  point. Not on ceiling plates: what rises into those is a balloon or a ball,
+  and a weight hung there would say the opposite.
 
 ## TRAPS THAT HAVE ALREADY BITTEN
 
@@ -1131,6 +1175,7 @@ ink touched: the line 12->28, plate & gate 4->56, air 6->69, finale 61->90.
     npm run census -- f.js [EXP]  sort every winning stroke by WHAT HAPPENED in it
     npm run race -- id ...        a dog level: does the dog die just after the finish?
     npm run losses -- id ...      sort every LOSING stroke by why it lost — run beside census
+    npm run plates [id ...]       every plate level: how many wins the LINE pressed — after touching any
     npm run film                  films every level being WON — READ THE IMAGES
     FILM_IDLE=1 npm run film      films it being LOST — read those too
     npm run frozen                every opening frame in ONE grid — READ IT

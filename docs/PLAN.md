@@ -1,5 +1,14 @@
 # PLAN — from 21 levels to a game one person comes back to
 
+> **Status, 27 Oct. Plates audited (`npm run plates`).** GOOD BOY's dog no
+> longer hangs on hand-drawn lines (26 Oct). Then the first audit of every
+> plate level: TRIGGER's back door is closed by weight (34 tries); a weighed
+> plate now shows a weight and a line too light for it says so. **FUNNEL, the
+> plate intro, is still won 95% by a line dropped on its plate** — seven honest
+> redesigns measured 76–527 tries against its band of 16, so it is OPEN and
+> the choice is the owner's: keep it, or make the plate intro honestly about
+> the dropped line and give DROP a new question.
+>
 > **Status, 25 Oct. 45 levels; the curve capped at 60.** The difficulty
 > research (reports/, docs/DIFFICULTY.md) set a 60-try ceiling with a watch
 > list; level 1 was rebuilt as the teaching level (6 tries, a pencil shows the
