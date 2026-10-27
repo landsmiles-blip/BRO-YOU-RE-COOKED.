@@ -3,8 +3,8 @@
 > **Status, 27 Oct (later). v1.0 — SHIP IT (D11).** The owner played it and
 > called it ready. The release gate passed: all 45 levels filmed won and lost
 > in the browser, every test and the conformance run green, and a new store
-> kit captured from the current build. The campaign is frozen and tagged
-> `v1.0`. It goes to Playgama, itch.io and CrazyGames now, and to YouTube
+> kit captured from the current build. The campaign is frozen at release
+> commit `f159983` (to be tagged `v1.0` on GitHub). It goes to Playgama, itch.io and CrazyGames now, and to YouTube
 > with two weeks of real numbers. **No new levels until those numbers say
 > which.** The order and reading list are in `docs/launch/LAUNCH.md`.
 >

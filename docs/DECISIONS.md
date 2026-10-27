@@ -311,7 +311,7 @@ than agreement. The view: yes, and not to YouTube first. Three reasons.
 Building levels 46–70 against a model that has never met a player is the
 expensive mistake. Shipping costs a session.
 
-So v1.0 is the 45 levels, tagged and frozen. It goes, in order, to:
+So v1.0 is the 45 levels, frozen at release commit `f159983`. It goes, in order, to:
 1. Playgama's Sandbox, for real attempts per level;
 2. itch.io, for a public link;
 3. CrazyGames, which is not exclusive;

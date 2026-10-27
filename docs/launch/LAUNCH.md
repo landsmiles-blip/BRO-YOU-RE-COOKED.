@@ -23,8 +23,11 @@ commission a trademark search on the title (`docs/CERTIFICATION.md` §6,
 
 ## Frozen at launch
 
-- **The campaign** (45 levels, `v1.0` tag). Any change to it reshuffles every
+- **The campaign**: 45 levels, as of release commit `f159983` on
+  `claude/game-markdown-review-23hf3j`. Any change to it reshuffles every
   future daily challenge, so after launch change it in batches, and say so.
+  **Tag it on GitHub** (this session's git access cannot push tags):
+  Releases → Draft a new release → tag `v1.0` → target that commit.
 - **No new levels until the numbers are in.** The 25 open slots, bee slot 29,
   FUNNEL's back door and the eight levels over the 60-try ceiling all wait for
   real attempts.
