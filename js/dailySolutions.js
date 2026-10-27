@@ -360,48 +360,32 @@ export const DAILY_SOLUTIONS = {
   },
   "a10-switch": {
     "id": "a10-switch",
-    "ink": 192,
-    "winners": 18,
-    "robust": 12,
-    "anchoredRobust": 7,
-    "handRate": 0.667,
+    "ink": 230,
+    "winners": 19,
+    "robust": 14,
+    "anchoredRobust": 12,
+    "handRate": 0.737,
     "solution": {
-      "family": "span",
-      "length": 139,
-      "parts": 8,
-      "anchors": 7,
+      "family": "line",
+      "length": 165,
+      "parts": 9,
+      "anchors": 8,
       "points": [
         {
-          "x": 280,
-          "y": 700
+          "x": 341.3,
+          "y": 589.6
         },
         {
-          "x": 294.3,
-          "y": 675.6
+          "x": 313.8,
+          "y": 637.2
         },
         {
-          "x": 308.6,
-          "y": 653.7
+          "x": 286.3,
+          "y": 684.8
         },
         {
-          "x": 322.9,
-          "y": 636.5
-        },
-        {
-          "x": 337.1,
-          "y": 625
-        },
-        {
-          "x": 351.4,
-          "y": 619.4
-        },
-        {
-          "x": 365.7,
-          "y": 618.4
-        },
-        {
-          "x": 380,
-          "y": 620
+          "x": 258.8,
+          "y": 732.4
         }
       ]
     }
