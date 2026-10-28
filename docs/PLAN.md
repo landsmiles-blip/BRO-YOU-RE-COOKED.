@@ -1,5 +1,8 @@
 # PLAN — from 21 levels to a game one person comes back to
 
+> **28 Oct.** The whole story is in `docs/brief/BRIEF.md`; the conversation, word
+> for word, is in `docs/history/`.
+>
 > **Status, 27 Oct (later). v1.0 — SHIP IT (D11).** The owner played it and
 > called it ready. The release gate passed: all 45 levels filmed won and lost
 > in the browser, every test and the conformance run green, and a new store

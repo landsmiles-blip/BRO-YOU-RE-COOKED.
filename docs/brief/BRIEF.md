@@ -32,6 +32,8 @@ You asked me not to hold back, and I haven't. A defence that hides its own failu
 
 **Where the conversation began.** The CEO's first prompt to me was: "i have game tha i would like you to read the markdown of it is different part of the same thing it will make sense in 1 minute". That is the pre-existing design material (the v0.2–v0.4 documents) that I turned into the Production Bible on 9 Sep. The words are quoted from the CEO's own recollection in the brief request; the earliest conversation is not in my transcript.
 
+**Where the conversation itself is.** This brief is my account. The conversation it summarises is in the repository, word for word, in `docs/history/` (`CONVERSATION.md` from 19 Oct, `EARLIER.md` for what survives before that, `README.md` for what is missing and why). Check my claims about you against your own words there.
+
 **What the record cannot show.**
 - **No transcript before 12 October.** I have no conversation transcript from 9 September to 11 October. That stretch is reconstructed from 156 commit messages and the project documents.
 - **September quotes are second-hand.** The CEO's words from September survive only as quotes inside summaries written at the time; I mark them *second-hand*.
