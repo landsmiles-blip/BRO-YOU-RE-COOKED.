@@ -1,6 +1,6 @@
 # Locked Decisions
 
-Every open item from `PRODUCTION_BIBLE_v1.0.md` Part 11, now closed. The user delegated these calls; each is recorded with its reasoning and its reversal cost, so any of them can be reopened deliberately rather than by drift.
+Every open item from the Production Bible's Part 11 (in git history at `9c073b9`), now closed. The user delegated these calls; each is recorded with its reasoning and its reversal cost, so any of them can be reopened deliberately rather than by drift.
 
 **Status key:** **LOCKED** — build against it. Reversal cost is stated where it is non-trivial.
 
@@ -64,9 +64,17 @@ If clearance later comes back bad, the title changes and nothing else does — b
 
 ---
 
-## D6 — Content scale · **DEFERRED BY DESIGN, gated on data**
+## D6 — Content scale · **DECIDED 2026-10-13: 60 levels, six chapters of ten**
 
-24 levels is the shippable game. Whether it becomes 16 or grows toward 60 is decided at the M1 gate on **measured authoring cost**, not on optimism. This is deliberately not decided now — deciding it early is precisely how projects end mid-air.
+**Amended 2026-10-18: 70 slots, seven chapters** — BEES went in as chapter 3
+(docs/PLAN.md status of that date). 42 are built as of 2026-10-25.
+
+Was: 24 shippable, 60 the upside, decided on measured authoring cost. Decided
+now on what one player needs: a sitting is ~10 minutes and 8–15 levels, so 21
+levels is two sittings and 60 is a week of daily play — the week a habit forms.
+Every slot has a measured difficulty target (D10). Cut line: if fewer than 12
+of the first 19 new levels pass their gates, the target becomes 45. See
+docs/PLAN.md sections 3, 4 and 8.
 
 ---
 
@@ -132,9 +140,8 @@ broken method, not bad luck, and this decision is the method that replaces it.
   looked plausible afterwards. The most common way a tool is used must not be
   its destructive path.
 
-**Verification order, every time:** `npm test` → `node tools/solver/representative.js`
-→ build → `node tools/test/filmstrip.js` → **read the images** → `npm run solver`
-→ `npm run test:browser`.
+**Verification order, every time:** `npm test` → `npm run certify` → `npm run build`
+→ `npm run film` → **read the images** → `npm run solver` → `npm run test:browser`.
 
 
 ---
@@ -187,3 +194,138 @@ which a licensed loop could never do.
 **Verified by measurement, not by inspection** (`npm run test:audio`): every
 sound is rendered through an OfflineAudioContext and its waveform measured.
 Silence throws no error, so "the function was called" proves nothing.
+
+---
+
+## D8 — Procedural levels · **LOCKED: generation is a SEARCH tool and an endless mode. It is not the campaign.**
+
+Asked directly: can the game generate its own levels forever, instead of us
+hand-building them? Built the generator, ran it, and answered with evidence
+rather than opinion.
+
+**Payload is not the constraint, and it is not close.** A level costs 321 bytes
+gzipped. 2,000 levels would be 0.61 MB against a 15 MiB recommendation. "How
+many levels can it hold" is the wrong question.
+
+**The oracle already existed, which is the unusual part.** What normally kills
+procedural puzzle generation is not making layouts, it is judging them. This
+project already had that: an idle gate (doing nothing must fail), a
+2,100-stroke solvability sweep, hand-robustness under three tremors plus pixel
+quantization, a 2–40% breadth band, and a 25u precision floor.
+
+**Runtime generate-and-test is impossible.** One full validation is 7–50
+seconds of CPU. That cannot run on a phone at 60fps inside YouTube. So
+generation is OFFLINE, and what ships is the surviving data.
+
+**And then the result that settles it.** The generator's three best candidates
+out of fifteen were: level 1, level 1 again with different numbers, and level
+9. Filming the top one showed exactly what the numbers could not — the line is
+drawn in mid-air, falls to the ground, the rock glances off it, and Milo walks
+over. 14.5% breadth, six stroke families, every gate green, and **no decision
+anywhere in it.** It is level 1 with the interesting constraint removed.
+
+That is the whole finding: **the gates measure whether a level is FAIR. Nothing
+measures whether it MEANS anything.** A14 proved the same thing from the other
+direction by passing at 1.6% while its rock was decoration.
+
+**So the split is:**
+
+- **Generation searches NUMBERS inside a shape that already carries an idea.**
+  The archetypes in tools/levelgen/archetypes.js are distilled from levels that
+  work and have been filmed being won. The machine finds where the ledge goes
+  and how fast the roller rolls — a search problem, which is what machines are
+  for. It cannot invent "the rock that is trying to kill you becomes the floor
+  you walk across", and it never will.
+- **Endless mode is where generated levels belong**, after the hand-built
+  campaign. Fair-but-derivative is exactly right for infinite content and
+  exactly wrong for the teaching ladder. Post-launch, and gated on whether
+  players actually finish the campaign — building infinite content for an
+  ending nobody reaches is the classic way these projects die at 70%.
+- **No generated level ships in levels 1–24.**
+
+**Superseded 2026-10-13: parallel sessions, one owner per file.** This said
+"no AI sub-agents — parallel agents would start with no memory of this project".
+That was true when the memory lived in one session's head. It now lives in
+CLAUDE.md, docs/HELD.md and docs/PLAN.md, which every session reads. Three level
+designers and a shell engineer work in parallel, each owning its own files, and
+one integrator owns the generated data, the order and the final review
+(docs/PLAN.md section 6).
+
+---
+
+## D9 — Monetisation · **LOCKED 2026-10-13: one rewarded ad, and it is a SKIP**
+
+Approved by the user, designed from how the successful games do it: Brain Test
+skips with a rewarded video and pays its daily challenge in the currency that
+buys skips; platform guidance says offer help at the fail screen, never make an
+ad the only way forward, never stack an interstitial on a rewarded view, and
+never tune difficulty to force ads. So: fail card only; after 3 failures on a
+SPIKE or BOSS, 5 elsewhere; never levels 1–3 or the daily; a rewarded ad or a
+token earned from the daily (hold 3); granted anyway if no ad is available;
+resets the interstitial counter; levels unlock in order so the skip is worth
+something; a skipped level stays hollow and playable. Undo and solution hints
+stay ruled out. Full table in docs/PLAN.md section 7.
+
+**Reversal cost:** low in code (one button, one save field), high in trust if
+it is ever tuned to sell — the rule against tuning difficulty to drive ads is
+part of the decision.
+
+---
+
+## D10 — Difficulty · **LOCKED 2026-10-13: every slot has a target from one equation**
+
+`T(c, k) = 8.6 · 1.26^c · 4.0^p(k)`: tries (attempts per success, measured by
+the solver and the hand model — simulated players, the way King predicts
+difficulty before release) for slot k of chapter c. The same sawtooth in every
+chapter: two hard levels in ten (the industry's one in five), a breather after
+each, the first boss at level 10. T0, G and S are the least-squares fit to the
+21 shipped levels, all of which land inside their bands; a level ships only
+inside its slot's band (x1.5; intros and breathers may be easier). Refit when
+real players' numbers exist. tools/lib/difficulty.js, tools/lib/fit-curve.py,
+rule 5 of tools/test/curve.js.
+
+**Amended 2026-10-25 (owner): a ceiling of 60 tries.** The difficulty research
+(reports/Progressive difficulty in puzzle games.md) found the equation climbing
+to 138 against the only human evidence (SINK "unplayable" at 90), and nothing
+in this ad-funded game that pays for steep spikes. No target or band passes 60;
+no new level may measure above it; the nine levels above it on that day are on
+a WATCH list that may only shrink, THORNS first. Rule 6 of tools/test/curve.js.
+The top of the curve is flat at 60 until real players set the scale.
+
+---
+
+## D11 — Launch · **LOCKED 2026-10-27 (owner): ship v1.0 now, to real players, and let them decide what comes next**
+
+The owner played it and asked whether to ship, for an independent view rather
+than agreement. The view: yes, and not to YouTube first. Three reasons.
+
+- **The build is ready.** Every machine-checkable certification row passes,
+  and all 45 levels were filmed won and lost in the real browser on 27 Oct.
+- **YouTube is not ours to open.** Playables is early access, our interest
+  form is pending with no published timeline, and revenue sharing is a pilot
+  with no published split.
+- **"Perfect" rests on one player.** Every difficulty number is simulated, and
+  eight levels sit over the ceiling. The last two times a person played
+  closely they found walls every gate missed.
+
+Building levels 46–70 against a model that has never met a player is the
+expensive mistake. Shipping costs a session.
+
+So v1.0 is the 45 levels, frozen at release commit `f159983`. It goes, in order, to:
+1. Playgama's Sandbox, for real attempts per level;
+2. itch.io, for a public link;
+3. CrazyGames, which is not exclusive;
+4. YouTube, after two weeks of numbers to show.
+
+No new content until those numbers decide it. Order and reading list:
+docs/launch/LAUNCH.md.
+
+**Honest about the money:** small and uncertain at first. A well-performing
+casual web game is reported at $200–2,000 a month (a vendor estimate,
+unverified), and Playables pays through an unpublished pilot. The decision
+is profitable because it is cheap and it buys the information every later
+spend depends on, not because of a revenue forecast.
+
+**Reversal cost:** low. Each portal can be withdrawn. Changing the campaign
+after launch reshuffles every future daily challenge, so changes come in
+batches.

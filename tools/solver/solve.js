@@ -17,7 +17,9 @@
 // is the real reason these projects die at 70% done.
 
 import { buildSim, stepSim, commitStroke, destroySim, OUTCOME } from '../../js/sim.js';
-import { FREEZE_AT, RUN_TIMEOUT, PHYSICS_DT, SAFE_BOX } from '../../js/constants.js';
+import { isHazardous } from '../../js/hazards.js';
+import { getVelocity } from '../../js/physics/adapter.js';
+import { FREEZE_AT, RUN_TIMEOUT, PHYSICS_DT, SAFE_BOX, MILO, CLOSE_CALL } from '../../js/constants.js';
 import { sweep, jitter, rng } from './families.js';
 import { handDrawn, playLevel } from '../test/lib/run-level.js';
 
@@ -137,12 +139,19 @@ function robustnessOf(level, winner, trials = 10) {
  * reported 0 for levels that are in fact comfortable to play. The question a
  * player cares about is "can I reliably hit SOME solution", so sample winners
  * across the length distribution and take the best.
+ *
+ * A LEVEL WITH FEW WINNERS IS MEASURED WHOLE. Six samples out of 23 winners
+ * is a lottery: when a physics fix added two winners to CRACK, the six picks
+ * moved, missed its one 45u stroke, and the level read 20u — a hard gate
+ * failure for a level that had not got one unit less forgiving. Up to 40
+ * winners every one is tested, which is a superset of the six, so no level's
+ * floor can drop because of this; above 40 the sample is unchanged.
  */
 export function precisionFloor(level, winners, sampleCount = 6) {
   if (!winners.length) return 0;
   const sorted = [...winners].sort((a, b) => a.length - b.length);
-  const picks = [];
-  for (let i = 0; i < sampleCount; i++) {
+  const picks = sorted.length <= 40 ? sorted : [];
+  for (let i = 0; i < sampleCount && sorted.length > 40; i++) {
     picks.push(sorted[Math.min(sorted.length - 1, Math.round((i / Math.max(1, sampleCount - 1)) * (sorted.length - 1)))]);
   }
   let best = 0;
@@ -197,12 +206,95 @@ export function analyse(level, { density = 1, onProgress = null } = {}) {
     precisionFloor: precisionFloor(level, winners),
     // The gate that was missing when an unplayable build shipped.
     worstJitter: Math.round(worstJitter(level, winners)),
+    // How close the danger gets when you WIN. See tension() above.
+    tension: tension(level, winners),
   };
+}
+
+
+/**
+ * TENSION — how close a fast hazard actually gets to Milo on a WINNING run.
+ *
+ * Every other gate here asks whether a level is FAIR. None of them ask whether
+ * it is EXCITING, and measuring it exposed why the game played "too basic":
+ * across the twelve shipping levels the hazard was neutralised between 120 and
+ * 400 units away on a winning run, and on four of them nothing fast ever came
+ * near him at all. Milo is 72 units tall. That is up to five body-heights of
+ * safety, which is a level won by making the danger boring.
+ *
+ * Reported in UNITS — smaller is tenser. Infinity means nothing dangerous ever
+ * moved near him, which is the flattest a level can be.
+ */
+export function tension(level, winners, sampleCount = 6) {
+  if (!winners.length) return Infinity;
+  const sorted = [...winners].sort((a, b) => a.length - b.length);
+  const hw = MILO.width / 2, hh = MILO.height / 2;
+
+  // SAMPLE THE MIDDLE BAND, and take the MEDIAN — not the minimum over every
+  // winner. Almost any level has some extreme winner that cuts it fine, so
+  // min-over-all reported ~0u for every level and distinguished nothing. The
+  // question is not "how tense CAN this level be", it is "how tense IS it when
+  // somebody plays it normally", which is the typical solve.
+  const lo = Math.floor(sorted.length * 0.35), hi = Math.ceil(sorted.length * 0.65);
+  const band = sorted.slice(lo, Math.max(hi, lo + 1));
+  const gaps = [];
+
+  for (let i = 0; i < sampleCount; i++) {
+    const w = band[Math.min(band.length - 1, Math.round((i / Math.max(1, sampleCount - 1)) * (band.length - 1)))];
+    let best = Infinity;
+    const sim = buildSim(level);
+    const freezeAt = level.freezeAt ?? FREEZE_AT;
+    let committed = false;
+    let blastsSeen = 0;
+    for (let n = 0; n < MAX_STEPS; n++) {
+      if (!committed && sim.simTime >= freezeAt) {
+        if (!commitStroke(sim, w.points).ok) break;
+        committed = true;
+      }
+      const o = stepSim(sim);
+      const b = sim.milo.body;
+      // A BLAST IS A HAZARD TOO. The loop below only sees lethal objects in
+      // motion, and a barrel is neither, so every TNT level read FLAT — even
+      // one won with the blast passing 26 units from him. How close it came is
+      // its edge against his nearest point; cover (a shielded blast inside the
+      // kill radius) is as close as it gets.
+      for (; blastsSeen < sim.blasts.length; blastsSeen++) {
+        const bl = sim.blasts[blastsSeen];
+        const cx = Math.max(b.position.x - hw, Math.min(bl.x, b.position.x + hw));
+        const cy = Math.max(b.position.y - hh, Math.min(bl.y, b.position.y + hh));
+        best = Math.min(best, Math.max(0, Math.hypot(bl.x - cx, bl.y - cy) - bl.kill));
+      }
+      for (const [, ob] of sim.objects) {
+        if (!isHazardous(ob.spec.lethal)) continue;
+        const v = getVelocity(ob.body);
+        if (Math.hypot(v.x, v.y) < CLOSE_CALL.minSpeed) continue;
+        const p = ob.body.position;
+        const cx = Math.max(b.position.x - hw, Math.min(p.x, b.position.x + hw));
+        const cy = Math.max(b.position.y - hh, Math.min(p.y, b.position.y + hh));
+        const reach = ob.spec.radius ?? Math.max(ob.spec.w ?? 0, ob.spec.h ?? 0) / 2;
+        best = Math.min(best, Math.hypot(p.x - cx, p.y - cy) - reach);
+      }
+      if (o !== OUTCOME.RUNNING) break;
+    }
+    destroySim(sim);
+    gaps.push(best);
+  }
+  gaps.sort((a, b) => a - b);
+  const med = gaps[Math.floor(gaps.length / 2)];
+  return med === Infinity ? Infinity : Math.round(med);
 }
 
 /** The gates a level must clear to ship. */
 export function gradeLevel(a) {
   const issues = [];
+  // SOFT, deliberately. A flat level is not broken, it is just safe — and four
+  // of the shipping twelve are flat. Blocking on it would hold levels that work.
+  // It is a WARN so the number is in front of whoever is designing the next one.
+  if (a.solvable && a.tension === Infinity) {
+    issues.push({ hard: false, msg: 'FLAT — nothing dangerous ever moves near him on a win' });
+  } else if (a.solvable && a.tension > 140) {
+    issues.push({ hard: false, msg: `safe — the danger stays ${a.tension}u away when you win (tense is <90u)` });
+  }
   if (!a.solvable) issues.push({ hard: true, msg: 'UNSOLVABLE — no stroke in the plausible space wins' });
   if (a.solvable && a.solutionBreadth < 0.02) {
     issues.push({ hard: true, msg: `too hard — only ${(a.solutionBreadth * 100).toFixed(1)}% of plausible strokes win (floor 2%)` });

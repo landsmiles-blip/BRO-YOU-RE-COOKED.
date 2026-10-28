@@ -34,6 +34,13 @@ export function initView(canvas) {
 export function resize() {
   const cssW = window.innerWidth;
   const cssH = window.innerHeight;
+  // A ZERO-SIZE VIEWPORT IS NOT A SIZE. Android's WebView can start a
+  // Playable at 0x0 and grow it later — Google's certification FAQ names it
+  // among the common failures — and a scale computed from 0 is 0, which makes
+  // every world measurement below NaN. Keep the last good layout and wait:
+  // the resize listener, and the frame loop's own check (main.js), pick up
+  // the real size the moment it exists.
+  if (!(cssW > 0 && cssH > 0)) return;
   // PIXEL BUDGET, not a flat DPR cap.
   //
   // This was `Math.min(devicePixelRatio, 2)`, which is a real performance guard

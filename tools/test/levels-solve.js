@@ -80,7 +80,5 @@ console.log("\nA4 — CATCH   (the first level where the stroke holds HIM)\n");
          `${sealed.outcome} @ ${sealed.t.toFixed(0)}ms, stranded at x=${sealed.miloX.toFixed(0)}`);
 }
 
-// A6 (RAMP) is HELD — genuinely too hard, not a physics problem. See levels.js.
-
 console.log(state.failures === 0 ? '\nLEVELS: PASS\n' : `\nLEVELS: ${state.failures} FAILURE(S)\n`);
 process.exit(state.failures === 0 ? 0 : 1);

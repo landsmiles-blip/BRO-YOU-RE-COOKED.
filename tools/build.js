@@ -14,10 +14,26 @@
 //
 // Usage:  node tools/build.js
 //         node tools/build.js --check   (verify, do not write)
+//
+// THREE FLAVOURS OF ONE GAME:
+//   dist/byc.html                 the open web and every test: NO SDK tag, so
+//                                 nothing is ever requested from anywhere
+//   dist/artifact.html            the same, as page contents for the publisher
+//   dist/playables/index.html     the YouTube build: the Playables SDK as the
+//   dist/byc-playables.zip        FIRST script, zipped with index.html at the
+//                                 root — the shape the developer portal takes
+//
+// THE YOUTUBE BUILD DID NOT EXIST, and every gate was green. The bundle carried
+// only a COMMENTED slot where the SDK goes, and the conformance check read the
+// slot in the dev page rather than the file that would be uploaded — so the
+// first integration requirement on Google's list ("MUST load the YouTube
+// Playables SDK before any of the game code") was unmet in the only file that
+// mattered, and nothing said so.
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { gzipSync } from 'node:zlib';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 let esbuild;
@@ -52,7 +68,7 @@ const html = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <title>BRO, YOU'RE COOKED.</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E8E2D6'/%3E%3Ccircle cx='16' cy='10' r='6' fill='%23E0452B'/%3E%3Crect x='11' y='19' width='10' height='10' rx='4' fill='%232A2622'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F7F6F2'/%3E%3Ccircle cx='16' cy='10' r='6' fill='%23E0452B'/%3E%3Crect x='11' y='19' width='10' height='10' rx='4' fill='%2333363B'/%3E%3C/svg%3E">
 <style>${css}</style>
 <!-- Playables SDK slot — must precede all game code. -->
 </head>
@@ -74,12 +90,37 @@ if (hits.length) {
   process.exit(1);
 }
 
+// The YouTube build: identical, except the SDK slot is filled. It is a <script
+// src>, not a fetch, and it is the one load Google REQUIRES — the banned-
+// primitive check above guards the game code, which this does not touch.
+export const SDK_TAG = '<script src="https://www.youtube.com/game_api/v1"></script>';
+const SLOT = '<!-- Playables SDK slot — must precede all game code. -->';
+if (!html.includes(SLOT)) { console.error('BUILD FAILED — the SDK slot is missing from the template'); process.exit(1); }
+const playables = html.replace(SLOT, SDK_TAG);
+
+// The Playgama build: identical again, with Playgama Bridge in the same slot,
+// loaded from Playgama's CDN (it is LGPL-3.0, so it is loaded, never bundled).
+// It is the one build that reports runs anywhere — real players' attempts per
+// level, for the difficulty curve (js/platform/playgama.js). The game code is
+// unchanged, so the banned-primitive check above still holds for it; the
+// network calls are the SDK's own, on a portal that expects them.
+export const PLAYGAMA_TAG = '<script src="https://bridge.playgama.com/v2/stable/playgama-bridge.js"></script>';
+const playgama = html.replace(SLOT, PLAYGAMA_TAG);
+// The SDK reads this from beside index.html. Its own analytics on; nothing
+// else configured, so ads and the rest stay off until the owner chooses.
+const PLAYGAMA_CONFIG = JSON.stringify({ sendAnalyticsEvents: true }, null, 2) + '\n';
+
 const raw = Buffer.byteLength(html);
 const gz = gzipSync(html).length;
 
 // Artifact flavour: the publish wrapper supplies <!doctype>, <head> and <body>,
 // so this variant ships the page CONTENTS only. Same game, same bundle, same
 // zero-request guarantee — just no outer tags to collide with the wrapper.
+//
+// IT IS ALSO THE PLAYTEST BUILD. The published page is what people are handed
+// to play, so it sets BYC_PLAYTEST: every run is saved, losses included, and
+// the level board shows runs to the first win and the time it took on each
+// level, for the tester to screenshot. Nothing leaves the device.
 //
 // Deliberately single-theme: this is a paper-and-ink world, so every colour is
 // painted explicitly (including the body ground) rather than inheriting the
@@ -90,23 +131,52 @@ html, body {
   width: 100%; height: 100%;
   margin: 0; padding: 0;
   overflow: hidden;
-  background: #E8E2D6;
+  background: #F7F6F2;
   overscroll-behavior: none;
   touch-action: none;
   -webkit-user-select: none; user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-#stage { display: block; width: 100%; height: 100%; background: #E8E2D6; }
+#stage { display: block; width: 100%; height: 100%; background: #F7F6F2; }
 </style>
 <canvas id="stage"></canvas>
+<script>globalThis.BYC_PLAYTEST = true;</script>
 <script>${matter}</script>
 <script>${gameJs}</script>
 `;
 
+let zipNote = '';
 if (!process.argv.includes('--check')) {
-  mkdirSync(new URL('dist/', root), { recursive: true });
+  mkdirSync(new URL('dist/playables/', root), { recursive: true });
+  mkdirSync(new URL('dist/web/', root), { recursive: true });
+  mkdirSync(new URL('dist/playgama/', root), { recursive: true });
+  writeFileSync(new URL('dist/playgama/index.html', root), playgama);
+  writeFileSync(new URL('dist/playgama/playgama-bridge-config.json', root), PLAYGAMA_CONFIG);
   writeFileSync(new URL('dist/byc.html', root), html);
   writeFileSync(new URL('dist/artifact.html', root), artifact);
+  writeFileSync(new URL('dist/playables/index.html', root), playables);
+  // The open web (itch.io, any static host): the standalone page, named the
+  // way every HTML5 host expects. No SDK — off YouTube it would only be a
+  // request to a page that has no ytgame to give.
+  writeFileSync(new URL('dist/web/index.html', root), html);
+
+  // index.html at the ROOT of each archive, nothing else in it: the whole game
+  // is one file. -j drops the directory, -X drops platform metadata so the
+  // same build always produces the same archive.
+  for (const [name, dir, what] of [
+    ['byc-playables.zip', 'playables', 'YouTube upload'],
+    ['byc-web.zip', 'web', 'open web: itch.io or any static host'],
+    ['byc-playgama.zip', 'playgama', 'Playgama: real players\' attempts'],
+  ]) {
+    const zip = new URL(`dist/${name}`, root).pathname;
+    if (existsSync(zip)) rmSync(zip);
+    const files = [new URL(`dist/${dir}/index.html`, root).pathname];
+    if (dir === 'playgama') files.push(new URL('dist/playgama/playgama-bridge-config.json', root).pathname);
+    const z = spawnSync('zip', ['-q', '-X', '-j', zip, ...files]);
+    zipNote += z.status === 0
+      ? `  → dist/${name} (${what}: index.html at the root)\n`
+      : `  !! zip not found — dist/${dir}/ is built but NOT archived\n`;
+  }
 }
 
 console.log(`\nsingle-file build`);
@@ -116,4 +186,6 @@ console.log(`  gzipped                ${(gz / 1024).toFixed(1)} KB`);
 console.log(`  vs 15 MiB recommended  ${((gz / (15 * 1024 * 1024)) * 100).toFixed(2)}%`);
 console.log(process.argv.includes('--check')
   ? '  (check only, nothing written)\n'
-  : '  → dist/byc.html (standalone)\n  → dist/artifact.html (publish flavour)\n');
+  : '  → dist/byc.html (standalone)\n  → dist/artifact.html (publish flavour)\n'
+    + '  → dist/playables/index.html (YouTube: SDK first)\n'
+    + '  → dist/playgama/ (Playgama Bridge first, + its config)\n' + zipNote);
