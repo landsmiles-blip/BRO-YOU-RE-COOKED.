@@ -343,8 +343,10 @@ measured 28.6 simulated tries at screen 4 (a null slot is skipped, so it was
 the fourth level a player met, not the fifth), the steepest step of the
 chapter, about 90 seconds into a first session. The new order puts CHOOSE
 (18.8) at screen 4, SPRING (6.5) at 5, WEDGE (21.4) at 6 and BRIDGE at 7.
-HANG (screen 2) and CHOOSE (screen 4) are three levels apart rather than
-adjacent, as the look-alike rule in `js/levels.js` asks.
+The cost: HANG (screen 2) and CHOOSE (screen 4) are now two levels apart,
+where the old order had them four apart. `js/levels.js` asks that look-alikes
+be kept apart and no one has looked at the contact sheet for this order (no
+Chromium on the build machine), so `npm run frozen` is owed before upload.
 
     was: [A1, A5, A3, null, A2,  A20, A15, A8, A12, null]
     now: [A1, A5, A3, null, A15, A20, A8,  A2, A12, null]
