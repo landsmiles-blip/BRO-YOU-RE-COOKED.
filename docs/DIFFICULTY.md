@@ -91,6 +91,18 @@ error is about ±1/√R:
 and band are the same width, so the gate cannot yet tell a sawtooth from a
 plateau.
 
+### One number the fit does not use: FUNNEL
+
+FUNNEL (`a9-chute`, the plate intro) is an INTRO, and `tools/lib/fit-curve.py`
+fits only DEVELOP, SPIKE and BOSS slots, so it is printed but never pulls the
+curve. That is deliberate and it is right here, because its number is not
+trustworthy: `npm run plates` finds **636 of its 668 solver wins (95.2%)**
+come from a dropped line sliding onto the plate, not from the rock. Its
+`solutionBreadth` in `js/solverData.js` is 0.2964 (measured 2026-09-14) and
+includes that back door; it is generated, so the share is recorded here and
+in `OPEN` in `tools/lib/plates.js`, not in the data file. Weighed, the honest
+level measures 135 tries against an intro band of 16. Open, the owner's call.
+
 ## How real players replace the simulated numbers
 
 1. **Collect runs.** Use the Playgama Sandbox build (`docs/PLAYGAMA.md`) or the

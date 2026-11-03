@@ -329,3 +329,33 @@ spend depends on, not because of a revenue forecast.
 **Reversal cost:** low. Each portal can be withdrawn. Changing the campaign
 after launch reshuffles every future daily challenge, so changes come in
 batches.
+
+---
+
+## D12 — Chapter 1 order · **LOCKED 2026-10-28 (owner): A2 BRIDGE moves from screen 4 to screen 7, before the first upload**
+
+Partly reverses D11's freeze at `f159983`, for Chapter 1 only. No other
+chapter changes, and no level is added, removed or edited.
+
+**Why:** the Playgama Sandbox gate is 100 plays at a 5-minute average, and the
+platform's top titles are understood at once and retried at once. BRIDGE
+measured 28.6 simulated tries at screen 4 (a null slot is skipped, so it was
+the fourth level a player met, not the fifth), the steepest step of the
+chapter, about 90 seconds into a first session. The new order puts CHOOSE
+(18.8) at screen 4, SPRING (6.5) at 5, WEDGE (21.4) at 6 and BRIDGE at 7.
+HANG (screen 2) and CHOOSE (screen 4) are three levels apart rather than
+adjacent, as the look-alike rule in `js/levels.js` asks.
+
+    was: [A1, A5, A3, null, A2,  A20, A15, A8, A12, null]
+    now: [A1, A5, A3, null, A15, A20, A8,  A2, A12, null]
+
+Checked on this order: `npm test` 17 of 17 suites, including the curve gate
+(every level inside its slot's band) and the daily deck.
+
+**Honest about the evidence:** every number above is simulated, the same kind
+of number D7 says is not evidence. It is made now because no real player has
+played v1.0, so no measurement is spoiled by changing it. The 27 Oct filmed
+wins were shot in the old order and must be re-shot for Chapter 1.
+
+**Reversal cost:** low before upload — one line in `js/levels.js`. After
+upload, it reshuffles the daily challenge (see D11).

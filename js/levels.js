@@ -340,7 +340,10 @@ export const A9 = {
   // The plate is ELEVATED and out of Milo's reach. The first version laid it
   // flat on the ground across his walking line, so he pressed it himself on
   // the way past and the gate opened whatever the player did — a level that
-  // solved itself. Only the rock can reach it now, and only if it is steered.
+  // solved itself. That fix did not close the plate: npm run plates finds 95%
+  // of solver wins (636 of 668) drop the line onto it. Weighed, the level as
+  // built measures 135 tries; seven redesigns measured 76 to 527 against the
+  // plate intro's band of 16. Left open on purpose — OPEN in tools/lib/plates.js.
   static: [
     { id: 'ground', type: 'platform', x: 0,   y: 1152, w: 720, h: 128 },
     { id: 'lip',    type: 'platform', x: 230, y: 700,  w: 120, h: 26  },
@@ -1376,7 +1379,7 @@ export const SLOT_ROLES = [
 // thing DOES, never what to do about it — the same rule as a level's hint.
 export const CHAPTERS = [
   { name: 'THE LINE',       tag: 'one line, one shot',
-    slots: [A1,   A5,   A3,   null, A2,   A20,  A15,  A8,   A12,  null] },
+    slots: [A1,   A5,   A3,   null, A15,  A20,  A8,   A2,   A12,  null] },
   { name: 'PLATES & GATES', tag: 'something has to press it',
     slots: [A9,   CH2.A80, null, null, A10,  CH2.A82, CH2.A83, CH2.A81, null, A11] },
   { name: 'BEES',           tag: 'they fly straight at whatever is alive',
