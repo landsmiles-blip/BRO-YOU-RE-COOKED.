@@ -70,6 +70,60 @@ console.log('\nPLAYGAMA — real players\' attempts, from one build only');
   delete globalThis.bridge;
 }
 
+// 3. Playgama's Required steps and rejection list (checked live 4 Nov 2026):
+//    storage only through the Bridge, audio + pause from the Bridge, an
+//    interstitial at every boundary with the Bridge pacing, and a reward only
+//    for an ad watched to the end.
+{
+  const store = new Map(); const handlers = {}; const shown = [];
+  let ls = 0;
+  globalThis.localStorage = { setItem: () => { ls++; }, getItem: () => { ls++; return null; } };
+  globalThis.bridge = {
+    ...fakeBridge(),
+    EVENT_NAME: { AUDIO_STATE_CHANGED: 'a', PAUSE_STATE_CHANGED: 'p', REWARDED_STATE_CHANGED: 'r' },
+    storage: {
+      get: (keys) => Promise.resolve(keys.map((k) => store.get(k) ?? null)),
+      set: (keys, vals) => { keys.forEach((k, i) => store.set(k, vals[i])); return Promise.resolve(); },
+    },
+    platform: {
+      ...fakeBridge().platform, language: 'de', isAudioEnabled: false,
+      on: (ev, fn) => { handlers[ev] = fn; },
+    },
+    advertisement: {
+      isInterstitialSupported: true, isRewardedSupported: true,
+      showInterstitial: () => shown.push('interstitial'),
+      showRewarded: () => { shown.push('rewarded'); queueMicrotask(() => handlers.r?.(globalThis.__rewardEnd ?? 'rewarded')); },
+      on: (ev, fn) => { handlers[ev] = fn; }, off: () => {},
+    },
+  };
+  globalThis.document ??= { addEventListener() {}, hidden: false };
+  globalThis.window ??= { addEventListener() {} };
+  const S = await import('../../js/platform/sdk.js');
+  const P = await import('../../js/platform/playgama.js?full');
+  const audio = []; const pauses = [];
+  S.onAudioEnabledChange((on) => audio.push(on));
+  S.onPause(() => pauses.push('pause')); S.onResume(() => pauses.push('resume'));
+  const first = S.saveData('early');                               // before any load has landed
+  P.initPlaygama(); await settle();
+  check('a save made before the load lands is not sent', (await first) === false && store.size === 0);
+  check('no save yet reads as a fresh start', (await S.loadData()) === null);
+  check('after the load, a save goes through Bridge storage', (await S.saveData('{"v":1}')) === true && store.get('byc_save_v1') === '{"v":1}');
+  check('and reads back from it', (await S.loadData()) === '{"v":1}');
+  check('NOTHING touched localStorage (rule 3.2.1)', ls === 0, `${ls} calls`);
+  check('the platform language is read after init', P.language === 'de');
+  check('the game starts muted when platform.isAudioEnabled is false', S.isAudioEnabled() === false && audio[0] === false);
+  handlers.a(true); check('and follows the audio event', S.isAudioEnabled() === true && audio.at(-1) === true);
+  handlers.p(true); handlers.p(false);
+  check('pause and resume events reach the game', pauses.join() === 'pause,resume');
+  check('the platform paces ads: asked at every boundary', S.adsPacedByPlatform() === true);
+  await S.requestInterstitialAd(); await S.requestInterstitialAd();
+  check('each boundary asks the Bridge for an interstitial', shown.filter((x) => x === 'interstitial').length === 2);
+  check('a watched rewarded ad is a reward', (await S.requestRewardedAd('skip-x')) === true);
+  globalThis.__rewardEnd = 'closed';
+  check('a rewarded ad closed early is NOT (rule 2.2.5)', (await S.requestRewardedAd('skip-x')) === false);
+  delete globalThis.__rewardEnd; delete globalThis.bridge; delete globalThis.localStorage; delete globalThis.document; delete globalThis.window;
+}
+
 const inside = spawnSync(process.execPath,
   ['--import', './tools/node-matter.js', 'tools/test/playgama.js', '--inside-playables'], { stdio: 'inherit' });
 if (inside.status !== 0) failed++;

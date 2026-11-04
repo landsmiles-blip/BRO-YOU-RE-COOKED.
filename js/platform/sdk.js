@@ -21,6 +21,27 @@ export const isPlayables = sdk !== null;
 // in Playables is a second save mechanism, so that is the side to err on.
 const inPlayablesEnv = sdk !== null && sdk.IN_PLAYABLES_ENV !== false;
 
+// ── A second platform, through ONE door ────────────────────────────────────
+//
+// The Playgama build (js/platform/playgama.js) registers a backend here when,
+// and only when, its Bridge is on the page. Every function below asks the
+// backend first and falls through to the Playables / plain-tab behaviour when
+// there is none, so YouTube and the open-web build are byte-for-byte what they
+// were. Playgama's rules forbid localStorage (3.2.1), want pause/audio from the
+// Bridge and an interstitial at EVERY natural pause with the Bridge doing the
+// pacing, which is why saves, pause, audio and ads are all routed here.
+let backend = null;
+export function setBackend(b) { backend = b; }
+
+/** True when the platform paces interstitials itself (Playgama): ask at every
+ *  level boundary and let it decide. The 1-in-3 counter is YouTube's only. */
+export const adsPacedByPlatform = () => backend?.pacedAds === true;
+
+/** Playgama: a rewarded button is shown only where rewarded ads are supported
+ *  (Required step 8), and its reward is earned only by watching (rule 2.2.5). */
+export const rewardNeedsWatching = () => backend?.requestRewardedAd !== undefined;
+export const rewardedSupported = () => backend?.rewardedSupported?.() ?? true;
+
 let firstFrameSent = false;
 let gameReadySent = false;
 
@@ -39,12 +60,14 @@ export function gameReady() {
 }
 
 export function onPause(fn) {
+  backend?.onPause?.(fn);
   if (sdk?.system?.onPause) { try { sdk.system.onPause(fn); return; } catch { /* fall through */ } }
   document.addEventListener('visibilitychange', () => { if (document.hidden) fn(); });
   window.addEventListener('blur', fn);
 }
 
 export function onResume(fn) {
+  backend?.onResume?.(fn);
   if (sdk?.system?.onResume) { try { sdk.system.onResume(fn); return; } catch { /* fall through */ } }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) fn(); });
   window.addEventListener('focus', fn);
@@ -60,6 +83,7 @@ export function onResume(fn) {
 // platform there is no such setting, so audio is simply on.
 
 export function isAudioEnabled() {
+  if (backend?.isAudioEnabled) return backend.isAudioEnabled();
   try {
     const v = sdk?.system?.isAudioEnabled?.();
     return typeof v === 'boolean' ? v : true;
@@ -67,6 +91,7 @@ export function isAudioEnabled() {
 }
 
 export function onAudioEnabledChange(fn) {
+  backend?.onAudioEnabledChange?.(fn);
   try { sdk?.system?.onAudioEnabledChange?.((on) => fn(on !== false)); } catch { /* nothing to follow */ }
 }
 
@@ -101,6 +126,7 @@ const LOCAL_KEY = 'byc.save.v1';
 let loaded = false;
 
 export function saveData(text) {
+  if (backend?.saveData) return backend.saveData(text);   // Playgama: Bridge storage, never localStorage
   if (!inPlayablesEnv) {
     try { globalThis.localStorage?.setItem(LOCAL_KEY, text); return Promise.resolve(true); } catch { /* private mode */ }
     return Promise.resolve(false);
@@ -112,6 +138,7 @@ export function saveData(text) {
 }
 
 export function loadData() {
+  if (backend?.loadData) return backend.loadData();
   if (!inPlayablesEnv) {
     try { return Promise.resolve(globalThis.localStorage?.getItem(LOCAL_KEY) ?? null); } catch { /* private mode */ }
     return Promise.resolve(null);
@@ -144,6 +171,7 @@ export function loadData() {
 
 /** Best-effort interstitial at a level boundary. Resolves false if not shown. */
 export function requestInterstitialAd() {
+  if (backend?.requestInterstitialAd) return backend.requestInterstitialAd();
   if (!sdk?.ads?.requestInterstitialAd) return Promise.resolve(false);
   try {
     return Promise.resolve(sdk.ads.requestInterstitialAd())
@@ -165,6 +193,7 @@ export function requestInterstitialAd() {
  */
 export function requestRewardedAd(rewardId) {
   if (typeof rewardId !== 'string' || rewardId.length === 0) return Promise.resolve(false);
+  if (backend?.requestRewardedAd) return backend.requestRewardedAd(rewardId);
   if (!sdk?.ads?.requestRewardedAd) return Promise.resolve(false);
   try {
     return Promise.resolve(sdk.ads.requestRewardedAd(rewardId))

@@ -18,7 +18,7 @@
 // (initialize, analytics.send, platform.sendMessage with game_ready /
 // level_started / level_completed / level_failed), 25 Oct 2026.
 
-import { isPlayables } from './sdk.js';
+import { isPlayables, setBackend } from './sdk.js';
 
 const bridge = !isPlayables && typeof globalThis.bridge?.initialize === 'function' ? globalThis.bridge : null;
 
@@ -26,14 +26,88 @@ export const onPlaygama = bridge !== null;
 
 let ready = Promise.resolve(false);
 
+const quietly = (f) => { try { const p = f(); p?.catch?.(() => {}); } catch { /* best effort */ } };
+
+// ── Playgama's Required steps (wiki: Bridge SDK > API), 4 Nov 2026 ──────────
+//
+//   4  progress ONLY through bridge.storage, never localStorage  -> saveData/loadData
+//   5  start muted if platform.isAudioEnabled is false, follow the audio and
+//      pause events                                               -> audio + pause below
+//   7  showInterstitial() at every natural pause, no own timers   -> game.js adBreak
+//   3  platform.language: read once after init. BYC ships English only and
+//      declares English only in the publication form (rule 3.4.1/3.4.3), so it is
+//      read, exported and sent with the first analytics event, not used to switch.
+//
+// All of it is registered with sdk.js's backend slot, and only when the Bridge
+// is on the page, so YouTube and the web build are unchanged.
+
+const SAVE_KEY = 'byc_save_v1';
+let audioOn = true;                  // until the SDK has answered, as everywhere else
+let loaded = false;                  // nothing is saved until a load has landed (see sdk.js)
+export let language = 'en';
+const audioFns = [];
+const pauseFns = [];
+const resumeFns = [];
+
+if (bridge) {
+  const loadSave = () => ready.then((ok) => {
+    if (!ok) return null;
+    return Promise.resolve(bridge.storage.get([SAVE_KEY])).then((d) => {
+      loaded = true;
+      const v = Array.isArray(d) ? d[0] : d?.[SAVE_KEY];
+      return typeof v === 'string' && v.length ? v : null;
+    });
+  }).catch(() => { loaded = true; return null; });   // a failed read is a fresh start, as in Playables
+
+  setBackend({
+    pacedAds: true,
+    loadData: loadSave,
+    saveData: (text) => {
+      if (!loaded) return Promise.resolve(false);
+      return ready.then((ok) => (ok
+        ? Promise.resolve(bridge.storage.set([SAVE_KEY], [text])).then(() => true)
+        : false)).catch(() => false);
+    },
+    isAudioEnabled: () => audioOn,
+    onAudioEnabledChange: (fn) => { audioFns.push(fn); },
+    onPause: (fn) => { pauseFns.push(fn); },
+    onResume: (fn) => { resumeFns.push(fn); },
+    // Playgama 2.2.5 / Bridge "Reward ONLY in the rewarded state": resolves true
+    // only if the ad was watched to the end. game.js grants the skip on that and
+    // nothing else here (YouTube keeps its grant-anyway rule).
+    rewardedSupported: () => bridge.advertisement?.isRewardedSupported !== false,
+    requestRewardedAd: () => ready.then((ok) => new Promise((resolve) => {
+      if (!ok || bridge.advertisement?.isRewardedSupported === false) { resolve(false); return; }
+      let done = false;
+      const finish = (v) => { if (done) return; done = true; quietly(() => bridge.advertisement.off?.(bridge.EVENT_NAME.REWARDED_STATE_CHANGED, onState)); resolve(v); };
+      const onState = (s) => { if (s === 'rewarded') finish(true); else if (s === 'closed' || s === 'failed') finish(false); };
+      bridge.advertisement.on(bridge.EVENT_NAME.REWARDED_STATE_CHANGED, onState);
+      setTimeout(() => finish(false), 180000);
+      quietly(() => bridge.advertisement.showRewarded());
+    })).catch(() => false),
+    requestInterstitialAd: () => ready.then((ok) => {
+      if (!ok || bridge.advertisement?.isInterstitialSupported === false) return false;
+      quietly(() => bridge.advertisement.showInterstitial());
+      return true;
+    }).catch(() => false),
+  });
+}
+
 /** Start the SDK. Nothing waits for it: events queue behind it. */
 export function initPlaygama() {
   if (!bridge) return ready;
-  ready = Promise.resolve().then(() => bridge.initialize()).then(() => true, () => false);
+  ready = Promise.resolve().then(() => bridge.initialize()).then(() => {
+    quietly(() => { language = bridge.platform.language || 'en'; });
+    // The initial state must be applied by hand: the event only fires on change.
+    const apply = (on) => { audioOn = on !== false; audioFns.forEach((f) => quietly(() => f(audioOn))); };
+    quietly(() => bridge.platform.on(bridge.EVENT_NAME.AUDIO_STATE_CHANGED, apply));
+    quietly(() => bridge.platform.on(bridge.EVENT_NAME.PAUSE_STATE_CHANGED,
+      (p) => (p ? pauseFns : resumeFns).forEach((f) => quietly(f))));
+    if (bridge.platform.isAudioEnabled === false) apply(false);
+    return true;
+  }, () => false);
   return ready;
 }
-
-const quietly = (f) => { try { const p = f(); p?.catch?.(() => {}); } catch { /* best effort */ } };
 
 /** Tell the portal the game is interactive (their equivalent of gameReady). */
 export function playgamaGameReady() {

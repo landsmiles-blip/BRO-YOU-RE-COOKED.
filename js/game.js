@@ -227,7 +227,9 @@ export function skipOffer(g) {
   const role = slotOf(g.level.id)?.role;
   const need = role === 'SPIKE' || role === 'BOSS' ? SKIP_AFTER.wall : SKIP_AFTER.other;
   if (g.fails < need) return null;
-  return { via: (g.progress.tokens || 0) > 0 ? 'token' : 'ad', tokens: g.progress.tokens || 0 };
+  const via = (g.progress.tokens || 0) > 0 ? 'token' : 'ad';
+  if (via === 'ad' && !sdk.rewardedSupported()) return null;   // Playgama step 8: hide what is unsupported
+  return { via, tokens: g.progress.tokens || 0 };
 }
 
 /** Take the skip. Resolves true once the player has moved on. */
@@ -241,6 +243,8 @@ export function skip(g) {
     : sdk.requestRewardedAd('skip-' + id);
   return paid.then((shown) => {
     g.skipping = false;
+    // Playgama 2.2.5: no ad watched, no reward. (YouTube keeps granting it.)
+    if (offer.via === 'ad' && sdk.rewardNeedsWatching() && !shown) return false;
     markSkipped(g.progress, id);
     save(g.progress);
     track('level_skipped', { level: id, via: offer.via, shown: !!shown, fails: g.fails });
@@ -268,6 +272,11 @@ function adBreak(g) {
   //
   // A finished daily is a boundary like any other, so it counts too.
   g.sinceAd = (g.sinceAd ?? 0) + 1;
+  // PLAYGAMA PACES ITS OWN ADS (its Required step 7: "do not add your own
+  // timers or counters"). There we ask at every boundary and its Bridge holds
+  // back the first one and spaces the rest (60 s by default); the 1-in-3
+  // counter below is YouTube's, where nothing else limits the platform's ads.
+  if (sdk.adsPacedByPlatform()) { g.sinceAd = 0; sdk.requestInterstitialAd(); return; }
   if (g.sinceAd >= LEVELS_PER_AD) { g.sinceAd = 0; sdk.requestInterstitialAd(); }
 }
 
