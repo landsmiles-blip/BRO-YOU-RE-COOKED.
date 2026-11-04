@@ -332,7 +332,7 @@ batches.
 
 ---
 
-## D12 — Chapter 1 order · **LOCKED 2026-10-28 (owner): A2 BRIDGE moves from screen 4 to screen 7, before the first upload**
+## D12 — Chapter 1 order · **LOCKED 2026-10-28 (owner), REVISED 2026-11-04 for v1.0.1: A2 BRIDGE is the Chapter 1 boss, at screen 8**
 
 Partly reverses D11's freeze at `f159983`, for Chapter 1 only. No other
 chapter changes, and no level is added, removed or edited.
@@ -340,24 +340,28 @@ chapter changes, and no level is added, removed or edited.
 **Why:** the Playgama Sandbox gate is 100 plays at a 5-minute average, and the
 platform's top titles are understood at once and retried at once. BRIDGE
 measured 28.6 simulated tries at screen 4 (a null slot is skipped, so it was
-the fourth level a player met, not the fifth), the steepest step of the
-chapter, about 90 seconds into a first session. The new order puts CHOOSE
-(18.8) at screen 4, SPRING (6.5) at 5, WEDGE (21.4) at 6 and BRIDGE at 7.
-The cost: HANG (screen 2) and CHOOSE (screen 4) are now two levels apart,
-where the old order had them four apart. `js/levels.js` asks that look-alikes
-be kept apart and no one has looked at the contact sheet for this order (no
-Chromium on the build machine), so `npm run frozen` is owed before upload.
+the fourth level a player met), about 90 seconds into a first session.
 
-    was: [A1, A5, A3, null, A2,  A20, A15, A8, A12, null]
-    now: [A1, A5, A3, null, A15, A20, A8,  A2, A12, null]
+    v1.0:   [A1, A5, A3, null, A2,  A20, A15, A8,  A12, null]   BRIDGE at screen 4
+    v1.0.0: [A1, A5, A3, null, A15, A20, A8,  A2,  A12, null]   (tag v1.0) BRIDGE at 7
+    v1.0.1: [A1, A5, A3, null, null, A20, A15, A8, A12, A2]     BRIDGE at 8
 
-Checked on this order: `npm test` 17 of 17 suites, including the curve gate
-(every level inside its slot's band) and the daily deck.
+**Why v1.0.1 changed it again:** the real contact sheet (Chromium, 405x720,
+4 Nov) shows HANG (screen 2) and CHOOSE (screen 4) are twins: two tall posts,
+a red ball between them. `js/levels.js` names exactly this pair as the reason
+for "keep look-alikes apart". v1.0 had them two screens apart. Now SPRING and
+REDIRECT sit between them (screens 2 and 5), and BRIDGE sits in the BOSS slot,
+so its skip is offered after 3 failures instead of 5.
+Screens: BLOCK 6.0, HANG 9.5, REDIRECT 10.5, SPRING 6.5, CHOOSE 18.8,
+WEDGE 21.4, INTERCEPT 8.1, BRIDGE 28.6 simulated tries.
+
+**What it costs:** the SPIKE slot is empty, so the chapter has no spike before
+its boss. `npm test` passes 17 of 17 (curve gate and daily deck included).
 
 **Honest about the evidence:** every number above is simulated, the same kind
-of number D7 says is not evidence. It is made now because no real player has
-played v1.0, so no measurement is spoiled by changing it. The 27 Oct filmed
-wins were shot in the old order and must be re-shot for Chapter 1.
+of number D7 says is not evidence. It is made before any real player has seen
+the game, so no measurement is spoiled by changing it. The 27 Oct filmed wins
+were shot in the old order and must be re-shot for Chapter 1.
 
 **Reversal cost:** low before upload — one line in `js/levels.js`. After
 upload, it reshuffles the daily challenge (see D11).

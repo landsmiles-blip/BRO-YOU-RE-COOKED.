@@ -1379,7 +1379,7 @@ export const SLOT_ROLES = [
 // thing DOES, never what to do about it — the same rule as a level's hint.
 export const CHAPTERS = [
   { name: 'THE LINE',       tag: 'one line, one shot',
-    slots: [A1,   A5,   A3,   null, A15,  A20,  A8,   A2,   A12,  null] },
+    slots: [A1,   A5,   A3,   null, null, A20,  A15,  A8,   A12,  A2] },
   { name: 'PLATES & GATES', tag: 'something has to press it',
     slots: [A9,   CH2.A80, null, null, A10,  CH2.A82, CH2.A83, CH2.A81, null, A11] },
   { name: 'BEES',           tag: 'they fly straight at whatever is alive',
