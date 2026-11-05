@@ -117,6 +117,76 @@ export function initPlaygama() {
   return ready;
 }
 
+// ── performance_sample (Playgama telemetry guide v1.1.2, 5 Nov 2026) ────────
+//
+// WHY: nobody has played this game on a real device. The loop caps catch-up at
+// 8 physics steps a frame (js/constants.js MAX_STEPS_PER_FRAME), so a slow
+// device stretches the "live" beat and ignores input meanwhile. On the one PC it
+// was measured on the page ran at 1-6 fps for stretches (docs/research/
+// most-played/red-team.md 2i); a 30 s sample taken the same way showed every
+// frame at about 1010 ms, which looks like Chrome throttling an automated tab
+// to ~1 fps rather than a slow game — UNVERIFIED either way. The Sandbox's own
+// players will say how common low frame rates really are, at no cost to them.
+// (A visible but occluded window is not "hidden", so such frames are counted.)
+//
+// One aggregated event about every 30 s of ACTIVE, VISIBLE gameplay, sent as a
+// custom event (the guide's transport until Bridge has system events). Frames
+// from loading, menus, pause, a hidden page and the first frame after any of
+// those are never counted: a background gap must not become a frozen frame.
+// Inert off Playgama. Nothing personal; stable, bounded field names.
+
+export const BUILD_VERSION = 'byc-1.0.2';
+const PERF_WINDOW_MS = 30000;
+const PERF_TARGET_FPS = 60;      // the display's requestAnimationFrame rate, which is all the loop asks for
+let perf = null;
+let perfSkip = true;
+
+/** Call once per animation frame with the frame's duration and whether gameplay is active. */
+export function perfFrame(dtMs, active) {
+  if (!bridge) return;
+  if (!active || (typeof document !== 'undefined' && document.hidden)) { perfSkip = true; return; }
+  if (perfSkip) { perfSkip = false; return; }
+  if (!(dtMs > 0)) return;
+  if (!perf) perf = { start: performance.now(), dts: [], active: 0 };
+  perf.dts.push(dtMs);
+  perf.active += dtMs;
+  if (perf.active >= PERF_WINDOW_MS) flushPerf();
+}
+
+export function perfSample({ start, dts, active }, endMs) {
+  const sorted = dts.slice().sort((a, b) => a - b);
+  const n = sorted.length;
+  const at = (q) => sorted[Math.min(n - 1, Math.floor(q * n))];
+  const r = (x) => Math.round(x * 10) / 10;
+  const over = (ms) => dts.reduce((c, d) => c + (d > ms ? 1 : 0), 0);
+  return {
+    target_fps: PERF_TARGET_FPS,
+    window_ms: Math.round(endMs - start),
+    active_ms: Math.round(active),
+    frame_count: n,
+    fps_avg: r(n / (active / 1000)),
+    fps_p10: r(1000 / at(0.9)),            // 10th percentile of fps = the slowest tenth of frames
+    frame_time_p50_ms: r(at(0.5)),
+    frame_time_p95_ms: r(at(0.95)),
+    frame_time_p99_ms: r(at(0.99)),
+    frame_time_max_ms: r(sorted[n - 1]),
+    frames_over_50ms: over(50),
+    frames_over_100ms: over(100),
+    frames_over_250ms: over(250),
+    frames_over_500ms: over(500),
+    frames_over_1000ms: over(1000),
+    build_version: BUILD_VERSION,
+  };
+}
+
+function flushPerf() {
+  const p = perf;
+  perf = null;
+  if (!p || p.dts.length < 2) return;
+  const sample = perfSample(p, performance.now());
+  ready.then((ok) => { if (ok) quietly(() => bridge.analytics.send('performance_sample', sample)); });
+}
+
 /** Tell the portal the game is interactive (their equivalent of gameReady). */
 export function playgamaGameReady() {
   ready.then((ok) => { if (ok) quietly(() => bridge.platform.sendMessage('game_ready')); });

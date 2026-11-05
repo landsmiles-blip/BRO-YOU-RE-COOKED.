@@ -32,7 +32,7 @@ import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
 import * as audio from './audio.js';
 import { loadHandFont } from './render/handfont.js';
-import { initPlaygama, playgamaGameReady } from './platform/playgama.js';
+import { initPlaygama, playgamaGameReady, perfFrame } from './platform/playgama.js';
 
 // The daily pool too: a malformed pool level would otherwise surface only on
 // the one day it is dealt, as a blank page for everybody at once.
@@ -186,6 +186,10 @@ function frame(now) {
 
   const dt = now - last;
   last = now;
+
+  // Playgama's performance_sample (inert elsewhere): gameplay frames only, never
+  // a paused one — so this sits before the paused return below.
+  perfFrame(dt, !game.paused && ON_LEVEL.has(game.phase));
 
   if (game.paused) return;             // nothing steps, nothing renders
 
