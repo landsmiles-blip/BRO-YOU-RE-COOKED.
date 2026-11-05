@@ -1,0 +1,57 @@
+{
+ "impact_light": [
+  "impact_light_1.mp3",
+  "impact_light_2.mp3",
+  "impact_light_3.mp3"
+ ],
+ "impact_medium": [
+  "impact_medium_1.mp3",
+  "impact_medium_2.mp3",
+  "impact_medium_3.mp3"
+ ],
+ "impact_heavy": [
+  "impact_heavy_1.mp3",
+  "impact_heavy_2.mp3",
+  "impact_heavy_3.mp3"
+ ],
+ "scratch": [
+  "scratch_1.mp3",
+  "scratch_2.mp3",
+  "scratch_3.mp3"
+ ],
+ "release": [
+  "release_1.mp3",
+  "release_2.mp3"
+ ],
+ "reject": [
+  "reject_1.mp3"
+ ],
+ "trigger": [
+  "trigger_1.mp3",
+  "trigger_2.mp3"
+ ],
+ "death": [
+  "death_1.mp3"
+ ],
+ "success1": [
+  "success1_1.mp3"
+ ],
+ "success2": [
+  "success2_1.mp3"
+ ],
+ "success3": [
+  "success3_1.mp3"
+ ],
+ "ending": [
+  "ending_1.mp3"
+ ],
+ "blast": [
+  "blast_1.mp3"
+ ],
+ "close_call": [
+  "close_call_1.mp3"
+ ],
+ "music": [
+  "music_1.mp3"
+ ]
+}

@@ -1,8 +1,20 @@
 // AUDIO — Bible §6.2, decision D5.
 //
-// EVERY SOUND IN THIS GAME IS SYNTHESISED AT RUNTIME. There are no audio
-// files, and that is a design decision rather than a budget one — the payload
-// headroom is enormous (40 KB used against a 15 MiB recommendation).
+// EVERY SOUND IN THE YOUTUBE AND WEB BUILDS IS SYNTHESISED AT RUNTIME. There
+// are no audio files there, and that is a design decision rather than a budget
+// one — the payload headroom is enormous (40 KB used against a 15 MiB
+// recommendation).
+//
+// AMENDED 5 Nov 2026 (D15), FOR THE PLAYGAMA BUILD ONLY. Playgama's rules
+// (3.3.1, 3.3.2) require recorded sound and music and refuse "sound
+// synthesised in code", so that build ships a bank of CC0 recordings
+// (assets/audio/playgama, embedded by tools/build.js as globalThis.BYC_SAMPLES)
+// and this module plays those instead. Nothing is synthesised in that mode: no
+// oscillator is created. The principle of D5a survives: an impact still picks
+// its recording (light, medium, heavy) and its volume from normalSpeed — the
+// same number hazards.js thresholds at 400 — so a fatal hit is still audibly a
+// different event from a bump. Where no recording exists (the bee buzz) the
+// game is silent there. The two builds without BYC_SAMPLES are unchanged.
 //
 // WHY SYNTHESIS AND NOT RECORDED/GENERATED SAMPLES
 //
@@ -61,7 +73,7 @@ export function unlock() {
     // already listening to; it is a garnish, not a soundtrack.
     master.gain.value = 0.5;
     master.connect(ctx.destination);
-    startBed();
+    if (sampleMode()) loadSamples(); else startBed();
   } catch { enabled = false; ctx = null; }
   resume();
 }
@@ -89,6 +101,7 @@ export function pause() {
 export function resume() {
   suspended = false;
   try { quietly(ctx?.resume?.()); } catch { /* nothing to do */ }
+  if (bank && !musicChain) startMusic();      // the loop could not start while paused
 }
 
 const now = () => (ctx ? ctx.currentTime : 0);
@@ -101,6 +114,75 @@ function throttled(kind, minGapMs) {
   if (t - prev < minGapMs) return false;
   lastAt.set(kind, t);
   return true;
+}
+
+// ── sample mode (Playgama build only, D15) ────────────────────────────────
+
+const sampleMode = () => typeof globalThis.BYC_SAMPLES === 'object' && globalThis.BYC_SAMPLES !== null;
+let bank = null;           // name -> AudioBuffer[]; null until every file has decoded
+let musicChain = null;     // { src, gain, filter } once the loop is running
+const lastPick = new Map();
+
+const b64ToBuffer = (b64) => {
+  const bin = atob(b64);
+  const u8 = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+  return u8.buffer;
+};
+
+// decodeAudioData returns a promise in current browsers and takes callbacks in
+// older Safari; pass both. Resolving twice is harmless.
+const decode = (buf) => new Promise((res, rej) => {
+  try { const p = ctx.decodeAudioData(buf, res, rej); p?.then?.(res, rej); } catch (e) { rej(e); }
+});
+
+/** Decode the bank once the context exists (first gesture), then start the loop. */
+function loadSamples() {
+  const data = globalThis.BYC_SAMPLES;
+  const c = ctx;
+  const next = {};
+  const jobs = [];
+  for (const [name, list] of Object.entries(data)) {
+    next[name] = [];
+    for (const b64 of list) {
+      jobs.push(decode(b64ToBuffer(b64)).then((buf) => { if (ctx === c) next[name].push(buf); }, () => { /* a file that will not decode is simply missing */ }));
+    }
+  }
+  Promise.all(jobs).then(() => { if (ctx !== c) return; bank = next; startMusic(); });
+}
+
+/** Play one recording from the bank: a random variant (never the same twice running), a touch of pitch spread. */
+function play(name, gain = 1, spread = 0.05) {
+  const list = bank?.[name];
+  if (!ok() || !list?.length) return;
+  let i = Math.floor(Math.random() * list.length);
+  if (list.length > 1 && i === lastPick.get(name)) i = (i + 1) % list.length;
+  lastPick.set(name, i);
+  const src = ctx.createBufferSource();
+  src.buffer = list[i];
+  src.playbackRate.value = 1 + (Math.random() * 2 - 1) * spread;
+  const g = ctx.createGain();
+  g.gain.value = Math.max(0, Math.min(1.5, gain));
+  src.connect(g).connect(master);
+  src.start();
+}
+
+/** The music loop: one recorded track, looped, with a lowpass and gain that follow Milo's danger. */
+function startMusic() {
+  const list = bank?.music;
+  if (!ok() || !list?.length || musicChain) return;
+  const src = ctx.createBufferSource();
+  src.buffer = list[0];
+  src.loop = true;
+  const f = ctx.createBiquadFilter();
+  f.type = 'lowpass';
+  f.frequency.value = 2400;
+  const g = ctx.createGain();
+  g.gain.value = 0.0001;
+  src.connect(f).connect(g).connect(master);
+  src.start();
+  g.gain.setTargetAtTime(0.7, ctx.currentTime, 0.8);       // fade in, never an instant edge
+  musicChain = { src, gain: g, filter: f };
 }
 
 // ── primitives ────────────────────────────────────────────────────────────
@@ -173,8 +255,14 @@ function startBed() {
 
 /** Call once a frame with Milo's danger scalar (0..1). */
 export function setDanger(danger) {
-  if (!ok() || !bed) return;
+  if (!ok()) return;
   const d = Math.max(0, Math.min(1, danger || 0));
+  if (musicChain) {                       // sample mode: the recorded loop tightens with him too
+    musicChain.gain.gain.setTargetAtTime(0.65 + d * 0.30, now(), 0.25);
+    musicChain.filter.frequency.setTargetAtTime(2000 + d * 5000, now(), 0.25);
+    return;
+  }
+  if (!bed) return;
   bed.gain.gain.setTargetAtTime(0.012 + d * 0.10, now(), 0.25);
   bed.filter.frequency.setTargetAtTime(180 + d * 950, now(), 0.25);
 }
@@ -193,6 +281,14 @@ export function impact(speed, { heavy = false } = {}) {
   const s = Math.max(0, Math.min(1, speed / 700));
   if (s < 0.05) return;                       // below this it is a scuff, not a hit
   if (!throttled('impact', 45)) return;
+  if (sampleMode()) {
+    // Same number, same thresholds as the synthesis below: speed picks the
+    // recording (light, medium, heavy) and scales its volume. A heavy body
+    // (a boulder) always uses the heavy set.
+    const tier = heavy || s >= 0.62 ? 'impact_heavy' : s >= 0.28 ? 'impact_medium' : 'impact_light';
+    play(tier, 0.30 + s * 0.70);
+    return;
+  }
   const gain = 0.05 + s * 0.30;
   // Harder hits are LOWER and longer — the way mass actually sounds.
   noise(0.05 + s * 0.13, gain, {
@@ -204,6 +300,7 @@ export function impact(speed, { heavy = false } = {}) {
 
 /** Pencil on paper, while the finger is down. Called as the stroke extends. */
 export function scratch() {
+  if (sampleMode()) { if (ok() && throttled('scratch', 80)) play('scratch', 0.35, 0.10); return; }
   if (!ok() || !throttled('scratch', 34)) return;
   noise(0.035, 0.035, { type: 'bandpass', freq: 1900 + Math.random() * 1400, q: 1.2 });
 }
@@ -211,29 +308,34 @@ export function scratch() {
 /** The line commits and the world starts moving again. */
 export function release() {
   if (!ok()) return;
+  if (sampleMode()) { play('release', 0.8); return; }
   noise(0.09, 0.09, { type: 'highpass', freq: 700, sweepTo: 2600 });
   blip('triangle', 300, 0.14, 0.09, { sweepTo: 560 });
 }
 
 /** A stroke was refused — too long, too far, degenerate. Not a death. */
 export function reject() {
+  if (sampleMode()) { play('reject', 0.6); return; }
   blip('square', 190, 0.09, 0.055, { sweepTo: 130 });
 }
 
 /** A switch fires. Deliberately bright and mechanical: this is a GOOD event. */
 export function trigger() {
+  if (sampleMode()) { play('trigger', 0.8); return; }
   blip('square', 620, 0.05, 0.05);
   blip('square', 930, 0.07, 0.045, { delay: 0.05 });
 }
 
 /** Milo dies. Falling, final, and short — it is followed by the death cam. */
 export function death() {
+  if (sampleMode()) { play('death', 1.0); return; }
   noise(0.30, 0.16, { type: 'lowpass', freq: 1500, sweepTo: 90 });
   blip('sawtooth', 210, 0.42, 0.11, { sweepTo: 48 });
 }
 
 /** Milo is out. Rising, resolved, and sized to the rating. */
 export function success(stars = 1) {
+  if (sampleMode()) { play('success' + Math.max(1, Math.min(3, Math.round(stars) || 1)), 0.9, 0.02); return; }
   const root = 392;                                   // G4
   const steps = [0, 4, 7, 12].slice(0, Math.max(2, stars + 1));
   steps.forEach((semi, i) => {
@@ -251,12 +353,14 @@ export function success(stars = 1) {
 /** The barrel going off: a low thump under a falling roar. */
 export function blast() {
   if (!ok()) return;
+  if (sampleMode()) { play('blast', 1.0); return; }
   noise(0.55, 0.34, { type: 'lowpass', freq: 2200, sweepTo: 70 });
   blip('sine', 62, 0.45, 0.28, { sweepTo: 28 });
 }
 
 /** A bee hitting something: a short dry buzz, throttled so a swarm hums. */
 export function buzz() {
+  if (sampleMode()) return;                 // no recording of a bee: silent here, never synthesised
   if (!ok() || !throttled('buzz', 70)) return;
   blip('sawtooth', 210 + Math.random() * 60, 0.06, 0.035, { sweepTo: 180 });
 }
@@ -264,6 +368,7 @@ export function buzz() {
 export function closeCall(speed = 400) {
   if (!ok() || !throttled('closeCall', 200)) return;
   const s = Math.max(0, Math.min(1, speed / 800));
+  if (sampleMode()) { play('close_call', 0.4 + s * 0.6); return; }
   // The pass: a band of noise sweeping down past you.
   noise(0.26, 0.07 + s * 0.10, {
     type: 'bandpass', freq: 900 + s * 1800, sweepTo: 260, q: 2.2,
@@ -274,6 +379,7 @@ export function closeCall(speed = 400) {
 
 /** The whole game is finished. The only sound that is allowed to be big. */
 export function ending() {
+  if (sampleMode()) { play('ending', 0.9, 0.02); return; }
   [0, 7, 12, 16, 19].forEach((semi, i) => {
     blip('triangle', 261.6 * Math.pow(2, semi / 12), 1.1, 0.075, { delay: i * 0.12 });
   });
@@ -290,9 +396,13 @@ export function ending() {
 
 export function __resetForTest() {
   ctx = null; master = null; bed = null; enabled = true; suspended = false;
-  lastAt.clear();
+  bank = null; musicChain = null;
+  lastAt.clear(); lastPick.clear();
 }
 
 export function __stateForTest() {
-  return { ctx: ctx ? ctx.state : null, enabled, suspended, hasBed: !!bed };
+  return {
+    ctx: ctx ? ctx.state : null, enabled, suspended, hasBed: !!bed,
+    sampleMode: sampleMode(), samples: bank ? Object.keys(bank).length : 0, music: !!musicChain,
+  };
 }

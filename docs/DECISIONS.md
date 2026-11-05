@@ -411,3 +411,51 @@ recorded CC0 samples chosen by the same `normalSpeed` thresholds, plus a
 recorded loop, on the Playgama build only. That needs a build step that embeds
 samples in the Playgama flavour only, which means editing `tools/build.js`.
 Not done.
+
+---
+
+## D15 — Audio on Playgama: recorded CC0 samples and one music loop, for THAT BUILD ONLY · **DECIDED 2026-11-05 (owner: "on the sound yes")**
+
+Amends D5 and D5a for the Playgama build only. The YouTube and open-web builds
+are unchanged: synthesised SFX and the procedural bed, no music track, exactly
+as D5 locked them (verified in Chrome on 5 Nov: 7 oscillators, the bed running,
+no sample bank on the page).
+
+**Why:** Playgama's rules 3.3.1 (music and effects required) and 3.3.2 (sound
+synthesised in code is not accepted) are on its "common reasons a game is sent
+back" list, and Playgama is the route to YouTube (it chooses its best performers
+together with YouTube; see `docs/research/most-played/REPORT.md`). A rejection
+costs more than this change.
+
+**What D5a's principle keeps:** an impact still takes its recording (light,
+medium, heavy) and its volume from `normalSpeed`, the number `hazards.js`
+thresholds at 400, and a heavy body always plays the heavy set, so a fatal hit
+is still audibly a different event from a bump. The music's lowpass and gain
+still follow Milo's danger. No information is carried by audio alone (D5's rule
+is untouched). Where no recording exists (the bee buzz) the Playgama build is
+silent; it never falls back to synthesis.
+
+**What shipped:** 14 sound groups and one loop in `assets/audio/playgama/`
+(CC0: Kenney Impact Sounds and Interface Sounds, hernandack's "Swinging Sweet";
+sources and licences per file in `LICENSES.md`), converted OGG to MP3 because
+Safari on iOS cannot play the Ogg container, loudness-normalised. 25 files,
+418,630 bytes, about 409 KB embedded. `tools/build.js` embeds them as base64
+in `globalThis.BYC_SAMPLES` in the Playgama flavour only (the one edit to
+`tools/` approved for this); `js/audio.js` plays them when that global exists.
+
+**Verified (Chrome, 5 Nov 2026):** all 25 MP3s decode (the loop is 24.928 s,
+the same as its source, so the encoder padding is trimmed); in a played level
+11 recordings started and 0 oscillators were created; muted: 0 starts; paused:
+0 starts and the context suspended; resumed: sound back. `npm test`: exit 0,
+all gates PASS.
+
+**Risks, stated:** (1) The audio is inside `index.html` as base64, not separate
+files in the zip; a moderator who looks for files would not find any (if so,
+ship them beside `index.html`). (2) I could not listen: the choice of which
+Kenney file stands for which event, and of the loop, is by name and duration,
+not by ear. The owner should listen on the Sandbox build and say what to swap;
+swapping is a one-line edit in the conversion list. (3) `npm run test:audio`
+(Chromium) did not run on this machine.
+
+**Reversal cost:** low. Delete `assets/audio/playgama/manifest.json` and the
+Playgama build is synthesised again.

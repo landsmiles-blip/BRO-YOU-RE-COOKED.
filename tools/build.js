@@ -105,7 +105,33 @@ const playables = html.replace(SLOT, SDK_TAG);
 // unchanged, so the banned-primitive check above still holds for it; the
 // network calls are the SDK's own, on a portal that expects them.
 export const PLAYGAMA_TAG = '<script src="https://bridge.playgama.com/v2/stable/playgama-bridge.js"></script>';
-const playgama = html.replace(SLOT, PLAYGAMA_TAG);
+let playgama = html.replace(SLOT, PLAYGAMA_TAG);
+
+// RECORDED SOUND, PLAYGAMA BUILD ONLY (D15, 5 Nov 2026). Playgama refuses sound
+// synthesised in code (rules 3.3.1/3.3.2), so this flavour alone carries the CC0
+// recordings in assets/audio/playgama, base64 in a script ahead of the game
+// (js/audio.js plays them when globalThis.BYC_SAMPLES exists). The YouTube and
+// web builds never get it. The bank is data, not code, so the banned-primitive
+// check above still covers everything that runs.
+let audioNote = '';
+const AUDIO_DIR = new URL('assets/audio/playgama/', root);
+if (existsSync(new URL('manifest.json', AUDIO_DIR))) {
+  const manifest = JSON.parse(readFileSync(new URL('manifest.json', AUDIO_DIR), 'utf8'));
+  const bank = {};
+  let audioBytes = 0;
+  for (const [name, files] of Object.entries(manifest)) {
+    bank[name] = files.map((f) => {
+      const b = readFileSync(new URL(f, AUDIO_DIR));
+      audioBytes += b.length;
+      return b.toString('base64');
+    });
+  }
+  const marker = `<script>${gameJs}</script>`;
+  const at = playgama.indexOf(marker);
+  if (at < 0) { console.error('BUILD FAILED — the game script is missing from the Playgama template'); process.exit(1); }
+  playgama = playgama.slice(0, at) + `<script>globalThis.BYC_SAMPLES=${JSON.stringify(bank)};</script>\n` + playgama.slice(at);
+  audioNote = `  playgama audio bank    ${Object.keys(bank).length} sounds, ${(audioBytes / 1024).toFixed(0)} KB (Playgama build only)\n`;
+}
 // The SDK reads this from beside index.html. Its own analytics on; nothing
 // else configured, so ads and the rest stay off until the owner chooses.
 const PLAYGAMA_CONFIG = JSON.stringify({ sendAnalyticsEvents: true }, null, 2) + '\n';
@@ -184,6 +210,7 @@ console.log(`  no external requests   verified (${BANNED.length} primitives chec
 console.log(`  raw                    ${(raw / 1024).toFixed(1)} KB`);
 console.log(`  gzipped                ${(gz / 1024).toFixed(1)} KB`);
 console.log(`  vs 15 MiB recommended  ${((gz / (15 * 1024 * 1024)) * 100).toFixed(2)}%`);
+if (audioNote) process.stdout.write(audioNote);
 console.log(process.argv.includes('--check')
   ? '  (check only, nothing written)\n'
   : '  → dist/byc.html (standalone)\n  → dist/artifact.html (publish flavour)\n'
