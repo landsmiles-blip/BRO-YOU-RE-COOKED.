@@ -1,5 +1,11 @@
 # NEXT: where the research stopped (paused 2026-11-04, resume next session)
 
+UPDATE 2026-11-05 (later, read after the block below): Agents E, F, G finished (distribution.md, packaging-experiments.md, tile-census.md, first-minute-measured.md, data/hub-snapshot-20261105-0701Z.csv, data/scrape-hub.js). Agent H is collecting the TubeGames tracker (added dates) into data/tracker-*.csv + tracker-method.md. vidIQ balance now 70.
+- CORRECTION to the velocity plan: the hub rounds plays to 100K (1M-10M) and 1M (>10M) [CALC from the snapshot: 475 of 1,124 games], so a 6-24 h difference shows nothing for them. Hub snapshot 2 needs a gap of about a week; use the tracker's added dates for age-adjusted plays/day instead.
+- Sound packs: downloaded through Chrome (user said YES) to C:/Users/BDE/Downloads/kenney_impact-sounds.zip (800,850 B, 130 OGG) and kenney_interface-sounds.zip (834,536 B, 100 OGG). Both License.txt say CC0 [read 5 Nov]. NOT in the repo yet; nothing wired. Kenney has no music loop: a CC0 loop (OpenGameArt) is still to be found and each file's licence checked.
+- Poof Poof sandbox (read-only): ACTIVE since 25 Oct; free traffic: 3 runs remain, each 3 days, ~50 expected gameplays; form step blocked by NO_CERTIFICATION (QA tool link). The "100 plays at 5 min" Sandbox target is not public: UNVERIFIED, read it from the console card.
+- Needs a decision (propose, do not do): BYC draws a fixed 9:16 column; at 1:1 art fills 56% and at 16:9 32%, with flat grey bars that also accept input [first-minute-measured.md]. Playgama rule 1.6.8 (fetched 4 Nov) wants a square window filled with no empty bars. Hub tiles are 194x272 CSS px (~5:7): keep the subject inside the central ~70% [tile-census.md].
+
 ## UPDATE 2026-11-05 (read this first; the 4 Nov text below is history)
 Audit result: files intact; vidIQ balance was 85 (not ~100); `dist/*.zip` stale; scratchpad helpers lost and recreated (`make-build-win.py` -> `build-win.mjs`, `pack.py`; build output goes to `<scratchpad>/out`, not `dist/`).
 Decisions (owner delegated): D-A keep my 20 added assertions in `tools/test/playgama.js` (rule breach disclosed; log in DECISIONS.md); D-B research time-boxed today, prep in parallel.

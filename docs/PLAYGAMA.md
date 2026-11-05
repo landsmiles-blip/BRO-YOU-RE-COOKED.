@@ -23,7 +23,7 @@ like Claude Code) shows a game to real players and reports what they do.
 - **The YouTube build is untouched.** It still makes no network call of its
   own, and `tools/test/playgama.js` proves the reporting stays off inside
   YouTube even if the SDK were somehow present.
-- **Ads on Playgama are off.** Turning them on is a separate decision.
+- **Ads on Playgama are ON between levels** (D13, 5 Nov 2026): one interstitial request at every level boundary, and Playgama's Bridge decides whether it shows; the rewarded skip is granted only if the ad is watched to the end. YouTube and the web build are unchanged.
 - **The SDK is Playgama's moving `stable` channel**
   (`https://bridge.playgama.com/v2/stable/playgama-bridge.js`), so it can change
   under the build without a commit here. That is acceptable for a test build on
