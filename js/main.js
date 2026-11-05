@@ -32,7 +32,7 @@ import { STAR_NAME, thresholds } from './rating.js';
 import * as sdk from './platform/sdk.js';
 import * as audio from './audio.js';
 import { loadHandFont } from './render/handfont.js';
-import { initPlaygama, playgamaGameReady, perfFrame } from './platform/playgama.js';
+import { initPlaygama, playgamaGameReady, perfFrame, onPlaygama } from './platform/playgama.js';
 
 // The daily pool too: a malformed pool level would otherwise surface only on
 // the one day it is dealt, as a blank page for everybody at once.
@@ -165,7 +165,10 @@ applySound();
 sdk.onAudioEnabledChange((on) => { platformAudio = on; applySound(); });
 
 // Certification asks that a dialog close on Esc. The board is the only one.
+// ...but Playgama's rule 1.5.2 says the opposite: the game must not use Esc,
+// because the browser reserves it for leaving full screen. So not on Playgama.
 window.addEventListener('keydown', (e) => {
+  if (onPlaygama) return;
   if (e.key === 'Escape' && game.phase === PHASE.SELECT) { closeSelect(game); _resetPhase(); }
 });
 

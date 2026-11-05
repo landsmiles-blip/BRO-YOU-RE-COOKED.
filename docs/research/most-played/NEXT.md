@@ -1,6 +1,14 @@
 # NEXT: where the research stopped (paused 2026-11-04, resume next session)
 
-## STATE AT END OF 2026-11-05 (newest; supersedes everything below it)
+## STATE, 5 NOV EVENING (newest; supersedes the blocks below where they differ)
+BYC IS UPLOAD-READY EXCEPT FOR THE OWNER'S GATED STEPS. Branch `prelaunch/playgama-compliance`, pushed to origin (no tags; `main` still c9a273a = v1.0.1).
+Done and committed: layout fills at every ratio (8465edb); covers built from the game's own renderer, 3 sizes + alternates (`docs/launch/covers/`, ae43748); recorded CC0 sound + loop for the Playgama build only, D15 (96a97b8; 0 oscillators, mute/pause verified in Chrome); `performance_sample` (4257799); Esc off on Playgama (rule 1.5.2); checklist `docs/launch/PLAYGAMA-CHECKLIST.md`. `npm test` exit 0, all gates PASS, final run after the last change.
+Zips: `dist/byc-playgama.zip` (493,269 B), `byc-playables.zip` (96,790 B), `byc-web.zip` (96,794 B), built with the scratchpad Windows copy of `tools/build.js` (`make-build-win.py` -> `build-win.mjs`, `pack.py`; build output dir via BYC_OUT). Only the Playgama page carries the audio bank (YouTube/web 279 KB, no audio data).
+NEXT, each asked first: (1) `create_application` for BYC; (2) fill the form (title "BRO, YOU'RE COOKED.", English only, all orientations, category: read `get_game_categories`); (3) upload the 3 covers (square/portrait/landscape; `start_cover_upload` -> PUT -> `confirm_cover_upload`); (4) read `get_archive_qa_tool_link`, re-read `get_game_checklist`; (5) `start_archive_upload` with `dist/byc-playgama.zip`; (6) `publish_sandbox`; (7) owner reads the real Sandbox targets off the console card; (8) the free traffic boost (3 runs left) ONLY on an explicit yes after the build is live.
+Open risks (stated in the checklist): nobody has listened to the audio choices; Firefox/Safari/Edge not exercised; 1.6.7 text size not checked; audio is base64 in index.html (not separate files); the game ran at ~1 fps in an automated Chrome tab (cause UNVERIFIED, looks like tab throttling); the `performance_sample` events from Sandbox players will show real frame rates.
+Housekeeping: untracked files that must stay out: `decision_log.md`, `Code_Generated_Image.png`, `youtube_playables_forensic_analysis_2026.md`. Scratch servers are stopped. PyAV/numpy live only in the scratchpad venv.
+
+## STATE AT END OF 2026-11-05 (research; earlier block)
 RESEARCH IS DONE AND WRITTEN: `REPORT.md`, `translation-to-byc.md`, `CHALLENGE-ME.md`, `sources.md`, `red-team.md` (33 claims: 17 confirmed, 10 weakened, 2 refuted, 4 cannot check). Commit on `prelaunch/playgama-compliance`, NOT pushed. Gemini cannot see it until the owner says push.
 vidIQ credits: 60 left. Only one thing in the study is still open: a second hub snapshot (needs ~1 week gap; rerun `data/scrape-hub.js` exactly) to get plays/day.
 NEXT WORK, in order (each gated as stated in `translation-to-byc.md`):
