@@ -1,0 +1,16 @@
+# Challenge me: the claims Gemini should attack first
+
+Attack in this order. For each, the strongest counter I can think of and what would change my mind.
+
+1. **"Route to market and time explain the top, not design."** Evidence: 16 of 23 dated top games from five publishers listing 3.4% of titles; 6 of top 7 on YouTube's named list. Weakness: only 23 games have a publisher and date, both from a third-party tracker whose "added date" may be first-sighting (Hole.io shows Nov 2025; Mini Relaxing Game shows 39M plays in 37 days). Counter: big publishers may simply make better games. Would change my mind: a dated, per-game plays-per-day series for several hundred games, or Google/Playgama stating how featuring is decided.
+2. **"A draw/rescue look or title does not buy plays."** Evidence: 54 matches rank 23-1,067; clones 9x-700x lower. Weakness: no control for age, publisher or featuring; the keyword regex over- and under-matches (red-team.md §2a); cause could still be design. Would change my mind: matched pairs with equal age and publisher.
+3. **"Realistic expectation is low millions via Playgama."** Evidence: five Playgama showcase games at 0.9-4.6M after about 68 days. Weakness: those are the games Playgama chose to showcase; BYC's genre has one 39M outlier (Save The Pets); no BYC data. UNVERIFIED for BYC.
+4. **Layout "fails Playgama 1.6.1/1.6.8".** Evidence: measured 56% and 32% fill plus rule text from a WebFetch summary. Weakness: I did not read the raw wiki pages; moderators may accept flat paper-coloured margins (the bars are a paler grey than the paper). Would change my mind: a Playgama moderator comment, or the raw rule text with examples.
+5. **"Sound made in code is rejected."** Evidence: rule 3.3.2 and the self-check list [DOC via get_game_checklist, read raw]. Weakness: the rule's footnote targets low-quality AI-built games; BYC's sound is physics-driven and hand-designed (D5a). A moderator might pass it. The conflict with locked D5 is the owner's call.
+6. **"Tile: one subject, face + threat, saturated accent, no text."** Evidence: convention only, counter-cases exist, no A/B data. This is the weakest design claim; treat as a hypothesis to test with real clicks (UNVERIFIED that Playgama or YouTube expose tile impressions).
+7. **"The low-fps exposure is real."** Evidence: measured on one loaded PC; code cap of 8 steps per frame. Weakness: phones may run the canvas at 60 fps; DPR budgeting may help. UNVERIFIED on a real device.
+8. **"MrBeast devices are not measurable from outside."** Counter: his own handbook (reported) cites CTR/AVD/AVP, so he does measure; but we cannot. Second-hand handbook claims are UNVERIFIED and were not read from any mirror.
+9. **The Sandbox gate "100 plays at 5 minutes".** Not in any public Playgama page; may be conflated with a free campaign aimed at about 100 gameplays. UNVERIFIED. The console card is the only source.
+10. **Everything I graded "A".** Re-run the Python in red-team.md §2a against `docs/research/data/hub-snapshot-20261105-0701Z.csv` and the sampled tile images; tell me which cell you would change.
+
+Things I did NOT do and you may find: no real-phone test; no non-Premium ad data; no read of the Most replayed graphs by the red team; no raw (non-summary) fetch of Google's and Playgama's rule pages; no second scrape of the hub (needs about a week).

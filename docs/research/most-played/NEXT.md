@@ -1,5 +1,17 @@
 # NEXT: where the research stopped (paused 2026-11-04, resume next session)
 
+## STATE AT END OF 2026-11-05 (newest; supersedes everything below it)
+RESEARCH IS DONE AND WRITTEN: `REPORT.md`, `translation-to-byc.md`, `CHALLENGE-ME.md`, `sources.md`, `red-team.md` (33 claims: 17 confirmed, 10 weakened, 2 refuted, 4 cannot check). Commit on `prelaunch/playgama-compliance`, NOT pushed. Gemini cannot see it until the owner says push.
+vidIQ credits: 60 left. Only one thing in the study is still open: a second hub snapshot (needs ~1 week gap; rerun `data/scrape-hub.js` exactly) to get plays/day.
+NEXT WORK, in order (each gated as stated in `translation-to-byc.md`):
+1. Layout fill (Playgama 1.6.1/1.6.8): paint the paper pattern across the whole canvas, keep the 9:16 playfield; check in Chrome at 9:16, 1:1, 16:9, 21:9; `npm test`. No level or `tools/` change.
+2. Covers: 800x800, 1080x1920, 1920x1080, text-free, subject in the middle 70% (hub tile is 5:7). Ask before uploading.
+3. Sound: owner must decide D5 (see D14 in DECISIONS.md); Kenney packs are in C:/Users/BDE/Downloads; still need a CC0 loop; Playgama-only build step needs `tools/build.js` (ask).
+4. Rebuild zips (recreate scratchpad `make-build-win.py` + `pack.py` if the scratchpad is gone; build output must go to a scratch dir, then copy to `dist/`), verify names, `npm test` with exact output.
+5. Playgama draft for BYC: read `get_archive_qa_tool_link` (certification) first; ask before each create/update/upload/publish; the free traffic boost (3 runs left) only on an explicit yes and after the build is live.
+6. Real-phone test of the first level at low frame rates (loop caps catch-up at 8 steps/frame; red-team.md 2i). Needs the owner's phone.
+7. Push/tag only on the owner's explicit yes.
+
 UPDATE 2026-11-05 (later, read after the block below): Agents E, F, G finished (distribution.md, packaging-experiments.md, tile-census.md, first-minute-measured.md, data/hub-snapshot-20261105-0701Z.csv, data/scrape-hub.js). Agent H is collecting the TubeGames tracker (added dates) into data/tracker-*.csv + tracker-method.md. vidIQ balance now 70.
 - CORRECTION to the velocity plan: the hub rounds plays to 100K (1M-10M) and 1M (>10M) [CALC from the snapshot: 475 of 1,124 games], so a 6-24 h difference shows nothing for them. Hub snapshot 2 needs a gap of about a week; use the tracker's added dates for age-adjusted plays/day instead.
 - Sound packs: downloaded through Chrome (user said YES) to C:/Users/BDE/Downloads/kenney_impact-sounds.zip (800,850 B, 130 OGG) and kenney_interface-sounds.zip (834,536 B, 100 OGG). Both License.txt say CC0 [read 5 Nov]. NOT in the repo yet; nothing wired. Kenney has no music loop: a CC0 loop (OpenGameArt) is still to be found and each file's licence checked.
