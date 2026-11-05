@@ -1,5 +1,14 @@
 # NEXT: where the research stopped (paused 2026-11-04, resume next session)
 
+## UPDATE 2026-11-05 (read this first; the 4 Nov text below is history)
+Audit result: files intact; vidIQ balance was 85 (not ~100); `dist/*.zip` stale; scratchpad helpers lost and recreated (`make-build-win.py` -> `build-win.mjs`, `pack.py`; build output goes to `<scratchpad>/out`, not `dist/`).
+Decisions (owner delegated): D-A keep my 20 added assertions in `tools/test/playgama.js` (rule breach disclosed; log in DECISIONS.md); D-B research time-boxed today, prep in parallel.
+Done today: commit f56c4c9 (Playgama sound starts MUTED until the Bridge answers, Required step 5); zips rebuilt in scratchpad `out/` with compliance code (playables 95,894 / web 95,902 / playgama 96,070 bytes; `index.html` at root, no slashes); platform gates PASS (playgama, ads, save).
+Launched agents: G (the ONLY Chrome user: hub snapshot 1 -> `docs/research/data/`, tile census, first-minute, BYC at 16:9/1:1/9:16), E (distribution mechanics -> `distribution.md`), F (vidIQ before/after packaging, cap 15 credits -> `packaging-experiments.md`). Snapshot 2 of the hub is due >= 6 h after snapshot 1 (run `docs/research/data/scrape-hub.js` the same way, then difference for plays/day). Red team (D) runs LAST.
+Facts found: Playgama cover slots are exact: square 800x800, portrait 1080x1920, landscape 1920x1080, PNG/JPEG <= 10 MB, uploaded via `start_cover_upload` -> HTTP PUT -> `confirm_cover_upload` (ask the user before uploading). Kenney.nl returns 403 to curl: download the CC0 packs through Chrome (user said YES) after Agent G is done.
+OPEN DECISION for the owner (AGENTS.md: reversing a decision is theirs): DECISIONS.md D5 (LOCKED: synthesised, collision-driven sound, no music) and D5a conflict with Playgama rule 3.3.2/3.3.1 (recorded sound + music required). Proposed 1:3:1: keep D5 for YouTube and the web build; for the Playgama build only, play recorded CC0 samples chosen by the same `normalSpeed` thresholds plus a recorded loop. Needs a build step that embeds samples ONLY in the Playgama flavour, which means touching `tools/build.js`: ask the owner before doing that.
+Also pending docs: `docs/PLAYGAMA.md` line 26 still says ads on Playgama are off (now ON between levels, platform-paced); add a DECISIONS entry.
+
 Branch: `prelaunch/playgama-compliance` (local only; nothing pushed, nothing uploaded to Playgama).
 Plan file: `C:\Users\BDE\.claude\plans\pasted-content-id-8310-read-claude-md-playful-hamming.md`
 
