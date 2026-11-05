@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>cover tool</title>
+<style>html,body{margin:0;background:#333;color:#ddd;font:12px monospace}canvas{display:block}</style></head>
+<body>
+<pre id="log">loading…</pre>
+<script src="/vendor/matter.min.js"></script>
+<script type="module">
+import { buildSim, stepSim } from '/js/sim.js';
+import { A1 } from '/js/levels.js';
+import { drawScene, drawPaper } from '/js/render/world.js';
+import { view, applyTransform } from '/js/view.js';
+
+const log = (s) => { document.getElementById('log').textContent = s; };
+
+// Build the real level and step the real sim to a chosen moment.
+function simAt(level, ms) {
+  const sim = buildSim(level);
+  let guard = 0;
+  while (sim.simTime < ms && guard++ < 5000) stepSim(sim);
+  return sim;
+}
+
+const bodyOf = (o) => o?.body ?? o;
+function pos(o) { const b = bodyOf(o); return b?.position ? { x: b.position.x, y: b.position.y } : null; }
+
+/**
+ * opts: w,h  canvas size; ms  sim time; zoom  fraction of canvas height the subject fills;
+ * line  {x0,x1,y,part} half-drawn line (or null); danger  0..1; shiftY  fraction to nudge down
+ */
+window.renderCover = (opts) => {
+  const { w, h, ms = 620, zoom = 0.6, line = null, danger = 0.95, shiftY = 0, dx = 0 } = opts;
+  const sim = simAt(A1, ms);
+  const miloP = pos(sim.milo), ballP = pos(sim.objects.get('ball1'));
+  if (!miloP || !ballP) { log('cannot find bodies: milo keys=' + Object.keys(sim.milo || {}).join()); return null; }
+  sim.milo.danger = danger;                    // art direction: the real face, at full fright
+
+  const top = ballP.y - 28, bottom = miloP.y + 36;       // ball top .. Milo's feet
+  const E = bottom - top;
+  const s = Math.min((zoom * h) / E, (0.9 * w) / 260);
+  const cx = (ballP.x + miloP.x) / 2 + dx, cy = (top + bottom) / 2 - shiftY * (h / s);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  view.canvas = canvas; view.ctx = ctx; view.dpr = 1; view.scale = s;
+  view.offsetX = w / (2 * s) - cx; view.offsetY = h / (2 * s) - cy;
+  view.worldW = w / s; view.worldH = h / s; view.cssW = w; view.cssH = h;
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  applyTransform(ctx);
+  // visibleBounds() assumes a camera centred on the safe box; ours is not, so
+  // lay the page over the whole canvas first (grid is anchored to world units,
+  // so drawScene's own page lines up exactly on top of it).
+  drawPaper(ctx, { x0: cx - w / (2 * s) - 40, y0: cy - h / (2 * s) - 40,
+                   x1: cx + w / (2 * s) + 40, y1: cy + h / (2 * s) + 40 }, 0);
+
+  let livePoints = null;
+  if (line) {
+    const n = 14, pts = [];
+    // 'auto' = midway between the boulder's underside and the top of Milo's head
+    const ly = line.y === 'auto' ? ((ballP.y + 28) + (miloP.y - 36)) / 2 : line.y;
+    const lx0 = line.x0 ?? ballP.x - 78, lx1 = line.x1 ?? ballP.x + 78;
+    for (let i = 0; i <= n; i++) {
+      const t = (i / n) * (line.part ?? 1);
+      pts.push({ x: lx0 + (lx1 - lx0) * t, y: ly + Math.sin(i * 0.9) * 1.4 });
+    }
+    livePoints = pts;
+  }
+  drawScene(ctx, sim, { now: 0, freeze: 0, livePoints, liveHolds: true, walkPhase: 0.4 });
+  window.__last = { miloP, ballP, s, cx, cy, E, simTime: sim.simTime };
+  return canvas;
+};
+
+window.showCover = (opts) => {
+  const c = window.renderCover(opts);
+  if (!c) return 'fail';
+  document.querySelectorAll('canvas').forEach((x) => x.remove());
+  c.style.maxWidth = '100vw'; c.style.maxHeight = '88vh';
+  document.body.appendChild(c);
+  log(JSON.stringify(window.__last));
+  return JSON.stringify(window.__last);
+};
+
+window.saveCover = async (name, opts) => {
+  const c = window.renderCover(opts);
+  if (!c) return 'fail';
+  const blob = await new Promise((r) => c.toBlob(r, 'image/png'));
+  const res = await fetch('/save?name=' + encodeURIComponent(name), { method: 'POST', body: blob });
+  return (await res.text()) + ' ' + c.width + 'x' + c.height;
+};
+log('ready');
+window.__ready = true;
+</script>
+</body></html>
