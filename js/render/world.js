@@ -6,7 +6,7 @@
 
 import { view, applyTransform, visibleBounds } from '../view.js';
 import { C, HAND } from './palette.js';
-import { LINE, SAFE_BOX, TNT } from '../constants.js';
+import { LINE, TNT } from '../constants.js';
 import { inkPath, inkShape, rectPoints, circlePoints } from './stroke.js';
 import { drawMilo, drawDog } from './rig.js';
 import { drain, drawMotionStreaks } from './freeze.js';
@@ -22,29 +22,43 @@ const GRID = 40;       // world units per graph-paper square
 const MARGIN_X = 34;  // the notebook's margin line
 
 /**
- * THE PAGE: graph-paper squares inside the play area, a margin line down its
- * left side, and the plain desk round it. Everything here comes from fixed
- * numbers in world units, never from a random draw, so nothing on the page
- * can shimmer — and the squares stay put as the view scales, like real paper.
- * The death cam draws the same page, so a replay is the level they just saw.
+ * THE PAGE: graph-paper squares and a margin line, across the WHOLE view.
+ *
+ * It used to stop at the 720x1280 safe box and leave a flat grey "desk" round
+ * it. At 9:16 that is invisible, but at 1:1 the paper filled 56% of the width
+ * and at 16:9 32%, with two empty bars either side — which Playgama's rules
+ * name (1.6.1: fill the available area at any ratio; 1.6.8: a square window
+ * fills with no empty bars). The slack outside the safe box is still only
+ * background, never puzzle geometry; it is now the same page. At 9:16 the view
+ * IS the safe box and nothing changes.
+ *
+ * Everything here comes from fixed numbers in world units, never from a random
+ * draw, so nothing on the page can shimmer — and the squares stay put as the
+ * view scales, like real paper. The grid is anchored to world multiples of
+ * GRID, so it lines up with the original squares inside the safe box. The
+ * death cam draws the same page, so a replay is the level they just saw.
  */
 export function drawPaper(ctx, vb, freeze = 0) {
-  ctx.fillStyle = drain(C.paperDark, freeze * 0.5);
-  ctx.fillRect(vb.x0, vb.y0, vb.x1 - vb.x0, vb.y1 - vb.y0);
   ctx.fillStyle = drain(C.paper, freeze * 0.5);
-  ctx.fillRect(0, 0, SAFE_BOX.w, SAFE_BOX.h);
+  ctx.fillRect(vb.x0, vb.y0, vb.x1 - vb.x0, vb.y1 - vb.y0);
   ctx.save();
   ctx.strokeStyle = drain(C.grid, freeze * 0.5);
   ctx.lineWidth = 1.4;
   ctx.beginPath();
-  for (let x = GRID; x < SAFE_BOX.w; x += GRID) { ctx.moveTo(x, 0); ctx.lineTo(x, SAFE_BOX.h); }
-  for (let y = GRID; y < SAFE_BOX.h; y += GRID) { ctx.moveTo(0, y); ctx.lineTo(SAFE_BOX.w, y); }
+  // Strictly inside the view (half a unit of slack), as the original loops were,
+  // so no line is drawn along the very edge of the canvas.
+  for (let x = Math.ceil((vb.x0 + 0.5) / GRID) * GRID; x < vb.x1 - 0.5; x += GRID) {
+    ctx.moveTo(x, vb.y0); ctx.lineTo(x, vb.y1);
+  }
+  for (let y = Math.ceil((vb.y0 + 0.5) / GRID) * GRID; y < vb.y1 - 0.5; y += GRID) {
+    ctx.moveTo(vb.x0, y); ctx.lineTo(vb.x1, y);
+  }
   ctx.stroke();
   ctx.strokeStyle = drain(C.margin, freeze * 0.5);
   ctx.lineWidth = 2.4;
   ctx.beginPath();
-  ctx.moveTo(MARGIN_X, 0);
-  ctx.lineTo(MARGIN_X, SAFE_BOX.h);
+  ctx.moveTo(MARGIN_X, vb.y0);
+  ctx.lineTo(MARGIN_X, vb.y1);
   ctx.stroke();
   ctx.restore();
 }
