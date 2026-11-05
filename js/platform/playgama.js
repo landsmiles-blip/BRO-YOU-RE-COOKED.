@@ -42,7 +42,10 @@ const quietly = (f) => { try { const p = f(); p?.catch?.(() => {}); } catch { /*
 // is on the page, so YouTube and the web build are unchanged.
 
 const SAVE_KEY = 'byc_save_v1';
-let audioOn = true;                  // until the SDK has answered, as everywhere else
+// Playgama Required step 5: start muted if the platform says so. Until the Bridge
+// has answered we do not know, so the safe start is MUTED; initPlaygama() sets the
+// real state the moment initialize() resolves (or turns sound on if it fails).
+let audioOn = false;
 let loaded = false;                  // nothing is saved until a load has landed (see sdk.js)
 export let language = 'en';
 const audioFns = [];
@@ -103,9 +106,14 @@ export function initPlaygama() {
     quietly(() => bridge.platform.on(bridge.EVENT_NAME.AUDIO_STATE_CHANGED, apply));
     quietly(() => bridge.platform.on(bridge.EVENT_NAME.PAUSE_STATE_CHANGED,
       (p) => (p ? pauseFns : resumeFns).forEach((f) => quietly(f))));
-    if (bridge.platform.isAudioEnabled === false) apply(false);
+    apply(bridge.platform.isAudioEnabled !== false);
     return true;
-  }, () => false);
+  }, () => {
+    // No Bridge answer: behave like the open web rather than stay silent for ever.
+    audioOn = true;
+    audioFns.forEach((f) => quietly(() => f(true)));
+    return false;
+  });
   return ready;
 }
 
