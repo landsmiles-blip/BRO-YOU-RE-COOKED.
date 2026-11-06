@@ -459,3 +459,11 @@ swapping is a one-line edit in the conversion list. (3) `npm run test:audio`
 
 **Reversal cost:** low. Delete `assets/audio/playgama/manifest.json` and the
 Playgama build is synthesised again.
+
+---
+
+## D16 — Two decision logs, two numbering schemes: how they point at each other · **DECIDED 2026-11-06**
+
+The studio log (`Logic-Misfit/` , currently saved as `- decision_log.md`, entries `D-1`..`D-17`) and this file (`D1`..`D16`, the game's own) use different numbers for different things: **game D13 (Playgama build behaviour) is not studio D-13 (a Gemini audit)**. Rule from now on: a game decision is written here as `Dn`; a studio decision or a red-team call-out is written in the studio log as `D-n` in its seven-field format; an entry in one that concerns the other names it ("game D15", "studio D-17"). Studio D-17 (6 Nov) records the verification of Gemini's D-15 audit and mirrors game D13-D15.
+
+Not done and asked of the owner: restore the studio log's expected name `DECISION_LOG.md` (the parent repo shows that file as deleted and the 51 KB log as untracked under the dash name).
