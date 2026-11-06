@@ -16,6 +16,7 @@
 //   node tools/test/conformance.js
 
 import { existsSync, readFileSync, mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const CANDIDATES = [
   '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
@@ -32,7 +33,7 @@ catch {
   catch { console.log('conformance SKIPPED — playwright-core not installed'); process.exit(0); }
 }
 
-const ROOT = new URL('../../', import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const BASE = process.env.BASE_URL ?? 'http://localhost:8080/';
 const SHOTS = process.env.SHOT_DIR ?? '/tmp/conformance';
 mkdirSync(SHOTS, { recursive: true });
@@ -70,9 +71,18 @@ check('1', 'the YOUTUBE build loads the SDK as its FIRST script',
 check('1', 'and the SDK is the ONLY script that loads from anywhere',
       scripts.filter((t) => /\bsrc=/.test(t)).length === 1, `${scripts.length} scripts`);
 {
-  const { spawnSync } = await import('node:child_process');
-  const ls = spawnSync('unzip', ['-Z1', ROOT + 'dist/byc-playables.zip'], { encoding: 'utf8' });
-  const names = ls.status === 0 ? ls.stdout.trim().split('\n') : [];
+  // Entry names read from the zip's own central directory (no `unzip` binary
+  // needed: it is absent on Windows).
+  const names = [];
+  try {
+    const z = readFileSync(ROOT + 'dist/byc-playables.zip');
+    let p = z.readUInt32LE(z.length - 6);                     // central directory offset (no zip comment)
+    for (let i = z.readUInt16LE(z.length - 12); i > 0; i--) {
+      const n = z.readUInt16LE(p + 28), m = z.readUInt16LE(p + 30), c = z.readUInt16LE(p + 32);
+      names.push(z.toString('utf8', p + 46, p + 46 + n));
+      p += 46 + n + m + c;
+    }
+  } catch { /* no zip: names stays empty and the check fails */ }
   check('7', 'the upload ZIP holds index.html at its root and nothing else',
         names.length === 1 && names[0] === 'index.html', names.join(', ') || 'no zip');
 }

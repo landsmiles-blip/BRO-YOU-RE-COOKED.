@@ -467,3 +467,13 @@ Playgama build is synthesised again.
 The studio log (`Logic-Misfit/` , currently saved as `- decision_log.md`, entries `D-1`..`D-17`) and this file (`D1`..`D16`, the game's own) use different numbers for different things: **game D13 (Playgama build behaviour) is not studio D-13 (a Gemini audit)**. Rule from now on: a game decision is written here as `Dn`; a studio decision or a red-team call-out is written in the studio log as `D-n` in its seven-field format; an entry in one that concerns the other names it ("game D15", "studio D-17"). Studio D-17 (6 Nov) records the verification of Gemini's D-15 audit and mirrors game D13-D15.
 
 Not done and asked of the owner: restore the studio log's expected name `DECISION_LOG.md` (the parent repo shows that file as deleted and the 51 KB log as untracked under the dash name).
+
+---
+
+## D17 — `tools/build.js` packs its own zips; the Windows path defects in two other tools · **DECIDED 2026-11-06 (owner's yes, relayed in chat)**
+
+`spawnSync('zip')` is replaced by a Node-only packer (`makeZip`, `zlib.deflateRawSync`, own CRC-32): entry names are bare file names and the packer throws on any `/` or `\`, timestamps are fixed to 1980-01-01 so the same build gives the same bytes, `index.html` is first (the Playgama zip adds `playgama-bridge-config.json`). `.pathname` became `fileURLToPath` in `tools/build.js`, `tools/test/conformance.js` and `tools/lib/embed-font.mjs`; conformance reads the zip's entry names from its own central directory instead of calling `unzip`. No level, physics or test assertion changed.
+
+**Evidence (6 Nov, Windows 11, no `zip` binary):** `npm run build` writes all three zips (YouTube 95,924 B, web 95,929 B, Playgama 492,072 B); Python `zipfile.testzip()` returns None on each and lists `index.html` at the root; `npm run test:conformance` ends "every machine-checkable row passes" (5 rows could not run before); `npm test` ends "ALL PHYSICS GATES PASS". The zips are 0.9 KB smaller than the 5 Nov ones because of level-9 deflate. Still Linux-only and untouched: the `/home/user/...` and `/tmp` defaults in `board.js`, `filmstrip.js`, `frozen.js`, `browser.js`, `audio.js` (all overridable by env vars).
+
+**Reversal cost:** low (`git revert`).

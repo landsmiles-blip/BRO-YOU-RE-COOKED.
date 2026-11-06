@@ -30,10 +30,61 @@
 // Playables SDK before any of the game code") was unmet in the only file that
 // mattered, and nothing said so.
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { gzipSync } from 'node:zlib';
-import { spawnSync } from 'node:child_process';
+import { gzipSync, deflateRawSync } from 'node:zlib';
+import { fileURLToPath } from 'node:url';
+
+// A zip written in plain Node, so `npm run build` works on Windows, macOS and
+// Linux with no `zip` binary (6 Nov 2026: this PC has none, and the old
+// spawnSync('zip') call archived nothing there). Entry names are bare file
+// names with forward slashes only (Playgama and YouTube both reject a
+// backslash path), timestamps are fixed so the same build gives the same
+// bytes, and index.html always comes first.
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+    t[n] = c >>> 0;
+  }
+  return t;
+})();
+const crc32 = (buf) => {
+  let c = 0xffffffff;
+  for (let i = 0; i < buf.length; i++) c = CRC_TABLE[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+};
+function makeZip(entries) {            // entries: [{ name, data: Buffer }]
+  const parts = [], central = [];
+  let offset = 0;
+  for (const { name, data } of entries) {
+    if (name.includes('\\') || name.includes('/') || name.startsWith('.')) {
+      throw new Error(`zip entry "${name}" must be a bare file name with no path separators`);
+    }
+    const nameBuf = Buffer.from(name, 'utf8');
+    const packed = deflateRawSync(data, { level: 9 });
+    const crc = crc32(data);
+    const local = Buffer.alloc(30);
+    local.writeUInt32LE(0x04034b50, 0); local.writeUInt16LE(20, 4); local.writeUInt16LE(0x0800, 6);
+    local.writeUInt16LE(8, 8); local.writeUInt16LE(0, 10); local.writeUInt16LE(0x21, 12);   // 1980-01-01 00:00
+    local.writeUInt32LE(crc, 14); local.writeUInt32LE(packed.length, 18); local.writeUInt32LE(data.length, 22);
+    local.writeUInt16LE(nameBuf.length, 26); local.writeUInt16LE(0, 28);
+    const cen = Buffer.alloc(46);
+    cen.writeUInt32LE(0x02014b50, 0); cen.writeUInt16LE(20, 4); cen.writeUInt16LE(20, 6); cen.writeUInt16LE(0x0800, 8);
+    cen.writeUInt16LE(8, 10); cen.writeUInt16LE(0, 12); cen.writeUInt16LE(0x21, 14);
+    cen.writeUInt32LE(crc, 16); cen.writeUInt32LE(packed.length, 20); cen.writeUInt32LE(data.length, 24);
+    cen.writeUInt16LE(nameBuf.length, 28); cen.writeUInt32LE(offset, 42);
+    parts.push(local, nameBuf, packed);
+    central.push(cen, nameBuf);
+    offset += local.length + nameBuf.length + packed.length;
+  }
+  const cdSize = central.reduce((n, b) => n + b.length, 0);
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(entries.length, 8); end.writeUInt16LE(entries.length, 10);
+  end.writeUInt32LE(cdSize, 12); end.writeUInt32LE(offset, 16);
+  return Buffer.concat([...parts, ...central, end]);
+}
 
 const require = createRequire(import.meta.url);
 let esbuild;
@@ -49,7 +100,7 @@ const root = new URL('..', import.meta.url);
 const read = (p) => readFileSync(new URL(p, root), 'utf8');
 
 const result = await esbuild.build({
-  entryPoints: [new URL('js/main.js', root).pathname],
+  entryPoints: [fileURLToPath(new URL('js/main.js', root))],
   bundle: true, write: false, format: 'iife', target: 'es2020',
   minify: true, legalComments: 'none',
 });
@@ -187,21 +238,20 @@ if (!process.argv.includes('--check')) {
   writeFileSync(new URL('dist/web/index.html', root), html);
 
   // index.html at the ROOT of each archive, nothing else in it: the whole game
-  // is one file. -j drops the directory, -X drops platform metadata so the
-  // same build always produces the same archive.
+  // is one file (the Playgama one adds its config). makeZip writes bare names
+  // and fixed timestamps, so the same build always produces the same archive.
   for (const [name, dir, what] of [
     ['byc-playables.zip', 'playables', 'YouTube upload'],
     ['byc-web.zip', 'web', 'open web: itch.io or any static host'],
     ['byc-playgama.zip', 'playgama', 'Playgama: real players\' attempts'],
   ]) {
-    const zip = new URL(`dist/${name}`, root).pathname;
+    const zip = new URL(`dist/${name}`, root);
     if (existsSync(zip)) rmSync(zip);
-    const files = [new URL(`dist/${dir}/index.html`, root).pathname];
-    if (dir === 'playgama') files.push(new URL('dist/playgama/playgama-bridge-config.json', root).pathname);
-    const z = spawnSync('zip', ['-q', '-X', '-j', zip, ...files]);
-    zipNote += z.status === 0
-      ? `  → dist/${name} (${what}: index.html at the root)\n`
-      : `  !! zip not found — dist/${dir}/ is built but NOT archived\n`;
+    const names = ['index.html'];
+    if (dir === 'playgama') names.push('playgama-bridge-config.json');
+    const entries = names.map((n) => ({ name: n, data: readFileSync(new URL(`dist/${dir}/${n}`, root)) }));
+    writeFileSync(zip, makeZip(entries));
+    zipNote += `  → dist/${name} (${what}: index.html at the root, ${statSync(zip).size} bytes)\n`;
   }
 }
 

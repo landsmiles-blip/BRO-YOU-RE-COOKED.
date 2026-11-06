@@ -5,7 +5,7 @@
 > is the Chapter 1 boss). The Playgama-ready work (Bridge pause/audio/storage/ads,
 > recorded sound, full-window layout, new covers) is on branch
 > `prelaunch/playgama-compliance`, pushed, NOT merged to `main` and NOT tagged.
-> Current zips (5 Nov): YouTube 96,790 B, web 96,794 B, Playgama 493,269 B (it
+> Current zips (6 Nov, built by the Node packer in tools/build.js): YouTube 95,924 B, web 95,929 B, Playgama 492,072 B (it
 > carries the recorded-sound bank). Details: `docs/launch/PLAYGAMA-CHECKLIST.md`,
 > `docs/DECISIONS.md` D13-D16.
 
@@ -78,6 +78,6 @@ commission a trademark search on the title (`docs/CERTIFICATION.md` §6,
 | `npm run curve` | Pass |
 | `npm run plates` | Pass (FUNNEL listed open) |
 | `npm run test:board` | Pass |
-| `npm run test:conformance` | Every machine-checkable YouTube row passes on Linux. **On Windows 6 Nov: 46 pass, 5 cannot run** (they build file paths with `.pathname` and call a Linux `unzip`; the files exist) |
+| `npm run test:conformance` | Every machine-checkable YouTube row passes on Linux. **On Windows 6 Nov, after the path and zip-reader fix: all machine-checkable rows pass** |
 | `npm run test:browser` / `test:board` / `test:audio` | Pass on 6 Nov (Chromium 1234; `test:board` needs `BASE_URL=http://127.0.0.1:8080/` with `npm run serve` running) |
-| Zips (5 Nov) | YouTube 96,790 B, web 96,794 B (about 95 KB each), Playgama 493,269 B |
+| Zips (6 Nov, Node packer) | YouTube 95,924 B, web 95,929 B (about 94 KB each), Playgama 492,072 B |

@@ -117,7 +117,7 @@ would rule out CrazyGames. Leave it until the numbers say which is worth more.
 > - cloud save via `saveData`/`loadData` is the only save;
 > - `onPause` halts physics, audio and rendering;
 > - zero external network calls;
-> - a 95 KB zip (96,790 bytes), interactive 250 ms after load in our 6 Nov conformance run;
+> - a 94 KB zip (95,924 bytes), interactive 250 ms after load in our 6 Nov conformance run;
 > - playable at all nine aspect ratios.
 >
 > 45 levels in seven chapters, plus a daily challenge. A certification dry-run
