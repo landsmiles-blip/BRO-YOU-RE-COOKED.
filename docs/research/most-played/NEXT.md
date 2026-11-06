@@ -1,5 +1,10 @@
 # NEXT: where the research stopped (paused 2026-11-04, resume next session)
 
+## STATE, 6 NOV AFTER GEMINI'S AUDIT (newest; supersedes the blocks below where they differ)
+Gemini's D-15 audit hit a stale 3 Nov zip; verified against the live branch in studio D-17, credited in D-18. Owner's yes (relayed) on four asks, done: (A) `tools/build.js` packs zips in plain Node, `.pathname` -> `fileURLToPath` (game D17, `750a233`): zips are now YouTube 95,924 B, web 95,929 B, Playgama 492,072 B; `npm test` PASS; conformance passes in full on Windows. (B) the two duplicate repo copies, `byc.zip`, `Code_Generated_Image.png`, the byc-clone `decision_log.md`, the stray `2_decision_log.md` and the dash-named log were MOVED (not deleted) to `Desktop\Logic-Misfit-ARCHIVE-2026-11-06\`. (C) the studio log is `Logic-Misfit\DECISION_LOG.md` (on Windows `decision_log.md` is the same file); it already held D-1..D-17 plus Gemini's D-18. (D) `main` fast-forward + tag `v1.0.2`.
+Not done on purpose: Gemini's optional cover tweak (anchor the blue line to two ledges) was NOT made; the covers stay as in `3f690a1`; reason in studio D-19.
+NEXT is unchanged from the 5 Nov block below: Playgama steps 1-8, each asked first.
+
 ## STATE, 5 NOV EVENING (newest; supersedes the blocks below where they differ)
 BYC IS UPLOAD-READY EXCEPT FOR THE OWNER'S GATED STEPS. Branch `prelaunch/playgama-compliance`, pushed to origin (no tags; `main` still c9a273a = v1.0.1).
 Done and committed: layout fills at every ratio (8465edb); covers built from the game's own renderer, 3 sizes + alternates (`docs/launch/covers/`, ae43748); recorded CC0 sound + loop for the Playgama build only, D15 (96a97b8; 0 oscillators, mute/pause verified in Chrome); `performance_sample` (4257799); Esc off on Playgama (rule 1.5.2); checklist `docs/launch/PLAYGAMA-CHECKLIST.md`. `npm test` exit 0, all gates PASS, final run after the last change.
