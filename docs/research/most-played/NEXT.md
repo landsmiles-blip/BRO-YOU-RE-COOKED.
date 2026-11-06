@@ -1,5 +1,8 @@
 # NEXT: where the research stopped (paused 2026-11-04, resume next session)
 
+## STATE, 6 NOV EVENING: COVERS + THUMBNAIL STUDY PAUSED FOR A MACHINE MOVE (newest)
+Read `thumbnails/STATUS.md` and `thumbnails/PLAN.md` first. BYC draft `cmw4qnmru02lzn10hszv36dy1` exists on Playgama with the 3 'pop' covers (commit `a977334`) and no zip, description or category; the owner was disappointed in the covers and asked for the thumbnail research to be redone before anything else is uploaded. Branch `prelaunch/playgama-compliance` holds everything; `main` and tag `v1.0.2` (`86cbee8`) do not include the covers v3 or the study files.
+
 ## STATE, 6 NOV AFTER GEMINI'S AUDIT (newest; supersedes the blocks below where they differ)
 Gemini's D-15 audit hit a stale 3 Nov zip; verified against the live branch in studio D-17, credited in D-18. Owner's yes (relayed) on four asks, done: (A) `tools/build.js` packs zips in plain Node, `.pathname` -> `fileURLToPath` (game D17, `750a233`): zips are now YouTube 95,924 B, web 95,929 B, Playgama 492,072 B; `npm test` PASS; conformance passes in full on Windows. (B) the two duplicate repo copies, `byc.zip`, `Code_Generated_Image.png`, the byc-clone `decision_log.md`, the stray `2_decision_log.md` and the dash-named log were MOVED (not deleted) to `Desktop\Logic-Misfit-ARCHIVE-2026-11-06\`. (C) the studio log is `Logic-Misfit\DECISION_LOG.md` (on Windows `decision_log.md` is the same file); it already held D-1..D-17 plus Gemini's D-18. (D) `main` fast-forward + tag `v1.0.2`.
 Not done on purpose: Gemini's optional cover tweak (anchor the blue line to two ledges) was NOT made; the covers stay as in `3f690a1`; reason in studio D-19.

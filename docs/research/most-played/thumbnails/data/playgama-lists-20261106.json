@@ -1,0 +1,6114 @@
+{
+ "top_playgama": [
+  {
+   "slug": "piece-of-cake-merge--bake",
+   "rank": 1,
+   "title": "Piece of Cake: Merge & Bake",
+   "img": "https://static.playgama.com/p-img/pg/piece-of-cake-merge--bake/big_preview/b772122937124aa6b59d6e130537c8a8",
+   "badge": "hot"
+  },
+  {
+   "slug": "tb-world",
+   "rank": 2,
+   "title": "TB World",
+   "img": "https://static.playgama.com/p-img/pg/tb-world/big_preview/af8743dadae94cfcb657a3580f7fc149",
+   "badge": "hot"
+  },
+  {
+   "slug": "deadly-descent",
+   "rank": 3,
+   "title": "Deadly Descent",
+   "img": "https://static.playgama.com/p-img/pg/deadly-descent/big-preview/cd3969f230d54e6abe01716483d55c8a",
+   "badge": "top"
+  },
+  {
+   "slug": "hidden-object-clues-and-mysteries",
+   "rank": 4,
+   "title": "Hidden Object: Clues and Mysteries",
+   "img": "https://static.playgama.com/p-img/pg/hidden-object-clues-and-mysteries/big-preview/918efb60143240eb99d962fecc6cdaf8",
+   "badge": ""
+  },
+  {
+   "slug": "good-sort-master",
+   "rank": 5,
+   "title": "Good Sort Master: Triple Match",
+   "img": "https://static.playgama.com/p-img/pg/good-sort-master/big-preview/87153c5702e14ce994b208df2c0a5f61",
+   "badge": ""
+  },
+  {
+   "slug": "hedgies",
+   "rank": 6,
+   "title": "Hedgies",
+   "img": "https://static.playgama.com/p-img/pg/hedgies/big_preview/82348afa3e7b4db0bf915c835c40a8bd",
+   "badge": "top"
+  },
+  {
+   "slug": "sprunki-world-online-rp--play-with-friends",
+   "rank": 7,
+   "title": "Sprunki World Online RP - Play with Friends!",
+   "img": "https://static.playgama.com/p-img/pg/preview/542149fc69824db4a3ade368771deced",
+   "badge": "hot"
+  },
+  {
+   "slug": "aod--art-of-defense",
+   "rank": 8,
+   "title": "AOD - Art Of Defense",
+   "img": "https://static.playgama.com/p-img/pg/aod--art-of-defense/big_preview/748d6b91ce3c4a309fd6df323115b434",
+   "badge": "top"
+  },
+  {
+   "slug": "my-town-home-family-playhouse",
+   "rank": 9,
+   "title": "My Town Home: Family Playhouse",
+   "img": "https://static.playgama.com/p-img/pg/my-town-home-family-playhouse/big_preview/7cfc3b9750e84aceb634888d9518f8d3",
+   "badge": "top"
+  },
+  {
+   "slug": "chess-online-multiplayer",
+   "rank": 10,
+   "title": "Chess Online Multiplayer",
+   "img": "https://static.playgama.com/p-img/pg/chess-online-multiplayer/big_preview/94a907a44037494c955d803fb45ec5fd",
+   "badge": ""
+  },
+  {
+   "slug": "fruit-merge-playgama",
+   "rank": 11,
+   "title": "Fruit Merge: Juicy Drop Game",
+   "img": "https://static.playgama.com/p-img/pg/fruit-merge-playgama/big_preview/f88e2107d6554e668566d486ba0518a4",
+   "badge": "top"
+  },
+  {
+   "slug": "backgammon-multiplayer",
+   "rank": 12,
+   "title": "Backgammon",
+   "img": "https://static.playgama.com/p-img/pg/backgammon-multiplayer/big-preview/763a51507ab541d6a86327001536b609",
+   "badge": ""
+  },
+  {
+   "slug": "bubble-blast",
+   "rank": 13,
+   "title": "Bubble Blast",
+   "img": "https://static.playgama.com/p-img/pg/bubble-blast/big-preview/48be0e1ca5354daa8378d69daea53114",
+   "badge": "top"
+  },
+  {
+   "slug": "hidden-object-my-hotel",
+   "rank": 14,
+   "title": "Hidden Object: My Hotel",
+   "img": "https://static.playgama.com/p-img/pg/hidden-object-my-hotel/big-preview/94eab6bba922419d904b5872c8a1fb52",
+   "badge": "top"
+  },
+  {
+   "slug": "find-the-frog--hidden-objects",
+   "rank": 15,
+   "title": "Find the Frog - Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/find-the-frog--hidden-objects/big_preview/541792f4c5354ef88be0646eb9be4b1b",
+   "badge": ""
+  },
+  {
+   "slug": "car-destruction-king",
+   "rank": 16,
+   "title": " Car Destruction King",
+   "img": "https://static.playgama.com/p-img/pg/car-destruction-king/big_preview/0ca8f4094cfd4826b9888ea1d094bdd7",
+   "badge": ""
+  },
+  {
+   "slug": "age-of-tanks-warriors-td-war",
+   "rank": 17,
+   "title": "Age of Tanks Warriors: TD War",
+   "img": "https://static.playgama.com/p-img/pg/age-of-tanks-warriors-td-war/big-preview/5061aadf18094454bc3abd61cef1477e",
+   "badge": "top"
+  },
+  {
+   "slug": "gym-simulator-online-escape",
+   "rank": 18,
+   "title": "Gym Simulator Online, Escape",
+   "img": "https://static.playgama.com/p-img/pg/gym-simulator-online-escape/big_preview/c86dc8829aa6427eadcf81f662e549de",
+   "badge": ""
+  },
+  {
+   "slug": "snake-2048-64be-1",
+   "rank": 19,
+   "title": "Snake 2048",
+   "img": "https://static.playgama.com/p-img/pg/snake-2048-64be-1/big-preview/ac8a1a98a2a14b65a0a04ee3f82ef222",
+   "badge": "top"
+  },
+  {
+   "slug": "mr-racer-car-racing",
+   "rank": 20,
+   "title": "MR RACER - Car Racing",
+   "img": "https://static.playgama.com/p-img/pg/mr-racer-car-racing/big-preview/45ff957c535b47b7b3c3bc1a365201f6",
+   "badge": "top"
+  },
+  {
+   "slug": "vega-mix-2-adventure",
+   "rank": 21,
+   "title": "Vega Mix 2: Adventure",
+   "img": "https://static.playgama.com/p-img/pg/vega-mix-2-adventure/big-preview/46f5bcaca15b411382afc96ac1c38132",
+   "badge": "top"
+  },
+  {
+   "slug": "emerland-solitaire",
+   "rank": 22,
+   "title": "Emerland Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/emerland-solitaire/big-preview/a28ad092fa0846c2a837bfdbf4024a0d",
+   "badge": ""
+  },
+  {
+   "slug": "color-pixels-coloring-by-numbers",
+   "rank": 23,
+   "title": "Color Pixels - Coloring by Numbers",
+   "img": "https://static.playgama.com/p-img/pg/color-pixels-coloring-by-numbers/big-preview/549956d9cbc04d79abf3be99ad2a5e26",
+   "badge": ""
+  },
+  {
+   "slug": "animal-hair-salon",
+   "rank": 24,
+   "title": "Animal Hair Salon",
+   "img": "https://static.playgama.com/p-img/pg/animal-hair-salon/big-preview/8ac649a2cf904f6091271cdecbab4055",
+   "badge": ""
+  },
+  {
+   "slug": "italian-brainrot-find-the-difference",
+   "rank": 25,
+   "title": "Italian Brainrot Find the Difference",
+   "img": "https://static.playgama.com/p-img/pg/italian-brainrot-find-the-difference/big-preview/631d6272edb849768c1fef6ce240b8fb",
+   "badge": ""
+  },
+  {
+   "slug": "word-search-hidden-words",
+   "rank": 26,
+   "title": "Word Search Hidden Words",
+   "img": "https://static.playgama.com/p-img/pg/word-search-hidden-words/big-preview/ec39a0b3c0e0496b906fa2b63a7162f2",
+   "badge": ""
+  },
+  {
+   "slug": "obby-minigames-vs-1000",
+   "rank": 27,
+   "title": "Obby: Mini-Games VS 1000",
+   "img": "https://static.playgama.com/p-img/pg/obby-minigames-vs-1000/big-preview/2aee5acec97e44c0abfc6788c3366e5a",
+   "badge": ""
+  },
+  {
+   "slug": "popping-candies",
+   "rank": 28,
+   "title": "Popping Candies",
+   "img": "https://static.playgama.com/p-img/pg/popping-candies/big-preview/7546f1f72f59475487a53c82adfb7c89",
+   "badge": ""
+  },
+  {
+   "slug": "word-solitaire",
+   "rank": 29,
+   "title": "Word Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/word-solitaire/big_preview/4d5b96263605435ea229215ef523a0f4",
+   "badge": ""
+  },
+  {
+   "slug": "rise-of-the-dead",
+   "rank": 30,
+   "title": "Rise of the Dead",
+   "img": "https://static.playgama.com/p-img/pg/rise-of-the-dead/big-preview/123a84fd979245ed93b03fe4b412cfe2",
+   "badge": "top"
+  },
+  {
+   "slug": "wood-blocks-jam",
+   "rank": 31,
+   "title": "Wood Blocks Jam",
+   "img": "https://static.playgama.com/p-img/pg/wood-blocks-jam/big-preview/f8a46a136d1043fd8ab89994b49ec933",
+   "badge": "top"
+  },
+  {
+   "slug": "find-out-hidden-object",
+   "rank": 32,
+   "title": "Find Out Hidden Object",
+   "img": "https://static.playgama.com/p-img/pg/find-out-hidden-object/big-preview/7d83bf75c3254e38872ba1bc8a712434",
+   "badge": ""
+  },
+  {
+   "slug": "millionaire-life",
+   "rank": 33,
+   "title": "Millionaire Life",
+   "img": "https://static.playgama.com/p-img/pg/preview/352a9b903c1e4ecd9161497ad961bd9f",
+   "badge": ""
+  },
+  {
+   "slug": "gangster-island-crime-city",
+   "rank": 34,
+   "title": "Gangsta Island: Crime City",
+   "img": "https://static.playgama.com/p-img/pg/gangster-island-crime-city/big_preview/8969fed03f85477894d478c0a911dcc6",
+   "badge": ""
+  },
+  {
+   "slug": "sticker-art-book-puzzle",
+   "rank": 35,
+   "title": "Sticker Art Book Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/sticker-art-book-puzzle/big-preview/dee5b7da5ae240e6a8b03370e6eb8faa",
+   "badge": ""
+  },
+  {
+   "slug": "idle-game-dev-simulator",
+   "rank": 36,
+   "title": "Idle Game Dev Simulator",
+   "img": "https://static.playgama.com/p-img/pg/idle-game-dev-simulator/big-preview/40ce900d1075451dad0bb74f5eeafc3e",
+   "badge": "top"
+  },
+  {
+   "slug": "home-design-decorate-house",
+   "rank": 37,
+   "title": "Home Design: Decorate House",
+   "img": "https://static.playgama.com/p-img/pg/home-design-decorate-house/big_preview/732dcf8246c241bbb8bee665c08a5321",
+   "badge": ""
+  },
+  {
+   "slug": "home-design--match-3",
+   "rank": 38,
+   "title": "Home Design - Match 3",
+   "img": "https://static.playgama.com/p-img/pg/home-design--match-3/big-preview/4352a10aac144261a0b5f3b8364b097e",
+   "badge": ""
+  },
+  {
+   "slug": "online-car-destruction",
+   "rank": 39,
+   "title": "Online Car Destruction Simulator 3D",
+   "img": "https://static.playgama.com/p-img/pg/online-car-destruction/big-preview/39924242bbdd4fe0b34a807e27611dc2",
+   "badge": "top"
+  },
+  {
+   "slug": "build-your-zombie-horde",
+   "rank": 40,
+   "title": "Build Your Zombie Horde",
+   "img": "https://static.playgama.com/p-img/pg/build-your-zombie-horde/big-preview/36fafc3063dd437e90df9d3b1fdf6f5a",
+   "badge": ""
+  },
+  {
+   "slug": "tower-defense",
+   "rank": 41,
+   "title": "Tower Defense",
+   "img": "https://static.playgama.com/p-img/pg/tower-defense/big-preview/fec76f10e9f7465dbffdf9919d10fdc8",
+   "badge": ""
+  },
+  {
+   "slug": "weapon-upgrade",
+   "rank": 42,
+   "title": "Weapon Upgrade",
+   "img": "https://static.playgama.com/p-img/pg/weapon-upgrade/big-preview/c4b86fa215b3487bb971d1a531cb72cb",
+   "badge": ""
+  },
+  {
+   "slug": "mystery-of-the-old-house-hidden-objects",
+   "rank": 43,
+   "title": "Mystery of the Old House: Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/mystery-of-the-old-house-hidden-objects/big-preview/f64b27344ff549f7915236677b009098",
+   "badge": "top"
+  },
+  {
+   "slug": "idle-supermarket-tycoon",
+   "rank": 44,
+   "title": "Idle Supermarket Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/idle-supermarket-tycoon/big-preview/c341d0a8566f49a89546970826943d3d",
+   "badge": ""
+  },
+  {
+   "slug": "detective-max-mystery-the-disappearance-of-mr-winters",
+   "rank": 45,
+   "title": "Detective Max Mystery: The Disappearance of Mr. Winters",
+   "img": "https://static.playgama.com/p-img/pg/detective-max-mystery-the-disappearance-of-mr-winters/big-preview/f21d60d399f84a2e90112f3317c47b0f",
+   "badge": "top"
+  },
+  {
+   "slug": "idle-train-empire",
+   "rank": 46,
+   "title": "Idle Train Empire Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/idle-train-empire/big-preview/e3802898026944ec8bd00e4beea2ca24",
+   "badge": "top"
+  },
+  {
+   "slug": "archery-ragdoll",
+   "rank": 47,
+   "title": "Archer Ragdoll",
+   "img": "https://static.playgama.com/p-img/pg/archery-ragdoll/big-preview/77ca7ee51b4e4cf1ada781b3d8795a1e",
+   "badge": ""
+  },
+  {
+   "slug": "epic-battle-simulator-2",
+   "rank": 48,
+   "title": "Epic Battle Simulator 2",
+   "img": "https://static.playgama.com/p-img/pg/epic-battle-simulator-2/big-preview/5c1998558eb34c5aa9d63d8843542aa5",
+   "badge": ""
+  },
+  {
+   "slug": "get-a-screw-puzzle",
+   "rank": 49,
+   "title": "Get a screw: puzzle!",
+   "img": "https://static.playgama.com/p-img/pg/get-a-screw-puzzle/big-preview/01d15b2d3747415f97b5c1fecaf60aaf",
+   "badge": ""
+  },
+  {
+   "slug": "king-simulator",
+   "rank": 50,
+   "title": "King Simulator",
+   "img": "https://static.playgama.com/p-img/pg/king-simulator/big-preview/5ef96642a1224c208555a25fb2a0e38d",
+   "badge": ""
+  },
+  {
+   "slug": "runic-curse",
+   "rank": 51,
+   "title": "Runic Curse",
+   "img": "https://static.playgama.com/p-img/pg/runic-curse/big-preview/bdd024ebc8f149fc833e810c7040dc91",
+   "badge": ""
+  },
+  {
+   "slug": "block-puzzle-king",
+   "rank": 52,
+   "title": "Block Puzzle King",
+   "img": "https://static.playgama.com/p-img/pg/block-puzzle-king/big-preview/a08071a3636d41a6a9e87a2d2ed58e73",
+   "badge": ""
+  },
+  {
+   "slug": "zombie-derby",
+   "rank": 53,
+   "title": "Zombie Derby",
+   "img": "https://static.playgama.com/p-img/pg/zombie-derby/big-preview/2540efe567a44658975ece5322e0c70f",
+   "badge": "top"
+  },
+  {
+   "slug": "speed-per-click-obby",
+   "rank": 54,
+   "title": "Speed per Click: Obby",
+   "img": "https://static.playgama.com/p-img/pg/speed-per-click-obby/big_preview/e7b9863ada9d49cd9b89874fd4c61448",
+   "badge": "top"
+  },
+  {
+   "slug": "pocket-universe",
+   "rank": 55,
+   "title": "Pocket Universe",
+   "img": "https://static.playgama.com/p-img/pg/pocket-universe/big-preview/15c74ee2f97c48e6bbea19585bf87f69",
+   "badge": ""
+  },
+  {
+   "slug": "catch-the-bear",
+   "rank": 56,
+   "title": "Catch the Bear",
+   "img": "https://static.playgama.com/p-img/pg/catch-the-bear/big-preview/59a1a074696f439ebef8d05ba5d527f2",
+   "badge": ""
+  },
+  {
+   "slug": "idle-tower-defense",
+   "rank": 57,
+   "title": "Idle Tower Defense",
+   "img": "https://static.playgama.com/p-img/pg/idle-tower-defense/big_preview/2fb519438aca495ca15fea3d1c6e266a",
+   "badge": ""
+  },
+  {
+   "slug": "picture-jam-factory",
+   "rank": 58,
+   "title": "Picture Jam Factory",
+   "img": "https://static.playgama.com/p-img/pg/picture-jam-factory/big-preview/6c0c649081a34665a7854334292f19b9",
+   "badge": ""
+  },
+  {
+   "slug": "dungeon-master-cult-and-craft",
+   "rank": 59,
+   "title": "Dungeon Master - Cult & Craft",
+   "img": "https://static.playgama.com/p-img/pg/dungeon-master-cult-and-craft/big-preview/60c8c6082dc543e39e321467be00f33b",
+   "badge": "top"
+  },
+  {
+   "slug": "obby-click-and-grow",
+   "rank": 60,
+   "title": "Obby: Click and Grow",
+   "img": "https://static.playgama.com/p-img/pg/obby-click-and-grow/big-preview/9ce005a26dd045d9bbdfc9587d541b1d",
+   "badge": ""
+  },
+  {
+   "slug": "wood-hexa-factory",
+   "rank": 61,
+   "title": "Wood Hexa Factory!",
+   "img": "https://static.playgama.com/p-img/pg/wood-hexa-factory/big_preview/c0c048aa706a4e5b9774c0778b52dce0",
+   "badge": ""
+  },
+  {
+   "slug": "knight-legend",
+   "rank": 62,
+   "title": "Knight Legend",
+   "img": "https://static.playgama.com/p-img/pg/knight-legend/big-preview/acaf0e22161344b4b924d90ef0f6c5c9",
+   "badge": ""
+  }
+ ],
+ "trending_now": [
+  {
+   "slug": "piece-of-cake-merge--bake",
+   "rank": 1,
+   "title": "Piece of Cake: Merge & Bake",
+   "img": "https://static.playgama.com/p-img/pg/piece-of-cake-merge--bake/big_preview/b772122937124aa6b59d6e130537c8a8",
+   "badge": "hot"
+  },
+  {
+   "slug": "arrow-puzzle",
+   "rank": 2,
+   "title": "Arrow Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrow-puzzle/big-preview/6f9c8fc74f8a4dd39e6700bc24fce9ce",
+   "badge": "hot"
+  },
+  {
+   "slug": "tb-world",
+   "rank": 3,
+   "title": "TB World",
+   "img": "https://static.playgama.com/p-img/pg/tb-world/big_preview/af8743dadae94cfcb657a3580f7fc149",
+   "badge": "hot"
+  },
+  {
+   "slug": "mahjong-classic",
+   "rank": 4,
+   "title": "Mahjong Classic",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-classic/big-preview/730f65084d864a9baffefa86e110b106",
+   "badge": "hot"
+  },
+  {
+   "slug": "plants-vs-zombies-fusion-edition",
+   "rank": 5,
+   "title": "PVZ Fusion Cheats",
+   "img": "https://static.playgama.com/p-img/pg/plants-vs-zombies-fusion-edition/big_preview/0a3f694494fd4b469429f9c8baf0cb93",
+   "badge": "hot"
+  },
+  {
+   "slug": "secret-hall-hidden-objects",
+   "rank": 6,
+   "title": "Secret Hall: Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/secret-hall-hidden-objects/big_preview/879ba9c1460549c9a93bd24beab49316",
+   "badge": "hot"
+  },
+  {
+   "slug": "obby-1-speed-keyboard-escape",
+   "rank": 7,
+   "title": "Obby: +1 Speed Keyboard Escape",
+   "img": "https://static.playgama.com/p-img/pg/preview/41cee513f18f4aacb23d62e9c345f6b9",
+   "badge": ""
+  },
+  {
+   "slug": "deadly-descent",
+   "rank": 8,
+   "title": "Deadly Descent",
+   "img": "https://static.playgama.com/p-img/pg/deadly-descent/big-preview/cd3969f230d54e6abe01716483d55c8a",
+   "badge": "top"
+  },
+  {
+   "slug": "hidden-object-clues-and-mysteries",
+   "rank": 9,
+   "title": "Hidden Object: Clues and Mysteries",
+   "img": "https://static.playgama.com/p-img/pg/hidden-object-clues-and-mysteries/big-preview/918efb60143240eb99d962fecc6cdaf8",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-lines",
+   "rank": 10,
+   "title": "Mahjong Lines",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-lines/big_preview/96269817997541b48d15ed462ff66d47",
+   "badge": ""
+  },
+  {
+   "slug": "steal-an-egg",
+   "rank": 11,
+   "title": "Steal an Egg!",
+   "img": "https://static.playgama.com/p-img/pg/steal-an-egg/big_preview/f904ccb352d947f6b793a8937817352f",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-object-street-of-secrets",
+   "rank": 12,
+   "title": "Hidden Object: Street Of Secrets",
+   "img": "https://static.playgama.com/p-img/pg/hidden-object-street-of-secrets/big_preview/b4e56a265daf458f9027f9fa24f4f10d",
+   "badge": ""
+  },
+  {
+   "slug": "good-sort-master",
+   "rank": 13,
+   "title": "Good Sort Master: Triple Match",
+   "img": "https://static.playgama.com/p-img/pg/good-sort-master/big-preview/87153c5702e14ce994b208df2c0a5f61",
+   "badge": ""
+  },
+  {
+   "slug": "extreme-car-driving-simulator",
+   "rank": 14,
+   "title": "Extreme Car Driving Simulator",
+   "img": "https://static.playgama.com/p-img/pg/extreme-car-driving-simulator/big_preview/86f903c9f6234e62be4d6805a9429e7b",
+   "badge": ""
+  },
+  {
+   "slug": "idol-livestream-doll-dress-up",
+   "rank": 15,
+   "title": "Idol Livestream: Doll Dress Up",
+   "img": "https://static.playgama.com/p-img/pg/idol-livestream-doll-dress-up/big_preview/6d0fa2792f7e4f3a995b2c5a2f1bec7a",
+   "badge": ""
+  },
+  {
+   "slug": "hedgies",
+   "rank": 16,
+   "title": "Hedgies",
+   "img": "https://static.playgama.com/p-img/pg/hedgies/big_preview/82348afa3e7b4db0bf915c835c40a8bd",
+   "badge": "top"
+  },
+  {
+   "slug": "nuts-puzzle-sort-by-color",
+   "rank": 17,
+   "title": "Nuts Puzzle: Sort By Color",
+   "img": "https://static.playgama.com/p-img/pg/nuts-puzzle-sort-by-color/big_preview/faab3ed519024179b5a31afb72cdf675",
+   "badge": ""
+  },
+  {
+   "slug": "sprunki-sandbox-ragdoll-playground-mode-d3fe-1",
+   "rank": 18,
+   "title": "Sprunki Sandbox: Ragdoll Playground Mode",
+   "img": "https://static.playgama.com/p-img/pg/sprunki-sandbox-ragdoll-playground-mode-d3fe-1/big_preview/4b22e0f490ef433fa1d7656a711542ed",
+   "badge": "hot"
+  },
+  {
+   "slug": "sprunki-world-online-rp--play-with-friends",
+   "rank": 19,
+   "title": "Sprunki World Online RP - Play with Friends!",
+   "img": "https://static.playgama.com/p-img/pg/preview/542149fc69824db4a3ade368771deced",
+   "badge": "hot"
+  },
+  {
+   "slug": "ride-your-pet",
+   "rank": 20,
+   "title": "Ride Your Pet!",
+   "img": "https://static.playgama.com/p-img/pg/ride-your-pet/big_preview/103ff09e27a248bf9a83b8c3943957b0",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-objects-island-secrets",
+   "rank": 21,
+   "title": "Hidden Objects: Island Secrets",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects-island-secrets/big-preview/b3ce353c3ceb41be990ddee1759a2144",
+   "badge": ""
+  },
+  {
+   "slug": "obby-1-digging-power-per-click",
+   "rank": 22,
+   "title": "Obby: +1 Digging Power per Click",
+   "img": "https://static.playgama.com/p-img/pg/preview/8020f37d0b4d4dc3b10954a2089a7ff1",
+   "badge": ""
+  },
+  {
+   "slug": "vector-parkour-run",
+   "rank": 23,
+   "title": "Vector Parkour Run",
+   "img": "https://static.playgama.com/p-img/pg/preview/83a5642f72fb4fb0a4f7faba84e549ff",
+   "badge": ""
+  },
+  {
+   "slug": "numicolor",
+   "rank": 24,
+   "title": "Numicolor",
+   "img": "https://static.playgama.com/p-img/pg/preview/c2baef5d652a44b2900f383c159b1a92",
+   "badge": ""
+  },
+  {
+   "slug": "rivals-fps-online-shooter",
+   "rank": 25,
+   "title": "RIVALS FPS: Online Shooter",
+   "img": "https://static.playgama.com/p-img/pg/rivals-fps-online-shooter/big_preview/f09adf25db724a509d28d6427dfd4d7c",
+   "badge": ""
+  },
+  {
+   "slug": "my-perfect-farm-idle-tycoon",
+   "rank": 26,
+   "title": "My Perfect Farm: Idle Tycoon ",
+   "img": "https://static.playgama.com/p-img/pg/my-perfect-farm-idle-tycoon/big_preview/1edfd697618e49caa30ecd023a2c15d7",
+   "badge": ""
+  },
+  {
+   "slug": "stickman-rebirth",
+   "rank": 27,
+   "title": "Stickman Rebirth",
+   "img": "https://static.playgama.com/p-img/pg/stickman-rebirth/big_preview/1fc2877255aa4e00baefbb37a2999096",
+   "badge": ""
+  },
+  {
+   "slug": "wreckbox-robot-fighting",
+   "rank": 28,
+   "title": "Wreckbox: Robot Fighting",
+   "img": "https://static.playgama.com/p-img/pg/preview/28952e4f19a94b3bb63a8681bc2d0ff8",
+   "badge": ""
+  },
+  {
+   "slug": "fragen",
+   "rank": 29,
+   "title": "FRAGEN",
+   "img": "https://static.playgama.com/p-img/pg/fragen/big_preview/77e556a560be4a0ca22ac8c8ba19557f",
+   "badge": ""
+  },
+  {
+   "slug": "soccer-random",
+   "rank": 30,
+   "title": "Soccer Random",
+   "img": "https://static.playgama.com/p-img/pg/soccer-random/big-preview/6f59ef235c1e42198225c02473d66943",
+   "badge": ""
+  },
+  {
+   "slug": "gas-station",
+   "rank": 31,
+   "title": "Gas Station",
+   "img": "https://static.playgama.com/p-img/pg/gas-station/big_preview/5f102238e733414b9f60dbe71341689c",
+   "badge": ""
+  },
+  {
+   "slug": "aod--art-of-defense",
+   "rank": 32,
+   "title": "AOD - Art Of Defense",
+   "img": "https://static.playgama.com/p-img/pg/aod--art-of-defense/big_preview/748d6b91ce3c4a309fd6df323115b434",
+   "badge": "top"
+  },
+  {
+   "slug": "merge-defense-army-behind-the-wall",
+   "rank": 33,
+   "title": "Merge Defense: Army Behind the Wall",
+   "img": "https://static.playgama.com/p-img/pg/merge-defense-army-behind-the-wall/big_preview/ba078bbffeaf437a912f0ff3d718f520",
+   "badge": ""
+  },
+  {
+   "slug": "age-of-heroes",
+   "rank": 34,
+   "title": "Age of Heroes",
+   "img": "https://static.playgama.com/p-img/pg/age-of-heroes/big_preview/2edf00207ba34813b41dd9b22da461c4",
+   "badge": ""
+  },
+  {
+   "slug": "hero-wars-dominion-era",
+   "rank": 35,
+   "title": "Hero Wars",
+   "img": "https://static.playgama.com/p-img/pg/hero-wars-dominion-era/big_preview/64fe082757e54989aac26bbc6b13bec6",
+   "badge": ""
+  },
+  {
+   "slug": "bottle-jump-3d",
+   "rank": 36,
+   "title": "Bottle Jump 3D",
+   "img": "https://static.playgama.com/p-img/pg/bottle-jump-3d/big_preview/845373a9035146028a44366f2e2bbdae",
+   "badge": ""
+  },
+  {
+   "slug": "hook-a-brainrot",
+   "rank": 37,
+   "title": "Hook A Brainrot",
+   "img": "https://static.playgama.com/p-img/pg/hook-a-brainrot/big_preview/991c28e8457d4ced9e542e0db7c3ec67",
+   "badge": ""
+  },
+  {
+   "slug": "moto-x3m",
+   "rank": 38,
+   "title": "Moto X3M",
+   "img": "https://static.playgama.com/p-img/pg/moto-x3m/big_preview/6863e1c77f624087bae1d217cdf4c240",
+   "badge": "top"
+  },
+  {
+   "slug": "hidden-threads-match-3--stories",
+   "rank": 39,
+   "title": "Hidden Threads: Match 3 & Stories",
+   "img": "https://static.playgama.com/p-img/pg/hidden-threads-match-3-stories/big_preview/7ee82f65bd6d4640aefc9594ea9e21ce",
+   "badge": ""
+  },
+  {
+   "slug": "master-chess",
+   "rank": 40,
+   "title": "Master Chess",
+   "img": "https://static.playgama.com/p-img/pg/master-chess/big-preview/52cdd471a5044f1e94c36787ee523746",
+   "badge": ""
+  },
+  {
+   "slug": "supermarket-simulator-dream-store",
+   "rank": 41,
+   "title": "Supermarket Simulator: Dream Store",
+   "img": "https://static.playgama.com/p-img/pg/supermarket-simulator-dream-store/big_preview/3beec6ad234b41eab107c53c6b32abc0",
+   "badge": "new"
+  },
+  {
+   "slug": "crazy-obby-run",
+   "rank": 42,
+   "title": "Crazy Obby Run",
+   "img": "https://static.playgama.com/p-img/pg/crazy-obby-run/big_preview/9238c29d399a4deaaa53b2c75075833d",
+   "badge": "new"
+  },
+  {
+   "slug": "food-story-tile-match",
+   "rank": 43,
+   "title": "Food Story: Tile Match",
+   "img": "https://static.playgama.com/p-img/pg/preview/f991bf38c8274e7eab0999e8ed3928f8",
+   "badge": "new"
+  },
+  {
+   "slug": "clash-of-heroes-rpg-adventure",
+   "rank": 44,
+   "title": "Clash of Heroes: RPG Adventure",
+   "img": "https://static.playgama.com/p-img/pg/clash-of-heroes-rpg-adventure/big_preview/59944546fb034d13a8c46ef1496c5686",
+   "badge": ""
+  },
+  {
+   "slug": "coin-digger",
+   "rank": 45,
+   "title": "Coin Digger",
+   "img": "https://static.playgama.com/p-img/pg/preview/beeedbdf23fa40a0b4e97d8947588aaf",
+   "badge": "new"
+  },
+  {
+   "slug": "tnt-simulator",
+   "rank": 46,
+   "title": "TNT Simulator",
+   "img": "https://static.playgama.com/p-img/pg/tnt-simulator/big_preview/93c8a56b234c486d93455fca18a4f38e",
+   "badge": "new"
+  },
+  {
+   "slug": "hotel-marina",
+   "rank": 47,
+   "title": "Hotel Marina",
+   "img": "https://static.playgama.com/p-img/pg/hotel-marina/big_preview/1d8c16c6b6a14deab45182a998e46a42",
+   "badge": ""
+  },
+  {
+   "slug": "obby-original-stone-skipping",
+   "rank": 48,
+   "title": "Obby: Original Stone Skipping!",
+   "img": "https://static.playgama.com/p-img/pg/obby-original-stone-skipping/big_preview/cc1fb9985b5b4950bf4f57adc0697907",
+   "badge": "new"
+  },
+  {
+   "slug": "coin-cracker",
+   "rank": 49,
+   "title": "Coin Cracker",
+   "img": "https://static.playgama.com/p-img/pg/preview/b73f3951b5ac448d86e4d279dda76f01",
+   "badge": "new"
+  },
+  {
+   "slug": "obby-kart-racing",
+   "rank": 50,
+   "title": "Obby Kart Racing",
+   "img": "https://static.playgama.com/p-img/pg/preview/0c933e13267644d689af0c6c658da85d",
+   "badge": "new"
+  },
+  {
+   "slug": "pirate-raid",
+   "rank": 51,
+   "title": "Pirate Raid",
+   "img": "https://static.playgama.com/p-img/pg/preview/4f8da8d6443b4ffa9552c88cac3a1b42",
+   "badge": ""
+  },
+  {
+   "slug": "slowmo-sniper",
+   "rank": 52,
+   "title": "SlowMo Sniper",
+   "img": "https://static.playgama.com/p-img/pg/slowmo-sniper/big_preview/f51485f140b3499bb6fd236b380fe75a",
+   "badge": "new"
+  },
+  {
+   "slug": "egg-thief",
+   "rank": 53,
+   "title": "Egg Thief",
+   "img": "https://static.playgama.com/p-img/pg/egg-thief/big_preview/5f31927461e546a98035d092c28487a6",
+   "badge": ""
+  },
+  {
+   "slug": "treasure-roll",
+   "rank": 54,
+   "title": "Treasure Roll",
+   "img": "https://static.playgama.com/p-img/pg/preview/0f14db94bcd4494d88869224dde305bf",
+   "badge": "new"
+  },
+  {
+   "slug": "booblyc-td-card-tower-defense",
+   "rank": 55,
+   "title": "Booblyc TD: Card Tower Defense",
+   "img": "https://static.playgama.com/p-img/pg/preview/53eedca0c3724bc1a95bb5495195c846",
+   "badge": ""
+  },
+  {
+   "slug": "idle-cowshed",
+   "rank": 56,
+   "title": "Idle Cowshed",
+   "img": "https://static.playgama.com/p-img/pg/idle-cowshed/big_preview/c15b34dfe67a405099a829d58deb29b2",
+   "badge": ""
+  },
+  {
+   "slug": "veggie-cats-idle-farm-tycoon",
+   "rank": 57,
+   "title": "Veggie Cats: Idle Farm Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/preview/11d87bcd91dc43999f78cf3ff6ac1711",
+   "badge": ""
+  },
+  {
+   "slug": "octo-market-underwater-supermarket",
+   "rank": 58,
+   "title": "Octo Market: Underwater Supermarket",
+   "img": "https://static.playgama.com/p-img/pg/octo-market-underwater-supermarket/big_preview/4b7489d140b14d9b8100dd9d4e7ddfe5",
+   "badge": ""
+  },
+  {
+   "slug": "obby-burn-the-kingdom",
+   "rank": 59,
+   "title": "Obby: Burn the Kingdom!",
+   "img": "https://static.playgama.com/p-img/pg/preview/a7324f8bfc1c4586a11cbc20681402da",
+   "badge": "new"
+  },
+  {
+   "slug": "monster-simulator-scare-people",
+   "rank": 60,
+   "title": "Monster Simulator: Scare People!",
+   "img": "https://static.playgama.com/p-img/pg/monster-simulator-scare-people/big_preview/4464f7e5e8e04f4791b123a49245c961",
+   "badge": "new"
+  },
+  {
+   "slug": "merge-potion-idle-alchemy",
+   "rank": 61,
+   "title": "Merge Potion: Idle Alchemy",
+   "img": "https://static.playgama.com/p-img/pg/merge-potion-idle-alchemy/big_preview/4089c9e912f64a17bb4c79061602f88c",
+   "badge": ""
+  },
+  {
+   "slug": "piggy-heist",
+   "rank": 62,
+   "title": "Piggy Heist",
+   "img": "https://static.playgama.com/p-img/pg/preview/4c33d5dbc0b146928f79d535f173490f",
+   "badge": "new"
+  },
+  {
+   "slug": "from-garden-to-orbit",
+   "rank": 63,
+   "title": "From Garden to Orbit",
+   "img": "https://static.playgama.com/p-img/pg/preview/61a25a6689604519b21eaf0ee46e7176",
+   "badge": "new"
+  },
+  {
+   "slug": "abyss-gate-mmorpg",
+   "rank": 64,
+   "title": "Abyss Gate: MMORPG",
+   "img": "https://static.playgama.com/p-img/pg/abyss-gate-mmorpg/big_preview/0c2988a319ad449b8692837c21baf6ed",
+   "badge": "new"
+  },
+  {
+   "slug": "home-pin",
+   "rank": 65,
+   "title": "Home Pin",
+   "img": "https://static.playgama.com/p-img/pg/home-pin/big_preview/0d151a2d364c4695ac4493caeed03d17",
+   "badge": "new"
+  },
+  {
+   "slug": "antfall-ant-swarm-idle",
+   "rank": 66,
+   "title": "Antfall: Ant Swarm Idle",
+   "img": "https://static.playgama.com/p-img/pg/preview/6a5150c524a945f98c1d8f82af3d5ed6",
+   "badge": "new"
+  },
+  {
+   "slug": "vampire-hotel-tile-match",
+   "rank": 67,
+   "title": "Vampire Hotel: Tile Match",
+   "img": "https://static.playgama.com/p-img/pg/vampire-hotel-tile-match/big_preview/b487ce2431624fbba5807131777064d6",
+   "badge": ""
+  },
+  {
+   "slug": "obby-race-rumble",
+   "rank": 68,
+   "title": "Obby Race Rumble",
+   "img": "https://static.playgama.com/p-img/pg/obby-race-rumble/big_preview/14448dd3fd614e7495e2d3a7d417be79",
+   "badge": "new"
+  },
+  {
+   "slug": "mining-tycoon",
+   "rank": 69,
+   "title": "Mining Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/mining-tycoon/big_preview/0aaecaea9285421aa1d9b7269bd028ed",
+   "badge": "new"
+  },
+  {
+   "slug": "hidden-objects--items-find",
+   "rank": 70,
+   "title": "Hidden Objects - Items Find",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects-items-find/big_preview/5f8077b0ada14eccaaf0f1b7c25dd0bf",
+   "badge": "new"
+  },
+  {
+   "slug": "honey-wars",
+   "rank": 71,
+   "title": "Honey Wars",
+   "img": "https://static.playgama.com/p-img/pg/preview/afd9d3609bdc4bc495c9d1453ec3fc1b",
+   "badge": "new"
+  },
+  {
+   "slug": "pfxd",
+   "rank": 72,
+   "title": "PFXD",
+   "img": "https://static.playgama.com/p-img/pg/pfxd/big_preview/191e8e1ea0b34a369dfb2be1db5e1b73",
+   "badge": "new"
+  },
+  {
+   "slug": "screw-nuts--bolts-wood-solve",
+   "rank": 73,
+   "title": "Screw Nuts & Bolts: Wood Solve",
+   "img": "https://static.playgama.com/p-img/pg/screw-nuts-bolts-wood-solve/big_preview/ac696a15bf0c4fddb1dfe1a0a6223f05",
+   "badge": "new"
+  },
+  {
+   "slug": "mystery-dumpling-go-merge-io",
+   "rank": 74,
+   "title": "Mystery Dumpling Go: Merge IO",
+   "img": "https://static.playgama.com/p-img/pg/mystery-dumpling-go-merge-io/big_preview/8750aaf5c1994826b8156399b0907a6c",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-objects",
+   "rank": 75,
+   "title": "Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects/big_preview/f08cd1f8c53a4009a52067e2c7b1ab0f",
+   "badge": ""
+  },
+  {
+   "slug": "bubble-shooter-tap--pop",
+   "rank": 76,
+   "title": "Bubble Shooter: Tap & Pop",
+   "img": "https://static.playgama.com/p-img/pg/bubble-shooter-tap--pop/big-preview/c64cb16afcdf4a9b8aa6dde6b6cec88d",
+   "badge": ""
+  },
+  {
+   "slug": "block-blast-master",
+   "rank": 77,
+   "title": "Block Blast Master",
+   "img": "https://static.playgama.com/p-img/pg/preview/04a40614748247acb645c57a718f9e36",
+   "badge": ""
+  },
+  {
+   "slug": "coin-run",
+   "rank": 78,
+   "title": "Coin Run",
+   "img": "https://static.playgama.com/p-img/pg/preview/234c3edf809f4011ab72ddf6d2c606a0",
+   "badge": ""
+  },
+  {
+   "slug": "my-town-home-family-playhouse",
+   "rank": 79,
+   "title": "My Town Home: Family Playhouse",
+   "img": "https://static.playgama.com/p-img/pg/my-town-home-family-playhouse/big_preview/7cfc3b9750e84aceb634888d9518f8d3",
+   "badge": "top"
+  },
+  {
+   "slug": "hazmob-fps-online-shooter",
+   "rank": 80,
+   "title": "Hazmob FPS: Online Shooter",
+   "img": "https://static.playgama.com/p-img/pg/hazmob-fps-online-shooter/big_preview/df01c609f8c44052b837b336d0e63617",
+   "badge": "top"
+  },
+  {
+   "slug": "cooking-city",
+   "rank": 81,
+   "title": "Cooking City",
+   "img": "https://static.playgama.com/p-img/pg/cooking-city/big-preview/a613289a041d4af798d600782f703899",
+   "badge": ""
+  },
+  {
+   "slug": "basketball-stars",
+   "rank": 82,
+   "title": "Basketball Stars",
+   "img": "https://static.playgama.com/p-img/pg/basketball-stars/big_preview/2e0653c710ad43e09c40d1ba5968e447",
+   "badge": ""
+  },
+  {
+   "slug": "break-the-noob-completely",
+   "rank": 83,
+   "title": "Break The Noob Completely!",
+   "img": "https://static.playgama.com/p-img/pg/preview/97e27b09fcad4771828b7b0353948d7c",
+   "badge": ""
+  },
+  {
+   "slug": "paper-doll-makeover--dress-up",
+   "rank": 84,
+   "title": "Paper Doll Makeover & Dress Up",
+   "img": "https://static.playgama.com/p-img/pg/paper-doll-makeover--dress-up/big_preview/c46a01a7131f4ee8b2c6281d92230b44",
+   "badge": ""
+  },
+  {
+   "slug": "texas-holdem-2026",
+   "rank": 85,
+   "title": "Texas Hold'em 2026",
+   "img": "https://static.playgama.com/p-img/pg/texas-holdem-2026/big_preview/20dbdafb6fb74c03b045efb18b127b98",
+   "badge": ""
+  },
+  {
+   "slug": "klondike-classic-solitaire",
+   "rank": 86,
+   "title": "Klondike Classic Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/klondike-classic-solitaire/big-preview/970c64d9cbce4f88b1be0c461178289a",
+   "badge": ""
+  },
+  {
+   "slug": "sprunki-2c27-1",
+   "rank": 87,
+   "title": "Sprunki",
+   "img": "https://static.playgama.com/p-img/pg/sprunki-2c27-1/big-preview/0c80a1b350e54581ab19c5d17b0311a0",
+   "badge": ""
+  },
+  {
+   "slug": "chess-online-multiplayer",
+   "rank": 88,
+   "title": "Chess Online Multiplayer",
+   "img": "https://static.playgama.com/p-img/pg/chess-online-multiplayer/big_preview/94a907a44037494c955d803fb45ec5fd",
+   "badge": ""
+  },
+  {
+   "slug": "geometry-arrow-2",
+   "rank": 89,
+   "title": "Geometry Arrow 2",
+   "img": "https://static.playgama.com/p-img/pg/geometry-arrow-2/big-preview/fa9899500c7145d3a791954f399fcb3b",
+   "badge": "top"
+  },
+  {
+   "slug": "elemental-monsters-merge",
+   "rank": 90,
+   "title": "Elemental Monsters: Merge",
+   "img": "https://static.playgama.com/p-img/pg/elemental-monsters-merge/big_preview/73cef2197f2741a9bb6e033b0c6a1f30",
+   "badge": ""
+  },
+  {
+   "slug": "extreme-car-driving-stunts",
+   "rank": 91,
+   "title": "Extreme Car Driving Stunts",
+   "img": "https://static.playgama.com/p-img/pg/preview/73d20869259b4bbbbba58c2d7c08d704",
+   "badge": ""
+  },
+  {
+   "slug": "blockibo-color-blocks",
+   "rank": 92,
+   "title": "Blockibo: Color Blocks",
+   "img": "https://static.playgama.com/p-img/pg/blockibo-color-blocks/big_preview/f06922a7ea184f9fa21501743310eb4f",
+   "badge": ""
+  },
+  {
+   "slug": "the-secret-service",
+   "rank": 93,
+   "title": "The Secret Service",
+   "img": "https://static.playgama.com/p-img/pg/the-secret-service/big_preview/2f4ed531a15440aa9ed9c73b3a4593b9",
+   "badge": ""
+  },
+  {
+   "slug": "fruit-merge-playgama",
+   "rank": 94,
+   "title": "Fruit Merge: Juicy Drop Game",
+   "img": "https://static.playgama.com/p-img/pg/fruit-merge-playgama/big_preview/f88e2107d6554e668566d486ba0518a4",
+   "badge": "top"
+  },
+  {
+   "slug": "mahjong-unlimited",
+   "rank": 95,
+   "title": "Mahjong Unlimited",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-unlimited/big-preview/ceb7ccfc4ded46b8aab8673d6aeca8d7",
+   "badge": ""
+  },
+  {
+   "slug": "squishy-resale",
+   "rank": 96,
+   "title": "Squishy Resale",
+   "img": "https://static.playgama.com/p-img/pg/preview/9ede2c8b218a4f47a1d5803ce26b2180",
+   "badge": ""
+  },
+  {
+   "slug": "bubble-blast",
+   "rank": 97,
+   "title": "Bubble Blast",
+   "img": "https://static.playgama.com/p-img/pg/bubble-blast/big-preview/48be0e1ca5354daa8378d69daea53114",
+   "badge": "top"
+  },
+  {
+   "slug": "mahjong-puzzle-tile-match",
+   "rank": 98,
+   "title": "Mahjong Puzzle: Tile Match",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-puzzle-tile-match/big-preview/c4e6143f9d2d42188591a56b9ac0aea9",
+   "badge": ""
+  },
+  {
+   "slug": "cooking-marina--cooking-games",
+   "rank": 99,
+   "title": "Cooking Marina - cooking games",
+   "img": "https://static.playgama.com/p-img/pg/cooking-marina--cooking-games/big_preview/64ac994091c74898b889419014f84a48",
+   "badge": ""
+  },
+  {
+   "slug": "turballio",
+   "rank": 100,
+   "title": "Turball.io",
+   "img": "https://static.playgama.com/p-img/pg/preview/2536901617964bfdb8abcc115d9bbe90",
+   "badge": ""
+  },
+  {
+   "slug": "real-war-not-fake",
+   "rank": 101,
+   "title": "Real War: Not Fake",
+   "img": "https://static.playgama.com/p-img/pg/real-war-not-fake/big_preview/e6604ea4e0704259aec728c1e448d738",
+   "badge": ""
+  },
+  {
+   "slug": "obby-1-sword-power-per-click",
+   "rank": 102,
+   "title": "Obby: +1 Sword Power per Click",
+   "img": "https://static.playgama.com/p-img/pg/preview/37495de881b543d4a3208205ae40d83d",
+   "badge": "new"
+  },
+  {
+   "slug": "sandbox-city",
+   "rank": 103,
+   "title": "Sandbox City",
+   "img": "https://static.playgama.com/p-img/pg/sandbox-city/big_preview/37fbb6acba934ec191fed7948fab077e",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-object-my-hotel",
+   "rank": 104,
+   "title": "Hidden Object: My Hotel",
+   "img": "https://static.playgama.com/p-img/pg/hidden-object-my-hotel/big-preview/94eab6bba922419d904b5872c8a1fb52",
+   "badge": "top"
+  },
+  {
+   "slug": "find-the-frog--hidden-objects",
+   "rank": 105,
+   "title": "Find the Frog - Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/find-the-frog--hidden-objects/big_preview/541792f4c5354ef88be0646eb9be4b1b",
+   "badge": ""
+  },
+  {
+   "slug": "spin-the-rings",
+   "rank": 106,
+   "title": "Spin the Rings",
+   "img": "https://static.playgama.com/p-img/pg/spin-the-rings/big_preview/22a8f41de1ef4cec8d89d805a885e16c",
+   "badge": "new"
+  },
+  {
+   "slug": "star-shift-gravity-match",
+   "rank": 107,
+   "title": "Star Shift: Gravity Match",
+   "img": "https://static.playgama.com/p-img/pg/preview/56a5753c852a41f983f4da69ff8d03d0",
+   "badge": ""
+  },
+  {
+   "slug": "kick-lucky-blocks-online",
+   "rank": 108,
+   "title": "Kick Lucky Blocks Online",
+   "img": "https://static.playgama.com/p-img/pg/kick-lucky-blocks-online/big-preview/f5fa74d0b64c414590e5aa50153da447",
+   "badge": ""
+  },
+  {
+   "slug": "meme-dash-battle-2",
+   "rank": 109,
+   "title": "Meme Dash: Battle 2!",
+   "img": "https://static.playgama.com/p-img/pg/meme-dash-battle-2/big_preview/0e8624141cde426eb23803eb36a3b42d",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-picture-puzzle",
+   "rank": 110,
+   "title": "Arrows: Picture Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrows-picture-puzzle/big_preview/f2d198a49da140a49debac255bda757c",
+   "badge": ""
+  },
+  {
+   "slug": "gin-rummy",
+   "rank": 111,
+   "title": "Gin Rummy",
+   "img": "https://static.playgama.com/p-img/pg/gin-rummy/big-preview/a69269bce67b4b258abec91debff9bef",
+   "badge": ""
+  },
+  {
+   "slug": "plus-1-aura-slap",
+   "rank": 112,
+   "title": "+1 Aura Slap",
+   "img": "https://static.playgama.com/p-img/pg/plus-1-aura-slap/big_preview/3a0622365d574b24a26dbd056209ab39",
+   "badge": ""
+  },
+  {
+   "slug": "pregnant-mother-simulator",
+   "rank": 113,
+   "title": "Pregnant Mother Simulator",
+   "img": "https://static.playgama.com/p-img/pg/pregnant-mother-simulator/big-preview/5aa95a0bde734db9afb4ad57ede9a6c7",
+   "badge": ""
+  },
+  {
+   "slug": "stickman-kombat-2d",
+   "rank": 114,
+   "title": "Stickman Kombat 2D",
+   "img": "https://static.playgama.com/p-img/pg/stickman-kombat-2d/big_preview/4b027b6071e2495aad3ac02403e35a1a",
+   "badge": ""
+  },
+  {
+   "slug": "build-your-waterslide",
+   "rank": 115,
+   "title": "Build Your Waterslide",
+   "img": "https://static.playgama.com/p-img/pg/build-your-waterslide/big_preview/6da14c4e8e9a472a99983d4329003707",
+   "badge": ""
+  },
+  {
+   "slug": "obby-1-pickaxe-swing-escape",
+   "rank": 116,
+   "title": "Obby: +1 Pickaxe Swing Escape",
+   "img": "https://static.playgama.com/p-img/pg/obby-1-pickaxe-swing-escape/big_preview/70fa53c93fc34f269d568450a7e49c9a",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-objects-island",
+   "rank": 117,
+   "title": "Hidden Objects: Island",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects-island/big_preview/f23b7b464ab64392a1a16f5b1d8b0b0b",
+   "badge": ""
+  },
+  {
+   "slug": "car-destruction-king",
+   "rank": 118,
+   "title": " Car Destruction King",
+   "img": "https://static.playgama.com/p-img/pg/car-destruction-king/big_preview/0ca8f4094cfd4826b9888ea1d094bdd7",
+   "badge": ""
+  },
+  {
+   "slug": "obby-escape-gym-arm-wrestling",
+   "rank": 119,
+   "title": "Obby Escape: Gym Arm Wrestling",
+   "img": "https://static.playgama.com/p-img/pg/obby-escape-gym-arm-wrestling/big_preview/33c6de34e14a4d7989ef7a2a167067f1",
+   "badge": ""
+  },
+  {
+   "slug": "clean-the-squishes-asmr-sorting-obby",
+   "rank": 120,
+   "title": "Clean the Squishes! ASMR Sorting Obby",
+   "img": "https://static.playgama.com/p-img/pg/clean-the-squishes-asmr-sorting-obby/big_preview/b89f6ab4f0f64d0da9c409ddad9113b0",
+   "badge": ""
+  },
+  {
+   "slug": "age-of-tanks-warriors-td-war",
+   "rank": 121,
+   "title": "Age of Tanks Warriors: TD War",
+   "img": "https://static.playgama.com/p-img/pg/age-of-tanks-warriors-td-war/big-preview/5061aadf18094454bc3abd61cef1477e",
+   "badge": "top"
+  },
+  {
+   "slug": "barry-prison-parkour-escape",
+   "rank": 122,
+   "title": "Barry Prison: Parkour Escape!",
+   "img": "https://static.playgama.com/p-img/pg/barry-prison-parkour-escape/big-preview/4573be679daa449f83e245f8242ecb23",
+   "badge": "hot"
+  },
+  {
+   "slug": "playground-man-ragdoll-show",
+   "rank": 123,
+   "title": " Playground Man! Ragdoll Show!",
+   "img": "https://static.playgama.com/p-img/pg/playground-man-ragdoll-show/big-preview/02200d9a409548de91fdde8bbd455692",
+   "badge": "top"
+  },
+  {
+   "slug": "gym-simulator-online-escape",
+   "rank": 124,
+   "title": "Gym Simulator Online, Escape",
+   "img": "https://static.playgama.com/p-img/pg/gym-simulator-online-escape/big_preview/c86dc8829aa6427eadcf81f662e549de",
+   "badge": ""
+  },
+  {
+   "slug": "favorite-puzzles",
+   "rank": 125,
+   "title": "Favorite Puzzles",
+   "img": "https://static.playgama.com/p-img/pg/favorite-puzzles/big_preview/400025cc8973444fac031e1cb75faf61",
+   "badge": ""
+  },
+  {
+   "slug": "waste-to-wow",
+   "rank": 126,
+   "title": "Waste to Wow!",
+   "img": "https://static.playgama.com/p-img/pg/waste-to-wow/big_preview/7fcb1a973a6346a4a3e48f0a72429a5c",
+   "badge": ""
+  },
+  {
+   "slug": "obby-drive-your-car-as-far-as-possible",
+   "rank": 127,
+   "title": "Obby: Drive your car as far as possible",
+   "img": "https://static.playgama.com/p-img/pg/obby-drive-your-car-as-far-as-possible/big_preview/c7cd0e1529d24ef7986b1c3bf1e1d1b2",
+   "badge": ""
+  },
+  {
+   "slug": "bmg-ragdoll-car-race",
+   "rank": 128,
+   "title": "BMG: Ragdoll Car Race",
+   "img": "https://static.playgama.com/p-img/pg/preview/8d255e3d13454033ab09dd8229847053",
+   "badge": ""
+  },
+  {
+   "slug": "playground-man-mod-web-of-destruction",
+   "rank": 129,
+   "title": "Playground Man Mod! Web of Destruction!",
+   "img": "https://static.playgama.com/p-img/pg/playground-man-mod-web-of-destruction/big-preview/dec74d0d12004ee58b75228d1b73577c",
+   "badge": ""
+  },
+  {
+   "slug": "tap-3d-wood-block-away",
+   "rank": 130,
+   "title": "Tap 3D Wood Block Away",
+   "img": "https://static.playgama.com/p-img/pg/tap-3d-wood-block-away/big_preview/ecdad60b756f4006aec4d3a7d8d3c55d",
+   "badge": "top"
+  },
+  {
+   "slug": "power-1-loot-forge",
+   "rank": 131,
+   "title": "Power +1: Loot & Forge",
+   "img": "https://static.playgama.com/p-img/pg/preview/79415fa1f9224f6faa42a408a92a5735",
+   "badge": "new"
+  },
+  {
+   "slug": "car-crush-realistic-destruction",
+   "rank": 132,
+   "title": "Car Crush: Realistic Destruction",
+   "img": "https://static.playgama.com/p-img/pg/car-crush-realistic-destruction/big-preview/7ba07a36f0714adb826616e873fdc856",
+   "badge": ""
+  },
+  {
+   "slug": "hustle--drift-in-zil",
+   "rank": 133,
+   "title": "Hustle & Drift in ZIL",
+   "img": "https://static.playgama.com/p-img/pg/hustle-drift-in-zil/big_preview/bf5a9da724fd4334bdb7b62086e7415d",
+   "badge": ""
+  },
+  {
+   "slug": "night-shift",
+   "rank": 134,
+   "title": "Night Shift",
+   "img": "https://static.playgama.com/p-img/pg/night-shift/big_preview/dec6e580c94e42d08b6846f7297fe193",
+   "badge": ""
+  },
+  {
+   "slug": "kubzio",
+   "rank": 135,
+   "title": "Kubz.io",
+   "img": "https://static.playgama.com/p-img/pg/kubzio/big_preview/684e61cd17e34264b75f1bcadc181a5a",
+   "badge": ""
+  },
+  {
+   "slug": "yarn-fever-unravel-puzzle",
+   "rank": 136,
+   "title": "Yarn Fever! Unravel Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/yarn-fever-unravel-puzzle/big_preview/faa68d61c5b44e64814eb14827a50d61",
+   "badge": ""
+  },
+  {
+   "slug": "expandio",
+   "rank": 137,
+   "title": "Expand.io",
+   "img": "https://static.playgama.com/p-img/pg/expandio/big_preview/671e9aed30cb4e5fb3a194ad06889a75",
+   "badge": ""
+  },
+  {
+   "slug": "wild-love",
+   "rank": 138,
+   "title": "Wild Love",
+   "img": "https://static.playgama.com/p-img/pg/wild-love/big-preview/96d2f507a5c24c41a59e22748becd1fe",
+   "badge": ""
+  },
+  {
+   "slug": "1-speed-escape-prison",
+   "rank": 139,
+   "title": "+1 Speed: Escape Prison",
+   "img": "https://static.playgama.com/p-img/pg/1-speed-escape-prison/big-preview/415c3326c7724e6cae83d74990cc3020",
+   "badge": ""
+  },
+  {
+   "slug": "the-tall-man",
+   "rank": 140,
+   "title": "The Tall Man",
+   "img": "https://static.playgama.com/p-img/pg/the-tall-man/big_preview/cad21af835d348db83f9aace4ccca043",
+   "badge": ""
+  },
+  {
+   "slug": "snake-2048-64be-1",
+   "rank": 141,
+   "title": "Snake 2048",
+   "img": "https://static.playgama.com/p-img/pg/snake-2048-64be-1/big-preview/ac8a1a98a2a14b65a0a04ee3f82ef222",
+   "badge": "top"
+  },
+  {
+   "slug": "golf-orbit",
+   "rank": 142,
+   "title": "Golf Orbit",
+   "img": "https://static.playgama.com/p-img/pg/golf-orbit/big-preview/e7f203e28b0745d880d1c0a995e9b213",
+   "badge": ""
+  },
+  {
+   "slug": "commando-force-2",
+   "rank": 143,
+   "title": "Commando Force 2",
+   "img": "https://static.playgama.com/p-img/pg/commando-force-2/big_preview/83606346549d4c5dbcde95004e61f5a5",
+   "badge": ""
+  },
+  {
+   "slug": "mr-racer-car-racing",
+   "rank": 144,
+   "title": "MR RACER - Car Racing",
+   "img": "https://static.playgama.com/p-img/pg/mr-racer-car-racing/big-preview/45ff957c535b47b7b3c3bc1a365201f6",
+   "badge": "top"
+  },
+  {
+   "slug": "bubble-pop-legend",
+   "rank": 145,
+   "title": "Bubble Pop Legend",
+   "img": "https://static.playgama.com/p-img/pg/bubble-pop-legend/big-preview/b4e3c3c1844e441190a422148a9c98ee",
+   "badge": ""
+  },
+  {
+   "slug": "shooting-master-craft-the-gun",
+   "rank": 146,
+   "title": "Shooting Master! Craft the Gun!",
+   "img": "https://static.playgama.com/p-img/pg/shooting-master-craft-the-gun/big_preview/ee3a17496fe34b32be769f5c62a9f8e5",
+   "badge": "new"
+  },
+  {
+   "slug": "driver-club-highway-racing",
+   "rank": 147,
+   "title": "Driver Club: Highway Racing",
+   "img": "https://static.playgama.com/p-img/pg/driver-club-highway-racing/big-preview/037ce11afe4f4d58a0f93a6339db96b5",
+   "badge": ""
+  },
+  {
+   "slug": "moto-escape-keyboard-1-speed",
+   "rank": 148,
+   "title": "Moto Escape: Keyboard +1 Speed",
+   "img": "https://static.playgama.com/p-img/pg/moto-escape-keyboard-1-speed/big_preview/75dc519bad44424cab782ea89a1f2c67",
+   "badge": ""
+  },
+  {
+   "slug": "cake-slice-sort-3d",
+   "rank": 149,
+   "title": "Cake Slice Sort 3D",
+   "img": "https://static.playgama.com/p-img/pg/cake-slice-sort-3d/big_preview/60264da09f4c4f1c80786ff8ba1bfd72",
+   "badge": ""
+  },
+  {
+   "slug": "steal-a-dragon-egg",
+   "rank": 150,
+   "title": "Steal a Dragon Egg",
+   "img": "https://static.playgama.com/p-img/pg/steal-a-dragon-egg/big_preview/0f9c0e4889694d2eb43be185fae2505a",
+   "badge": ""
+  },
+  {
+   "slug": "vega-mix-2-adventure",
+   "rank": 151,
+   "title": "Vega Mix 2: Adventure",
+   "img": "https://static.playgama.com/p-img/pg/vega-mix-2-adventure/big-preview/46f5bcaca15b411382afc96ac1c38132",
+   "badge": "top"
+  },
+  {
+   "slug": "fashion-beauty-makeup-stylist",
+   "rank": 152,
+   "title": "Fashion Beauty: Makeup Stylist",
+   "img": "https://static.playgama.com/p-img/pg/preview/5588d50ce81e4aa6bba5879bb7118ab9",
+   "badge": ""
+  },
+  {
+   "slug": "warfare-1942",
+   "rank": 153,
+   "title": "Warfare 1942",
+   "img": "https://static.playgama.com/p-img/pg/warfare-1942/big_preview/b6d2f1acce5f428d8f2c3aa570f34660",
+   "badge": ""
+  },
+  {
+   "slug": "solitaire-crime-stories",
+   "rank": 154,
+   "title": "Solitaire Crime Stories",
+   "img": "https://static.playgama.com/p-img/pg/solitaire-crime-stories/big-preview/6e93bfefaa9944f980f49f7bced0664c",
+   "badge": ""
+  },
+  {
+   "slug": "obby-1-web-swing",
+   "rank": 155,
+   "title": "Obby: +1 Web Swing",
+   "img": "https://static.playgama.com/p-img/pg/obby-1-web-swing/big_preview/6d816c8f53574402a73b659664b18424",
+   "badge": ""
+  },
+  {
+   "slug": "emerland-solitaire",
+   "rank": 156,
+   "title": "Emerland Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/emerland-solitaire/big-preview/a28ad092fa0846c2a837bfdbf4024a0d",
+   "badge": ""
+  },
+  {
+   "slug": "cat-and-granny",
+   "rank": 157,
+   "title": "Cat and Granny",
+   "img": "https://static.playgama.com/p-img/pg/cat-and-granny/big_preview/e9eb4fbf96ab4fa3a707cd1b43417359",
+   "badge": ""
+  },
+  {
+   "slug": "screw-match",
+   "rank": 158,
+   "title": "Screw Match",
+   "img": "https://static.playgama.com/p-img/pg/screw-match/big-preview/c2daba0c41ae4d0bb57250451827f957",
+   "badge": ""
+  },
+  {
+   "slug": "my-little-spa-saloon-tycoon",
+   "rank": 159,
+   "title": "My Little spa: Saloon tycoon",
+   "img": "https://static.playgama.com/p-img/pg/my-little-spa-saloon-tycoon/big_preview/e0426db0c8154cbea5b20011b7a723e7",
+   "badge": ""
+  },
+  {
+   "slug": "break-a-lucky-egg-brainrots",
+   "rank": 160,
+   "title": "Break a Lucky Egg Brainrots",
+   "img": "https://static.playgama.com/p-img/pg/break-a-lucky-egg-brainrots/big-preview/f825febcc7cd46b1b3e47b951d0654f5",
+   "badge": ""
+  },
+  {
+   "slug": "sprunki-adventure-3",
+   "rank": 161,
+   "title": "Sprunki Adventure 3",
+   "img": "https://static.playgama.com/p-img/pg/sprunki-adventure-3/big-preview/6e06c59bad0a457ca4bd95c32cb2b623",
+   "badge": ""
+  },
+  {
+   "slug": "obby--jump-for-animals",
+   "rank": 162,
+   "title": "Obby - Jump for Animals",
+   "img": "https://static.playgama.com/p-img/pg/obby-jump-for-animals/big_preview/951714a91e7542beb68a17e657dfd84a",
+   "badge": ""
+  },
+  {
+   "slug": "dismount-ragdoll",
+   "rank": 163,
+   "title": "Dismount Ragdoll",
+   "img": "https://static.playgama.com/p-img/pg/dismount-ragdoll/big_preview/3948e5aa85da41d990f12697c44a075f",
+   "badge": ""
+  },
+  {
+   "slug": "obby-1-laser-to-break-walls",
+   "rank": 164,
+   "title": "Obby: +1 Laser to Break Walls",
+   "img": "https://static.playgama.com/p-img/pg/obby-1-laser-to-break-walls/big_preview/2afe5e3dd9c44dd48fe0d7a57ceeba50",
+   "badge": ""
+  },
+  {
+   "slug": "steal-animal-eggs-online",
+   "rank": 165,
+   "title": "Steal Animal Eggs Online",
+   "img": "https://static.playgama.com/p-img/pg/steal-animal-eggs-online/big_preview/22a498d212134df09dae9d03bbcc043a",
+   "badge": "new"
+  },
+  {
+   "slug": "obby-car-containers",
+   "rank": 166,
+   "title": "Obby: Car Containers",
+   "img": "https://static.playgama.com/p-img/pg/obby-car-containers/big_preview/c30c01a178244b399c6526934eb3a0ff",
+   "badge": "new"
+  },
+  {
+   "slug": "ball-sort-puzzle",
+   "rank": 167,
+   "title": "Ball Sort Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/ball-sort-puzzle/big-preview/c5a9a8d0f4ef4def947c09c135f2f875",
+   "badge": ""
+  },
+  {
+   "slug": "dress-up-3d",
+   "rank": 168,
+   "title": "Dress Up 3D",
+   "img": "https://static.playgama.com/p-img/pg/dress-up-3d/big_preview/111c5aef5da74f6cb26287769bffcbde",
+   "badge": ""
+  },
+  {
+   "slug": "cooking-tasty-restaurant-game",
+   "rank": 169,
+   "title": "Cooking Tasty: Restaurant Game",
+   "img": "https://static.playgama.com/p-img/pg/cooking-tasty-restaurant-game/big_preview/c91875abbd584cfeb451cf2d1f322ca2",
+   "badge": ""
+  },
+  {
+   "slug": "sorter-ragdoll-playground-shooter",
+   "rank": 170,
+   "title": "Sorter: Ragdoll Playground Shooter",
+   "img": "https://static.playgama.com/p-img/pg/sorter-ragdoll-playground-shooter/big_preview/47b40f9a91e8490398850d88f341c42f",
+   "badge": ""
+  },
+  {
+   "slug": "hexa-master-3d-sort-puzzle",
+   "rank": 171,
+   "title": "Hexa Master 3D: Sort Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/hexa-master-3d-sort-puzzle/big-preview/4f4f8967ccc74972bf6b8c2fbd0f3f6c",
+   "badge": ""
+  },
+  {
+   "slug": "kiki-world-kawaii-doll-decor",
+   "rank": 172,
+   "title": "Kiki World: Kawaii Doll Decor",
+   "img": "https://static.playgama.com/p-img/pg/kiki-world-kawaii-doll-decor/big_preview/3b8526f121f748fcb5e1a7ed4930b79c",
+   "badge": ""
+  },
+  {
+   "slug": "break-the-bones",
+   "rank": 173,
+   "title": "Break the Bones",
+   "img": "https://static.playgama.com/p-img/pg/break-the-bones/big_preview/55fbda508a004921a0f77946a472c597",
+   "badge": ""
+  },
+  {
+   "slug": "baseball-for-brainrot",
+   "rank": 174,
+   "title": "Baseball For Brainrot",
+   "img": "https://static.playgama.com/p-img/pg/baseball-for-brainrot/big_preview/0a732b7ece1a4f30a206bc1cd4064751",
+   "badge": ""
+  },
+  {
+   "slug": "animal-hair-salon",
+   "rank": 175,
+   "title": "Animal Hair Salon",
+   "img": "https://static.playgama.com/p-img/pg/animal-hair-salon/big-preview/8ac649a2cf904f6091271cdecbab4055",
+   "badge": ""
+  },
+  {
+   "slug": "pitbike-obby",
+   "rank": 176,
+   "title": "Pitbike Obby",
+   "img": "https://static.playgama.com/p-img/pg/pitbike-obby/big_preview/eccf5e99050d4291b6b826cab48e85c8",
+   "badge": ""
+  },
+  {
+   "slug": "obby-stronger-drill-deeper-mine",
+   "rank": 177,
+   "title": "Obby: Stronger Drill, Deeper Mine",
+   "img": "https://static.playgama.com/p-img/pg/obby-stronger-drill-deeper-mine/big_preview/82101709195f4f52b35138127f234114",
+   "badge": "new"
+  },
+  {
+   "slug": "bubble-shooter-classic",
+   "rank": 178,
+   "title": "Bubble Shooter Classic",
+   "img": "https://static.playgama.com/p-img/pg/bubble-shooter-classic/big-preview/9b46c411cdf5451da26d1eb4607bdc20",
+   "badge": ""
+  },
+  {
+   "slug": "ultimate-hole-digging-simulator",
+   "rank": 179,
+   "title": "Ultimate Hole Digging Simulator",
+   "img": "https://static.playgama.com/p-img/pg/ultimate-hole-digging-simulator/big_preview/ebca5ce1122b48aeb446c5093447717e",
+   "badge": ""
+  },
+  {
+   "slug": "draw-crash-race",
+   "rank": 180,
+   "title": "Draw Crash Race",
+   "img": "https://static.playgama.com/p-img/pg/draw-crash-race/big_preview/c303eb0055174fd9976cc0a5050930c5",
+   "badge": ""
+  },
+  {
+   "slug": "obby-fly-the-farthest-in-an-airplane",
+   "rank": 181,
+   "title": "Obby: Fly the Farthest in an Airplane",
+   "img": "https://static.playgama.com/p-img/pg/obby-fly-the-farthest-in-an-airplane/big_preview/333786e421e64b9abbae1dce4ab90ca4",
+   "badge": ""
+  },
+  {
+   "slug": "cozy-jigsaw-puzzles",
+   "rank": 182,
+   "title": "Cozy Jigsaw Puzzles",
+   "img": "https://static.playgama.com/p-img/pg/cozy-jigsaw-puzzles/big_preview/161cee7c0f634c70ad38a573560b1967",
+   "badge": ""
+  },
+  {
+   "slug": "rail-master-idle-train-tycoon",
+   "rank": 183,
+   "title": "Rail Master Idle Train Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/rail-master-idle-train-tycoon/big_preview/8de4207cf3244d93b22de1e8ee957e00",
+   "badge": "new"
+  },
+  {
+   "slug": "my-castle-merge--story",
+   "rank": 184,
+   "title": "My Castle. Merge & Story",
+   "img": "https://static.playgama.com/p-img/pg/my-castle-merge--story/big_preview/386baf8100244f3a87eba34205eeb1b5",
+   "badge": ""
+  },
+  {
+   "slug": "italian-brainrot-find-the-difference",
+   "rank": 185,
+   "title": "Italian Brainrot Find the Difference",
+   "img": "https://static.playgama.com/p-img/pg/italian-brainrot-find-the-difference/big-preview/631d6272edb849768c1fef6ce240b8fb",
+   "badge": ""
+  },
+  {
+   "slug": "obby-games-jump-world",
+   "rank": 186,
+   "title": "Obby Games: Jump World",
+   "img": "https://static.playgama.com/p-img/pg/obby-games-jump-world/big_preview/cbeb692a2a7449a28f90bb250912a49c",
+   "badge": "new"
+  },
+  {
+   "slug": "obby-minigames",
+   "rank": 187,
+   "title": "Obby: Mini-Games",
+   "img": "https://static.playgama.com/p-img/pg/obby-minigames/big_preview/b04df6b086d84f2d90034611cef8ad80",
+   "badge": ""
+  },
+  {
+   "slug": "aura-edit-arena-obby",
+   "rank": 188,
+   "title": "Aura Edit Arena Obby",
+   "img": "https://static.playgama.com/p-img/pg/aura-edit-arena-obby/big_preview/ddc2bb1dff704fcb8aadc056231d233c",
+   "badge": ""
+  },
+  {
+   "slug": "your-obby-escape",
+   "rank": 189,
+   "title": "Your Obby Escape",
+   "img": "https://static.playgama.com/p-img/pg/preview/d70b665862c84878abd85133e8ad0ab4",
+   "badge": ""
+  },
+  {
+   "slug": "bus-parking-out",
+   "rank": 190,
+   "title": "Bus Parking Out",
+   "img": "https://static.playgama.com/p-img/pg/bus-parking-out/big_preview/30e059305887425ebc14dabc30d577ac",
+   "badge": ""
+  },
+  {
+   "slug": "obby-minigames-vs-1000",
+   "rank": 191,
+   "title": "Obby: Mini-Games VS 1000",
+   "img": "https://static.playgama.com/p-img/pg/obby-minigames-vs-1000/big-preview/2aee5acec97e44c0abfc6788c3366e5a",
+   "badge": ""
+  },
+  {
+   "slug": "arrowscape-arrow-puzzle",
+   "rank": 192,
+   "title": "Arrowscape: Arrow Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrowscape-arrow-puzzle/big_preview/3ff30e98759f43c799323ce4ce4d3758",
+   "badge": ""
+  },
+  {
+   "slug": "fashion-princess--dress-up-for-girls-e00c-1",
+   "rank": 193,
+   "title": "Fashion Princess - Dress Up for Girls",
+   "img": "https://static.playgama.com/p-img/pg/fashion-princess--dress-up-for-girls-e00c-1/big-preview/99f7b8102d88492ea7494050cdd6b7a9",
+   "badge": "top"
+  },
+  {
+   "slug": "pregnant-mom-simulator",
+   "rank": 194,
+   "title": "Pregnant Mom Simulator",
+   "img": "https://static.playgama.com/p-img/pg/pregnant-mom-simulator/big_preview/7ce17f5b779049d4a803d664f872f645",
+   "badge": ""
+  },
+  {
+   "slug": "skyblock-3d-survival",
+   "rank": 195,
+   "title": "Skyblock 3D: Survival",
+   "img": "https://static.playgama.com/p-img/pg/skyblock-3d-survival/big-preview/72e42708a4ac4232b2a94960817f73d4",
+   "badge": "top"
+  },
+  {
+   "slug": "merge-world",
+   "rank": 196,
+   "title": "Merge World",
+   "img": "https://static.playgama.com/p-img/pg/merge-world/big-preview/a15dc506e11048daa776fe7d8808ec7b",
+   "badge": ""
+  },
+  {
+   "slug": "car-stunt-races-mega-ramps",
+   "rank": 197,
+   "title": "Car Stunt Races: Mega Ramps",
+   "img": "https://static.playgama.com/p-img/pg/car-stunt-races-mega-ramps/big_preview/56ea117f66894d3297cbe2119d92f10f",
+   "badge": "new"
+  },
+  {
+   "slug": "my-supermarket-idle-tycoon",
+   "rank": 198,
+   "title": "My Supermarket: Idle Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/my-supermarket-idle-tycoon/big_preview/fcb797d96d56419ea084a2b1d20c8dd1",
+   "badge": ""
+  },
+  {
+   "slug": "steal-an-egg-for-a-jump",
+   "rank": 199,
+   "title": "Steal An Egg For a Jump",
+   "img": "https://static.playgama.com/p-img/pg/steal-an-egg-for-a-jump/big_preview/4d2ccb64ede04a8eaace70c53dbb112a",
+   "badge": ""
+  },
+  {
+   "slug": "popping-candies",
+   "rank": 200,
+   "title": "Popping Candies",
+   "img": "https://static.playgama.com/p-img/pg/popping-candies/big-preview/7546f1f72f59475487a53c82adfb7c89",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-objects-home-sweet-home",
+   "rank": 201,
+   "title": "Hidden Objects: Home Sweet Home",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects-home-sweet-home/big-preview/4ab84c7089d74a1da9c86e05df3db821",
+   "badge": ""
+  },
+  {
+   "slug": "obby-chameleon--paint--hide",
+   "rank": 202,
+   "title": "Obby: Chameleon - Paint & Hide",
+   "img": "https://static.playgama.com/p-img/pg/preview/bd57ea01707245b9b6677f598dfe1130",
+   "badge": ""
+  },
+  {
+   "slug": "fortress-merge",
+   "rank": 203,
+   "title": "Fortress Merge",
+   "img": "https://static.playgama.com/p-img/pg/fortress-merge/big_preview/aab25e98c6b94ae29811d70628d7a60e",
+   "badge": ""
+  },
+  {
+   "slug": "word-solitaire",
+   "rank": 204,
+   "title": "Word Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/word-solitaire/big_preview/4d5b96263605435ea229215ef523a0f4",
+   "badge": ""
+  },
+  {
+   "slug": "magical-diary-paper-dress-up",
+   "rank": 205,
+   "title": "Magical Diary: Paper Dress Up",
+   "img": "https://static.playgama.com/p-img/pg/magical-diary-paper-dress-up/big_preview/948521f2069c4c548ccdc167930308b8",
+   "badge": ""
+  },
+  {
+   "slug": "army-evolution-merge--tactics",
+   "rank": 206,
+   "title": "Army Evolution: Merge & Tactics",
+   "img": "https://static.playgama.com/p-img/pg/army-evolution-merge--tactics/big_preview/ab869467136a42bea03b506a796b2674",
+   "badge": ""
+  },
+  {
+   "slug": "case-simulator-cars",
+   "rank": 207,
+   "title": "Case Simulator: Cars",
+   "img": "https://static.playgama.com/p-img/pg/preview/8182b27328ef4f95810459f1e98b2b8f",
+   "badge": ""
+  },
+  {
+   "slug": "extreme-car-driving-simulator-classic",
+   "rank": 208,
+   "title": "Extreme Car Driving Simulator: Classic",
+   "img": "https://static.playgama.com/p-img/pg/extreme-car-driving-simulator-classic/big_preview/467a77a144a744909662ae2913edcf44",
+   "badge": "new"
+  },
+  {
+   "slug": "1-speed-monkey-escape",
+   "rank": 209,
+   "title": "+1 Speed Monkey Escape",
+   "img": "https://static.playgama.com/p-img/pg/1-speed-monkey-escape/big_preview/40495d52787e4b9e9c9b15ae99742853",
+   "badge": ""
+  },
+  {
+   "slug": "megazuma",
+   "rank": 210,
+   "title": "MegaZuma",
+   "img": "https://static.playgama.com/p-img/pg/megazuma/big-preview/1e422342cf64426a86a528ca0682918e",
+   "badge": ""
+  },
+  {
+   "slug": "my-arcade-center",
+   "rank": 211,
+   "title": "My Arcade Center",
+   "img": "https://static.playgama.com/p-img/pg/my-arcade-center/big_preview/b20cdd7c5494467f9a54fccccd2a61ba",
+   "badge": ""
+  },
+  {
+   "slug": "last-play-ragdoll-sandbox",
+   "rank": 212,
+   "title": "Last Play: Ragdoll Sandbox",
+   "img": "https://static.playgama.com/p-img/pg/last-play-ragdoll-sandbox/big_preview/f921e3ca468e4bc3a5361109488c568f",
+   "badge": ""
+  },
+  {
+   "slug": "blocks-and-thats-it",
+   "rank": 213,
+   "title": "Blocks and that's it",
+   "img": "https://static.playgama.com/p-img/pg/blocks-and-thats-it/big_preview/2666d085a41245e99403d06878a35a1b",
+   "badge": ""
+  },
+  {
+   "slug": "fiorella--flower-shop",
+   "rank": 214,
+   "title": "Fiorella - Flower Shop",
+   "img": "https://static.playgama.com/p-img/pg/preview/ca85b66d82814bfdad3d022a37aa942f",
+   "badge": ""
+  },
+  {
+   "slug": "rise-of-the-dead",
+   "rank": 215,
+   "title": "Rise of the Dead",
+   "img": "https://static.playgama.com/p-img/pg/rise-of-the-dead/big-preview/123a84fd979245ed93b03fe4b412cfe2",
+   "badge": "top"
+  },
+  {
+   "slug": "wood-blocks-jam",
+   "rank": 216,
+   "title": "Wood Blocks Jam",
+   "img": "https://static.playgama.com/p-img/pg/wood-blocks-jam/big-preview/f8a46a136d1043fd8ab89994b49ec933",
+   "badge": "top"
+  },
+  {
+   "slug": "worldguessr",
+   "rank": 217,
+   "title": "WorldGuessr",
+   "img": "https://static.playgama.com/p-img/pg/preview/3559e61219da4b3fa9adecd207e1806b",
+   "badge": ""
+  },
+  {
+   "slug": "millionaire-life",
+   "rank": 218,
+   "title": "Millionaire Life",
+   "img": "https://static.playgama.com/p-img/pg/preview/352a9b903c1e4ecd9161497ad961bd9f",
+   "badge": ""
+  },
+  {
+   "slug": "baby-brainrots-multiplayer-with-friends",
+   "rank": 219,
+   "title": "Baby Brainrots - Multiplayer with Friends!",
+   "img": "https://static.playgama.com/p-img/pg/preview/eef2483eb9e544fabebcc7563495ccf1",
+   "badge": ""
+  },
+  {
+   "slug": "anime-couple-avatar-maker",
+   "rank": 220,
+   "title": "Anime Couple: Avatar Maker",
+   "img": "https://static.playgama.com/p-img/pg/anime-couple-avatar-maker/big-preview/0fb5c3396bfb4b0380cebd4e00560dfe",
+   "badge": ""
+  },
+  {
+   "slug": "gym-boss",
+   "rank": 221,
+   "title": "Gym Boss",
+   "img": "https://static.playgama.com/p-img/pg/gym-boss/big_preview/1dee3f88c32e47aaa2635e091a92696c",
+   "badge": ""
+  },
+  {
+   "slug": "screw--pin-puzzle-levels",
+   "rank": 222,
+   "title": "Screw & Pin: Puzzle Levels",
+   "img": "https://static.playgama.com/p-img/pg/screw-pin-puzzle-levels/big_preview/da9e577e17df48d1b4494f43c34126d2",
+   "badge": ""
+  },
+  {
+   "slug": "tile-valley",
+   "rank": 223,
+   "title": "Tile Valley",
+   "img": "https://static.playgama.com/p-img/pg/tile-valley/big-preview/dabea2e0c14043aeacf15adde56deb3a",
+   "badge": ""
+  },
+  {
+   "slug": "find-match-3d",
+   "rank": 224,
+   "title": "Find Match 3D",
+   "img": "https://static.playgama.com/p-img/pg/find-match-3d/big-preview/b8951ea43f0c4e18af3401f015c1750c",
+   "badge": ""
+  },
+  {
+   "slug": "build-an-aquapark",
+   "rank": 225,
+   "title": "Build an Aquapark",
+   "img": "https://static.playgama.com/p-img/pg/preview/f472a03ae13947f3b923b40342ff87ef",
+   "badge": ""
+  },
+  {
+   "slug": "color-block-pairs",
+   "rank": 226,
+   "title": "Color Block Pairs",
+   "img": "https://static.playgama.com/p-img/pg/color-block-pairs/big_preview/e1d2d3d571124f96aec7548771cd6131",
+   "badge": ""
+  },
+  {
+   "slug": "keyboard-escape-1-speed",
+   "rank": 227,
+   "title": "Keyboard Escape: +1 Speed ",
+   "img": "https://static.playgama.com/p-img/pg/keyboard-escape-1-speed/big_preview/2888f6442b64421e9ebe8be8eb1ce7b5",
+   "badge": ""
+  },
+  {
+   "slug": "break-a-tower-obby",
+   "rank": 228,
+   "title": "Break a Tower: Obby",
+   "img": "https://static.playgama.com/p-img/pg/break-a-tower-obby/big-preview/d2940e792f104180b662818a6d46b6c1",
+   "badge": ""
+  },
+  {
+   "slug": "ball-eating-simulator",
+   "rank": 229,
+   "title": "Ball Eating Simulator",
+   "img": "https://static.playgama.com/p-img/pg/ball-eating-simulator/big_preview/042e8c06767a480fb790ce8fce01e728",
+   "badge": ""
+  },
+  {
+   "slug": "the-aesthetic-world-of-obby",
+   "rank": 230,
+   "title": "The Aesthetic World of Obby",
+   "img": "https://static.playgama.com/p-img/pg/the-aesthetic-world-of-obby/big-preview/5e1ecc428a4b4b7dabc2f406416eb0f8",
+   "badge": ""
+  },
+  {
+   "slug": "your-obby-size",
+   "rank": 231,
+   "title": "Your Obby Size",
+   "img": "https://static.playgama.com/p-img/pg/preview/5f699a579cb744a28c6ef7e2c6b49a98",
+   "badge": "top"
+  },
+  {
+   "slug": "obby-climb-and-slide",
+   "rank": 232,
+   "title": "Obby: Climb and Slide",
+   "img": "https://static.playgama.com/p-img/pg/obby-climb-and-slide/big_preview/204783db890541a3bcc7a21eacb3a516",
+   "badge": ""
+  },
+  {
+   "slug": "kingdom-defender-tower-defense",
+   "rank": 233,
+   "title": "Kingdom Defender - Tower Defense",
+   "img": "https://static.playgama.com/p-img/pg/kingdom-defender-tower-defense/big-preview/b4378ab74fc045d28e8a084bcf58890d",
+   "badge": ""
+  },
+  {
+   "slug": "animals-vs-zombies",
+   "rank": 234,
+   "title": "Animals vs Zombies",
+   "img": "https://static.playgama.com/p-img/pg/animals-vs-zombies/big-preview/2b579b0cb2844a0496bff95a54d274f5",
+   "badge": ""
+  },
+  {
+   "slug": "from-nerd-to-popular-school",
+   "rank": 235,
+   "title": "From Nerd to School Popular ",
+   "img": "https://static.playgama.com/p-img/pg/from-nerd-to-popular-school/big-preview/de9993a4b20546e3a012eaca650bf4eb",
+   "badge": ""
+  },
+  {
+   "slug": "the-farmers-graces-island",
+   "rank": 236,
+   "title": "The Farmers: Grace's Island",
+   "img": "https://static.playgama.com/p-img/pg/preview/b2eb01a548d949028c91dd9b1afe5029",
+   "badge": ""
+  },
+  {
+   "slug": "idle-island-tycoon-sea-empire",
+   "rank": 237,
+   "title": "Idle Island Tycoon: Sea Empire",
+   "img": "https://static.playgama.com/p-img/pg/idle-island-tycoon-sea-empire/big_preview/bfefceabcdad4cc889e5af26b7128f3a",
+   "badge": ""
+  },
+  {
+   "slug": "ragdoll-crashtest-throw-and-break",
+   "rank": 238,
+   "title": "Ragdoll Crash-Test: Throw and Break!",
+   "img": "https://static.playgama.com/p-img/pg/ragdoll-crashtest-throw-and-break/big-preview/806817717e62466a83cb4377d0fa92eb",
+   "badge": "top"
+  },
+  {
+   "slug": "cat-life-simulator-devil-cat",
+   "rank": 239,
+   "title": "Cat Life Simulator: Devil Cat",
+   "img": "https://static.playgama.com/p-img/pg/cat-life-simulator-devil-cat/big-preview/834f2762f9c442839a77145e0b2cbe76",
+   "badge": ""
+  },
+  {
+   "slug": "furniture-master-idle-tycoon",
+   "rank": 240,
+   "title": "Furniture Master: Idle Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/furniture-master-idle-tycoon/big_preview/25bac2a7c8a049b389050844cebde8dd",
+   "badge": ""
+  },
+  {
+   "slug": "craft-mobs-create-a-monster-and-fight",
+   "rank": 241,
+   "title": "Craft Mobs: Create a Monster and Fight!",
+   "img": "https://static.playgama.com/p-img/pg/craft-mobs-create-a-monster-and-fight/big_preview/a47f5d2456ae414b99d6f1c0a653032d",
+   "badge": ""
+  },
+  {
+   "slug": "snake-attack-shooter",
+   "rank": 242,
+   "title": "Snake Attack Shooter",
+   "img": "https://static.playgama.com/p-img/pg/snake-attack-shooter/big_preview/953507b618ef4fe8a5bda86122f32083",
+   "badge": ""
+  },
+  {
+   "slug": "high-school-popular-girls",
+   "rank": 243,
+   "title": "High School Popular Girls",
+   "img": "https://static.playgama.com/p-img/pg/preview/eda3969f995b4f7f9bc59d7abc0221ce",
+   "badge": "new"
+  },
+  {
+   "slug": "cosmic-towers",
+   "rank": 244,
+   "title": "Cosmic Towers",
+   "img": "https://static.playgama.com/p-img/pg/cosmic-towers/big_preview/a945d3be16db4bb686c266466c4f7ce9",
+   "badge": ""
+  },
+  {
+   "slug": "dangerous-fellows",
+   "rank": 245,
+   "title": "Dangerous Fellows",
+   "img": "https://static.playgama.com/p-img/pg/dangerous-fellows/big_preview/73b26d1195a24bf69f7b020133bb86d9",
+   "badge": ""
+  },
+  {
+   "slug": "fishing-bay",
+   "rank": 246,
+   "title": "Fishing Bay",
+   "img": "https://static.playgama.com/p-img/pg/preview/d0f8cde6c750467f8f21383a86305654",
+   "badge": ""
+  },
+  {
+   "slug": "obby-1-stone-skipping",
+   "rank": 247,
+   "title": "Obby: +1 Stone Skipping",
+   "img": "https://static.playgama.com/p-img/pg/obby-1-stone-skipping/big_preview/b9502c56a47647e7a25c8441b10b9819",
+   "badge": ""
+  },
+  {
+   "slug": "puzzle-home-cozy-makeover",
+   "rank": 248,
+   "title": "Puzzle Home: Cozy Makeover",
+   "img": "https://static.playgama.com/p-img/pg/puzzle-home-cozy-makeover/big_preview/aec934b04ca74cd5beae36207a59813d",
+   "badge": ""
+  },
+  {
+   "slug": "paper-doll-diary-dress-up-diy",
+   "rank": 249,
+   "title": "Paper Doll Diary: Dress Up DIY",
+   "img": "https://static.playgama.com/p-img/pg/paper-doll-diary-dress-up-diy/big_preview/5220aa48d88f4ddfbccd01fa167bfae3",
+   "badge": ""
+  },
+  {
+   "slug": "obby-defend-your-base-from-67",
+   "rank": 250,
+   "title": "Obby: Defend your base from 67",
+   "img": "https://static.playgama.com/p-img/pg/obby-defend-your-base-from-67/big-preview/8f5e8317be564fa7908c98775e0d14bc",
+   "badge": ""
+  },
+  {
+   "slug": "cooking-love",
+   "rank": 251,
+   "title": "Cooking Love",
+   "img": "https://static.playgama.com/p-img/pg/cooking-love/big_preview/6a8ce3d12f9d419ca0e19efe631e80b0",
+   "badge": ""
+  },
+  {
+   "slug": "mage-castle-idle-defense",
+   "rank": 252,
+   "title": "Mage Castle Idle Defense",
+   "img": "https://static.playgama.com/p-img/pg/mage-castle-idle-defense/big_preview/a1897e8499bc45d5b842684f0e7640c4",
+   "badge": ""
+  },
+  {
+   "slug": "gangster-island-crime-city",
+   "rank": 253,
+   "title": "Gangsta Island: Crime City",
+   "img": "https://static.playgama.com/p-img/pg/gangster-island-crime-city/big_preview/8969fed03f85477894d478c0a911dcc6",
+   "badge": ""
+  },
+  {
+   "slug": "high-school-teacher-simulator",
+   "rank": 254,
+   "title": "High School Teacher Simulator",
+   "img": "https://static.playgama.com/p-img/pg/high-school-teacher-simulator/big_preview/b46d61b83ce54719bb164fcbe5e6a6b5",
+   "badge": ""
+  },
+  {
+   "slug": "web-shot-spider-superhero",
+   "rank": 255,
+   "title": "Web Shot: Spider Superhero",
+   "img": "https://static.playgama.com/p-img/pg/web-shot-spider-superhero/big_preview/9561b086be83457e96312f069a983a1c",
+   "badge": ""
+  },
+  {
+   "slug": "obby-supercar-race-on-keyboard",
+   "rank": 256,
+   "title": "Obby: Supercar Race on Keyboard",
+   "img": "https://static.playgama.com/p-img/pg/obby-supercar-race-on-keyboard/big_preview/297700ff5e304537a7e4644e136feb42",
+   "badge": ""
+  },
+  {
+   "slug": "doll-decor--dress-up-game",
+   "rank": 257,
+   "title": "Doll Decor & Dress Up Game",
+   "img": "https://static.playgama.com/p-img/pg/doll-decor-dress-up-game/big_preview/20dbd6dac9c64c42b167eacfdc2f659e",
+   "badge": "new"
+  },
+  {
+   "slug": "shape-transforming-shifting-run",
+   "rank": 258,
+   "title": "Shape Transforming: Shifting Run",
+   "img": "https://static.playgama.com/p-img/pg/shape-transforming-shifting-run/big-preview/086d500d59e14cb9b717c43000d3ad36",
+   "badge": ""
+  },
+  {
+   "slug": "mine-mining-islands-skyblock-village",
+   "rank": 259,
+   "title": "Mine Mining Islands: Skyblock Village!",
+   "img": "https://static.playgama.com/p-img/pg/mine-mining-islands-skyblock-village/big_preview/55642b7e2cc54afba862867b3944b369",
+   "badge": ""
+  },
+  {
+   "slug": "zombie-space-episode-ii",
+   "rank": 260,
+   "title": "Zombie Space Episode II",
+   "img": "https://static.playgama.com/p-img/pg/zombie-space-episode-ii/big-preview/6ce13cbdb8d34c029fc0b7be41f117d0",
+   "badge": "top"
+  },
+  {
+   "slug": "splashout",
+   "rank": 261,
+   "title": "Splashout",
+   "img": "https://static.playgama.com/p-img/pg/splashout/big_preview/1e516ffd323f47cf813f33b1737a7f56",
+   "badge": ""
+  },
+  {
+   "slug": "home-design-decorate-house",
+   "rank": 262,
+   "title": "Home Design: Decorate House",
+   "img": "https://static.playgama.com/p-img/pg/home-design-decorate-house/big_preview/732dcf8246c241bbb8bee665c08a5321",
+   "badge": ""
+  },
+  {
+   "slug": "coffee-inc",
+   "rank": 263,
+   "title": "Coffee Inc.",
+   "img": "https://static.playgama.com/p-img/pg/coffee-inc/big_preview/cec25673738a4d00b0b504057a7720d4",
+   "badge": ""
+  },
+  {
+   "slug": "my-fluffy",
+   "rank": 264,
+   "title": "My Fluffy",
+   "img": "https://static.playgama.com/p-img/pg/preview/e5f41bb173124cffaf16512ee1d5a49b",
+   "badge": ""
+  },
+  {
+   "slug": "draw-and-color-pixel-pictures",
+   "rank": 265,
+   "title": "Draw and Color Pixel Pictures",
+   "img": "https://static.playgama.com/p-img/pg/draw-and-color-pixel-pictures/big_preview/76881ac8677b4d09859fe207fe3ef559",
+   "badge": ""
+  },
+  {
+   "slug": "obby-toilet-line",
+   "rank": 266,
+   "title": "Obby Toilet Line",
+   "img": "https://static.playgama.com/p-img/pg/obby-toilet-line/big-preview/ec0cf8b3cc0048a085c30c13e10e53bd",
+   "badge": ""
+  },
+  {
+   "slug": "your-obby-parkour",
+   "rank": 267,
+   "title": " Your Obby Parkour",
+   "img": "https://static.playgama.com/p-img/pg/preview/c0fd6f302646485e8108337004cc037e",
+   "badge": "top"
+  },
+  {
+   "slug": "petdoku-find-hidden-pets",
+   "rank": 268,
+   "title": "PetDoku: Find Hidden Pets",
+   "img": "https://static.playgama.com/p-img/pg/petdoku-find-hidden-pets/big_preview/c9ea1f96dcad4fdfa5fe690d7a1d79ca",
+   "badge": ""
+  },
+  {
+   "slug": "diamant-match-3-sky-story",
+   "rank": 269,
+   "title": "Diamant: Match 3 Sky Story",
+   "img": "https://static.playgama.com/p-img/pg/preview/03e557e7d56a44e4b13b9c9ac4c16bbb",
+   "badge": "top"
+  },
+  {
+   "slug": "monster-king-3d",
+   "rank": 270,
+   "title": "Monster King 3d",
+   "img": "https://static.playgama.com/p-img/pg/monster-king-3d/big_preview/484b89a4b0b744bd892a98506985c4be",
+   "badge": ""
+  }
+ ],
+ "puzzle": [
+  {
+   "slug": "piece-of-cake-merge--bake",
+   "rank": 1,
+   "title": "Piece of Cake: Merge & Bake",
+   "img": "https://static.playgama.com/p-img/pg/piece-of-cake-merge--bake/big_preview/b772122937124aa6b59d6e130537c8a8",
+   "badge": "hot"
+  },
+  {
+   "slug": "arrow-puzzle",
+   "rank": 2,
+   "title": "Arrow Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrow-puzzle/big-preview/6f9c8fc74f8a4dd39e6700bc24fce9ce",
+   "badge": "hot"
+  },
+  {
+   "slug": "klondike-classic-1-or-3-cards",
+   "rank": 3,
+   "title": "Klondike Classic (1 or 3 cards)",
+   "img": "https://static.playgama.com/p-img/pg/klondike-classic-1-or-3-cards/big_preview/d56d04b073db42c4878027bb341efd0e",
+   "badge": "hot"
+  },
+  {
+   "slug": "secret-hall-hidden-objects",
+   "rank": 4,
+   "title": "Secret Hall: Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/secret-hall-hidden-objects/big_preview/879ba9c1460549c9a93bd24beab49316",
+   "badge": "hot"
+  },
+  {
+   "slug": "mahjong-lines",
+   "rank": 5,
+   "title": "Mahjong Lines",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-lines/big_preview/96269817997541b48d15ed462ff66d47",
+   "badge": ""
+  },
+  {
+   "slug": "arrows",
+   "rank": 6,
+   "title": "Arrows",
+   "img": "https://static.playgama.com/p-img/pg/arrows/big-preview/63f7cb646d6143868a8a021d42f39fcc",
+   "badge": ""
+  },
+  {
+   "slug": "good-sort-master",
+   "rank": 7,
+   "title": "Good Sort Master: Triple Match",
+   "img": "https://static.playgama.com/p-img/pg/good-sort-master/big-preview/87153c5702e14ce994b208df2c0a5f61",
+   "badge": ""
+  },
+  {
+   "slug": "nuts-puzzle-sort-by-color",
+   "rank": 8,
+   "title": "Nuts Puzzle: Sort By Color",
+   "img": "https://static.playgama.com/p-img/pg/nuts-puzzle-sort-by-color/big_preview/faab3ed519024179b5a31afb72cdf675",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-threads-match-3--stories",
+   "rank": 9,
+   "title": "Hidden Threads: Match 3 & Stories",
+   "img": "https://static.playgama.com/p-img/pg/hidden-threads-match-3-stories/big_preview/7ee82f65bd6d4640aefc9594ea9e21ce",
+   "badge": ""
+  },
+  {
+   "slug": "food-story-tile-match",
+   "rank": 10,
+   "title": "Food Story: Tile Match",
+   "img": "https://static.playgama.com/p-img/pg/preview/f991bf38c8274e7eab0999e8ed3928f8",
+   "badge": "new"
+  },
+  {
+   "slug": "treasure-roll",
+   "rank": 11,
+   "title": "Treasure Roll",
+   "img": "https://static.playgama.com/p-img/pg/preview/0f14db94bcd4494d88869224dde305bf",
+   "badge": "new"
+  },
+  {
+   "slug": "veggie-cats-idle-farm-tycoon",
+   "rank": 12,
+   "title": "Veggie Cats: Idle Farm Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/preview/11d87bcd91dc43999f78cf3ff6ac1711",
+   "badge": ""
+  },
+  {
+   "slug": "from-garden-to-orbit",
+   "rank": 13,
+   "title": "From Garden to Orbit",
+   "img": "https://static.playgama.com/p-img/pg/preview/61a25a6689604519b21eaf0ee46e7176",
+   "badge": "new"
+  },
+  {
+   "slug": "home-pin",
+   "rank": 14,
+   "title": "Home Pin",
+   "img": "https://static.playgama.com/p-img/pg/home-pin/big_preview/0d151a2d364c4695ac4493caeed03d17",
+   "badge": "new"
+  },
+  {
+   "slug": "vampire-hotel-tile-match",
+   "rank": 15,
+   "title": "Vampire Hotel: Tile Match",
+   "img": "https://static.playgama.com/p-img/pg/vampire-hotel-tile-match/big_preview/b487ce2431624fbba5807131777064d6",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-objects--items-find",
+   "rank": 16,
+   "title": "Hidden Objects - Items Find",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects-items-find/big_preview/5f8077b0ada14eccaaf0f1b7c25dd0bf",
+   "badge": "new"
+  },
+  {
+   "slug": "screw-nuts--bolts-wood-solve",
+   "rank": 17,
+   "title": "Screw Nuts & Bolts: Wood Solve",
+   "img": "https://static.playgama.com/p-img/pg/screw-nuts-bolts-wood-solve/big_preview/ac696a15bf0c4fddb1dfe1a0a6223f05",
+   "badge": "new"
+  },
+  {
+   "slug": "hidden-objects",
+   "rank": 18,
+   "title": "Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects/big_preview/f08cd1f8c53a4009a52067e2c7b1ab0f",
+   "badge": ""
+  },
+  {
+   "slug": "blockibo-color-blocks",
+   "rank": 19,
+   "title": "Blockibo: Color Blocks",
+   "img": "https://static.playgama.com/p-img/pg/blockibo-color-blocks/big_preview/f06922a7ea184f9fa21501743310eb4f",
+   "badge": ""
+  },
+  {
+   "slug": "fruit-merge-playgama",
+   "rank": 20,
+   "title": "Fruit Merge: Juicy Drop Game",
+   "img": "https://static.playgama.com/p-img/pg/fruit-merge-playgama/big_preview/f88e2107d6554e668566d486ba0518a4",
+   "badge": "top"
+  },
+  {
+   "slug": "mahjong-puzzle-tile-match",
+   "rank": 21,
+   "title": "Mahjong Puzzle: Tile Match",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-puzzle-tile-match/big-preview/c4e6143f9d2d42188591a56b9ac0aea9",
+   "badge": ""
+  },
+  {
+   "slug": "match-clear",
+   "rank": 22,
+   "title": "Match Clear",
+   "img": "https://static.playgama.com/p-img/pg/match-clear/big-preview/6cf6292d4d4b404a871479e0f8de3a1c",
+   "badge": ""
+  },
+  {
+   "slug": "jewel-coloring-crystal-sorting",
+   "rank": 23,
+   "title": "Jewel Coloring: Crystal Sorting",
+   "img": "https://static.playgama.com/p-img/pg/jewel-coloring-crystal-sorting/big_preview/bf22034afe414740869228e392e118b5",
+   "badge": "hot"
+  },
+  {
+   "slug": "solitaire-the-collection",
+   "rank": 24,
+   "title": "Solitaire The Collection",
+   "img": "https://static.playgama.com/p-img/pg/solitaire-the-collection/big_preview/c84b321790284d9196e415def1f52692",
+   "badge": ""
+  },
+  {
+   "slug": "arrow-exit-puzzle",
+   "rank": 25,
+   "title": "Arrow Exit Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrow-exit-puzzle/big-preview/8fb99bdb64614846863eeed2c60a222d",
+   "badge": ""
+  },
+  {
+   "slug": "find-the-frog--hidden-objects",
+   "rank": 26,
+   "title": "Find the Frog - Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/find-the-frog--hidden-objects/big_preview/541792f4c5354ef88be0646eb9be4b1b",
+   "badge": ""
+  },
+  {
+   "slug": "spin-the-rings",
+   "rank": 27,
+   "title": "Spin the Rings",
+   "img": "https://static.playgama.com/p-img/pg/spin-the-rings/big_preview/22a8f41de1ef4cec8d89d805a885e16c",
+   "badge": "new"
+  },
+  {
+   "slug": "star-shift-gravity-match",
+   "rank": 28,
+   "title": "Star Shift: Gravity Match",
+   "img": "https://static.playgama.com/p-img/pg/preview/56a5753c852a41f983f4da69ff8d03d0",
+   "badge": ""
+  },
+  {
+   "slug": "sudoku-online",
+   "rank": 29,
+   "title": "Sudoku Online",
+   "img": "https://static.playgama.com/p-img/pg/sudoku-online/big_preview/56523d77bec94f82819eba10f20713d0",
+   "badge": ""
+  },
+  {
+   "slug": "jigpic-solitaire",
+   "rank": 30,
+   "title": "Jigpic Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/jigpic-solitaire/big_preview/7881036340e847389879b210647df078",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-picture-puzzle",
+   "rank": 31,
+   "title": "Arrows: Picture Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrows-picture-puzzle/big_preview/f2d198a49da140a49debac255bda757c",
+   "badge": ""
+  },
+  {
+   "slug": "favorite-puzzles",
+   "rank": 32,
+   "title": "Favorite Puzzles",
+   "img": "https://static.playgama.com/p-img/pg/favorite-puzzles/big_preview/400025cc8973444fac031e1cb75faf61",
+   "badge": ""
+  },
+  {
+   "slug": "screw-sort-3d",
+   "rank": 33,
+   "title": "Screw Sort 3D",
+   "img": "https://static.playgama.com/p-img/pg/screw-sort-3d/big-preview/077844b3a0f24b178c7f3e8a53bcc2b9",
+   "badge": ""
+  },
+  {
+   "slug": "tap-3d-wood-block-away",
+   "rank": 34,
+   "title": "Tap 3D Wood Block Away",
+   "img": "https://static.playgama.com/p-img/pg/tap-3d-wood-block-away/big_preview/ecdad60b756f4006aec4d3a7d8d3c55d",
+   "badge": "top"
+  },
+  {
+   "slug": "reveal-haven-lumen-isle",
+   "rank": 35,
+   "title": "Reveal Haven: Lumen Isle",
+   "img": "https://static.playgama.com/p-img/pg/reveal-haven-lumen-isle/big_preview/7abb1fdb5b7b43839e8c1fe433f2e91f",
+   "badge": ""
+  },
+  {
+   "slug": "secrets-of-the-old-house",
+   "rank": 36,
+   "title": "Secrets of the Old House",
+   "img": "https://static.playgama.com/p-img/pg/secrets-of-the-old-house/big_preview/33e29d2c218242d58917a20863a45ad8",
+   "badge": ""
+  },
+  {
+   "slug": "arrow-cube-3d",
+   "rank": 37,
+   "title": "Arrow Cube 3D",
+   "img": "https://static.playgama.com/p-img/pg/arrow-cube-3d/big-preview/af0fa0bfc76845b78b793da75e2a609b",
+   "badge": ""
+  },
+  {
+   "slug": "yarn-fever-unravel-puzzle",
+   "rank": 38,
+   "title": "Yarn Fever! Unravel Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/yarn-fever-unravel-puzzle/big_preview/faa68d61c5b44e64814eb14827a50d61",
+   "badge": ""
+  },
+  {
+   "slug": "avocado-yard-ragdoll-sandbox",
+   "rank": 39,
+   "title": "Avocado Yard: Ragdoll Sandbox",
+   "img": "https://static.playgama.com/p-img/pg/avocado-yard-ragdoll-sandbox/big_preview/04709f675c68472cb22f52431edb878e",
+   "badge": ""
+  },
+  {
+   "slug": "the-holiday-heist--hidden-object",
+   "rank": 40,
+   "title": "Hidden Objects : The Holiday Heist ",
+   "img": "https://static.playgama.com/p-img/pg/preview/3b36ca418d054e9aaa843b1621dfaf27",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-3",
+   "rank": 41,
+   "title": "Mahjong 3",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-3/big_preview/d69531101486482eaa0d21d8b2ea98fa",
+   "badge": ""
+  },
+  {
+   "slug": "color-sort-puzzle-milk-tea-sorting",
+   "rank": 42,
+   "title": "Color Sort Puzzle Milk Tea Sorting",
+   "img": "https://static.playgama.com/p-img/pg/color-sort-puzzle-milk-tea-sorting/big-preview/c194150319b84ce58ef6d3a9e5333945",
+   "badge": ""
+  },
+  {
+   "slug": "block-blast-2048",
+   "rank": 43,
+   "title": "Block Blast 2048",
+   "img": "https://static.playgama.com/p-img/pg/block-blast-2048/big-preview/15f394ba6c12422fb69c4905e35ed8ed",
+   "badge": ""
+  },
+  {
+   "slug": "super-candy-jewels",
+   "rank": 44,
+   "title": "Super Candy Jewels",
+   "img": "https://static.playgama.com/p-img/pg/super-candy-jewels/big-preview/9af24bd7de5b4081bd23becf55a29dc0",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-out",
+   "rank": 45,
+   "title": "Arrows Out!",
+   "img": "https://static.playgama.com/p-img/pg/arrows-out/big-preview/c4e9351ad3ca470abe0208ab5ca48bf5",
+   "badge": ""
+  },
+  {
+   "slug": "screw-match",
+   "rank": 46,
+   "title": "Screw Match",
+   "img": "https://static.playgama.com/p-img/pg/screw-match/big-preview/c2daba0c41ae4d0bb57250451827f957",
+   "badge": ""
+  },
+  {
+   "slug": "remove-all-arrows",
+   "rank": 47,
+   "title": "Remove All Arrows",
+   "img": "https://static.playgama.com/p-img/pg/remove-all-arrows/big-preview/f65c3304aa7a42859af0e637dd79457d",
+   "badge": ""
+  },
+  {
+   "slug": "ball-sort-puzzle",
+   "rank": 48,
+   "title": "Ball Sort Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/ball-sort-puzzle/big-preview/c5a9a8d0f4ef4def947c09c135f2f875",
+   "badge": ""
+  },
+  {
+   "slug": "tricky-story-friendly-help",
+   "rank": 49,
+   "title": "Tricky Story Friendly Help",
+   "img": "https://static.playgama.com/p-img/pg/tricky-story-friendly-help/big_preview/0e095635b7d847edbd4ac09cdf887c0b",
+   "badge": ""
+  },
+  {
+   "slug": "hexa-master-3d-sort-puzzle",
+   "rank": 50,
+   "title": "Hexa Master 3D: Sort Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/hexa-master-3d-sort-puzzle/big-preview/4f4f8967ccc74972bf6b8c2fbd0f3f6c",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-words-find-in-pictures",
+   "rank": 51,
+   "title": "Hidden Words: Find in Pictures",
+   "img": "https://static.playgama.com/p-img/pg/hidden-words-find-in-pictures/big_preview/87dcd31d56874124b592969cb74072c3",
+   "badge": ""
+  },
+  {
+   "slug": "cat-sudoku-brain-meowdoku",
+   "rank": 52,
+   "title": "Cat Sudoku: Brain Meowdoku",
+   "img": "https://static.playgama.com/p-img/pg/cat-sudoku-brain-meowdoku/big_preview/b2715973476d4d39b5b77a052c496776",
+   "badge": ""
+  },
+  {
+   "slug": "neon-maze",
+   "rank": 53,
+   "title": "Neon Maze",
+   "img": "https://static.playgama.com/p-img/pg/neon-maze/big-preview/80e6c273a33e4b16b1ceec1f0cf42526",
+   "badge": ""
+  },
+  {
+   "slug": "cozy-jigsaw-puzzles",
+   "rank": 54,
+   "title": "Cozy Jigsaw Puzzles",
+   "img": "https://static.playgama.com/p-img/pg/cozy-jigsaw-puzzles/big_preview/161cee7c0f634c70ad38a573560b1967",
+   "badge": ""
+  },
+  {
+   "slug": "number-match-pairs-and-tens",
+   "rank": 55,
+   "title": "Number Match: Pairs and Tens",
+   "img": "https://static.playgama.com/p-img/pg/number-match-pairs-and-tens/big_preview/57eab5fe022941bfb5ac9b5e71a1cb58",
+   "badge": ""
+  },
+  {
+   "slug": "italian-brainrot-find-the-difference",
+   "rank": 56,
+   "title": "Italian Brainrot Find the Difference",
+   "img": "https://static.playgama.com/p-img/pg/italian-brainrot-find-the-difference/big-preview/631d6272edb849768c1fef6ce240b8fb",
+   "badge": ""
+  },
+  {
+   "slug": "loose-ends",
+   "rank": 57,
+   "title": "Loose Ends",
+   "img": "https://static.playgama.com/p-img/pg/loose-ends/big_preview/85ba2c61376b42c4a7bd38d04207d32f",
+   "badge": ""
+  },
+  {
+   "slug": "arrowscape-arrow-puzzle",
+   "rank": 58,
+   "title": "Arrowscape: Arrow Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrowscape-arrow-puzzle/big_preview/3ff30e98759f43c799323ce4ce4d3758",
+   "badge": ""
+  },
+  {
+   "slug": "sweet-world-candy-match-game",
+   "rank": 59,
+   "title": "Sweet World Candy Match Game",
+   "img": "https://static.playgama.com/p-img/pg/sweet-world-candy-match-game/big_preview/5b27f59363f641b3ac54a68e0b367039",
+   "badge": ""
+  },
+  {
+   "slug": "popping-candies",
+   "rank": 60,
+   "title": "Popping Candies",
+   "img": "https://static.playgama.com/p-img/pg/popping-candies/big-preview/7546f1f72f59475487a53c82adfb7c89",
+   "badge": ""
+  },
+  {
+   "slug": "forest-3d-majong",
+   "rank": 61,
+   "title": "Forest 3D majong",
+   "img": "https://static.playgama.com/p-img/pg/forest-3d-majong/big-preview/2acea2335877429090c4763477d09d90",
+   "badge": ""
+  },
+  {
+   "slug": "word-solitaire",
+   "rank": 62,
+   "title": "Word Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/word-solitaire/big_preview/4d5b96263605435ea229215ef523a0f4",
+   "badge": ""
+  },
+  {
+   "slug": "arrowlock",
+   "rank": 63,
+   "title": "Arrowlock",
+   "img": "https://static.playgama.com/p-img/pg/preview/99ece1bd882a481f825e43249229ac50",
+   "badge": ""
+  },
+  {
+   "slug": "bubble-word-jam",
+   "rank": 64,
+   "title": "Bubble Word Jam",
+   "img": "https://static.playgama.com/p-img/pg/bubble-word-jam/big_preview/89b7456bde8b4c00a02fea5a0d4fb98b",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-escape--tap-puzzle",
+   "rank": 65,
+   "title": "Arrows: Escape - Tap Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrows-escape-tap-puzzle/big_preview/49e1146eb5644457b308b0fb43c8c952",
+   "badge": ""
+  },
+  {
+   "slug": "blocks-and-thats-it",
+   "rank": 66,
+   "title": "Blocks and that's it",
+   "img": "https://static.playgama.com/p-img/pg/blocks-and-thats-it/big_preview/2666d085a41245e99403d06878a35a1b",
+   "badge": ""
+  },
+  {
+   "slug": "sudoku",
+   "rank": 67,
+   "title": "Sudoku",
+   "img": "https://static.playgama.com/p-img/pg/sudoku/big_preview/ab6c23d06877497eac2aabdf7864cd39",
+   "badge": ""
+  },
+  {
+   "slug": "delete-part-in-lovestory",
+   "rank": 68,
+   "title": "Delete part in LoveStory",
+   "img": "https://static.playgama.com/p-img/pg/delete-part-in-lovestory/big-preview/22e5296074cc4b969fbca598ab327738",
+   "badge": ""
+  },
+  {
+   "slug": "wood-blocks-jam",
+   "rank": 69,
+   "title": "Wood Blocks Jam",
+   "img": "https://static.playgama.com/p-img/pg/wood-blocks-jam/big-preview/f8a46a136d1043fd8ab89994b49ec933",
+   "badge": "top"
+  },
+  {
+   "slug": "tile-pair-jam-mahjong-master",
+   "rank": 70,
+   "title": "Tile Pair Jam: Mahjong Master",
+   "img": "https://static.playgama.com/p-img/pg/tile-pair-jam-mahjong-master/big_preview/372d10e80d9640458d4cd5813d222b5a",
+   "badge": ""
+  },
+  {
+   "slug": "worldguessr",
+   "rank": 71,
+   "title": "WorldGuessr",
+   "img": "https://static.playgama.com/p-img/pg/preview/3559e61219da4b3fa9adecd207e1806b",
+   "badge": ""
+  },
+  {
+   "slug": "the-queens-jewels",
+   "rank": 72,
+   "title": "The Queen's Jewels",
+   "img": "https://static.playgama.com/p-img/pg/the-queens-jewels/big-preview/4d46d48098bc44aaac8be3a9080ee9c1",
+   "badge": ""
+  },
+  {
+   "slug": "screw--pin-puzzle-levels",
+   "rank": 73,
+   "title": "Screw & Pin: Puzzle Levels",
+   "img": "https://static.playgama.com/p-img/pg/screw-pin-puzzle-levels/big_preview/da9e577e17df48d1b4494f43c34126d2",
+   "badge": ""
+  },
+  {
+   "slug": "tile-valley",
+   "rank": 74,
+   "title": "Tile Valley",
+   "img": "https://static.playgama.com/p-img/pg/tile-valley/big-preview/dabea2e0c14043aeacf15adde56deb3a",
+   "badge": ""
+  },
+  {
+   "slug": "catdoku-meow-color-puzzle",
+   "rank": 75,
+   "title": "Catdoku: Meow Color Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/catdoku-meow-color-puzzle/big_preview/0a2aeb9c7567451d8da07027700f68a4",
+   "badge": ""
+  },
+  {
+   "slug": "find-match-3d",
+   "rank": 76,
+   "title": "Find Match 3D",
+   "img": "https://static.playgama.com/p-img/pg/find-match-3d/big-preview/b8951ea43f0c4e18af3401f015c1750c",
+   "badge": ""
+  },
+  {
+   "slug": "master-of-3-tiles",
+   "rank": 77,
+   "title": "Master of 3 Tiles",
+   "img": "https://static.playgama.com/p-img/pg/master-of-3-tiles/big-preview/2eee76a4e0cb4dd89f75d4dc1a0cb63a",
+   "badge": ""
+  },
+  {
+   "slug": "goods-sort-3d",
+   "rank": 78,
+   "title": "Goods Sort 3D",
+   "img": "https://static.playgama.com/p-img/pg/goods-sort-3d/big-preview/3dcb4b57fdcc406b834b061d00f923b5",
+   "badge": ""
+  },
+  {
+   "slug": "tidewell",
+   "rank": 79,
+   "title": "Tidewell",
+   "img": "https://static.playgama.com/p-img/pg/tidewell/big_preview/821002c48b0c42cbbaddf15018f2d189",
+   "badge": ""
+  },
+  {
+   "slug": "catdoku",
+   "rank": 80,
+   "title": "CatDoku",
+   "img": "https://static.playgama.com/p-img/pg/catdoku/big_preview/20db2e4ec44b419b9bfac879567cdb7a",
+   "badge": ""
+  },
+  {
+   "slug": "candy-cascade",
+   "rank": 81,
+   "title": "Candy Cascade",
+   "img": "https://static.playgama.com/p-img/pg/candy-cascade/big_preview/7417bd6888964e618658b2f1e1526188",
+   "badge": ""
+  },
+  {
+   "slug": "find-the-cats",
+   "rank": 82,
+   "title": "Find The Cats",
+   "img": "https://static.playgama.com/p-img/pg/find-the-cats/big_preview/a80d358561d343ebb50fcc30c4d1dcc0",
+   "badge": ""
+  },
+  {
+   "slug": "save-the-pets-draw-to-save",
+   "rank": 83,
+   "title": "Save The Pets: Draw to Save",
+   "img": "https://static.playgama.com/p-img/pg/save-the-pets-draw-to-save/big-preview/1fb8c24eaefd4352a866b3e208168d9f",
+   "badge": ""
+  },
+  {
+   "slug": "cannon-blast",
+   "rank": 84,
+   "title": "Cannon Blast",
+   "img": "https://static.playgama.com/p-img/pg/cannon-blast/big_preview/3e6de756e7e14e0fa1ba79aa118e89ad",
+   "badge": ""
+  },
+  {
+   "slug": "word-associations-solitaire",
+   "rank": 85,
+   "title": "Word Associations Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/word-associations-solitaire/big-preview/b4f0782539a748a8a6b4381bbcd5544f",
+   "badge": ""
+  },
+  {
+   "slug": "crosswords-2026",
+   "rank": 86,
+   "title": "Crosswords 2026",
+   "img": "https://static.playgama.com/p-img/pg/crosswords-2026/big-preview/c7b508934fb7428caec01416d816427d",
+   "badge": ""
+  },
+  {
+   "slug": "jewel-coloring",
+   "rank": 87,
+   "title": "Jewel Coloring",
+   "img": "https://static.playgama.com/p-img/pg/jewel-coloring/big_preview/05506f7ce9d74640b6fe18e160b76d61",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-puzzle-escape",
+   "rank": 88,
+   "title": "Arrows \u2013 Puzzle Escape",
+   "img": "https://static.playgama.com/p-img/pg/arrows-puzzle-escape/big-preview/6f791f2c60084575af013a03d00e64b3",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-solitaire-3d",
+   "rank": 89,
+   "title": "Mahjong Solitaire 3D",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-solitaire-3d/big_preview/88bce4b90ac840ea86b35d3689066d46",
+   "badge": ""
+  },
+  {
+   "slug": "backrooms-escape-b1dd-1",
+   "rank": 90,
+   "title": "Backrooms Escape",
+   "img": "https://static.playgama.com/p-img/pg/preview/3862bc57ddf14e3a829d6672a042bd9b",
+   "badge": ""
+  },
+  {
+   "slug": "puzzle-home-cozy-makeover",
+   "rank": 91,
+   "title": "Puzzle Home: Cozy Makeover",
+   "img": "https://static.playgama.com/p-img/pg/puzzle-home-cozy-makeover/big_preview/aec934b04ca74cd5beae36207a59813d",
+   "badge": ""
+  },
+  {
+   "slug": "hexa-master",
+   "rank": 92,
+   "title": "Hexa Master",
+   "img": "https://static.playgama.com/p-img/pg/hexa-master/big_preview/693522aa8e3d4036b113bc1f53b50f95",
+   "badge": ""
+  },
+  {
+   "slug": "solitaire-tripeaks",
+   "rank": 93,
+   "title": "Solitaire Tripeaks",
+   "img": "https://static.playgama.com/p-img/pg/solitaire-tripeaks/big-preview/88a59a41e77741ddb12615b6df62f1fe",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-puzzle-game",
+   "rank": 94,
+   "title": "Mahjong Puzzle Game",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-puzzle-game/big-preview/8e69d04b4e5844b6bc94157a5d8b05a4",
+   "badge": ""
+  },
+  {
+   "slug": "noob-car-builder",
+   "rank": 95,
+   "title": "Noob car builder",
+   "img": "https://static.playgama.com/p-img/pg/noob-car-builder/big_preview/b7693af5a40f4182911b61039e23633f",
+   "badge": ""
+  },
+  {
+   "slug": "sticker-art-book-puzzle",
+   "rank": 96,
+   "title": "Sticker Art Book Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/sticker-art-book-puzzle/big-preview/dee5b7da5ae240e6a8b03370e6eb8faa",
+   "badge": ""
+  },
+  {
+   "slug": "spot-difference",
+   "rank": 97,
+   "title": "Spot Difference",
+   "img": "https://static.playgama.com/p-img/pg/spot-difference/big-preview/7a1fe0f98eed4ac189896c06d79301e9",
+   "badge": ""
+  },
+  {
+   "slug": "color-cube-puzzle",
+   "rank": 98,
+   "title": "Color Cube Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/color-cube-puzzle/big_preview/2e8b8cf720074555af345f5ea0475441",
+   "badge": ""
+  },
+  {
+   "slug": "word-search-w",
+   "rank": 99,
+   "title": "Word Search",
+   "img": "https://static.playgama.com/p-img/pg/word-search-w/big-preview/144d2f3a826647d694e49d0b1f60ec46",
+   "badge": ""
+  },
+  {
+   "slug": "petdoku-find-hidden-pets",
+   "rank": 100,
+   "title": "PetDoku: Find Hidden Pets",
+   "img": "https://static.playgama.com/p-img/pg/petdoku-find-hidden-pets/big_preview/c9ea1f96dcad4fdfa5fe690d7a1d79ca",
+   "badge": ""
+  },
+  {
+   "slug": "goods-sort-3d-triple-puzzle",
+   "rank": 101,
+   "title": "Goods Sort 3D - Triple Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/goods-sort-3d-triple-puzzle/big_preview/cb9ed48a2c4948de8adcb2ebaf9666fd",
+   "badge": ""
+  },
+  {
+   "slug": "knock-your-mind",
+   "rank": 102,
+   "title": "Knock Your Mind",
+   "img": "https://static.playgama.com/p-img/pg/knock-your-mind/big_preview/1a323edca17e4e2e95e3e00d1cfddd3c",
+   "badge": ""
+  },
+  {
+   "slug": "exitblocks-color-match-puzzle",
+   "rank": 103,
+   "title": "ExitBlocks: Color Match Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/exitblocks-color-match-puzzle/big_preview/4f6e6fc4c23442a389274f5996dc0f3e",
+   "badge": ""
+  },
+  {
+   "slug": "sort-the-colored-hexagons",
+   "rank": 104,
+   "title": "Sort The Colored Hexagons",
+   "img": "https://static.playgama.com/p-img/pg/sort-the-colored-hexagons/big-preview/196a9c74e18b4b8b90c7c2ea6691503a",
+   "badge": ""
+  },
+  {
+   "slug": "makeup-mini-games-asmr-skincare",
+   "rank": 105,
+   "title": "Makeup Mini Games: ASMR Skincare",
+   "img": "https://static.playgama.com/p-img/pg/makeup-mini-games-asmr-skincare/big_preview/f270aa89990b465eb0cbc32ce4f3ef00",
+   "badge": ""
+  },
+  {
+   "slug": "draw-or-delete-lovestory",
+   "rank": 106,
+   "title": "Draw or Delete LoveStory",
+   "img": "https://static.playgama.com/p-img/pg/draw-or-delete-lovestory/big-preview/ccfdc2eb1a6f4883897942c579434ad7",
+   "badge": ""
+  },
+  {
+   "slug": "sunny-farm-match-3",
+   "rank": 107,
+   "title": "Sunny Farm: Match 3",
+   "img": "https://static.playgama.com/p-img/pg/preview/eb913e4b9b03433682fc1af04208d412",
+   "badge": ""
+  },
+  {
+   "slug": "merge-fruit-characters",
+   "rank": 108,
+   "title": "Merge Fruit Characters",
+   "img": "https://static.playgama.com/p-img/pg/merge-fruit-characters/big_preview/f6f67215971b4fdf91d46a676a3c9643",
+   "badge": ""
+  },
+  {
+   "slug": "candy-mahjong-3d",
+   "rank": 109,
+   "title": "Candy Mahjong 3D",
+   "img": "https://static.playgama.com/p-img/pg/candy-mahjong-3d/big-preview/6bd4a1731611440e847590e9dac6abb9",
+   "badge": ""
+  },
+  {
+   "slug": "sudoku-block-puzzle",
+   "rank": 110,
+   "title": "Sudoku Block Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/sudoku-block-puzzle/big-preview/5dd32455118a48df802373265902478e",
+   "badge": ""
+  },
+  {
+   "slug": "category-match-puzzle",
+   "rank": 111,
+   "title": "Category Match Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/category-match-puzzle/big_preview/6e96012b106b480b86ae5eead9346250",
+   "badge": ""
+  },
+  {
+   "slug": "looking-for-aliens",
+   "rank": 112,
+   "title": "Looking For Aliens",
+   "img": "https://static.playgama.com/p-img/pg/looking-for-aliens/big_preview/800fd93ccf054d8cb02943adb5f2b057",
+   "badge": ""
+  },
+  {
+   "slug": "where-are-the-puffies",
+   "rank": 113,
+   "title": "Where Are the Puffies?",
+   "img": "https://static.playgama.com/p-img/pg/where-are-the-puffies/big_preview/fee673c0728a46a3a6ad0ade60b1fd01",
+   "badge": ""
+  },
+  {
+   "slug": "crosswords-big-collection",
+   "rank": 114,
+   "title": "Crosswords: Big Collection",
+   "img": "https://static.playgama.com/p-img/pg/crosswords-big-collection/big-preview/cdbdff5ad54b45acaced9284023d3e35",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-four-rivers",
+   "rank": 115,
+   "title": "Mahjong Four Rivers",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-four-rivers/big-preview/80e63d1cf8c9450f8f06e95c0b5d73dc",
+   "badge": ""
+  },
+  {
+   "slug": "rotate-rings",
+   "rank": 116,
+   "title": "Rotate Rings",
+   "img": "https://static.playgama.com/p-img/pg/rotate-rings/big_preview/67f20ca05ecb4810b15e2ba8bbc8b47f",
+   "badge": ""
+  },
+  {
+   "slug": "magpie-trail-merge-mystery",
+   "rank": 117,
+   "title": "Magpie Trail: Merge Mystery",
+   "img": "https://static.playgama.com/p-img/pg/preview/812a5aadd05848788bedcb487385601b",
+   "badge": ""
+  },
+  {
+   "slug": "zumble-ocean",
+   "rank": 118,
+   "title": "Zumble Ocean",
+   "img": "https://static.playgama.com/p-img/pg/zumble-ocean/big_preview/2bdeb40794114b8c81d5900ae7d576aa",
+   "badge": ""
+  },
+  {
+   "slug": "bird-flock-puzzle",
+   "rank": 119,
+   "title": "Bird Flock Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/bird-flock-puzzle/big_preview/bb14f2bec5024b3d9543aa0e417727c8",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-match",
+   "rank": 120,
+   "title": "Mahjong Match",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-match/big-preview/745f327e346a4339bb9472d9ffbabf02",
+   "badge": ""
+  },
+  {
+   "slug": "stealth-ninja",
+   "rank": 121,
+   "title": "Stealth Ninja",
+   "img": "https://static.playgama.com/p-img/pg/preview/58735ec2e3594e97abe91e36077bffa6",
+   "badge": ""
+  },
+  {
+   "slug": "crown-crush",
+   "rank": 122,
+   "title": "Crown Crush",
+   "img": "https://static.playgama.com/p-img/pg/crown-crush/big_preview/969c2eecb6354a5d9fa791455d5b7751",
+   "badge": ""
+  },
+  {
+   "slug": "hexa-sort-master",
+   "rank": 123,
+   "title": "Hexa Sort Master",
+   "img": "https://static.playgama.com/p-img/pg/hexa-sort-master/big_preview/b793ecbd4a144a57bfad9ebc2e346236",
+   "badge": ""
+  },
+  {
+   "slug": "pier--lighthouse-merge-story",
+   "rank": 124,
+   "title": "Pier & Lighthouse: Merge Story",
+   "img": "https://static.playgama.com/p-img/pg/preview/6f34e2dc008345bea82c7c33fe46d3df",
+   "badge": ""
+  },
+  {
+   "slug": "blackriver-mystery-hidden-objects",
+   "rank": 125,
+   "title": "Blackriver Mystery. Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/blackriver-mystery-hidden-objects/big-preview/7fd15bd991f24416bedfb78a3408ce87",
+   "badge": ""
+  },
+  {
+   "slug": "parking-jam-world-tour",
+   "rank": 126,
+   "title": " Parking Jam: World Tour",
+   "img": "https://static.playgama.com/p-img/pg/preview/fc26a23e2ebc49b0b7e2082c497b8381",
+   "badge": ""
+  },
+  {
+   "slug": "frogtastic-marble-adventure",
+   "rank": 127,
+   "title": "Frogtastic Marble Adventure",
+   "img": "https://static.playgama.com/p-img/pg/frogtastic-marble-adventure/big_preview/e30392d1b97f4d4db18815aebe8dcbd0",
+   "badge": ""
+  },
+  {
+   "slug": "ant-moving-simulator",
+   "rank": 128,
+   "title": "Ant Moving Simulator",
+   "img": "https://static.playgama.com/p-img/pg/preview/e35746da743f405ab340eddf058bc6b1",
+   "badge": ""
+  },
+  {
+   "slug": "halloween-monsters-merge",
+   "rank": 129,
+   "title": "Halloween monsters merge",
+   "img": "https://static.playgama.com/p-img/pg/halloween-monsters-merge/big_preview/770c852933b0411d9f6e2b224547a2a3",
+   "badge": ""
+  },
+  {
+   "slug": "nonogram",
+   "rank": 130,
+   "title": "Nonogram",
+   "img": "https://static.playgama.com/p-img/pg/nonogram/big_preview/a32f54a5bcea4b2b8e1bfd5107bf6e2f",
+   "badge": ""
+  },
+  {
+   "slug": "coffee-color-blocks",
+   "rank": 131,
+   "title": "Coffee Color Blocks",
+   "img": "https://static.playgama.com/p-img/pg/coffee-color-blocks/big_preview/ecc0292a6a6040e896ce78d422a7e481",
+   "badge": ""
+  },
+  {
+   "slug": "find-a-hamster-item-search",
+   "rank": 132,
+   "title": "Find A Hamster - Item Search",
+   "img": "https://static.playgama.com/p-img/pg/find-a-hamster-item-search/big_preview/dc3fe65d09194fc99173e0d7b83088ac",
+   "badge": ""
+  },
+  {
+   "slug": "number-link",
+   "rank": 133,
+   "title": "Number Link",
+   "img": "https://static.playgama.com/p-img/pg/preview/aad3dc30211f460e820d9587c0244cb8",
+   "badge": ""
+  },
+  {
+   "slug": "2048-merge-blocks",
+   "rank": 134,
+   "title": "2048 Merge Blocks",
+   "img": "https://static.playgama.com/p-img/pg/2048-merge-blocks/big-preview/5a51dcac6e09482684d9bdfc3ccb385d",
+   "badge": ""
+  },
+  {
+   "slug": "marble-color-sort",
+   "rank": 135,
+   "title": "Marble Color Sort",
+   "img": "https://static.playgama.com/p-img/pg/marble-color-sort/big-preview/7e0cc1a9bd4a4ca3a317d2f70013f8dc",
+   "badge": ""
+  },
+  {
+   "slug": "colora",
+   "rank": 136,
+   "title": "Colora",
+   "img": "https://static.playgama.com/p-img/pg/colora/big_preview/f7ecc41559a84dcebe8f676218a4e040",
+   "badge": ""
+  },
+  {
+   "slug": "ragdoll-challenge-long-hand",
+   "rank": 137,
+   "title": "Ragdoll Challenge: Long Hand",
+   "img": "https://static.playgama.com/p-img/pg/ragdoll-challenge-long-hand/big_preview/7013bd114ca04bb3af363de37f1eece9",
+   "badge": ""
+  },
+  {
+   "slug": "swarm-picnic",
+   "rank": 138,
+   "title": "Swarm Picnic",
+   "img": "https://static.playgama.com/p-img/pg/preview/20bf75a88c5e49deb5229aeec8a0ab26",
+   "badge": ""
+  },
+  {
+   "slug": "yummy-shelf",
+   "rank": 139,
+   "title": "Yummy Shelf",
+   "img": "https://static.playgama.com/p-img/pg/yummy-shelf/big_preview/f599fbbc95e54f0bb8a41b6c966ee5aa",
+   "badge": ""
+  },
+  {
+   "slug": "splashy-merge",
+   "rank": 140,
+   "title": "Splashy Merge",
+   "img": "https://static.playgama.com/p-img/pg/preview/b5635267a6cd4c6090941273ebf66d17",
+   "badge": ""
+  },
+  {
+   "slug": "merge-combo",
+   "rank": 141,
+   "title": "Merge Combo",
+   "img": "https://static.playgama.com/p-img/pg/merge-combo/big-preview/452967583665432ba4f4f18ed974375d",
+   "badge": ""
+  },
+  {
+   "slug": "arrowsoutio",
+   "rank": 142,
+   "title": "ArrowsOut.io",
+   "img": "https://static.playgama.com/p-img/pg/arrowsoutio/big_preview/1d26e5559ad146da9083f34db0259a11",
+   "badge": ""
+  },
+  {
+   "slug": "crowd-rush",
+   "rank": 143,
+   "title": "Crowd Rush",
+   "img": "https://static.playgama.com/p-img/pg/crowd-rush/big_preview/6739d21daf0147a09d2c2f39cd782464",
+   "badge": ""
+  },
+  {
+   "slug": "math-crosswords",
+   "rank": 144,
+   "title": "Math Crosswords",
+   "img": "https://static.playgama.com/p-img/pg/math-crosswords/big_preview/2f7e45eeee5c45ffbf3a3606f3cb0d0a",
+   "badge": ""
+  },
+  {
+   "slug": "mystery-of-the-old-house-hidden-objects",
+   "rank": 145,
+   "title": "Mystery of the Old House: Hidden Objects",
+   "img": "https://static.playgama.com/p-img/pg/mystery-of-the-old-house-hidden-objects/big-preview/f64b27344ff549f7915236677b009098",
+   "badge": "top"
+  },
+  {
+   "slug": "word-search-offline-puzzle",
+   "rank": 146,
+   "title": "Word Search: Offline Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/word-search-offline-puzzle/big_preview/721a5f4f03d44dee9e13b6986772766c",
+   "badge": ""
+  },
+  {
+   "slug": "glow-bead-art",
+   "rank": 147,
+   "title": "Glow Bead Art",
+   "img": "https://static.playgama.com/p-img/pg/glow-bead-art/big_preview/a63aac93cd234abf94d42b6b1d240f90",
+   "badge": ""
+  },
+  {
+   "slug": "connect-tracks",
+   "rank": 148,
+   "title": "Connect Tracks",
+   "img": "https://static.playgama.com/p-img/pg/connect-tracks/big_preview/1b6cfad5f09b47d6bc11651a047793b5",
+   "badge": ""
+  },
+  {
+   "slug": "pretty-tidy--asmr-organizing",
+   "rank": 149,
+   "title": "Pretty Tidy - ASMR Organizing",
+   "img": "https://static.playgama.com/p-img/pg/pretty-tidy--asmr-organizing/big-preview/3dc39cdf4e56483b89edb638c14f745c",
+   "badge": ""
+  },
+  {
+   "slug": "cube-tap-away",
+   "rank": 150,
+   "title": "Cube Tap Away",
+   "img": "https://static.playgama.com/p-img/pg/cube-tap-away/big_preview/419ed43603df4446a94cddc635fb0be2",
+   "badge": ""
+  },
+  {
+   "slug": "pool-blast",
+   "rank": 151,
+   "title": "Pool Blast",
+   "img": "https://static.playgama.com/p-img/pg/pool-blast/big_preview/e923e39c9cd14944b554133b073ca818",
+   "badge": ""
+  },
+  {
+   "slug": "flower-merge--triple-puzzle",
+   "rank": 152,
+   "title": "Flower Merge - Triple Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/flower-merge--triple-puzzle/big_preview/9b85f51d2a8c422f973dc2c0aaaee055",
+   "badge": ""
+  },
+  {
+   "slug": "knit-loop-yarn-jam-puzzle",
+   "rank": 153,
+   "title": "Knit Loop: Yarn Jam Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/knit-loop-yarn-jam-puzzle/big-preview/51dcf88fae104ec08f8c260be0ee3d38",
+   "badge": ""
+  },
+  {
+   "slug": "word-pieces",
+   "rank": 154,
+   "title": "Word Pieces",
+   "img": "https://static.playgama.com/p-img/pg/word-pieces/big_preview/70d1ce444e3342a6aa1368c5a1f7313f",
+   "badge": ""
+  },
+  {
+   "slug": "the-escape-series-playgama",
+   "rank": 155,
+   "title": "The Escape Series",
+   "img": "https://static.playgama.com/p-img/pg/the-escape-series-playgama/big-preview/29528ec6375f47ccbefdb10b9d5b3640",
+   "badge": ""
+  },
+  {
+   "slug": "candy-pop-mania",
+   "rank": 156,
+   "title": "Candy Pop Mania",
+   "img": "https://static.playgama.com/p-img/pg/candy-pop-mania/big_preview/1833e48e68be4b7bb2e58f505aad89e7",
+   "badge": ""
+  },
+  {
+   "slug": "puzzle-sort-party",
+   "rank": 157,
+   "title": "Puzzle Sort Party",
+   "img": "https://static.playgama.com/p-img/pg/puzzle-sort-party/big_preview/04196c6dc7614621ac6dcfb1c1834524",
+   "badge": ""
+  },
+  {
+   "slug": "backrooms-exit-protocol-0",
+   "rank": 158,
+   "title": "Backrooms: Exit Protocol 0",
+   "img": "https://static.playgama.com/p-img/pg/preview/89c731c985b64f68aa280815ebb98f77",
+   "badge": ""
+  },
+  {
+   "slug": "arrowshiftclassic",
+   "rank": 159,
+   "title": "ArrowShift:Classic",
+   "img": "https://static.playgama.com/p-img/pg/preview/86344307001748269efdaaed1c59f3a0",
+   "badge": ""
+  },
+  {
+   "slug": "dop2-draw-love-8ee9-1",
+   "rank": 160,
+   "title": "DOP2: Draw Love",
+   "img": "https://static.playgama.com/p-img/pg/dop2-draw-love-8ee9-1/big-preview/bdd8e8c4d2754e34b4fa4f6baf961192",
+   "badge": ""
+  },
+  {
+   "slug": "build-your-backrooms",
+   "rank": 161,
+   "title": "Build Your Backrooms",
+   "img": "https://static.playgama.com/p-img/pg/build-your-backrooms/big_preview/aac2d48d638b4b98b2c3fc8abedda3df",
+   "badge": ""
+  },
+  {
+   "slug": "jigsaw-puzzles",
+   "rank": 162,
+   "title": "Jigsaw Puzzles",
+   "img": "https://static.playgama.com/p-img/pg/jigsaw-puzzles/big_preview/6e724610227e4fba8b9f2170384bd948",
+   "badge": ""
+  },
+  {
+   "slug": "cozy-crossword",
+   "rank": 163,
+   "title": "Cozy Crossword",
+   "img": "https://static.playgama.com/p-img/pg/cozy-crossword/big_preview/ad5494e996294997a02504afa13524c3",
+   "badge": ""
+  },
+  {
+   "slug": "fog-merge",
+   "rank": 164,
+   "title": "Fog Merge",
+   "img": "https://static.playgama.com/p-img/pg/preview/691e2fad71fe4e5aa039f438e218b013",
+   "badge": ""
+  },
+  {
+   "slug": "sort-the-beads",
+   "rank": 165,
+   "title": "Sort The Beads",
+   "img": "https://static.playgama.com/p-img/pg/sort-the-beads/big_preview/ac0f571cf6aa4a209d8f77dcb902cba9",
+   "badge": ""
+  },
+  {
+   "slug": "sort-christmas-toys",
+   "rank": 166,
+   "title": "Sort Christmas Toys",
+   "img": "https://static.playgama.com/p-img/pg/sort-christmas-toys/big-preview/bc7a4e1aa20c44ddb9d8afca7c59b175",
+   "badge": ""
+  },
+  {
+   "slug": "cannon-basket",
+   "rank": 167,
+   "title": "Cannon Basket",
+   "img": "https://static.playgama.com/p-img/pg/cannon-basket/big-preview/66f26e5879324ea7bcf1d5636fa76830",
+   "badge": ""
+  },
+  {
+   "slug": "color-ball-sort",
+   "rank": 168,
+   "title": "Color Ball Sort",
+   "img": "https://static.playgama.com/p-img/pg/color-ball-sort/big_preview/44039b85633f485fab5bc228ad405768",
+   "badge": ""
+  },
+  {
+   "slug": "kitty-spot-the-differences",
+   "rank": 169,
+   "title": "Kitty Spot The Differences with Friends - 1 2 Players",
+   "img": "https://static.playgama.com/p-img/pg/kitty-spot-the-differences/big_preview/d18510e956304d5f810bee0245edf36d",
+   "badge": ""
+  },
+  {
+   "slug": "slime-loop",
+   "rank": 170,
+   "title": "Slime Loop",
+   "img": "https://static.playgama.com/p-img/pg/preview/b685971873674ce4a807fbf4af982b1b",
+   "badge": ""
+  },
+  {
+   "slug": "brainrot-jam-color-block-sort",
+   "rank": 171,
+   "title": "Brainrot Jam: Color Block Sort",
+   "img": "https://static.playgama.com/p-img/pg/brainrot-jam-color-block-sort/big_preview/4fd83cbe92d84112b0d9777dfc7b970f",
+   "badge": ""
+  },
+  {
+   "slug": "save-nemo",
+   "rank": 172,
+   "title": "Save Nemo",
+   "img": "https://static.playgama.com/p-img/pg/preview/f8a656bc353f452cb16bfd0a264fabe6",
+   "badge": ""
+  },
+  {
+   "slug": "block-blaster-puzzle",
+   "rank": 173,
+   "title": "Block Blaster Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/block-blaster-puzzle/big-preview/16793001080d4e048b244604735e21a8",
+   "badge": ""
+  },
+  {
+   "slug": "card-solitaire-word-game",
+   "rank": 174,
+   "title": "Card Solitaire: Word Game",
+   "img": "https://static.playgama.com/p-img/pg/card-solitaire-word-game/big_preview/2bf58572a16648a28fce66b99d42ce88",
+   "badge": ""
+  },
+  {
+   "slug": "word-sudoku",
+   "rank": 175,
+   "title": "Word Sudoku",
+   "img": "https://static.playgama.com/p-img/pg/word-sudoku/big_preview/3e5c0157ae0d4a3398d580d900216176",
+   "badge": ""
+  },
+  {
+   "slug": "blocks-8-69b2-1",
+   "rank": 176,
+   "title": "Blocks 8",
+   "img": "https://static.playgama.com/p-img/pg/blocks-8-69b2-1/big-preview/61a7d2588ca945629ab88497ed9602bb",
+   "badge": ""
+  },
+  {
+   "slug": "jigmerge-puzzles",
+   "rank": 177,
+   "title": "Jigmerge Puzzles",
+   "img": "https://static.playgama.com/p-img/pg/jigmerge-puzzles/big_preview/45fbbeab773e4fada6556e7758e4252b",
+   "badge": ""
+  },
+  {
+   "slug": "arrow-puzzle-3d-world-tour",
+   "rank": 178,
+   "title": "Arrow Puzzle 3D: World Tour",
+   "img": "https://static.playgama.com/p-img/pg/arrow-puzzle-3d-world-tour/big_preview/d4dc0660c23f4708bf6fb9b691733e77",
+   "badge": ""
+  },
+  {
+   "slug": "christmas-merge",
+   "rank": 179,
+   "title": "Christmas Merge",
+   "img": "https://static.playgama.com/p-img/pg/christmas-merge/big_preview/c5a44c9164964534995277137de7bdfe",
+   "badge": ""
+  },
+  {
+   "slug": "flower-collection",
+   "rank": 180,
+   "title": "Flower Collection",
+   "img": "https://static.playgama.com/p-img/pg/flower-collection/big-preview/5971a86d2565477fb605543622980632",
+   "badge": ""
+  },
+  {
+   "slug": "qblock-puzzle",
+   "rank": 181,
+   "title": "QBlock Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/qblock-puzzle/big-preview/858dbbdf96144b8289be2a218d2cb914",
+   "badge": ""
+  },
+  {
+   "slug": "harbor-mahjong",
+   "rank": 182,
+   "title": "Harbor Mahjong",
+   "img": "https://static.playgama.com/p-img/pg/harbor-mahjong/big_preview/7dd336e3d2394c76a42e2c511615cf41",
+   "badge": ""
+  },
+  {
+   "slug": "lantern-hollow-merge",
+   "rank": 183,
+   "title": "Lantern Hollow Merge",
+   "img": "https://static.playgama.com/p-img/pg/lantern-hollow-merge/big_preview/b65b54472ff1420c87d7fef95cdcfdb9",
+   "badge": ""
+  },
+  {
+   "slug": "pushplush",
+   "rank": 184,
+   "title": "PushPlush",
+   "img": "https://static.playgama.com/p-img/pg/pushplush/big_preview/0b6ae84118ff4ecd80d28be542584efd",
+   "badge": ""
+  },
+  {
+   "slug": "sweep-the-arrows",
+   "rank": 185,
+   "title": "Sweep the Arrows",
+   "img": "https://static.playgama.com/p-img/pg/sweep-the-arrows/big-preview/013f4600f4a04b90868425ec9997c05d",
+   "badge": ""
+  },
+  {
+   "slug": "solitaire-emoji-jam",
+   "rank": 186,
+   "title": "Solitaire Emoji Jam",
+   "img": "https://static.playgama.com/p-img/pg/solitaire-emoji-jam/big-preview/6ed9b00ad0d34127b1c1904937c785dd",
+   "badge": ""
+  },
+  {
+   "slug": "solve-the-square-find-out-your-iq",
+   "rank": 187,
+   "title": "Solve the square: Find out your IQ",
+   "img": "https://static.playgama.com/p-img/pg/solve-the-square-find-out-your-iq/big-preview/2a2ef91156934e7cb0476d9517fc4f51",
+   "badge": ""
+  },
+  {
+   "slug": "tripeaks-solitaire-classic",
+   "rank": 188,
+   "title": "TriPeaks Solitaire Classic",
+   "img": "https://static.playgama.com/p-img/pg/tripeaks-solitaire-classic/big-preview/d4bd875f1f624ed391deb9c21b41bffd",
+   "badge": ""
+  },
+  {
+   "slug": "forest-tile-match",
+   "rank": 189,
+   "title": "Forest Tile Match",
+   "img": "https://static.playgama.com/p-img/pg/forest-tile-match/big_preview/c0ccb2a2275a48d59551c028ec9add24",
+   "badge": ""
+  },
+  {
+   "slug": "sorting-cute-animals",
+   "rank": 190,
+   "title": "Sorting Cute Animals",
+   "img": "https://static.playgama.com/p-img/pg/sorting-cute-animals/big_preview/f6dde05d23084edf89ae187283544c47",
+   "badge": ""
+  },
+  {
+   "slug": "art-master-puzzle",
+   "rank": 191,
+   "title": "Art Master Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/art-master-puzzle/big_preview/1c1f0567613f4214acb0c884c688802a",
+   "badge": ""
+  },
+  {
+   "slug": "jelly-parade",
+   "rank": 192,
+   "title": "Jelly Parade",
+   "img": "https://static.playgama.com/p-img/pg/jelly-parade/big_preview/038fafe766ed4bb397f11d2f452ae13c",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-mates",
+   "rank": 193,
+   "title": "Mahjong Mates",
+   "img": "https://static.playgama.com/p-img/pg/preview/5c6531597a51451abfb551bb7f35e4a4",
+   "badge": ""
+  },
+  {
+   "slug": "screw-out-jam-puzzle-4850-1",
+   "rank": 194,
+   "title": "Screw Out Jam Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/screw-out-jam-puzzle-4850-1/big-preview/1b4bf0000caa49f890af6c5b38c36e90",
+   "badge": ""
+  },
+  {
+   "slug": "lines-98-2367-1",
+   "rank": 195,
+   "title": "Lines 98",
+   "img": "https://static.playgama.com/p-img/pg/lines-98-2367-1/big-preview/bf7a381a4d69408d9cfcdcca01a3cec1",
+   "badge": ""
+  },
+  {
+   "slug": "wonder-wordle-cc0d-1",
+   "rank": 196,
+   "title": "Wonder Wordle",
+   "img": "https://static.playgama.com/p-img/pg/wonder-wordle-cc0d-1/big-preview/1b07ef32345247fb850b1f661f9d31e9",
+   "badge": ""
+  },
+  {
+   "slug": "bridge-builder",
+   "rank": 197,
+   "title": "Bridge Builder",
+   "img": "https://static.playgama.com/p-img/pg/bridge-builder/big-preview/4f12f6a379db4666a4b3141c7aa23441",
+   "badge": "top"
+  },
+  {
+   "slug": "word-connect-w",
+   "rank": 198,
+   "title": "Word Connect",
+   "img": "https://static.playgama.com/p-img/pg/word-connect-w/big-preview/6ef0818a62ff4cb381e2ce92c7c2f1e9",
+   "badge": ""
+  },
+  {
+   "slug": "detective-x-find-hidden-object",
+   "rank": 199,
+   "title": "Detective X Find hidden object",
+   "img": "https://static.playgama.com/p-img/pg/detective-x-find-hidden-object/big-preview/a80c8aad4073409c9ada0e4df2376fbc",
+   "badge": ""
+  },
+  {
+   "slug": "classic-fillwords",
+   "rank": 200,
+   "title": "Classic Fillwords",
+   "img": "https://static.playgama.com/p-img/pg/classic-fillwords/big_preview/30da808cddf44db5b2b0730ec47635a7",
+   "badge": ""
+  },
+  {
+   "slug": "merge-numbers-match-3",
+   "rank": 201,
+   "title": "Merge Numbers: Match 3",
+   "img": "https://static.playgama.com/p-img/pg/merge-numbers-match-3/big_preview/f9a8330d5c7d49c88c5691368911373d",
+   "badge": ""
+  },
+  {
+   "slug": "pixel-feast",
+   "rank": 202,
+   "title": "Pixel Feast",
+   "img": "https://static.playgama.com/p-img/pg/pixel-feast/big_preview/7f5c932a8e284a8282f24c36e40f832b",
+   "badge": ""
+  },
+  {
+   "slug": "tikhotsvet",
+   "rank": 203,
+   "title": "Tikhotsvet",
+   "img": "https://static.playgama.com/p-img/pg/tikhotsvet/big_preview/59b33d4c9fb5438492b2b383b2715887",
+   "badge": ""
+  },
+  {
+   "slug": "word-solitaire-journey",
+   "rank": 204,
+   "title": "Word Solitaire Journey",
+   "img": "https://static.playgama.com/p-img/pg/preview/5e341b73f2dd43368709d71ceb49177b",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-solitaire-zodiac",
+   "rank": 205,
+   "title": "Mahjong Solitaire Zodiac",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-solitaire-zodiac/big-preview/5ff6df65e9734b0ba9e2d34965d60410",
+   "badge": ""
+  },
+  {
+   "slug": "dice-merge-3d",
+   "rank": 206,
+   "title": "Dice Merge 3D",
+   "img": "https://static.playgama.com/p-img/pg/dice-merge-3d/big-preview/945b3b5585e34210bb903e655a6e26d4",
+   "badge": ""
+  },
+  {
+   "slug": "block-drop-2048",
+   "rank": 207,
+   "title": "Block Drop 2048",
+   "img": "https://static.playgama.com/p-img/pg/block-drop-2048/big-preview/bd2b481cc6064c8a985b10df338cbb3f",
+   "badge": ""
+  },
+  {
+   "slug": "color-water-sort-3d",
+   "rank": 208,
+   "title": "Color Water Sort 3D",
+   "img": "https://static.playgama.com/p-img/pg/color-water-sort-3d/big-preview/efc5937cb4104b02953ed387d46d56d2",
+   "badge": ""
+  },
+  {
+   "slug": "puzzles-picture-melodies",
+   "rank": 209,
+   "title": "Puzzles: picture melodies",
+   "img": "https://static.playgama.com/p-img/pg/puzzles-picture-melodies/big_preview/72bbb82750c84b9894ef8f201fa960c0",
+   "badge": ""
+  },
+  {
+   "slug": "love-story-find-the-piece",
+   "rank": 210,
+   "title": "Love Story: Find the Piece",
+   "img": "https://static.playgama.com/p-img/pg/love-story-find-the-piece/big-preview/1d60b13234b24aa8a868e08429c1dd7c",
+   "badge": ""
+  },
+  {
+   "slug": "parking-chain",
+   "rank": 211,
+   "title": "Parking Chain",
+   "img": "https://static.playgama.com/p-img/pg/parking-chain/big_preview/7d07356d60f14500988ac4045096e3d8",
+   "badge": ""
+  },
+  {
+   "slug": "camo-critters",
+   "rank": 212,
+   "title": "Camo Critters",
+   "img": "https://static.playgama.com/p-img/pg/preview/fe0dceea19cd493583c36f7d58ccb87f",
+   "badge": ""
+  },
+  {
+   "slug": "snake-puzzle-slither-to-eat",
+   "rank": 213,
+   "title": "Snake Puzzle: Slither to Eat!",
+   "img": "https://static.playgama.com/p-img/pg/snake-puzzle-slither-to-eat/big-preview/15bbfef26af0427185562c9cbd720170",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-hunt-puzzle-adventure",
+   "rank": 214,
+   "title": "Hidden Hunt: Puzzle Adventure ",
+   "img": "https://static.playgama.com/p-img/pg/hidden-hunt-puzzle-adventure/big-preview/f8b31cd985bd4d68b7109b856a7932a7",
+   "badge": ""
+  },
+  {
+   "slug": "word-search-quiz",
+   "rank": 215,
+   "title": "Word Search & Quiz",
+   "img": "https://static.playgama.com/p-img/pg/word-search-quiz/big-preview/38a07c9d97034893b64cfc01c1ebfb9c",
+   "badge": ""
+  },
+  {
+   "slug": "save-the-sheep-master",
+   "rank": 216,
+   "title": "Save The Sheep Master",
+   "img": "https://static.playgama.com/p-img/pg/save-the-sheep-master/big-preview/808d9b9c255c46b5b29f6d1db66e0d77",
+   "badge": ""
+  },
+  {
+   "slug": "hexa-color-stack-game",
+   "rank": 217,
+   "title": "Hexa Color Stack Game",
+   "img": "https://static.playgama.com/p-img/pg/hexa-color-stack-game/big-preview/236391a16c3647fbad3673379863eb7f",
+   "badge": ""
+  },
+  {
+   "slug": "dop-stickman-jailbreak",
+   "rank": 218,
+   "title": "Dop Stickman - Jailbreak",
+   "img": "https://static.playgama.com/p-img/pg/dop-stickman-jailbreak/big-preview/92950847737a47ec9296291501f5c748",
+   "badge": ""
+  },
+  {
+   "slug": "garten-of-banban-1-escape",
+   "rank": 219,
+   "title": "Garten Of BanBan 1 Escape",
+   "img": "https://static.playgama.com/p-img/pg/garten-of-banban-1-escape/big-preview/abebeb7ff7e74763992b2a429ba7ea6a",
+   "badge": ""
+  },
+  {
+   "slug": "tricky-brain-master-iq-puzzle",
+   "rank": 220,
+   "title": "Tricky Brain Master: IQ Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/tricky-brain-master-iq-puzzle/big_preview/3e0b77d1302b45ee8fc41935bfea8d70",
+   "badge": ""
+  },
+  {
+   "slug": "words-and-bubbles",
+   "rank": 221,
+   "title": "Words and Bubbles",
+   "img": "https://static.playgama.com/p-img/pg/words-and-bubbles/big_preview/b79d0557cc03478889087025d6687fd7",
+   "badge": ""
+  },
+  {
+   "slug": "pixel-flow-color-blast",
+   "rank": 222,
+   "title": "Pixel Flow: Color Blast",
+   "img": "https://static.playgama.com/p-img/pg/pixel-flow-color-blast/big_preview/023c06083ef0462e8e38a5e858f72ea5",
+   "badge": ""
+  },
+  {
+   "slug": "chess-grandmaster",
+   "rank": 223,
+   "title": "Chess Grandmaster",
+   "img": "https://static.playgama.com/p-img/pg/chess-grandmaster/big_preview/e3359d23774a40e3a83d2e97cf407fbf",
+   "badge": ""
+  },
+  {
+   "slug": "angry-pets-3d-boom",
+   "rank": 224,
+   "title": "Angry Pets: 3D Boom!",
+   "img": "https://static.playgama.com/p-img/pg/angry-pets-3d-boom/big_preview/2345dbbf6aff480a818ce18631875e2b",
+   "badge": ""
+  },
+  {
+   "slug": "bubble-rings-3d",
+   "rank": 225,
+   "title": "Bubble Rings 3D",
+   "img": "https://static.playgama.com/p-img/pg/bubble-rings-3d/big-preview/2bff55c286cf414a9b58bafe4505938b",
+   "badge": ""
+  },
+  {
+   "slug": "munch-loop-halloween",
+   "rank": 226,
+   "title": "Munch Loop Halloween",
+   "img": "https://static.playgama.com/p-img/pg/munch-loop-halloween/big_preview/2d262e645c1f4794b00f251d0aa1238b",
+   "badge": ""
+  },
+  {
+   "slug": "blobby-jars",
+   "rank": 227,
+   "title": "Blobby Jars",
+   "img": "https://static.playgama.com/p-img/pg/blobby-jars/big_preview/5b3bc3bfccc8418abd57f9252b7edade",
+   "badge": ""
+  },
+  {
+   "slug": "tap-block-away",
+   "rank": 228,
+   "title": "Tap Block Away",
+   "img": "https://static.playgama.com/p-img/pg/tap-block-away/big_preview/7ae79a2ea8834770b8622b7a65ec4801",
+   "badge": ""
+  },
+  {
+   "slug": "arrow-escape",
+   "rank": 229,
+   "title": "Arrow Escape",
+   "img": "https://static.playgama.com/p-img/pg/preview/fbf1a8a8ec8f4d6682425270bcb67215",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-tiles-quest",
+   "rank": 230,
+   "title": "Mahjong Tiles Quest",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-tiles-quest/big-preview/19e0c3d87bcb4a16b855372cdb013979",
+   "badge": ""
+  },
+  {
+   "slug": "verity-merge",
+   "rank": 231,
+   "title": "Verity Merge",
+   "img": "https://static.playgama.com/p-img/pg/verity-merge/big_preview/58afeb1ab4824f78be4b90c5d43d64bc",
+   "badge": ""
+  },
+  {
+   "slug": "amaze-playgama",
+   "rank": 232,
+   "title": "Amaze!",
+   "img": "https://static.playgama.com/p-img/pg/amaze-playgama/big_preview/c5e5cb0a22c14dffbca3df137b89546b",
+   "badge": ""
+  },
+  {
+   "slug": "emoji-match-master",
+   "rank": 233,
+   "title": "Emoji Match Master!",
+   "img": "https://static.playgama.com/p-img/pg/emoji-match-master/big-preview/817a0f5d65ef4a07b7232459dfd2bfad",
+   "badge": ""
+  },
+  {
+   "slug": "zumba-mania-dfbf-1",
+   "rank": 234,
+   "title": "Zumba Mania",
+   "img": "https://static.playgama.com/p-img/pg/zumba-mania-dfbf-1/big-preview/2c38597a5f22480387058da8cd25ebe9",
+   "badge": ""
+  },
+  {
+   "slug": "good-tidy-cozy-shelf-puzzle",
+   "rank": 235,
+   "title": "Good Tidy: Cozy Shelf Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/good-tidy-cozy-shelf-puzzle/big_preview/84822799e0fa4735b86ac0cf7d904b1d",
+   "badge": ""
+  },
+  {
+   "slug": "dont-eat-that-candy",
+   "rank": 236,
+   "title": "DON'T EAT THAT CANDY!",
+   "img": "https://static.playgama.com/p-img/pg/preview/9184abd94cc74c64b57e7fb75a267a84",
+   "badge": ""
+  },
+  {
+   "slug": "monstrix--3-in-a-row",
+   "rank": 237,
+   "title": "Monstrix - 3 in a Row",
+   "img": "https://static.playgama.com/p-img/pg/monstrix--3-in-a-row/big_preview/effb53f8334240cb88231ac0f564a32a",
+   "badge": ""
+  },
+  {
+   "slug": "water-sort",
+   "rank": 238,
+   "title": "Water Sort!",
+   "img": "https://static.playgama.com/p-img/pg/preview/42505c05e7db40efa7c5241d30b751fc",
+   "badge": ""
+  },
+  {
+   "slug": "solitaire-classic-master",
+   "rank": 239,
+   "title": "Solitaire Classic Master",
+   "img": "https://static.playgama.com/p-img/pg/preview/562cb4c1378e4c4c8b0d96fe7afee458",
+   "badge": ""
+  },
+  {
+   "slug": "cannon-shooter-smash-puzzle",
+   "rank": 240,
+   "title": "Cannon Shooter: Smash Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/cannon-shooter-smash-puzzle/big_preview/eef79fc5fb3747afafb8d0574397532c",
+   "badge": ""
+  },
+  {
+   "slug": "pixel-differences",
+   "rank": 241,
+   "title": "Pixel Differences",
+   "img": "https://static.playgama.com/p-img/pg/pixel-differences/big-preview/3f21f0fee0f944eb96b10e54a10d555f",
+   "badge": ""
+  },
+  {
+   "slug": "wood-color-block",
+   "rank": 242,
+   "title": "Wood Color Block",
+   "img": "https://static.playgama.com/p-img/pg/wood-color-block/big-preview/faf1a3d81857468aa520d7987c2f6eea",
+   "badge": ""
+  },
+  {
+   "slug": "happy-glass--draw-to-fill",
+   "rank": 243,
+   "title": "Happy Glass - Draw to Fill",
+   "img": "https://static.playgama.com/p-img/pg/happy-glass--draw-to-fill/big-preview/35878d2afc07449592742bf11dff96e1",
+   "badge": ""
+  },
+  {
+   "slug": "pirates-tiles-challenge",
+   "rank": 244,
+   "title": "Pirates Tiles Challenge",
+   "img": "https://static.playgama.com/p-img/pg/pirates-tiles-challenge/big_preview/57e7e95f1ec44c4aa9e1deca2d58153d",
+   "badge": ""
+  },
+  {
+   "slug": "italian-brainrot-difference",
+   "rank": 245,
+   "title": "Italian Brainrot Difference",
+   "img": "https://static.playgama.com/p-img/pg/italian-brainrot-difference/big-preview/9213a50640ab43a6b3ad78f4a645a52c",
+   "badge": ""
+  },
+  {
+   "slug": "hard-puzzle-color-lines",
+   "rank": 246,
+   "title": "Hard Puzzle: Color Lines",
+   "img": "https://static.playgama.com/p-img/pg/hard-puzzle-color-lines/big-preview/63fd9b81c1ad47e5a6807899fb568456",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-tap-away",
+   "rank": 247,
+   "title": "Arrows Tap Away",
+   "img": "https://static.playgama.com/p-img/pg/arrows-tap-away/big-preview/e99b977ea6254f99aabe4ab335b0c306",
+   "badge": ""
+  },
+  {
+   "slug": "cork--cauldron",
+   "rank": 248,
+   "title": "Cork & Cauldron",
+   "img": "https://static.playgama.com/p-img/pg/preview/fc358015b80a461b9923bd02f7a48d92",
+   "badge": ""
+  },
+  {
+   "slug": "color-sort-mania",
+   "rank": 249,
+   "title": "Color Sort Mania",
+   "img": "https://static.playgama.com/p-img/pg/color-sort-mania/big-preview/6abb1b0ec3f64796b6a9cb6ad4d78844",
+   "badge": ""
+  },
+  {
+   "slug": "slow-mo-blade-rush",
+   "rank": 250,
+   "title": "Slow Mo: Blade Rush",
+   "img": "https://static.playgama.com/p-img/pg/slow-mo-blade-rush/big_preview/bcff46a1419e41439a239999f5c67459",
+   "badge": ""
+  },
+  {
+   "slug": "pencil-jam",
+   "rank": 251,
+   "title": "Pencil Jam",
+   "img": "https://static.playgama.com/p-img/pg/pencil-jam/big_preview/be3ab94ddbba4f2a98a36d59f8ce5a03",
+   "badge": ""
+  },
+  {
+   "slug": "nut-sort-build-the-city",
+   "rank": 252,
+   "title": "Nut Sort: Build the City",
+   "img": "https://static.playgama.com/p-img/pg/nut-sort-build-the-city/big-preview/088d577c9a5f45e68eee5c14e3d61689",
+   "badge": ""
+  },
+  {
+   "slug": "fancy-jigsaw-puzzles",
+   "rank": 253,
+   "title": "Fancy Jigsaw Puzzles",
+   "img": "https://static.playgama.com/p-img/pg/fancy-jigsaw-puzzles/big_preview/66e36249cefc45948e7fa5c6a8b9c4c9",
+   "badge": ""
+  },
+  {
+   "slug": "mix-monsters-fun-merge",
+   "rank": 254,
+   "title": "Mix Monsters: Fun Merge",
+   "img": "https://static.playgama.com/p-img/pg/mix-monsters-fun-merge/big-preview/fa55bb9f0da6442b8fa34cb1c5cc3a1e",
+   "badge": ""
+  },
+  {
+   "slug": "color-water-sort",
+   "rank": 255,
+   "title": "Color Water Sort",
+   "img": "https://static.playgama.com/p-img/pg/color-water-sort/big-preview/ef4b109cb61e4fb3bf3a87b86b65a407",
+   "badge": ""
+  },
+  {
+   "slug": "italian-brainrot-tycoon-grab--merge",
+   "rank": 256,
+   "title": "Italian Brainrot Tycoon: Grab & Merge",
+   "img": "https://static.playgama.com/p-img/pg/preview/bc7e2e3a9d6e4e3e83e45216f41f6386",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-sweet-connection-easter",
+   "rank": 257,
+   "title": "Mahjong Sweet Connection Easter",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-sweet-connection-easter/big-preview/b8feed682da9413c85bacc74bf5d0e80",
+   "badge": ""
+  },
+  {
+   "slug": "gold-digger-solitaire",
+   "rank": 258,
+   "title": "Gold Digger Solitaire",
+   "img": "https://static.playgama.com/p-img/pg/gold-digger-solitaire/big_preview/79a84e33a6ec49dfb54842d0c9c92779",
+   "badge": ""
+  },
+  {
+   "slug": "screw-puzzle-nuts-bolts-master",
+   "rank": 259,
+   "title": "Screw Puzzle: Nuts & Bolts Master",
+   "img": "https://static.playgama.com/p-img/pg/screw-puzzle-nuts-bolts-master/big-preview/4e54c2a3d28345a08daa40bde1f176c0",
+   "badge": ""
+  },
+  {
+   "slug": "touch-the-mahjong-tiles",
+   "rank": 260,
+   "title": "Touch the mahjong tiles",
+   "img": "https://static.playgama.com/p-img/pg/touch-the-mahjong-tiles/big_preview/423c6f3607db45b191e2e27213a3a317",
+   "badge": ""
+  },
+  {
+   "slug": "draw-path-to-home",
+   "rank": 261,
+   "title": "Draw path to home",
+   "img": "https://static.playgama.com/p-img/pg/draw-path-to-home/big_preview/11628215bbf648f6806eeb81619fa036",
+   "badge": ""
+  },
+  {
+   "slug": "rubber-doodle",
+   "rank": 262,
+   "title": "Rubber Doodle",
+   "img": "https://static.playgama.com/p-img/pg/preview/7d669eee6fc647749f2ca613654206a3",
+   "badge": ""
+  },
+  {
+   "slug": "tile-sort-color-columns",
+   "rank": 263,
+   "title": "Tile Sort: Color Columns",
+   "img": "https://static.playgama.com/p-img/pg/tile-sort-color-columns/big_preview/0697a3eb6eca4699884169e3e3fd1ca8",
+   "badge": ""
+  },
+  {
+   "slug": "solitaire-letter",
+   "rank": 264,
+   "title": "Solitaire Letter",
+   "img": "https://static.playgama.com/p-img/pg/solitaire-letter/big_preview/3446b6635b8246cc9b3f001d092788d1",
+   "badge": ""
+  },
+  {
+   "slug": "dop-noob-draw-to-save",
+   "rank": 265,
+   "title": "DOP Noob: Draw to Save",
+   "img": "https://static.playgama.com/p-img/pg/dop-noob-draw-to-save/big_preview/a78db74c76634d1780a6d5551a2e4d88",
+   "badge": ""
+  },
+  {
+   "slug": "elements-craft-ultimate",
+   "rank": 266,
+   "title": "Elements Craft Ultimate ",
+   "img": "https://static.playgama.com/p-img/pg/elements-craft-ultimate/big-preview/d9efa516ae6d4239afa902a18d2d4abf",
+   "badge": ""
+  },
+  {
+   "slug": "slither-escape",
+   "rank": 267,
+   "title": "Slither Escape",
+   "img": "https://static.playgama.com/p-img/pg/slither-escape/big-preview/d69c6a23cd184d15a714b5c8505021f7",
+   "badge": ""
+  },
+  {
+   "slug": "wiggle-escape-snake-puzzle",
+   "rank": 268,
+   "title": "Wiggle Escape: Snake Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/wiggle-escape-snake-puzzle/big-preview/66b754a65db24db9b2e687a28462316d",
+   "badge": ""
+  },
+  {
+   "slug": "kpop-puzzle-hunters",
+   "rank": 269,
+   "title": "K-Pop Puzzle Hunters",
+   "img": "https://static.playgama.com/p-img/pg/kpop-puzzle-hunters/big_preview/a095271d277c46e8b2749ae11d8865a6",
+   "badge": "top"
+  },
+  {
+   "slug": "tile-matcher-triple-fun",
+   "rank": 270,
+   "title": "Tile Matcher Triple Fun",
+   "img": "https://static.playgama.com/p-img/pg/tile-matcher-triple-fun/big-preview/d5de8b6da9bd478d8a57eba5d9bb1de6",
+   "badge": ""
+  }
+ ],
+ "new": [
+  {
+   "slug": "draw-animals",
+   "rank": 1,
+   "title": "Draw Animals",
+   "img": "https://static.playgama.com/p-img/pg/draw-animals/big_preview/c2a4b5c2c47a442cbcad7d14ba22b378",
+   "badge": ""
+  },
+  {
+   "slug": "pickle-rally",
+   "rank": 2,
+   "title": "Pickle Rally",
+   "img": "https://static.playgama.com/p-img/pg/pickle-rally/big_preview/56e8453d0fa544ab97d44cb846d56feb",
+   "badge": ""
+  },
+  {
+   "slug": "paintballzio",
+   "rank": 3,
+   "title": "Paintballz.io",
+   "img": "https://static.playgama.com/p-img/pg/paintballzio/big_preview/bf7792d1b6dc4ff4a1029d1b7eac5ed6",
+   "badge": "new"
+  },
+  {
+   "slug": "the-last-lantern",
+   "rank": 4,
+   "title": "The Last Lantern",
+   "img": "https://static.playgama.com/p-img/pg/the-last-lantern/big_preview/53509970cae64c8996905c882ae12f11",
+   "badge": ""
+  },
+  {
+   "slug": "dark-nights-survival",
+   "rank": 5,
+   "title": "Dark Nights: Survival",
+   "img": "https://static.playgama.com/p-img/pg/dark-nights-survival/big_preview/e9c0b3a7477142a5b148458c2dd551ba",
+   "badge": ""
+  },
+  {
+   "slug": "defrag-idle-game",
+   "rank": 6,
+   "title": "Defrag Idle Game",
+   "img": "https://static.playgama.com/p-img/pg/defrag-idle-game/big_preview/54c61552fef44178ab0722a321fa0440",
+   "badge": ""
+  },
+  {
+   "slug": "glowball",
+   "rank": 7,
+   "title": "Glowball",
+   "img": "https://static.playgama.com/p-img/pg/glowball/big_preview/db6154fc058f4bee9674813391a2e3ac",
+   "badge": ""
+  },
+  {
+   "slug": "snowball-rush",
+   "rank": 8,
+   "title": "Snowball Rush",
+   "img": "https://static.playgama.com/p-img/pg/snowball-rush/big_preview/ce961ed3c18e49189f846949f72f2820",
+   "badge": ""
+  },
+  {
+   "slug": "stuffed",
+   "rank": 9,
+   "title": "Stuffed!",
+   "img": "https://static.playgama.com/p-img/pg/stuffed/big_preview/628194077e6e4315961f0ac5d680dde9",
+   "badge": ""
+  },
+  {
+   "slug": "long-road-traffic-racing",
+   "rank": 10,
+   "title": "Long Road Traffic Racing",
+   "img": "https://static.playgama.com/p-img/pg/long-road-traffic-racing/big_preview/0d1e2e9e3a2b43699c4792952c8deda6",
+   "badge": ""
+  },
+  {
+   "slug": "granny-spitter",
+   "rank": 11,
+   "title": "Granny Spitter",
+   "img": "https://static.playgama.com/p-img/pg/granny-spitter/big_preview/4452f9e223d64f2baebb7bebffd36e31",
+   "badge": ""
+  },
+  {
+   "slug": "pocket-rally-dirt--drift",
+   "rank": 12,
+   "title": "Pocket Rally: Dirt & Drift",
+   "img": "https://static.playgama.com/p-img/pg/pocket-rally-dirt-drift/big_preview/ba33a7e35d46439cb35de777247507e1",
+   "badge": ""
+  },
+  {
+   "slug": "monster-motocross",
+   "rank": 13,
+   "title": "Monster Motocross",
+   "img": "https://static.playgama.com/p-img/pg/monster-motocross/big_preview/bb59f898fb0547189e03fa4fd20c0efd",
+   "badge": ""
+  },
+  {
+   "slug": "sandfall-blast",
+   "rank": 14,
+   "title": "Sandfall Blast",
+   "img": "https://static.playgama.com/p-img/pg/sandfall-blast/big_preview/3a01567e5b304ef6bd708140f28ed47b",
+   "badge": ""
+  },
+  {
+   "slug": "sand-asmr-craft",
+   "rank": 15,
+   "title": "Sand ASMR Craft",
+   "img": "https://static.playgama.com/p-img/pg/sand-asmr-craft/big_preview/dbb880ba39af4504a8b86fcad20c3a14",
+   "badge": ""
+  },
+  {
+   "slug": "match-world",
+   "rank": 16,
+   "title": "Match World",
+   "img": "https://static.playgama.com/p-img/pg/match-world/big_preview/92c05e01b1cd4e929e7a4b53a3506ff7",
+   "badge": ""
+  },
+  {
+   "slug": "tap-to-color-painting-book",
+   "rank": 17,
+   "title": "Tap To Color: Painting Book",
+   "img": "https://static.playgama.com/p-img/pg/tap-to-color-painting-book/big_preview/98938352db864e53af183802eaeb2c99",
+   "badge": ""
+  },
+  {
+   "slug": "petal-grid-block-puzzle",
+   "rank": 18,
+   "title": "Petal Grid: Block Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/preview/4441a582aa874cd5b5824c360b46dd2d",
+   "badge": ""
+  },
+  {
+   "slug": "home-alone-tycoon",
+   "rank": 19,
+   "title": "Home Alone Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/home-alone-tycoon/big_preview/2a9280bcc8de47339a341a7b6b1904d9",
+   "badge": ""
+  },
+  {
+   "slug": "acid-rider",
+   "rank": 20,
+   "title": "Acid Rider",
+   "img": "https://static.playgama.com/p-img/pg/acid-rider/big_preview/f6711a0c3f23443392e4411a089ff799",
+   "badge": ""
+  },
+  {
+   "slug": "wild-arrows",
+   "rank": 21,
+   "title": "Wild Arrows",
+   "img": "https://static.playgama.com/p-img/pg/wild-arrows/big_preview/943661ee816a4e1882e69cb41b06fe89",
+   "badge": ""
+  },
+  {
+   "slug": "1-tongue-escape",
+   "rank": 22,
+   "title": "+1 Tongue Escape",
+   "img": "https://static.playgama.com/p-img/pg/1-tongue-escape/big_preview/957d6234340842efb65093e71665d343",
+   "badge": ""
+  },
+  {
+   "slug": "burrow-balls",
+   "rank": 23,
+   "title": "Burrow Balls",
+   "img": "https://static.playgama.com/p-img/pg/burrow-balls/big_preview/fc8993304c51436e915c3549f662ff98",
+   "badge": ""
+  },
+  {
+   "slug": "obby-muscle-race",
+   "rank": 24,
+   "title": "Obby: Muscle Race",
+   "img": "https://static.playgama.com/p-img/pg/obby-muscle-race/big_preview/5d9b55fd624242339624c7c55781b403",
+   "badge": ""
+  },
+  {
+   "slug": "towthrust",
+   "rank": 25,
+   "title": "Tow-Thrust",
+   "img": "https://static.playgama.com/p-img/pg/towthrust/big_preview/c1bbfa7aeaad4f0983aa36730babc10d",
+   "badge": ""
+  },
+  {
+   "slug": "ragdoll-headshooter",
+   "rank": 26,
+   "title": "Ragdoll Headshooter",
+   "img": "https://static.playgama.com/p-img/pg/ragdoll-headshooter/big_preview/cc3f780f03c8491f89d78def63c3aa99",
+   "badge": ""
+  },
+  {
+   "slug": "single-mom-baby-care-prank-game",
+   "rank": 27,
+   "title": "Single Mom Baby Care Prank Game",
+   "img": "https://static.playgama.com/p-img/pg/single-mom-baby-care-prank-game/big_preview/af871587741a4b26b872a6d340af5060",
+   "badge": ""
+  },
+  {
+   "slug": "screw-nuts--bolts-wood-solve",
+   "rank": 28,
+   "title": "Screw Nuts & Bolts: Wood Solve",
+   "img": "https://static.playgama.com/p-img/pg/screw-nuts-bolts-wood-solve/big_preview/ac696a15bf0c4fddb1dfe1a0a6223f05",
+   "badge": "new"
+  },
+  {
+   "slug": "explainable-minesweeper",
+   "rank": 29,
+   "title": "Explainable Minesweeper",
+   "img": "https://static.playgama.com/p-img/pg/explainable-minesweeper/big_preview/fe2447f02d424315962bf768198bffdc",
+   "badge": ""
+  },
+  {
+   "slug": "easy-peasy",
+   "rank": 30,
+   "title": "Easy Peasy",
+   "img": "https://static.playgama.com/p-img/pg/easy-peasy/big_preview/42c6719da0f94fff9d29380aec20e9a7",
+   "badge": ""
+  },
+  {
+   "slug": "tower-siege",
+   "rank": 31,
+   "title": "Tower Siege",
+   "img": "https://static.playgama.com/p-img/pg/tower-siege/big_preview/d38ca5897ef34f2a85f521fa28b8bfe1",
+   "badge": ""
+  },
+  {
+   "slug": "pool-flow",
+   "rank": 32,
+   "title": "Pool Flow",
+   "img": "https://static.playgama.com/p-img/pg/pool-flow/big_preview/a3c93d352bef43e4860fe5efb9b5765d",
+   "badge": ""
+  },
+  {
+   "slug": "gnome-trails",
+   "rank": 33,
+   "title": "Gnome Trails (I)",
+   "img": "https://static.playgama.com/p-img/pg/preview/da01094eefae41fab231b6fc0919bd5c",
+   "badge": ""
+  },
+  {
+   "slug": "yoshi-mood",
+   "rank": 34,
+   "title": "Yoshi Mood",
+   "img": "https://static.playgama.com/p-img/pg/yoshi-mood/big_preview/e5f80bceb0b5436bb9137e3a814d27c5",
+   "badge": ""
+  },
+  {
+   "slug": "color-matcher",
+   "rank": 35,
+   "title": "Color Matcher",
+   "img": "https://static.playgama.com/p-img/pg/color-matcher/big_preview/8405957ea5f84f5a8a179429f0ad7515",
+   "badge": ""
+  },
+  {
+   "slug": "coins-table",
+   "rank": 36,
+   "title": "\u0421oins table",
+   "img": "https://static.playgama.com/p-img/pg/preview/5f439c2d4fc74bfb83a3400ce2c70fd9",
+   "badge": ""
+  },
+  {
+   "slug": "masquerade-stylist",
+   "rank": 37,
+   "title": "Masquerade Stylist",
+   "img": "https://static.playgama.com/p-img/pg/masquerade-stylist/big_preview/3622bbe03eac4dcfaac02ea43a4be197",
+   "badge": ""
+  },
+  {
+   "slug": "zoo-stickers",
+   "rank": 38,
+   "title": "Zoo Stickers",
+   "img": "https://static.playgama.com/p-img/pg/zoo-stickers/big_preview/d97a8979cc824ac5b41f311abbb9eff4",
+   "badge": ""
+  },
+  {
+   "slug": "memory-cats",
+   "rank": 39,
+   "title": "Memory Cats",
+   "img": "https://static.playgama.com/p-img/pg/memory-cats/big_preview/7ce16997b16d482f9b2b91b7adafc2cf",
+   "badge": ""
+  },
+  {
+   "slug": "block-escape--color-puzzle",
+   "rank": 40,
+   "title": "Block Escape - Color Puzzle!",
+   "img": "https://static.playgama.com/p-img/pg/block-escape-color-puzzle/big_preview/064f418ebb17484dae143912e4e9a8fb",
+   "badge": ""
+  },
+  {
+   "slug": "orbital",
+   "rank": 41,
+   "title": "Orbital",
+   "img": "https://static.playgama.com/p-img/pg/orbital/big_preview/b5d4b9c79a6f472a9ed345ac1891c94f",
+   "badge": ""
+  },
+  {
+   "slug": "crazy-goat-simulator-animal-games",
+   "rank": 42,
+   "title": "Crazy Goat Simulator Animal Games",
+   "img": "https://static.playgama.com/p-img/pg/crazy-goat-simulator-animal-games/big_preview/4e7c6f2b7a5e4e04b0e5a15e440ed27c",
+   "badge": ""
+  },
+  {
+   "slug": "brainrot-escape",
+   "rank": 43,
+   "title": "Brainrot Escape",
+   "img": "https://static.playgama.com/p-img/pg/brainrot-escape/big_preview/f7602ef5870d427b9fbc51558e18f2ba",
+   "badge": ""
+  },
+  {
+   "slug": "monster-climb",
+   "rank": 44,
+   "title": "Monster Climb",
+   "img": "https://static.playgama.com/p-img/pg/monster-climb/big_preview/26d49bc3e5d74866b104be6fbea388ba",
+   "badge": ""
+  },
+  {
+   "slug": "zombie-tycoon",
+   "rank": 45,
+   "title": "Zombie Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/zombie-tycoon/big_preview/6fc3168964fd4181920bc459cb2be09e",
+   "badge": ""
+  },
+  {
+   "slug": "bubble-reveal",
+   "rank": 46,
+   "title": "Bubble Reveal",
+   "img": "https://static.playgama.com/p-img/pg/bubble-reveal/big_preview/9412cc3bb26044969394c254aa68bd1c",
+   "badge": ""
+  },
+  {
+   "slug": "pfxd",
+   "rank": 47,
+   "title": "PFXD",
+   "img": "https://static.playgama.com/p-img/pg/pfxd/big_preview/191e8e1ea0b34a369dfb2be1db5e1b73",
+   "badge": "new"
+  },
+  {
+   "slug": "boo-brigade",
+   "rank": 48,
+   "title": "Boo Brigade",
+   "img": "https://static.playgama.com/p-img/pg/boo-brigade/big_preview/9402f554cb3d4119a7d6606f22d14e95",
+   "badge": ""
+  },
+  {
+   "slug": "blockfront",
+   "rank": 49,
+   "title": "BlockFront",
+   "img": "https://static.playgama.com/p-img/pg/blockfront/big_preview/f871e00975d04eb4bc011bf659e429b4",
+   "badge": ""
+  },
+  {
+   "slug": "hidden-objects--items-find",
+   "rank": 50,
+   "title": "Hidden Objects - Items Find",
+   "img": "https://static.playgama.com/p-img/pg/hidden-objects-items-find/big_preview/5f8077b0ada14eccaaf0f1b7c25dd0bf",
+   "badge": "new"
+  },
+  {
+   "slug": "orbit-dodge",
+   "rank": 51,
+   "title": "Orbit Dodge",
+   "img": "https://static.playgama.com/p-img/pg/preview/cbab667844ec42f1aeae4897868dd0d2",
+   "badge": ""
+  },
+  {
+   "slug": "1-smash-monsters-evolution",
+   "rank": 52,
+   "title": "+1 Smash Monsters Evolution",
+   "img": "https://static.playgama.com/p-img/pg/1-smash-monsters-evolution/big_preview/e5532385c08646639fdc4ab94c277bac",
+   "badge": ""
+  },
+  {
+   "slug": "stack-bloom-color-sort-puzzle",
+   "rank": 53,
+   "title": "Stack Bloom: Color Sort Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/stack-bloom-color-sort-puzzle/big_preview/7bf3ce04590945ed9c5203be8a13fe32",
+   "badge": ""
+  },
+  {
+   "slug": "cozy-craft-co",
+   "rank": 54,
+   "title": "Cozy Craft Co.",
+   "img": "https://static.playgama.com/p-img/pg/preview/09ef41947a15447387fb30331d2553b5",
+   "badge": ""
+  },
+  {
+   "slug": "harvest-rush-tractor-farm",
+   "rank": 55,
+   "title": "Harvest Rush: Tractor Farm",
+   "img": "https://static.playgama.com/p-img/pg/harvest-rush-tractor-farm/big_preview/8774433f6f9c40aa8cdb50f6834c3f65",
+   "badge": ""
+  },
+  {
+   "slug": "destroy-the-tower",
+   "rank": 56,
+   "title": "Destroy The Tower",
+   "img": "https://static.playgama.com/p-img/pg/destroy-the-tower/big_preview/16d81e311c3149d292d1dbda6cab3c2d",
+   "badge": ""
+  },
+  {
+   "slug": "restorake-restore-the-ruins",
+   "rank": 57,
+   "title": "RestoRake: Restore the Ruins",
+   "img": "https://static.playgama.com/p-img/pg/restorake-restore-the-ruins/big_preview/0105e7c72fd048f6b21c6770813acf3e",
+   "badge": ""
+  },
+  {
+   "slug": "mining-tycoon",
+   "rank": 58,
+   "title": "Mining Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/mining-tycoon/big_preview/0aaecaea9285421aa1d9b7269bd028ed",
+   "badge": "new"
+  },
+  {
+   "slug": "block-ops-santa-monica-pier",
+   "rank": 59,
+   "title": "Block Ops Santa Monica Pier",
+   "img": "https://static.playgama.com/p-img/pg/preview/34c70c1bfd5a4dee96b41e3e930e4f08",
+   "badge": ""
+  },
+  {
+   "slug": "battlecross",
+   "rank": 60,
+   "title": "Battlecross",
+   "img": "https://static.playgama.com/p-img/pg/battlecross/big_preview/9645870437804fc8a04502bfeddf4ba5",
+   "badge": ""
+  },
+  {
+   "slug": "grow-an-egg-brainrot-pets-online",
+   "rank": 61,
+   "title": "Grow an Egg: Brainrot Pets Online",
+   "img": "https://static.playgama.com/p-img/pg/preview/7b73afefa08e4c9ebd413d05c187cb1c",
+   "badge": ""
+  },
+  {
+   "slug": "zoo-dentist",
+   "rank": 62,
+   "title": "Zoo Dentist",
+   "img": "https://static.playgama.com/p-img/pg/zoo-dentist/big_preview/31d5be27462b4af6a321ffa7d661d1ec",
+   "badge": ""
+  },
+  {
+   "slug": "black-gold-base",
+   "rank": 63,
+   "title": "Black Gold Base",
+   "img": "https://static.playgama.com/p-img/pg/preview/371304a3f59f458380421280e9964d88",
+   "badge": ""
+  },
+  {
+   "slug": "spray-bandit",
+   "rank": 64,
+   "title": "Spray Bandit",
+   "img": "https://static.playgama.com/p-img/pg/spray-bandit/big_preview/1d567b15a2c949838c7f9bd91a4c8540",
+   "badge": ""
+  },
+  {
+   "slug": "weird-pet-shop",
+   "rank": 65,
+   "title": "Weird Pet Shop",
+   "img": "https://static.playgama.com/p-img/pg/weird-pet-shop/big_preview/e904fd7de7b2470ea30ea05ed67d2b21",
+   "badge": ""
+  },
+  {
+   "slug": "mojicon-meadow-rescue",
+   "rank": 66,
+   "title": "Mojicon Meadow Rescue",
+   "img": "https://static.playgama.com/p-img/pg/mojicon-meadow-rescue/big_preview/feb8ab4911b648c585f0c15158fd42ff",
+   "badge": ""
+  },
+  {
+   "slug": "clink-coin",
+   "rank": 67,
+   "title": "Clink & Coin",
+   "img": "https://static.playgama.com/p-img/pg/clink-coin/big_preview/a45b1cec4eed4da9a79ba0626eaa0086",
+   "badge": ""
+  },
+  {
+   "slug": "ox-grid-clash",
+   "rank": 68,
+   "title": "OX Grid Clash",
+   "img": "https://static.playgama.com/p-img/pg/ox-grid-clash/big_preview/8d9260bb0f184027af13ec9fd6e0de09",
+   "badge": ""
+  },
+  {
+   "slug": "carpet-compulsive-cleaners",
+   "rank": 69,
+   "title": "Carpet Compulsive Cleaners",
+   "img": "https://static.playgama.com/p-img/pg/carpet-compulsive-cleaners/big_preview/0ef5eba7201e418fb7cfff2f5f1d2f2f",
+   "badge": ""
+  },
+  {
+   "slug": "nuts-and-bolts-screw-puzzle",
+   "rank": 70,
+   "title": "Nuts And Bolts Screw Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/preview/5ef19547cf9c4c69adba5f4bfd4ebe09",
+   "badge": ""
+  },
+  {
+   "slug": "cliff-crash",
+   "rank": 71,
+   "title": "Cliff Crash",
+   "img": "https://static.playgama.com/p-img/pg/cliff-crash/big_preview/32dc6bf076bf408989ad98a6242c81cb",
+   "badge": ""
+  },
+  {
+   "slug": "capy-chaos",
+   "rank": 72,
+   "title": "Capy Chaos",
+   "img": "https://static.playgama.com/p-img/pg/capy-chaos/big_preview/94245792ac50460286c575af65782b05",
+   "badge": ""
+  },
+  {
+   "slug": "kitty-path-draw-to-save-cat",
+   "rank": 73,
+   "title": "Kitty Path: Draw to Save Cat",
+   "img": "https://static.playgama.com/p-img/pg/kitty-path-draw-to-save-cat/big_preview/91f6c91ea2d54751a6c14f263cf80b81",
+   "badge": ""
+  },
+  {
+   "slug": "ellie-thanksgiving-day",
+   "rank": 74,
+   "title": "Ellie Thanksgiving Day",
+   "img": "https://static.playgama.com/p-img/pg/ellie-thanksgiving-day/big_preview/f0da228c84ed4396b0fab4930b3783cf",
+   "badge": ""
+  },
+  {
+   "slug": "joker-ritual",
+   "rank": 75,
+   "title": "Joker Ritual",
+   "img": "https://static.playgama.com/p-img/pg/joker-ritual/big_preview/3f8c54c2001d4800ad6ef79b08a898fa",
+   "badge": ""
+  },
+  {
+   "slug": "home-pin",
+   "rank": 76,
+   "title": "Home Pin",
+   "img": "https://static.playgama.com/p-img/pg/home-pin/big_preview/0d151a2d364c4695ac4493caeed03d17",
+   "badge": "new"
+  },
+  {
+   "slug": "word-search-library-of-wonders",
+   "rank": 77,
+   "title": "Word Search: Library of Wonders",
+   "img": "https://static.playgama.com/p-img/pg/word-search-library-of-wonders/big_preview/5ecf58e371e14b229648178ec9f77d50",
+   "badge": ""
+  },
+  {
+   "slug": "sky-island-survivors",
+   "rank": 78,
+   "title": "Sky Island Survivors",
+   "img": "https://static.playgama.com/p-img/pg/sky-island-survivors/big_preview/d0cae759e56742c9a70db0bdadbc310f",
+   "badge": ""
+  },
+  {
+   "slug": "1-wings-keyboard-speed",
+   "rank": 79,
+   "title": "+1 Wings Keyboard Speed",
+   "img": "https://static.playgama.com/p-img/pg/1-wings-keyboard-speed/big_preview/fe9cabe330f9400381f23720de0321c8",
+   "badge": ""
+  },
+  {
+   "slug": "project-zombik-last-day-of-zombie-town",
+   "rank": 80,
+   "title": "Project Zombik. Last Day of Zombie Town",
+   "img": "https://static.playgama.com/p-img/pg/project-zombik-last-day-of-zombie-town/big_preview/38fa2668aec540b3a951e8bb74ced340",
+   "badge": ""
+  },
+  {
+   "slug": "block-survival",
+   "rank": 81,
+   "title": "Block Survival",
+   "img": "https://static.playgama.com/p-img/pg/block-survival/big_preview/224ef1ceb07d40559c8e2cfd953367e5",
+   "badge": ""
+  },
+  {
+   "slug": "victory-over-the-monster",
+   "rank": 82,
+   "title": "Victory over the Monster",
+   "img": "https://static.playgama.com/p-img/pg/victory-over-the-monster/big_preview/3c6dd09d3efe4cf79bdc81e30ef0ec64",
+   "badge": ""
+  },
+  {
+   "slug": "carrom-royals",
+   "rank": 83,
+   "title": "Carrom Royals",
+   "img": "https://static.playgama.com/p-img/pg/preview/c63af998b23844d0b1fdc978496ecf81",
+   "badge": ""
+  },
+  {
+   "slug": "parking-jam-car-puzzle",
+   "rank": 84,
+   "title": "Parking Jam: Car Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/parking-jam-car-puzzle/big_preview/9db0bce091a044eeb990e292be0c2d14",
+   "badge": ""
+  },
+  {
+   "slug": "paper-life",
+   "rank": 85,
+   "title": "Paper Life",
+   "img": "https://static.playgama.com/p-img/pg/paper-life/big_preview/58e1d9bbd0474e33a963b37b6a089d8b",
+   "badge": ""
+  },
+  {
+   "slug": "bubble-rush",
+   "rank": 86,
+   "title": "Bubble Rush",
+   "img": "https://static.playgama.com/p-img/pg/bubble-rush/big_preview/40974db783f94c06924219737abc4420",
+   "badge": ""
+  },
+  {
+   "slug": "eat-the-level",
+   "rank": 87,
+   "title": "EAT THE LEVEL",
+   "img": "https://static.playgama.com/p-img/pg/eat-the-level/big_preview/12cbfaf7a12f4496a787d1715048a0da",
+   "badge": ""
+  },
+  {
+   "slug": "stitch-bloom-yarn-art-puzzle",
+   "rank": 88,
+   "title": "Stitch Bloom:Yarn Art Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/stitch-bloom-yarn-art-puzzle/big_preview/2ff6a38403c246be88ce14b968f8a9a0",
+   "badge": ""
+  },
+  {
+   "slug": "jetflash-skyport-trials",
+   "rank": 89,
+   "title": "JETFLASH: Skyport Trials",
+   "img": "https://static.playgama.com/p-img/pg/jetflash-skyport-trials/big_preview/2e493343562c4ea38a6565d9dc8e7e0d",
+   "badge": ""
+  },
+  {
+   "slug": "purrbit-cosmic-labyrinth",
+   "rank": 90,
+   "title": "Purrbit: Cosmic Labyrinth",
+   "img": "https://static.playgama.com/p-img/pg/purrbit-cosmic-labyrinth/big_preview/24c863d19a1d421e8eb4569a96cf124c",
+   "badge": ""
+  },
+  {
+   "slug": "block-blast-puzzle-master",
+   "rank": 91,
+   "title": "Block Blast Puzzle Master",
+   "img": "https://static.playgama.com/p-img/pg/block-blast-puzzle-master/big_preview/dc8a16b9217547828e2adaa0723c7956",
+   "badge": ""
+  },
+  {
+   "slug": "lantern-links",
+   "rank": 92,
+   "title": "Lantern Links",
+   "img": "https://static.playgama.com/p-img/pg/preview/407bfda81c3e42b0814644b802edc629",
+   "badge": ""
+  },
+  {
+   "slug": "box-front",
+   "rank": 93,
+   "title": "BOX FRONT",
+   "img": "https://static.playgama.com/p-img/pg/box-front/big_preview/e3615c235d5d46479111e3e1e8abd356",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-cube",
+   "rank": 94,
+   "title": "Arrows Cube",
+   "img": "https://static.playgama.com/p-img/pg/arrows-cube/big_preview/d6dd751ab176462badf644fe52e2ed4a",
+   "badge": ""
+  },
+  {
+   "slug": "monster-truck-crash",
+   "rank": 95,
+   "title": "Monster Truck Crash",
+   "img": "https://static.playgama.com/p-img/pg/preview/9c2a21501995468ea38b932be9c5bb21",
+   "badge": ""
+  },
+  {
+   "slug": "maze-mice",
+   "rank": 96,
+   "title": "Maze Mice",
+   "img": "https://static.playgama.com/p-img/pg/maze-mice/big_preview/dcb34ee16c35441a9e7c5257c7248356",
+   "badge": ""
+  },
+  {
+   "slug": "heroes-shop-battlers",
+   "rank": 97,
+   "title": "Heroes Shop Battlers",
+   "img": "https://static.playgama.com/p-img/pg/heroes-shop-battlers/big_preview/9106b0e7aaee471eaf8733c7c34095c0",
+   "badge": ""
+  },
+  {
+   "slug": "crystal-escape-block-jam",
+   "rank": 98,
+   "title": "Crystal Escape: Block Jam",
+   "img": "https://static.playgama.com/p-img/pg/crystal-escape-block-jam/big_preview/b94a12cef2f849c98b4a462e52097cbd",
+   "badge": ""
+  },
+  {
+   "slug": "event-horizon-black-hole-idle",
+   "rank": 99,
+   "title": "Event Horizon: Black Hole Idle",
+   "img": "https://static.playgama.com/p-img/pg/event-horizon-black-hole-idle/big_preview/2eb8d56db47c44aea43b43cc8bb14399",
+   "badge": ""
+  },
+  {
+   "slug": "japan-op",
+   "rank": 100,
+   "title": "Japan Op",
+   "img": "https://static.playgama.com/p-img/pg/japan-op/big_preview/e6b59e73da10430099a5c20e627ab7d4",
+   "badge": ""
+  },
+  {
+   "slug": "robot-factory",
+   "rank": 101,
+   "title": "Robot Factory",
+   "img": "https://static.playgama.com/p-img/pg/robot-factory/big_preview/fcbf65a50f87432e9d55efe167579b21",
+   "badge": ""
+  },
+  {
+   "slug": "search-the-needle",
+   "rank": 102,
+   "title": "Search The Needle",
+   "img": "https://static.playgama.com/p-img/pg/search-the-needle/big_preview/13cb06e7a49948d88105473761a80b4b",
+   "badge": ""
+  },
+  {
+   "slug": "sandbox-fight-tactics",
+   "rank": 103,
+   "title": "Sandbox Fight Tactics",
+   "img": "https://static.playgama.com/p-img/pg/sandbox-fight-tactics/big_preview/c8f896a71ab9421ba70abb079447fc16",
+   "badge": ""
+  },
+  {
+   "slug": "ragdoll-swordsman",
+   "rank": 104,
+   "title": "Ragdoll Swordsman",
+   "img": "https://static.playgama.com/p-img/pg/ragdoll-swordsman/big_preview/2f71901e51084988838b513b442d5176",
+   "badge": ""
+  },
+  {
+   "slug": "karate",
+   "rank": 105,
+   "title": "Karate",
+   "img": "https://static.playgama.com/p-img/pg/karate/big_preview/16ff36a0e13041308b54b74701c61916",
+   "badge": ""
+  },
+  {
+   "slug": "tidywhim-clearroom",
+   "rank": 106,
+   "title": "TidyWhim:ClearRoom",
+   "img": "https://static.playgama.com/p-img/pg/tidywhim-clearroom/big_preview/901165a9c00f40dba4bd27e445b9645b",
+   "badge": ""
+  },
+  {
+   "slug": "little-doll-beauty-dress-up",
+   "rank": 107,
+   "title": "Little Doll: Beauty Dress Up",
+   "img": "https://static.playgama.com/p-img/pg/little-doll-beauty-dress-up/big_preview/b97f131755d74925ac16d2bf655997e6",
+   "badge": ""
+  },
+  {
+   "slug": "stickman-empire-battle",
+   "rank": 108,
+   "title": "Stickman Empire Battle",
+   "img": "https://static.playgama.com/p-img/pg/stickman-empire-battle/big_preview/98647981776b4e649a15a37fc3ba0d3b",
+   "badge": ""
+  },
+  {
+   "slug": "smash-the-dummy-1",
+   "rank": 109,
+   "title": "Smash the Dummy 1",
+   "img": "https://static.playgama.com/p-img/pg/smash-the-dummy-1/big_preview/a2fb16fc435a40629ea8e03b0685ae55",
+   "badge": ""
+  },
+  {
+   "slug": "save-the-pets",
+   "rank": 110,
+   "title": "Save the Pets",
+   "img": "https://static.playgama.com/p-img/pg/save-the-pets/big_preview/901eed95c13747368bc4514420092c40",
+   "badge": ""
+  },
+  {
+   "slug": "checkmaster",
+   "rank": 111,
+   "title": "CHECKMASTER",
+   "img": "https://static.playgama.com/p-img/pg/checkmaster/big_preview/26b6bd0c1cca4d70ae8dab130ccc56cb",
+   "badge": ""
+  },
+  {
+   "slug": "cage-ballers-football",
+   "rank": 112,
+   "title": "Cage Ballers Football",
+   "img": "https://static.playgama.com/p-img/pg/cage-ballers-football/big_preview/a933cf12763b4c5bb20d8c622c1f85d8",
+   "badge": ""
+  },
+  {
+   "slug": "water-sort",
+   "rank": 113,
+   "title": "Water Sort!",
+   "img": "https://static.playgama.com/p-img/pg/preview/42505c05e7db40efa7c5241d30b751fc",
+   "badge": ""
+  },
+  {
+   "slug": "jelly-paint-wars",
+   "rank": 114,
+   "title": "Jelly Paint Wars",
+   "img": "https://static.playgama.com/p-img/pg/preview/0a4eb65cc57044938d8b23542af4d0d6",
+   "badge": ""
+  },
+  {
+   "slug": "mergeborne",
+   "rank": 115,
+   "title": "Mergeborne",
+   "img": "https://static.playgama.com/p-img/pg/mergeborne/big_preview/70f7cdaa9b5b4231a80885a75115ba30",
+   "badge": ""
+  },
+  {
+   "slug": "warm-paws-merge-and-cat",
+   "rank": 116,
+   "title": "Warm Paws - Merge and Cat",
+   "img": "https://static.playgama.com/p-img/pg/warm-paws-merge-and-cat/big_preview/f7b0cd98f6a64d7e9e662c3496457c85",
+   "badge": ""
+  },
+  {
+   "slug": "obby-burn-the-kingdom",
+   "rank": 117,
+   "title": "Obby: Burn the Kingdom!",
+   "img": "https://static.playgama.com/p-img/pg/preview/a7324f8bfc1c4586a11cbc20681402da",
+   "badge": "new"
+  },
+  {
+   "slug": "bus-jam-party",
+   "rank": 118,
+   "title": "Bus Jam Party",
+   "img": "https://static.playgama.com/p-img/pg/bus-jam-party/big_preview/a35f099a894a4ccfad97b7ffa0100e2b",
+   "badge": ""
+  },
+  {
+   "slug": "svalkograd",
+   "rank": 119,
+   "title": "SVALKOGRAD",
+   "img": "https://static.playgama.com/p-img/pg/preview/8cd7ec022e0e4bbaa30a965591a78303",
+   "badge": ""
+  },
+  {
+   "slug": "100-cute-hidden-cats",
+   "rank": 120,
+   "title": "100 Cute Hidden Cats",
+   "img": "https://static.playgama.com/p-img/pg/100-cute-hidden-cats/big_preview/1d7a53b31d944d969541e364cad48a3a",
+   "badge": ""
+  },
+  {
+   "slug": "merge-blast-miner",
+   "rank": 121,
+   "title": "Merge Blast Miner",
+   "img": "https://static.playgama.com/p-img/pg/merge-blast-miner/big_preview/f602258e44d34c7f85bf19821fe05731",
+   "badge": ""
+  },
+  {
+   "slug": "paper-doll-dress-up",
+   "rank": 122,
+   "title": "Paper Doll: Dress Up",
+   "img": "https://static.playgama.com/p-img/pg/paper-doll-dress-up/big_preview/9c68ca8ab56a45779820ce8cfda9e351",
+   "badge": ""
+  },
+  {
+   "slug": "style-senpai-anime-dress-up",
+   "rank": 123,
+   "title": "Style Senpai: Anime Dress Up",
+   "img": "https://static.playgama.com/p-img/pg/style-senpai-anime-dress-up/big_preview/c4aab31f3713447eb218c78af0806f23",
+   "badge": ""
+  },
+  {
+   "slug": "elektrichki",
+   "rank": 124,
+   "title": "Elektrichki",
+   "img": "https://static.playgama.com/p-img/pg/elektrichki/big_preview/331e792e7d2b4219affb1d6da0d8d65e",
+   "badge": ""
+  },
+  {
+   "slug": "sunshine-pursuit",
+   "rank": 125,
+   "title": "Sunshine Pursuit",
+   "img": "https://static.playgama.com/p-img/pg/sunshine-pursuit/big_preview/5df53128764e43afa013cf283f0046ca",
+   "badge": ""
+  },
+  {
+   "slug": "rift-survivor",
+   "rank": 126,
+   "title": "Rift Survivor",
+   "img": "https://static.playgama.com/p-img/pg/rift-survivor/big_preview/79dc05d5280349a4a56fdc6a780bad4e",
+   "badge": ""
+  },
+  {
+   "slug": "high-school-popular-girls",
+   "rank": 127,
+   "title": "High School Popular Girls",
+   "img": "https://static.playgama.com/p-img/pg/preview/eda3969f995b4f7f9bc59d7abc0221ce",
+   "badge": "new"
+  },
+  {
+   "slug": "smartphone-legends",
+   "rank": 128,
+   "title": "Smartphone Legends",
+   "img": "https://static.playgama.com/p-img/pg/smartphone-legends/big_preview/e44210d8ceb14b6b8cccc51426ca53ce",
+   "badge": ""
+  },
+  {
+   "slug": "lasso-ranch",
+   "rank": 129,
+   "title": "Lasso Ranch",
+   "img": "https://static.playgama.com/p-img/pg/preview/51ea0c091d174bd6a64ca7c5030e5807",
+   "badge": ""
+  },
+  {
+   "slug": "rusty-park",
+   "rank": 130,
+   "title": "Rusty Park",
+   "img": "https://static.playgama.com/p-img/pg/preview/520a437117b34012bb30c47320b22383",
+   "badge": ""
+  },
+  {
+   "slug": "crash-lab-launch-the-dummy",
+   "rank": 131,
+   "title": "CRASH LAB: Launch the Dummy!",
+   "img": "https://static.playgama.com/p-img/pg/crash-lab-launch-the-dummy/big_preview/a9fd4c59c4044a54a2dc0fe11572790f",
+   "badge": ""
+  },
+  {
+   "slug": "master-car-destruction",
+   "rank": 132,
+   "title": "Master Car Destruction",
+   "img": "https://static.playgama.com/p-img/pg/master-car-destruction/big_preview/46d15cc62c774c6aa2eeace71ceb1c04",
+   "badge": ""
+  },
+  {
+   "slug": "fireflies",
+   "rank": 133,
+   "title": "Fireflies",
+   "img": "https://static.playgama.com/p-img/pg/preview/4f943bded9fd464d97217559f2658b09",
+   "badge": ""
+  },
+  {
+   "slug": "nothing-2-lose",
+   "rank": 134,
+   "title": "Nothing 2 Lose",
+   "img": "https://static.playgama.com/p-img/pg/nothing-2-lose/big_preview/487721e426704b79ac1747eb5fba710b",
+   "badge": ""
+  },
+  {
+   "slug": "space-dash",
+   "rank": 135,
+   "title": "Space Dash",
+   "img": "https://static.playgama.com/p-img/pg/space-dash/big_preview/f8ece9794bb5480da17dc628bb11a88c",
+   "badge": ""
+  },
+  {
+   "slug": "mushrooms-merge-2048",
+   "rank": 136,
+   "title": "Mushrooms Merge 2048",
+   "img": "https://static.playgama.com/p-img/pg/mushrooms-merge-2048/big_preview/456d18c93cce423cba0d2f9a19f821e9",
+   "badge": ""
+  },
+  {
+   "slug": "dont-die-kitty",
+   "rank": 137,
+   "title": "Don't Die, Kitty",
+   "img": "https://static.playgama.com/p-img/pg/dont-die-kitty/big_preview/1bbe14b41bc84d0ba3787046a9f67bc9",
+   "badge": ""
+  },
+  {
+   "slug": "golf-1-hit",
+   "rank": 138,
+   "title": "Golf +1 Hit",
+   "img": "https://static.playgama.com/p-img/pg/golf-1-hit/big_preview/6d562ef8d1bb40a0b5468e1a839146e2",
+   "badge": ""
+  },
+  {
+   "slug": "stick-fight-arena",
+   "rank": 139,
+   "title": "Stick Fight Arena",
+   "img": "https://static.playgama.com/p-img/pg/preview/d4824f297ede4856a6859ad16875d9eb",
+   "badge": ""
+  },
+  {
+   "slug": "goo-turf",
+   "rank": 140,
+   "title": "Goo Turf",
+   "img": "https://static.playgama.com/p-img/pg/preview/8ffce60d32314f58a4483bb1e68a8f2b",
+   "badge": ""
+  },
+  {
+   "slug": "1-wings-escape",
+   "rank": 141,
+   "title": "+1 Wings Escape",
+   "img": "https://static.playgama.com/p-img/pg/1-wings-escape/big_preview/57678decbb4d4f9a9d68990a285b7c54",
+   "badge": ""
+  },
+  {
+   "slug": "durak-card-club",
+   "rank": 142,
+   "title": "Durak Card Club",
+   "img": "https://static.playgama.com/p-img/pg/durak-card-club/big_preview/e6aab237b0944c0888c891ef3b8b9480",
+   "badge": ""
+  },
+  {
+   "slug": "wave-road",
+   "rank": 143,
+   "title": "Wave Road",
+   "img": "https://static.playgama.com/p-img/pg/wave-road/big_preview/f38bb07094454fdbad68ad81800a07af",
+   "badge": ""
+  },
+  {
+   "slug": "barricade-arena",
+   "rank": 144,
+   "title": "Barricade Arena",
+   "img": "https://static.playgama.com/p-img/pg/barricade-arena/big_preview/230010fb7fd046ce80d7f2f2eda94a27",
+   "badge": ""
+  },
+  {
+   "slug": "ant-swarmio",
+   "rank": 145,
+   "title": "Ant Swarm.io",
+   "img": "https://static.playgama.com/p-img/pg/preview/591fb3840c6648b1882c7e023d3b01cb",
+   "badge": ""
+  },
+  {
+   "slug": "modified-hill-climb-2d",
+   "rank": 146,
+   "title": "Modified Hill Climb 2D",
+   "img": "https://static.playgama.com/p-img/pg/modified-hill-climb-2d/big_preview/45c8b2debcd34dd68f201d3b9bb771e4",
+   "badge": ""
+  },
+  {
+   "slug": "windup-gear-connect-puzzle",
+   "rank": 147,
+   "title": "Windup: Gear Connect Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/windup-gear-connect-puzzle/big_preview/9893a3dfabed4ae6b0c8fc390b338a8a",
+   "badge": ""
+  },
+  {
+   "slug": "mukbang-stream-eating-asmr",
+   "rank": 148,
+   "title": "Mukbang Stream: Eating ASMR",
+   "img": "https://static.playgama.com/p-img/pg/mukbang-stream-eating-asmr/big_preview/aafcf78915924a6b9afc1af103868736",
+   "badge": "new"
+  },
+  {
+   "slug": "zombie-undead-rising",
+   "rank": 149,
+   "title": "Zombie Undead Rising",
+   "img": "https://static.playgama.com/p-img/pg/zombie-undead-rising/big_preview/ef46dbc581cc4223b680bd1ca71ca85f",
+   "badge": ""
+  },
+  {
+   "slug": "slide-to-ride",
+   "rank": 150,
+   "title": "Slide To Ride",
+   "img": "https://static.playgama.com/p-img/pg/slide-to-ride/big_preview/6b70de3c773c4a9ab56df62bb3ac72c3",
+   "badge": ""
+  },
+  {
+   "slug": "prison-ball",
+   "rank": 151,
+   "title": "Prison Ball",
+   "img": "https://static.playgama.com/p-img/pg/prison-ball/big_preview/6e09020c67244b0c982846ac5be484aa",
+   "badge": ""
+  },
+  {
+   "slug": "bonk",
+   "rank": 152,
+   "title": "BONK",
+   "img": "https://static.playgama.com/p-img/pg/bonk/big_preview/791150acb417405299bdb4ba215363b4",
+   "badge": ""
+  },
+  {
+   "slug": "cyber-strike",
+   "rank": 153,
+   "title": "CYBER STRIKE",
+   "img": "https://static.playgama.com/p-img/pg/cyber-strike/big_preview/e7e07455c3974b1b81f9f464ebd14426",
+   "badge": ""
+  },
+  {
+   "slug": "brainrot-mega-parkour",
+   "rank": 154,
+   "title": "Brainrot Mega Parkour",
+   "img": "https://static.playgama.com/p-img/pg/brainrot-mega-parkour/big_preview/de5a782a1515408aad1ea90885718e9f",
+   "badge": ""
+  },
+  {
+   "slug": "dino-hunt-dinosaur-hunter-game",
+   "rank": 155,
+   "title": "Dino Hunt: Dinosaur Hunter Game",
+   "img": "https://static.playgama.com/p-img/pg/dino-hunt-dinosaur-hunter-game/big_preview/8aee8e609fd141abb2bcbc491a93f2b0",
+   "badge": ""
+  },
+  {
+   "slug": "steal-a-destruction-egg",
+   "rank": 156,
+   "title": "Steal a Destruction Egg",
+   "img": "https://static.playgama.com/p-img/pg/steal-a-destruction-egg/big_preview/e4eeb6692e3a4bf4a22ff2f28a17d071",
+   "badge": ""
+  },
+  {
+   "slug": "stamp-the-parcel",
+   "rank": 157,
+   "title": "Stamp the Parcel",
+   "img": "https://static.playgama.com/p-img/pg/stamp-the-parcel/big_preview/13c4d91f76404caba538d12b2b47fa54",
+   "badge": ""
+  },
+  {
+   "slug": "fishing-trophy-catch",
+   "rank": 158,
+   "title": "Fishing: Trophy Catch",
+   "img": "https://static.playgama.com/p-img/pg/fishing-trophy-catch/big_preview/669c18c3128e46b2a0ae88fd634d62eb",
+   "badge": ""
+  },
+  {
+   "slug": "restaurant-tycoon",
+   "rank": 159,
+   "title": "Restaurant Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/restaurant-tycoon/big_preview/9066b9bdce1f419ba56135614c3b29cc",
+   "badge": ""
+  },
+  {
+   "slug": "lisas-world-paper-doll-story",
+   "rank": 160,
+   "title": "Lisa's World: Paper Doll Story",
+   "img": "https://static.playgama.com/p-img/pg/lisas-world-paper-doll-story/big_preview/f5aedec0bb3643babf4bceb2920ac3bf",
+   "badge": ""
+  },
+  {
+   "slug": "crowd-titan",
+   "rank": 161,
+   "title": "Crowd Titan",
+   "img": "https://static.playgama.com/p-img/pg/crowd-titan/big_preview/2cf627492dcd4636ad52f949ee123648",
+   "badge": ""
+  },
+  {
+   "slug": "geometry-vibes-2-online",
+   "rank": 162,
+   "title": "Geometry Vibes 2 Online",
+   "img": "https://static.playgama.com/p-img/pg/geometry-vibes-2-online/big_preview/e10277b149b24088ac41d28fe11caaf5",
+   "badge": ""
+  },
+  {
+   "slug": "pixel-reactor",
+   "rank": 163,
+   "title": "Pixel Reactor",
+   "img": "https://static.playgama.com/p-img/pg/preview/9c2494f5095649488ff8f3170fd4f06a",
+   "badge": ""
+  },
+  {
+   "slug": "shadow-pursuit-free-world",
+   "rank": 164,
+   "title": "Shadow pursuit - Free world",
+   "img": "https://static.playgama.com/p-img/pg/shadow-pursuit-free-world/big_preview/c118b7d6fcb040929748476eca7178bd",
+   "badge": ""
+  },
+  {
+   "slug": "needle-quest-haystack-secrets",
+   "rank": 165,
+   "title": "Needle Quest: Haystack Secrets",
+   "img": "https://static.playgama.com/p-img/pg/needle-quest-haystack-secrets/big_preview/025e4499a2d14dc4b0ca57546686a2f9",
+   "badge": ""
+  },
+  {
+   "slug": "paper-glider-folded-adventure",
+   "rank": 166,
+   "title": "Paper Glider - Folded Adventure",
+   "img": "https://static.playgama.com/p-img/pg/paper-glider-folded-adventure/big_preview/b46292e26b4145798f08ff0ae0af3be8",
+   "badge": ""
+  },
+  {
+   "slug": "cozy-capitalist",
+   "rank": 167,
+   "title": "Cozy Capitalist",
+   "img": "https://static.playgama.com/p-img/pg/cozy-capitalist/big_preview/056612a552c14a1189f1eb25055e3b51",
+   "badge": ""
+  },
+  {
+   "slug": "mutant-survivor",
+   "rank": 168,
+   "title": "Mutant Survivor",
+   "img": "https://static.playgama.com/p-img/pg/mutant-survivor/big_preview/031cc4c2a13a4d6f8be111edbc0131eb",
+   "badge": ""
+  },
+  {
+   "slug": "interceptor-police-pursuit",
+   "rank": 169,
+   "title": "Interceptor: Police Pursuit",
+   "img": "https://static.playgama.com/p-img/pg/preview/2ff25a410126423185d6abf671c86c70",
+   "badge": ""
+  },
+  {
+   "slug": "night-train-conductor",
+   "rank": 170,
+   "title": "Night Train Conductor",
+   "img": "https://static.playgama.com/p-img/pg/night-train-conductor/big_preview/669d22ba43634df29d5269be1921cb72",
+   "badge": ""
+  },
+  {
+   "slug": "find-the-village",
+   "rank": 171,
+   "title": "Find the Village",
+   "img": "https://static.playgama.com/p-img/pg/find-the-village/big_preview/98d75cd6130240018a238926c7d03f4a",
+   "badge": ""
+  },
+  {
+   "slug": "night-market-pinball",
+   "rank": 172,
+   "title": "Night Market Pinball",
+   "img": "https://static.playgama.com/p-img/pg/preview/90f7c6c3d2a6413280e8ead93ff00051",
+   "badge": ""
+  },
+  {
+   "slug": "mafia-boss-idle",
+   "rank": 173,
+   "title": "Mafia Boss Idle",
+   "img": "https://static.playgama.com/p-img/pg/mafia-boss-idle/big_preview/625b322e925342639704aa188fddf7d2",
+   "badge": ""
+  },
+  {
+   "slug": "moto-rush",
+   "rank": 174,
+   "title": "Moto Rush",
+   "img": "https://static.playgama.com/p-img/pg/moto-rush/big_preview/54c5ecb7d6c14419b9a3a318c830abeb",
+   "badge": ""
+  },
+  {
+   "slug": "my-hair-salon",
+   "rank": 175,
+   "title": " My Hair Salon",
+   "img": "https://static.playgama.com/p-img/pg/my-hair-salon/big_preview/e970211222fc404197b3e884af7cccc0",
+   "badge": ""
+  },
+  {
+   "slug": "moto-flow",
+   "rank": 176,
+   "title": "Moto Flow",
+   "img": "https://static.playgama.com/p-img/pg/preview/68046f692b95414e9ef17478b82d65f1",
+   "badge": ""
+  },
+  {
+   "slug": "corgi-commando",
+   "rank": 177,
+   "title": "Corgi Commando",
+   "img": "https://static.playgama.com/p-img/pg/preview/a38359ed1bf049dbbdadb578a6c0c013",
+   "badge": ""
+  },
+  {
+   "slug": "acorn-knights",
+   "rank": 178,
+   "title": "Acorn Knights",
+   "img": "https://static.playgama.com/p-img/pg/preview/310dff771ef74c018c216810ece83b21",
+   "badge": ""
+  },
+  {
+   "slug": "snooze-fort",
+   "rank": 179,
+   "title": "Snooze Fort",
+   "img": "https://static.playgama.com/p-img/pg/snooze-fort/big_preview/af62eb26a28641079a30b9478fa51a17",
+   "badge": ""
+  },
+  {
+   "slug": "cargo-sort-color-puzzle",
+   "rank": 180,
+   "title": "Cargo Sort: Color Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/cargo-sort-color-puzzle/big_preview/fb44b79344b441838222a83a63eecde8",
+   "badge": ""
+  },
+  {
+   "slug": "rooftop-last-stand-2",
+   "rank": 181,
+   "title": "Rooftop Last Stand 2",
+   "img": "https://static.playgama.com/p-img/pg/rooftop-last-stand-2/big_preview/254152ad8dca4bef9ad90b8698a01aaa",
+   "badge": ""
+  },
+  {
+   "slug": "money-vacuum",
+   "rank": 182,
+   "title": "Money Vacuum",
+   "img": "https://static.playgama.com/p-img/pg/money-vacuum/big_preview/6bd089a4d3304b2bae89b5d8760c1c3d",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-exit--a-puzzle",
+   "rank": 183,
+   "title": "Arrows: Exit - A Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/arrows-exit-a-puzzle/big_preview/8a9e98f94ea84b7a8d0bb2060cf23203",
+   "badge": ""
+  },
+  {
+   "slug": "slime-merge-unlock-all-forms",
+   "rank": 184,
+   "title": "Slime Merge: Unlock All Forms!",
+   "img": "https://static.playgama.com/p-img/pg/slime-merge-unlock-all-forms/big_preview/e0c67c222f1a4ffe9f2736885288109d",
+   "badge": ""
+  },
+  {
+   "slug": "glimmy-ball-sort-puzzle",
+   "rank": 185,
+   "title": "Glimmy: Ball Sort Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/preview/4acf35dee257474d953d0b118e451f95",
+   "badge": ""
+  },
+  {
+   "slug": "mog-arena-phonk",
+   "rank": 186,
+   "title": "Mog Arena: Phonk",
+   "img": "https://static.playgama.com/p-img/pg/mog-arena-phonk/big_preview/58e7a5e2cf0245308e4a88fff245dead",
+   "badge": ""
+  },
+  {
+   "slug": "pup-and-fox",
+   "rank": 187,
+   "title": "Pup and Fox",
+   "img": "https://static.playgama.com/p-img/pg/pup-and-fox/big_preview/5d24b3b922844c55ba403e7bd971d504",
+   "badge": ""
+  },
+  {
+   "slug": "slimes-evolution",
+   "rank": 188,
+   "title": "Slimes: Evolution",
+   "img": "https://static.playgama.com/p-img/pg/preview/e62f0a8bf5ae4806b0a92745a4501a1f",
+   "badge": ""
+  },
+  {
+   "slug": "police-chase-car-crash-3d",
+   "rank": 189,
+   "title": "Police Chase: Car Crash 3D",
+   "img": "https://static.playgama.com/p-img/pg/preview/3d6b8955413445cfb3ab9a627379ce4f",
+   "badge": ""
+  },
+  {
+   "slug": "flown",
+   "rank": 190,
+   "title": "Flown",
+   "img": "https://static.playgama.com/p-img/pg/flown/big_preview/d8b4c14d364c483689c4363144acf8dd",
+   "badge": ""
+  },
+  {
+   "slug": "ditch-drop",
+   "rank": 191,
+   "title": "Ditch Drop",
+   "img": "https://static.playgama.com/p-img/pg/ditch-drop/big_preview/0295296dc34a4e0d9e62fc56898ab9b6",
+   "badge": ""
+  },
+  {
+   "slug": "crazy-obby-run",
+   "rank": 192,
+   "title": "Crazy Obby Run",
+   "img": "https://static.playgama.com/p-img/pg/crazy-obby-run/big_preview/9238c29d399a4deaaa53b2c75075833d",
+   "badge": "new"
+  },
+  {
+   "slug": "asmr-makeover--makeup-studio",
+   "rank": 193,
+   "title": "ASMR Makeover & Makeup Studio",
+   "img": "https://static.playgama.com/p-img/pg/asmr-makeover-makeup-studio/big_preview/db7f3e26f1ec4c20b829abbdf23b2897",
+   "badge": ""
+  },
+  {
+   "slug": "car-stunt-races-mega-ramps",
+   "rank": 194,
+   "title": "Car Stunt Races: Mega Ramps",
+   "img": "https://static.playgama.com/p-img/pg/car-stunt-races-mega-ramps/big_preview/56ea117f66894d3297cbe2119d92f10f",
+   "badge": "new"
+  },
+  {
+   "slug": "tinderfoot",
+   "rank": 195,
+   "title": "Tinderfoot",
+   "img": "https://static.playgama.com/p-img/pg/tinderfoot/big_preview/f63a2b0fac6047d28936aecb9d79efea",
+   "badge": ""
+  },
+  {
+   "slug": "dont-touch-the-dots",
+   "rank": 196,
+   "title": "Don't Touch the Dots",
+   "img": "https://static.playgama.com/p-img/pg/dont-touch-the-dots/big_preview/2cbaec17596f45cdaf13a801d207c45b",
+   "badge": ""
+  },
+  {
+   "slug": "monster-simulator-scare-people",
+   "rank": 197,
+   "title": "Monster Simulator: Scare People!",
+   "img": "https://static.playgama.com/p-img/pg/monster-simulator-scare-people/big_preview/4464f7e5e8e04f4791b123a49245c961",
+   "badge": "new"
+  },
+  {
+   "slug": "cartapulta",
+   "rank": 198,
+   "title": "Cartapulta",
+   "img": "https://static.playgama.com/p-img/pg/cartapulta/big_preview/b59da0ecc10b4f23b0ad735f05ef49fa",
+   "badge": ""
+  },
+  {
+   "slug": "pyramid",
+   "rank": 199,
+   "title": "Pyramid",
+   "img": "https://static.playgama.com/p-img/pg/pyramid/big_preview/0b440669fe014bf581d536a59b955273",
+   "badge": ""
+  },
+  {
+   "slug": "1-mine-per-click-obby-mode",
+   "rank": 200,
+   "title": "+1 Mine Per Click: Obby Mode",
+   "img": "https://static.playgama.com/p-img/pg/1-mine-per-click-obby-mode/big_preview/886fcc49a06e48aead51d14191b45684",
+   "badge": "new"
+  },
+  {
+   "slug": "lovim-fishing-simulator",
+   "rank": 201,
+   "title": "Lovim: Fishing Simulator 3D",
+   "img": "https://static.playgama.com/p-img/pg/preview/8e20ec203de0463d9e13eec17e7c900b",
+   "badge": ""
+  },
+  {
+   "slug": "quarry-crew",
+   "rank": 202,
+   "title": "Quarry Crew",
+   "img": "https://static.playgama.com/p-img/pg/preview/d7dff6a9516c484a9eaab9120b02f5cd",
+   "badge": ""
+  },
+  {
+   "slug": "the-hole",
+   "rank": 203,
+   "title": "The Hole",
+   "img": "https://static.playgama.com/p-img/pg/the-hole/big_preview/8a0e8c902a494f079ae1c5e18d2a6419",
+   "badge": ""
+  },
+  {
+   "slug": "sinkhole",
+   "rank": 204,
+   "title": "Sinkhole",
+   "img": "https://static.playgama.com/p-img/pg/preview/63125dd45bd6422384b70400b1b9595b",
+   "badge": ""
+  },
+  {
+   "slug": "big-bobs-burger-truck",
+   "rank": 205,
+   "title": "Big Bob's Burger Truck",
+   "img": "https://static.playgama.com/p-img/pg/big-bobs-burger-truck/big_preview/fd354f90381f4326b58440c64079d37b",
+   "badge": ""
+  },
+  {
+   "slug": "clankmates",
+   "rank": 206,
+   "title": "Clankmates",
+   "img": "https://static.playgama.com/p-img/pg/preview/77cee79638434ac295dd879b76d10ee4",
+   "badge": ""
+  },
+  {
+   "slug": "obby-race-rumble",
+   "rank": 207,
+   "title": "Obby Race Rumble",
+   "img": "https://static.playgama.com/p-img/pg/obby-race-rumble/big_preview/14448dd3fd614e7495e2d3a7d417be79",
+   "badge": "new"
+  },
+  {
+   "slug": "obby-kart-racing",
+   "rank": 208,
+   "title": "Obby Kart Racing",
+   "img": "https://static.playgama.com/p-img/pg/preview/0c933e13267644d689af0c6c658da85d",
+   "badge": "new"
+  },
+  {
+   "slug": "milk-rider",
+   "rank": 209,
+   "title": "Milk Rider",
+   "img": "https://static.playgama.com/p-img/pg/preview/7aac6d96983d47b6889378400d3c4de9",
+   "badge": ""
+  },
+  {
+   "slug": "rocket-islands",
+   "rank": 210,
+   "title": "Rocket Islands",
+   "img": "https://static.playgama.com/p-img/pg/rocket-islands/big_preview/d88b220eb3df412384f80b6193fa180b",
+   "badge": ""
+  },
+  {
+   "slug": "dig-to-the-core",
+   "rank": 211,
+   "title": "Dig To The Core",
+   "img": "https://static.playgama.com/p-img/pg/preview/e51f2f8704394107be6a787acfcc6a0c",
+   "badge": ""
+  },
+  {
+   "slug": "mega-block-survivors",
+   "rank": 212,
+   "title": "Mega Block Survivors",
+   "img": "https://static.playgama.com/p-img/pg/preview/379ef045526640af88b6539dd5a1398e",
+   "badge": ""
+  },
+  {
+   "slug": "pixel-lap",
+   "rank": 213,
+   "title": "Pixel Lap!",
+   "img": "https://static.playgama.com/p-img/pg/pixel-lap/big_preview/6fc49e26da334c52bdb9894eb118be5b",
+   "badge": ""
+  },
+  {
+   "slug": "patang-baaz-kite-fight",
+   "rank": 214,
+   "title": "Patang Baaz: Kite Fight",
+   "img": "https://static.playgama.com/p-img/pg/preview/9fcac82f1a7749e2beca8e1cafb8c0aa",
+   "badge": ""
+  },
+  {
+   "slug": "marshmallow-world",
+   "rank": 215,
+   "title": "Marshmallow World",
+   "img": "https://static.playgama.com/p-img/pg/marshmallow-world/big_preview/16fe93c0e4084de5b7d4665f17506108",
+   "badge": ""
+  },
+  {
+   "slug": "hearts-club",
+   "rank": 216,
+   "title": "Hearts Club",
+   "img": "https://static.playgama.com/p-img/pg/hearts-club/big_preview/a2c200352cea4dbf92dc0a3d9265819b",
+   "badge": ""
+  },
+  {
+   "slug": "sweet-merge-cafe",
+   "rank": 217,
+   "title": "Sweet Merge Cafe",
+   "img": "https://static.playgama.com/p-img/pg/sweet-merge-cafe/big_preview/143f7eb12f8c4cafae90bacd0d661430",
+   "badge": ""
+  },
+  {
+   "slug": "gunslayer",
+   "rank": 218,
+   "title": "Gunslayer",
+   "img": "https://static.playgama.com/p-img/pg/preview/c49d60861761447692e27a77b609e99f",
+   "badge": ""
+  },
+  {
+   "slug": "skill-test-canyon",
+   "rank": 219,
+   "title": "Skill Test Canyon",
+   "img": "https://static.playgama.com/p-img/pg/skill-test-canyon/big_preview/57cf803370434f20a00c9aa689951de7",
+   "badge": ""
+  },
+  {
+   "slug": "crazy-road-mountain-pass",
+   "rank": 220,
+   "title": "Crazy Road: Mountain Pass",
+   "img": "https://static.playgama.com/p-img/pg/crazy-road-mountain-pass/big_preview/dcc61818d8d1496f98a4786419c8b37e",
+   "badge": ""
+  },
+  {
+   "slug": "punch-through",
+   "rank": 221,
+   "title": "Punch Through!",
+   "img": "https://static.playgama.com/p-img/pg/punch-through/big_preview/2fa4381deecb4532a91dcdf4ae640e00",
+   "badge": ""
+  },
+  {
+   "slug": "obby-original-stone-skipping",
+   "rank": 222,
+   "title": "Obby: Original Stone Skipping!",
+   "img": "https://static.playgama.com/p-img/pg/obby-original-stone-skipping/big_preview/cc1fb9985b5b4950bf4f57adc0697907",
+   "badge": "new"
+  },
+  {
+   "slug": "titan-surge-robot-city",
+   "rank": 223,
+   "title": "Titan Surge: Robot City",
+   "img": "https://static.playgama.com/p-img/pg/titan-surge-robot-city/big_preview/8014d5e805c54dd5b0f8be237ee1a75a",
+   "badge": ""
+  },
+  {
+   "slug": "makeup-stories-asmr-beauty",
+   "rank": 224,
+   "title": "Makeup Stories: ASMR Beauty",
+   "img": "https://static.playgama.com/p-img/pg/makeup-stories-asmr-beauty/big_preview/21efeac6ef124e7e874d94b519692bca",
+   "badge": ""
+  },
+  {
+   "slug": "outpost-siege",
+   "rank": 225,
+   "title": "Outpost Siege",
+   "img": "https://static.playgama.com/p-img/pg/preview/ebbe7968cb64456fb2063c632ec01749",
+   "badge": ""
+  },
+  {
+   "slug": "must-escape-the-fortress",
+   "rank": 226,
+   "title": "Must Escape the Fortress",
+   "img": "https://static.playgama.com/p-img/pg/must-escape-the-fortress/big_preview/66819041a94a43b58f695601b8cfd912",
+   "badge": ""
+  },
+  {
+   "slug": "must-escape-the-wizards-castle",
+   "rank": 227,
+   "title": "Must Escape the Wizard's Castle",
+   "img": "https://static.playgama.com/p-img/pg/must-escape-the-wizards-castle/big_preview/a4ad2b862e0341908e7d789c524f242a",
+   "badge": ""
+  },
+  {
+   "slug": "escape-the-black-and-white-house",
+   "rank": 228,
+   "title": "Escape the Black and White House",
+   "img": "https://static.playgama.com/p-img/pg/escape-the-black-and-white-house/big_preview/e51a9a5e460a4a7696ea92c312aa07eb",
+   "badge": ""
+  },
+  {
+   "slug": "must-escape-the-haunted-house",
+   "rank": 229,
+   "title": "Must Escape the Haunted House",
+   "img": "https://static.playgama.com/p-img/pg/must-escape-the-haunted-house/big_preview/fc9c82dc05da441395d246111427a3e2",
+   "badge": ""
+  },
+  {
+   "slug": "highway-wrecker",
+   "rank": 230,
+   "title": "Highway Wrecker",
+   "img": "https://static.playgama.com/p-img/pg/highway-wrecker/big_preview/6a02d9a6274f465789f711c24b7a9911",
+   "badge": ""
+  },
+  {
+   "slug": "night-torque",
+   "rank": 231,
+   "title": "Night Torque",
+   "img": "https://static.playgama.com/p-img/pg/night-torque/big_preview/4eaabe5db4374210842b7b464cf963c5",
+   "badge": ""
+  },
+  {
+   "slug": "alderun",
+   "rank": 232,
+   "title": "Alderun",
+   "img": "https://static.playgama.com/p-img/pg/preview/4badcd19e314439ab480361d96c04bfb",
+   "badge": "new"
+  },
+  {
+   "slug": "military-strike",
+   "rank": 233,
+   "title": "Military Strike",
+   "img": "https://static.playgama.com/p-img/pg/military-strike/big_preview/518f5b6272424d71846d2ac09f3d4a4f",
+   "badge": ""
+  },
+  {
+   "slug": "opps",
+   "rank": 234,
+   "title": "Opps",
+   "img": "https://static.playgama.com/p-img/pg/preview/004c0d797f76448aa0d9cc30851c7d60",
+   "badge": ""
+  },
+  {
+   "slug": "dont-splash",
+   "rank": 235,
+   "title": "Don't Splash",
+   "img": "https://static.playgama.com/p-img/pg/dont-splash/big_preview/2dce2e44c52a46b18538a48c86d596c4",
+   "badge": ""
+  },
+  {
+   "slug": "ward-100",
+   "rank": 236,
+   "title": "WARD 100",
+   "img": "https://static.playgama.com/p-img/pg/ward-100/big_preview/057ad571c06f482ba828731ccf7658e6",
+   "badge": ""
+  },
+  {
+   "slug": "meow-squad-zombie-defense",
+   "rank": 237,
+   "title": "Meow Squad: Zombie Defense",
+   "img": "https://static.playgama.com/p-img/pg/meow-squad-zombie-defense/big_preview/defcacaf9e9042aabbfaaa1980a12acd",
+   "badge": ""
+  },
+  {
+   "slug": "farmcraft",
+   "rank": 238,
+   "title": "FARMCRAFT",
+   "img": "https://static.playgama.com/p-img/pg/farmcraft/big_preview/977176b136d64501a2a8e6bf1becafb5",
+   "badge": ""
+  },
+  {
+   "slug": "ashen-rift",
+   "rank": 239,
+   "title": "Ashen Rift",
+   "img": "https://static.playgama.com/p-img/pg/preview/ee830483849142809f8fd3b2919f9e7a",
+   "badge": ""
+  },
+  {
+   "slug": "doll-decor--dress-up-game",
+   "rank": 240,
+   "title": "Doll Decor & Dress Up Game",
+   "img": "https://static.playgama.com/p-img/pg/doll-decor-dress-up-game/big_preview/20dbd6dac9c64c42b167eacfdc2f659e",
+   "badge": "new"
+  },
+  {
+   "slug": "pixel-beads-loop",
+   "rank": 241,
+   "title": "Pixel Beads: Loop",
+   "img": "https://static.playgama.com/p-img/pg/preview/4d2399e390ab48d389a742d48ed767a1",
+   "badge": ""
+  },
+  {
+   "slug": "hustle-tycoon",
+   "rank": 242,
+   "title": "Hustle Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/preview/e970dafda3ac43eea844dbd82d56454e",
+   "badge": ""
+  },
+  {
+   "slug": "nest-heist",
+   "rank": 243,
+   "title": "Nest Heist",
+   "img": "https://static.playgama.com/p-img/pg/nest-heist/big_preview/868a08f126034c63ba59bf6b523582c5",
+   "badge": ""
+  },
+  {
+   "slug": "sand-drop--block-blast-puzzle",
+   "rank": 244,
+   "title": "Sand Drop : Block Blast Puzzle",
+   "img": "https://static.playgama.com/p-img/pg/preview/7d9d9103908f428fb436d44d1454cf86",
+   "badge": ""
+  },
+  {
+   "slug": "word-merge",
+   "rank": 245,
+   "title": "WORD MERGE",
+   "img": "https://static.playgama.com/p-img/pg/preview/6a5cf887820248e4ad471946a473c679",
+   "badge": ""
+  },
+  {
+   "slug": "roll-tycoon",
+   "rank": 246,
+   "title": "Roll Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/roll-tycoon/big_preview/a35cd23412364f159e25110ad7b515d3",
+   "badge": ""
+  },
+  {
+   "slug": "verity-merge",
+   "rank": 247,
+   "title": "Verity Merge",
+   "img": "https://static.playgama.com/p-img/pg/verity-merge/big_preview/58afeb1ab4824f78be4b90c5d43d64bc",
+   "badge": ""
+  },
+  {
+   "slug": "merge-cars-tycoon",
+   "rank": 248,
+   "title": "Merge Cars Tycoon",
+   "img": "https://static.playgama.com/p-img/pg/merge-cars-tycoon/big_preview/86c349e97efc43a99c868e06cd6f1764",
+   "badge": ""
+  },
+  {
+   "slug": "obby-keyboard-run-1-speed",
+   "rank": 249,
+   "title": "Obby: Keyboard Run +1 Speed",
+   "img": "https://static.playgama.com/p-img/pg/preview/28d817f0295940bcb669f6b7b18a31d9",
+   "badge": ""
+  },
+  {
+   "slug": "hide-and-seek-transform-props",
+   "rank": 250,
+   "title": "Hide and Seek: Transform Props",
+   "img": "https://static.playgama.com/p-img/pg/hide-and-seek-transform-props/big_preview/0815bfebe2fa448d9ea77e491f3ffbb4",
+   "badge": ""
+  },
+  {
+   "slug": "pandadoku",
+   "rank": 251,
+   "title": "PandaDoku",
+   "img": "https://static.playgama.com/p-img/pg/pandadoku/big_preview/34327312b5274a9b98e067c77e333708",
+   "badge": ""
+  },
+  {
+   "slug": "eggmental",
+   "rank": 252,
+   "title": "Eggmental",
+   "img": "https://static.playgama.com/p-img/pg/eggmental/big_preview/3cc1c20997724d029a4d4911ca5eb3b8",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-passport",
+   "rank": 253,
+   "title": "Mahjong Passport",
+   "img": "https://static.playgama.com/p-img/pg/preview/88aa0e216aae462cabf405a320bb4ede",
+   "badge": ""
+  },
+  {
+   "slug": "shift-rush",
+   "rank": 254,
+   "title": "Shift Rush",
+   "img": "https://static.playgama.com/p-img/pg/shift-rush/big_preview/dc284a7ddef74d95a6b11e673531a737",
+   "badge": ""
+  },
+  {
+   "slug": "arrows-dream-home-design",
+   "rank": 255,
+   "title": "Arrows: Dream Home Design",
+   "img": "https://static.playgama.com/p-img/pg/arrows-dream-home-design/big_preview/005328b14c3f4bcd8bb9b6ae2941e284",
+   "badge": ""
+  },
+  {
+   "slug": "obby-build-a-car-farm",
+   "rank": 256,
+   "title": "Obby: Build a Car Farm",
+   "img": "https://static.playgama.com/p-img/pg/obby-build-a-car-farm/big_preview/769d79a9f00f41cba72f1dfc414b123b",
+   "badge": ""
+  },
+  {
+   "slug": "obby-1-roll-ice-cream",
+   "rank": 257,
+   "title": "Obby +1 Roll Ice Cream",
+   "img": "https://static.playgama.com/p-img/pg/obby-1-roll-ice-cream/big_preview/7f16bc6bc5b449e189a557f93594d917",
+   "badge": ""
+  },
+  {
+   "slug": "obby-swim-for-egg",
+   "rank": 258,
+   "title": "Obby Swim for Egg",
+   "img": "https://static.playgama.com/p-img/pg/obby-swim-for-egg/big_preview/fef356292f7342ddb2e89a66d0cae556",
+   "badge": ""
+  },
+  {
+   "slug": "blocktrail-2048",
+   "rank": 259,
+   "title": "Blocktrail 2048",
+   "img": "https://static.playgama.com/p-img/pg/blocktrail-2048/big_preview/1cb5c4b07c0c4e23b22354d71417a65e",
+   "badge": ""
+  },
+  {
+   "slug": "mahjong-porcelain-conservatory",
+   "rank": 260,
+   "title": "Mahjong: Porcelain Conservatory",
+   "img": "https://static.playgama.com/p-img/pg/mahjong-porcelain-conservatory/big_preview/8379a16d699f4292b20e7efba56e1a98",
+   "badge": ""
+  },
+  {
+   "slug": "merge-the-gems",
+   "rank": 261,
+   "title": "Merge The Gems",
+   "img": "https://static.playgama.com/p-img/pg/merge-the-gems/big_preview/68681a7bec9446ccbed9a772245ec3eb",
+   "badge": ""
+  },
+  {
+   "slug": "deepstone-idle-miner-clicker",
+   "rank": 262,
+   "title": "Deepstone: Idle Miner Clicker",
+   "img": "https://static.playgama.com/p-img/pg/deepstone-idle-miner-clicker/big_preview/8b6907e42f874722897c4ba9291f2e5a",
+   "badge": ""
+  },
+  {
+   "slug": "ant-picnic",
+   "rank": 263,
+   "title": "Ant Picnic",
+   "img": "https://static.playgama.com/p-img/pg/ant-picnic/big_preview/47e71ce263bf4a7da52509c58b4a9367",
+   "badge": ""
+  },
+  {
+   "slug": "newbzio",
+   "rank": 264,
+   "title": "Newbz.io",
+   "img": "https://static.playgama.com/p-img/pg/preview/61336b6e62854fd1ae42b62a76106152",
+   "badge": "new"
+  },
+  {
+   "slug": "spider-solitaire-silk-horizon",
+   "rank": 265,
+   "title": "Spider Solitaire: Silk Horizon",
+   "img": "https://static.playgama.com/p-img/pg/spider-solitaire-silk-horizon/big_preview/e4721b46631f409c9bc3c15b48cada17",
+   "badge": ""
+  },
+  {
+   "slug": "steel-front",
+   "rank": 266,
+   "title": "Steel Front",
+   "img": "https://static.playgama.com/p-img/pg/steel-front/big_preview/dd78d9ffbe9244c796c285f60b4acff8",
+   "badge": ""
+  },
+  {
+   "slug": "army-commander",
+   "rank": 267,
+   "title": "Army Commander",
+   "img": "https://static.playgama.com/p-img/pg/army-commander/big_preview/03e77310a2da47809a6879a3718ffef1",
+   "badge": ""
+  },
+  {
+   "slug": "spinfuse",
+   "rank": 268,
+   "title": "SPINFUSE",
+   "img": "https://static.playgama.com/p-img/pg/spinfuse/big_preview/94ddcc59d36c4f78b201bf8e45c1b1ff",
+   "badge": ""
+  },
+  {
+   "slug": "hexa-hexa",
+   "rank": 269,
+   "title": "HEXA HEXA",
+   "img": "https://static.playgama.com/p-img/pg/hexa-hexa/big_preview/e95ba84d5bf64643abb9aff767639e24",
+   "badge": ""
+  },
+  {
+   "slug": "gold-rush-builder",
+   "rank": 270,
+   "title": "Gold Rush Builder",
+   "img": "https://static.playgama.com/p-img/pg/gold-rush-builder/big_preview/5f59d776d893432fb13463ce1ce76cb7",
+   "badge": ""
+  }
+ ]
+}
