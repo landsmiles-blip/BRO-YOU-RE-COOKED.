@@ -58,8 +58,11 @@ window.renderCover = (opts) => {
   if (line) {
     const n = 14, pts = [];
     // 'auto' = midway between the boulder's underside and the top of Milo's head
-    const ly = line.y === 'auto' ? ((ballP.y + 28) + (miloP.y - 36)) / 2 : line.y;
-    const lx0 = line.x0 ?? ballP.x - 78, lx1 = line.x1 ?? ballP.x + 78;
+    // 'catch' = directly under the boulder, so the line reads as holding it back
+    const ly = line.y === 'catch' ? ballP.y + 28 + 12
+      : line.y === 'auto' ? ((ballP.y + 28) + (miloP.y - 36)) / 2 : line.y;
+    const half = line.half ?? 78;
+    const lx0 = line.x0 ?? ballP.x - half, lx1 = line.x1 ?? ballP.x + half;
     for (let i = 0; i <= n; i++) {
       const t = (i / n) * (line.part ?? 1);
       pts.push({ x: lx0 + (lx1 - lx0) * t, y: ly + Math.sin(i * 0.9) * 1.4 });

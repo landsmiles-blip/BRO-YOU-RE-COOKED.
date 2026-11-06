@@ -1,5 +1,14 @@
 # LAUNCH — v1.0, 27 Oct 2026
 
+> **STATUS, 6 Nov 2026 (read this first).** This file describes the 27 Oct launch.
+> What is true now: tag `v1.0` = `5d38d3b` and tag `v1.0.1` = `c9a273a` (D12: BRIDGE
+> is the Chapter 1 boss). The Playgama-ready work (Bridge pause/audio/storage/ads,
+> recorded sound, full-window layout, new covers) is on branch
+> `prelaunch/playgama-compliance`, pushed, NOT merged to `main` and NOT tagged.
+> Current zips (5 Nov): YouTube 96,790 B, web 96,794 B, Playgama 493,269 B (it
+> carries the recorded-sound bank). Details: `docs/launch/PLAYGAMA-CHECKLIST.md`,
+> `docs/DECISIONS.md` D13-D16.
+
 **Decision (D11 in docs/DECISIONS.md):** ship the 45 levels now to the places
 that will take them today. Stop adding content. Let real players' numbers
 decide what comes next.
@@ -23,11 +32,11 @@ commission a trademark search on the title (`docs/CERTIFICATION.md` §6,
 
 ## Frozen at launch
 
-- **The campaign**: 45 levels, as of release commit `f159983` on
-  `claude/game-markdown-review-23hf3j`. Any change to it reshuffles every
-  future daily challenge, so after launch change it in batches, and say so.
-  **Tag it on GitHub** (this session's git access cannot push tags):
-  Releases → Draft a new release → tag `v1.0` → target that commit.
+- **The campaign**: 45 levels. It was frozen at commit `f159983` on 27 Oct; the
+  tags that exist now are `v1.0` = `5d38d3b` and `v1.0.1` = `c9a273a`, which
+  re-ordered Chapter 1 only (D12). Any change to it reshuffles every future
+  daily challenge, so after launch change it in batches, and say so.
+  (Tags exist on GitHub; do not move them: a change gets a new tag.)
 - **No new levels until the numbers are in.** The 25 open slots, bee slot 29,
   FUNNEL's back door and the eight levels over the 60-try ceiling all wait for
   real attempts.
@@ -63,11 +72,12 @@ commission a trademark search on the title (`docs/CERTIFICATION.md` §6,
 
 | Check | Result |
 |---|---|
-| `npm run film` | All 45 levels won by their certified, hand-drawn lines in the real browser |
+| `npm run film` | All 45 levels won by their certified, hand-drawn lines in the real browser. **Chapter 1 was re-shot on 6 Nov 2026 in the D12 order: 8 of 8 won** (films read, BRIDGE included); the other 37 were last shot 27 Oct, and their order did not change |
 | `FILM_IDLE=1 npm run film` | All 45 lost with nothing drawn, each with a named reason |
 | `npm test` | All physics gates pass |
 | `npm run curve` | Pass |
 | `npm run plates` | Pass (FUNNEL listed open) |
 | `npm run test:board` | Pass |
-| `npm run test:conformance` | Every machine-checkable YouTube row passes |
-| Zips | 92 KB each |
+| `npm run test:conformance` | Every machine-checkable YouTube row passes on Linux. **On Windows 6 Nov: 46 pass, 5 cannot run** (they build file paths with `.pathname` and call a Linux `unzip`; the files exist) |
+| `npm run test:browser` / `test:board` / `test:audio` | Pass on 6 Nov (Chromium 1234; `test:board` needs `BASE_URL=http://127.0.0.1:8080/` with `npm run serve` running) |
+| Zips (5 Nov) | YouTube 96,790 B, web 96,794 B (about 95 KB each), Playgama 493,269 B |

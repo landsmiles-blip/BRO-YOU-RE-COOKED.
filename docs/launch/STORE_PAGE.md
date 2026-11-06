@@ -14,9 +14,10 @@ The order to put it out, and what to read afterwards, is in **`LAUNCH.md`**.
 | `dist/byc-web.zip` | **The open web**: itch.io, CrazyGames, any static host. No YouTube SDK. |
 | `dist/byc-playgama.zip` | **Playgama Sandbox**: real players' attempts per level (see `docs/PLAYGAMA.md`). |
 | `dist/byc-playables.zip` | **YouTube**: upload in the Playables developer portal once access arrives. |
-| `cover-630x500.png` | itch.io cover |
-| `cover-1920x1080.png` | landscape key art (16:9) |
-| `cover-800x1200.png` | portrait key art (2:3) |
+| `cover-630x500.png` | itch.io cover. **SUPERSEDED for Playgama/YouTube (6 Nov):** three small phone frames on mostly empty paper, Milo about 4% of the height, no drawn line, a tiny HUD counter; do not submit |
+| `cover-1920x1080.png` | landscape key art (16:9). **Superseded**, same reason |
+| `cover-800x1200.png` | portrait key art (2:3). **Superseded**, same reason |
+| `covers/` | **Current Playgama covers** (800x800, 1080x1920, 1920x1080), text-free, from the game's own renderer; see `covers/README.md` |
 | `screenshot-1` … `8` | store screenshots, in this order |
 
 Portals that ask for other sizes say so on their upload page. Recapture at
@@ -116,7 +117,7 @@ would rule out CrazyGames. Leave it until the numbers say which is worth more.
 > - cloud save via `saveData`/`loadData` is the only save;
 > - `onPause` halts physics, audio and rendering;
 > - zero external network calls;
-> - a 92 KB zip, interactive 163 ms after load in our conformance run;
+> - a 95 KB zip (96,790 bytes), interactive 250 ms after load in our 6 Nov conformance run;
 > - playable at all nine aspect ratios.
 >
 > 45 levels in seven chapters, plus a daily challenge. A certification dry-run
