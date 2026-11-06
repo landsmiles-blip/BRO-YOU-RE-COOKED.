@@ -1,5 +1,7 @@
 # Covers for the Playgama form (text-free)
 
+**UPLOADED to the BYC draft on 6 Nov 2026 (media ids `cmw4qs0nz...`, `cmw4qs10o...`, `cmw4qs1dj...`): the "pop" set below, the files named `byc-cover-*.png`.** The owner asked for the MrBeast structure; the research measured it on 44 of his thumbnails (`docs/research/most-played/mrbeast-case-study.md` 3.3): a large face, high-arousal expression, saturated primaries on a bright background, 1-2 words of text or none. The pop set follows that with the game's own art: Milo's scream is large, the sky-blue background is a recolour of the paper only (`grade` option in `generator/cover.html`; figures and ink untouched), red boulder, blue line, no text. It copies no person's face or specific thumbnail. The earlier paper-background set is kept as `alt/*-catch-paper.png`.
+
 Made 5 Nov 2026 from the game's OWN renderer, not drawn separately: `generator/cover.html` imports `js/sim.js`, `js/levels.js` (level A1) and `js/render/world.js`, steps the real sim to 770 ms (the boulder is a hand's width above Milo), forces Milo's `danger` to 0.95 so his real face shows full fright, and draws the bold blue line directly under the boulder, so it reads as holding it back (`line.y = 'catch'`), with the game's own live-stroke renderer. Camera: tight on the boulder, the line and Milo. No lettering, no logo, no platform mark.
 
 | File | Size (Playgama cover slot) |
@@ -14,4 +16,6 @@ Subject sits in the middle ~70% of every frame: the YouTube hub tile is 194x272 
 
 Rebuild: `python generator/cover-server.py <repo root>` (binds 127.0.0.1:8102), open http://127.0.0.1:8102/ in Chrome and run `window.saveCover(name, {w, h, ms: 770, zoom: 0.92, line: {y: 'catch', half: 68, part: 1}})` from the console; PNGs land in `generator/out/`. The server is a scratch tool, not part of the game.
 
-Honest limit: the look follows the draw-genre convention (a scared character under a visible threat). No data says it earns clicks; the red-team found near-identical tiles far lower in plays (docs/research/most-played/red-team.md section 3).
+Honest limit (applies to both sets, and the pop set was not tested against the paper set; nobody has measured either): the MrBeast pattern is measured on his own videos, not on game tiles, and the research found no causal evidence that any thumbnail style raises plays on Playgama or Playables.
+
+Old note on the paper set:  the look follows the draw-genre convention (a scared character under a visible threat). No data says it earns clicks; the red-team found near-identical tiles far lower in plays (docs/research/most-played/red-team.md section 3).

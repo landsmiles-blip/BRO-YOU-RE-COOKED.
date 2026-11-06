@@ -28,7 +28,7 @@ function pos(o) { const b = bodyOf(o); return b?.position ? { x: b.position.x, y
  * line  {x0,x1,y,part} half-drawn line (or null); danger  0..1; shiftY  fraction to nudge down
  */
 window.renderCover = (opts) => {
-  const { w, h, ms = 620, zoom = 0.6, line = null, danger = 0.95, shiftY = 0, dx = 0 } = opts;
+  const { w, h, ms = 620, zoom = 0.6, line = null, danger = 0.95, shiftY = 0, dx = 0, dy = 0, scale = null, grade = null } = opts;
   const sim = simAt(A1, ms);
   const miloP = pos(sim.milo), ballP = pos(sim.objects.get('ball1'));
   if (!miloP || !ballP) { log('cannot find bodies: milo keys=' + Object.keys(sim.milo || {}).join()); return null; }
@@ -36,8 +36,8 @@ window.renderCover = (opts) => {
 
   const top = ballP.y - 28, bottom = miloP.y + 36;       // ball top .. Milo's feet
   const E = bottom - top;
-  const s = Math.min((zoom * h) / E, (0.9 * w) / 260);
-  const cx = (ballP.x + miloP.x) / 2 + dx, cy = (top + bottom) / 2 - shiftY * (h / s);
+  const s = scale ?? Math.min((zoom * h) / E, (0.9 * w) / 260);
+  const cx = (ballP.x + miloP.x) / 2 + dx, cy = (top + bottom) / 2 - shiftY * (h / s) + dy;
 
   const canvas = document.createElement('canvas');
   canvas.width = w; canvas.height = h;
@@ -70,6 +70,26 @@ window.renderCover = (opts) => {
     livePoints = pts;
   }
   drawScene(ctx, sim, { now: 0, freeze: 0, livePoints, liveHolds: true, walkPhase: 0.4 });
+  if (grade) {   // 'pop': recolour ONLY the pale paper to a saturated radial gradient (figures and ink untouched)
+    const img = ctx.getImageData(0, 0, w, h), d = img.data;
+    const paper = [246, 244, 238];
+    const stops = grade.stops ?? [[255, 244, 120], [255, 196, 30], [255, 120, 10]];
+    const gx = (grade.cx ?? 0.5) * w, gy = (grade.cy ?? 0.45) * h, R = Math.max(w, h) * (grade.r ?? 0.8);
+    const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      const wgt = sm(150, 215, Math.min(d[i], d[i + 1], d[i + 2]));
+      if (wgt <= 0) continue;
+      const t = Math.min(1, Math.hypot(x - gx, y - gy) / R) * 2;
+      const k = Math.min(1, t), a = stops[Math.min(1, Math.floor(t))], b = stops[Math.min(2, Math.floor(t) + 1)];
+      const f = t >= 1 ? t - 1 : t;
+      for (let c = 0; c < 3; c++) {
+        const g = (a[c] + (b[c] - a[c]) * f) * Math.min(1, d[i + c] / paper[c]);
+        d[i + c] = d[i + c] + (g - d[i + c]) * wgt;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  }
   window.__last = { miloP, ballP, s, cx, cy, E, simTime: sim.simTime };
   return canvas;
 };
