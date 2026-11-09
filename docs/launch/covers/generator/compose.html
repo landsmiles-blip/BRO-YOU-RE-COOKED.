@@ -1,0 +1,175 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>cover composer</title>
+<style>html,body{margin:0;background:#222;color:#ddd;font:12px monospace}canvas{display:block}</style></head>
+<body>
+<pre id="log">loading…</pre>
+<script src="/vendor/matter.min.js"></script>
+<script type="module">
+// Cover COMPOSER (9 Nov 2026). Unlike cover.html (which recolours the game's own page), this draws a designed
+// poster from the game's own drawing code: the notebook ink strokes, Milo's real rig, the real palette and the
+// game's embedded handwriting font. Scratch tool, not part of the game or the build. See DESIGN-BRIEF.md.
+import { buildSim, stepSim } from '/js/sim.js';
+import { A1 } from '/js/levels.js';
+import { drawMilo } from '/js/render/rig.js';
+import { inkPath, inkShape, circlePoints, hatchRect, rectPoints } from '/js/render/stroke.js';
+import { C } from '/js/render/palette.js';
+import { loadHandFont } from '/js/render/handfont.js';
+
+const log = (s) => { document.getElementById('log').textContent = s; };
+await loadHandFont();
+await document.fonts.ready;
+
+const sim = buildSim(A1);
+for (let g = 0; sim.simTime < 770 && g < 5000; g++) stepSim(sim);
+const milo = sim.milo;
+
+const INK = '#23262B';
+const rnd = (seed) => { let s = seed >>> 0; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; };
+
+/* ---------- small helpers ---------- */
+function at(ctx, x, y, k, fn, rot = 0) { ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(k, k); fn(); ctx.restore(); }
+
+function sunburst(ctx, w, h, cx, cy, { inner = '#CFF2FF', mid = '#4CC6FF', outer = '#1B7FE6', rays = 20, rayAlpha = 0.16, rot = 0.1 } = {}) {
+  const R = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy)) * 1.05;
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+  g.addColorStop(0, inner); g.addColorStop(0.42, mid); g.addColorStop(1, outer);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot); ctx.fillStyle = `rgba(255,255,255,${rayAlpha})`;
+  for (let i = 0; i < rays; i++) { const a0 = (i / rays) * Math.PI * 2, a1 = a0 + (Math.PI * 2) / rays / 2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a0) * R, Math.sin(a0) * R); ctx.lineTo(Math.cos(a1) * R, Math.sin(a1) * R); ctx.closePath(); ctx.fill(); }
+  ctx.restore();
+}
+function vignette(ctx, w, h, a = 0.28) {
+  const g = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.45, w / 2, h / 2, Math.hypot(w, h) * 0.62);
+  g.addColorStop(0, 'rgba(0,20,60,0)'); g.addColorStop(1, `rgba(0,20,60,${a})`); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+}
+function cloud(ctx, x, y, s, a = 0.85) {
+  ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = '#fff'; ctx.beginPath();
+  for (const [dx, dy, r] of [[0, 0, 1], [1.1, -0.35, 1.25], [2.3, 0, 1], [1.2, 0.35, 1.1]]) { const cx = x + dx * s, cy = y + dy * s, rr = r * s * 0.8; ctx.moveTo(cx + rr, cy); ctx.arc(cx, cy, rr, 0, Math.PI * 2); }
+  ctx.fill('nonzero'); ctx.restore();
+}
+function sticker(ctx, text, x, y, size, { fill = '#fff', outline = INK, shadow = '#0A3C8C', rot = 0, align = 'left' } = {}) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  ctx.font = `${size}px "Patrick Hand", "Comic Sans MS", sans-serif`; ctx.textAlign = align; ctx.textBaseline = 'alphabetic';
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const o = size * 0.1, b = size * 0.05;
+  ctx.fillStyle = shadow; ctx.strokeStyle = shadow; ctx.lineWidth = o * 2 + b * 2;
+  ctx.strokeText(text, size * 0.05, size * 0.07); ctx.fillText(text, size * 0.05, size * 0.07);
+  ctx.strokeStyle = outline; ctx.lineWidth = o * 2 + b; ctx.strokeText(text, 0, 0);
+  ctx.strokeStyle = fill; ctx.lineWidth = b * 1.1; ctx.strokeText(text, 0, 0);
+  ctx.fillStyle = fill; ctx.fillText(text, 0, 0);
+  ctx.restore();
+}
+function measure(ctx, text, size) { ctx.font = `${size}px "Patrick Hand", "Comic Sans MS", sans-serif`; return ctx.measureText(text).width; }
+
+/* ---------- the game's own parts, in world units (call inside at()) ---------- */
+function pillar(ctx, x0, y0, w, h) { inkShape(ctx, rectPoints(x0, y0, w, h), { fill: C.staticFill, ink: INK, width: 3.4, hatch: { colour: C.hatch }, salt: 11 }); }
+function ground(ctx, x0, y0, w, h) { inkShape(ctx, rectPoints(x0, y0, w, h), { fill: C.staticFill, ink: INK, width: 3.4, hatch: { colour: C.hatch }, salt: 12 }); }
+function blueLine(ctx, pts, { halo = true, width = 11 } = {}) {
+  if (halo) inkPath(ctx, pts, { colour: '#FFFFFF', width: width + 9, passes: 1, alpha: 0.95, salt: 31 });
+  inkPath(ctx, pts, { colour: C.stroke, width, passes: 2, salt: 32 });
+}
+function boulder(ctx, x, y, r, { crack = true } = {}) {
+  inkShape(ctx, circlePoints(x, y, r, 26), { fill: C.danger, ink: INK, width: 4.4, salt: 41 });
+  ctx.save(); ctx.globalAlpha = 0.34; ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.arc(x, y, r * 0.72, Math.PI * 1.08, Math.PI * 1.42); ctx.stroke(); ctx.restore();
+  if (crack) inkPath(ctx, [{ x: x + r * 0.05, y: y - r * 0.05 }, { x: x + r * 0.62, y: y - r * 0.02 }, { x: x + r * 0.78, y: y + r * 0.22 }], { colour: INK, width: 3.2, passes: 1, salt: 42 });
+}
+function pencil(ctx, x, y, rot, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s); ctx.lineWidth = 3.4; ctx.strokeStyle = INK; ctx.lineJoin = 'round';
+  const part = (fill, pts) => { ctx.beginPath(); pts.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py))); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.stroke(); };
+  part('#E9CFA8', [[0, 0], [24, -9], [24, 9]]); part(INK, [[0, 0], [8, -3], [8, 3]]);
+  part(C.anchor, [[24, -9], [96, -9], [96, 9], [24, 9]]); part('#B9BDC4', [[96, -9], [106, -9], [106, 9], [96, 9]]); part('#F2A9A0', [[106, -9], [118, -9], [118, 9], [106, 9]]);
+  ctx.restore();
+}
+function miloAt(ctx, x, y, { dir = 1, danger = 1, phase = 0.4, rot = 0 } = {}) {
+  milo.body.position.x = 0; milo.body.position.y = 0; milo.body.angle = 0; milo.danger = danger; milo.dir = dir;
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot); drawMilo(ctx, milo, 0, phase); ctx.restore();
+}
+function sweat(ctx, x, y, s = 1) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.fillStyle = '#E6F6FF'; ctx.strokeStyle = INK; ctx.lineWidth = 2.4; ctx.lineJoin = 'round';
+  ctx.beginPath(); ctx.moveTo(0, -9); ctx.quadraticCurveTo(7, 2, 0, 7); ctx.quadraticCurveTo(-7, 2, 0, -9); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+}
+function burst(ctx, x, y, r0, r1, n, fill) {
+  ctx.save(); ctx.translate(x, y); ctx.beginPath();
+  for (let i = 0; i < n * 2; i++) { const a = (i / (n * 2)) * Math.PI * 2, r = i % 2 ? r0 : r1; ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r); }
+  ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); ctx.restore();
+}
+
+/* ---------- concepts 1-3: THE LINE HOLDS / THE MOMENT BEFORE / CLOSE-UP ---------- */
+// scene units: line level LY at the pillar tops; ground y=+96; Milo (scaled MS) stands on the ground.
+// SAFE ZONE: Playgama's card box is about 221x148, so a 16:9 image is cut ~8% each side; keep landscape content inside x 9%..91%.
+function lineScene(ctx, w, h, fmt, opts = {}) {
+  const lettered = opts.title !== false, bg = opts.bg ?? {};
+  const lift = typeof opts.lift === 'object' ? (opts.lift[fmt] ?? 0) : (opts.lift ?? 0);
+  const LY = opts.LY ?? -32, GY = 96, GT = 18, PX0 = 62, PX1 = 96, bY = LY - 3 - 46 - lift, MS = opts.MS ?? 1.15;
+  const GH = fmt === 'portrait' ? 102 : 125;
+  const top = bY - 46 - (lift ? 40 : 0), bottom = GY + 8;
+  const mid = opts.ay ?? (top + bottom) / 2;
+  const base = { landscape: { k: 3.6, sx: 0.69 * w, ay: 0.5 }, portrait: { k: 4.55, sx: 0.5 * w, ay: 0.625 }, square: { k: 3.0, sx: 0.5 * w, ay: 0.46 } }[fmt];
+  const k = opts.k?.[fmt] ?? base.k, sx = opts.sx?.[fmt] ?? base.sx;
+  const sy = (opts.ayf?.[fmt] ?? base.ay) * h - k * mid;
+  sunburst(ctx, w, h, sx, sy + k * (top + bottom) / 2 * 0.6, { rot: 0.12, ...bg });
+  cloud(ctx, w * (fmt === 'landscape' ? 0.12 : 0.08), h * 0.14, h * 0.045); cloud(ctx, w * 0.9, h * (fmt === 'portrait' ? 0.36 : 0.12), h * 0.035, 0.7);
+  at(ctx, sx, sy, k, () => {
+    ctx.save(); ctx.fillStyle = 'rgba(8,30,80,0.20)'; ctx.beginPath(); ctx.ellipse(0, GY + 4, 74, 7, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+    ground(ctx, -GH, GY, GH * 2, GT);
+    pillar(ctx, -PX1, LY, PX1 - PX0, GY - LY); pillar(ctx, PX0, LY, PX1 - PX0, GY - LY);
+    ctx.save(); ctx.fillStyle = 'rgba(8,30,80,0.30)'; ctx.beginPath(); ctx.ellipse(-8, GY, 30 * MS / 1.15, 4.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  });
+  at(ctx, sx, sy, k, () => {
+    ctx.save(); ctx.translate(-8, GY - 36 * MS); ctx.scale(MS, MS); miloAt(ctx, 0, 0, { dir: 1, danger: 1 }); ctx.restore();
+    sweat(ctx, -42, GY - 58 * MS / 1.15, 1.25); sweat(ctx, 28, GY - 64 * MS / 1.15, 1.05);
+  });
+  at(ctx, sx, sy, k, () => {
+    blueLine(ctx, [{ x: -PX1 + 8, y: LY }, { x: -48, y: LY + 4 }, { x: 0, y: LY + 7 - (lift ? 3 : 0) }, { x: 48, y: LY + 4 }, { x: PX1 - 8, y: LY }], { width: 11 });
+    if (lift) { // fall streaks above the boulder: varied lengths, thin, slightly splayed
+      ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,0.92)'; ctx.lineCap = 'round';
+      for (const [dx, y0, len, wd] of [[-34, 62, 34, 4.2], [-17, 70, 52, 4.6], [0, 66, 40, 4], [17, 72, 56, 4.6], [34, 62, 30, 4.2]]) { ctx.lineWidth = wd; ctx.beginPath(); ctx.moveTo(dx * 1.04, bY - y0 - len); ctx.lineTo(dx, bY - y0); ctx.stroke(); }
+      ctx.restore();
+    }
+    boulder(ctx, 0, bY, 46);
+    if (opts.pencil !== false) pencil(ctx, PX1 - 7, LY - 1, -1.2, 0.5);
+  });
+  vignette(ctx, w, h, 0.22);
+  if (lettered) {
+    if (fmt === 'landscape') {
+      const s = (opts.ts ?? 0.172) * h, x = 0.095 * w;
+      sticker(ctx, 'BRO,', x, 0.30 * h, s * 0.95, { fill: '#fff', rot: -0.03 });
+      sticker(ctx, "YOU'RE", x, 0.53 * h, s, { fill: '#fff', rot: -0.03 });
+      sticker(ctx, 'COOKED.', x, 0.78 * h, s * 1.1, { fill: '#FFE14A', rot: -0.03 });
+    } else if (fmt === 'portrait') {
+      sticker(ctx, "BRO, YOU'RE", w / 2, 0.100 * h, 0.082 * h, { fill: '#fff', align: 'center', rot: -0.02 });
+      sticker(ctx, 'COOKED.', w / 2, 0.205 * h, 0.125 * h, { fill: '#FFE14A', align: 'center', rot: -0.02 });
+    } else {
+      sticker(ctx, 'COOKED.', w / 2, 0.945 * h, 0.2 * h, { fill: '#FFE14A', align: 'center' });
+    }
+  }
+}
+const concept1 = (ctx, w, h, fmt, o = {}) => lineScene(ctx, w, h, fmt, { lift: 0, ...o });
+const concept2 = (ctx, w, h, fmt, o = {}) => lineScene(ctx, w, h, fmt, { lift: { landscape: 30, portrait: 18, square: 20 }, k: { square: 2.75 }, ...o });
+// close-up: giant Milo under the line, the boulder looming; pillars and ground cropped by the frame
+const concept3 = (ctx, w, h, fmt, o = {}) => lineScene(ctx, w, h, fmt, {
+  lift: { landscape: 0, portrait: 0, square: 0 }, MS: 1.45, LY: -54, pencil: false, ay: -22,
+  k: { landscape: 4.6, portrait: 5.6, square: 3.9 }, sx: { landscape: 0.68 * w, portrait: 0.5 * w, square: 0.5 * w }, ts: 0.158,
+  ayf: { landscape: 0.44, portrait: 0.60, square: 0.47 }, ...o });
+
+window.CONCEPTS = { c1: concept1, c2: concept2, c3: concept3 };
+window.renderConcept = (id, w, h, fmt, opts = {}) => {
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const ctx = c.getContext('2d', { alpha: false });
+  window.CONCEPTS[id](ctx, w, h, fmt, opts); return c;
+};
+window.showConcept = (id, w, h, fmt, opts = {}) => {
+  const c = window.renderConcept(id, w, h, fmt, opts);
+  document.querySelectorAll('canvas').forEach((x) => x.remove());
+  c.style.maxWidth = '1500px'; c.style.maxHeight = '86vh'; document.body.appendChild(c); return 'shown ' + w + 'x' + h;
+};
+window.saveConcept = async (name, id, w, h, fmt, opts = {}) => {
+  const c = window.renderConcept(id, w, h, fmt, opts);
+  const blob = await new Promise((r) => c.toBlob(r, 'image/png'));
+  const res = await fetch('/save?name=' + encodeURIComponent(name), { method: 'POST', body: blob });
+  return (await res.text()) + ' ' + w + 'x' + h;
+};
+log('ready'); window.__ready = true;
+</script>
+</body></html>
