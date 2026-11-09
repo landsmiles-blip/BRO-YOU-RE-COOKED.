@@ -1,0 +1,110 @@
+[
+ {
+  "engine": "chromium",
+  "view": "portrait",
+  "size": "405x720",
+  "boot": "frozen",
+  "fps": 100.3,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":\"running\",\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":15,\"music\":true}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "chromium",
+  "view": "landscape",
+  "size": "1280x720",
+  "boot": "frozen",
+  "fps": 100.3,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":\"running\",\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":15,\"music\":true}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "chromium",
+  "view": "square",
+  "size": "800x800",
+  "boot": "frozen",
+  "fps": 100,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":\"running\",\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":15,\"music\":true}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "firefox",
+  "view": "portrait",
+  "size": "405x720",
+  "boot": "frozen",
+  "fps": 100.1,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":\"running\",\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":15,\"music\":true}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "firefox",
+  "view": "landscape",
+  "size": "1280x720",
+  "boot": "frozen",
+  "fps": 100.2,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":\"running\",\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":15,\"music\":true}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "firefox",
+  "view": "square",
+  "size": "800x800",
+  "boot": "frozen",
+  "fps": 100.2,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":\"running\",\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":15,\"music\":true}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "webkit",
+  "view": "portrait",
+  "size": "405x720",
+  "boot": "frozen",
+  "fps": 176.3,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":null,\"enabled\":false,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "webkit",
+  "view": "landscape",
+  "size": "1280x720",
+  "boot": "frozen",
+  "fps": 87.9,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":null,\"enabled\":false,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "errors": "none",
+  "failedRequests": "none"
+ },
+ {
+  "engine": "webkit",
+  "view": "square",
+  "size": "800x800",
+  "boot": "frozen",
+  "fps": 92.1,
+  "audioBefore": "{\"ctx\":null,\"enabled\":true,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "phaseAfter": "result",
+  "audioAfter": "{\"ctx\":null,\"enabled\":false,\"suspended\":false,\"hasBed\":false,\"sampleMode\":true,\"samples\":0,\"music\":false}",
+  "errors": "none",
+  "failedRequests": "none"
+ }
+]
