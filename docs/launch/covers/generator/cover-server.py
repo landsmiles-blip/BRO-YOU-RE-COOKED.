@@ -27,6 +27,8 @@ class H(http.server.BaseHTTPRequestHandler):
         p = urllib.parse.urlparse(self.path).path
         if p in ('/', '/cover.html'):
             f = os.path.join(HERE, 'cover.html')
+        elif re.fullmatch(r'/[A-Za-z0-9_-]+\.(html|mjs)', p):
+            f = os.path.join(HERE, p.lstrip('/'))
         elif p.startswith(('/js/', '/vendor/', '/css/')):
             f = os.path.normpath(os.path.join(REPO, p.lstrip('/')))
             if not f.startswith(os.path.normpath(REPO)):
