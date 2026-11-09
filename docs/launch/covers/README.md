@@ -1,4 +1,6 @@
-# Covers for the Playgama form (text-free)
+# Covers for the Playgama form
+
+**9 Nov 2026 (newest): the owner picked CONCEPT 3 (close-up, lettered 'BRO, YOU'RE COOKED.') from `candidates-20261109/`; all three sizes are confirmed in the BYC draft's slots (media ids `cmw8qcgh425...` square, `cmw8qcguj20...` portrait, `cmw8qch2i25...` landscape), replacing the 6 Nov 'pop' set. The text below describes the EARLIER sets (6 Nov), kept as history; the files named `byc-cover-*.png` here are the old 'pop' set, not what is uploaded now. Text-free C3 files exist for the YouTube hub.**
 
 **UPLOADED to the BYC draft on 6 Nov 2026 (media ids `cmw4qs0nz...`, `cmw4qs10o...`, `cmw4qs1dj...`): the "pop" set below, the files named `byc-cover-*.png`.** The owner asked for the MrBeast structure; the research measured it on 44 of his thumbnails (`docs/research/most-played/mrbeast-case-study.md` 3.3): a large face, high-arousal expression, saturated primaries on a bright background, 1-2 words of text or none. The pop set follows that with the game's own art: Milo's scream is large, the sky-blue background is a recolour of the paper only (`grade` option in `generator/cover.html`; figures and ink untouched), red boulder, blue line, no text. It copies no person's face or specific thumbnail. The earlier paper-background set is kept as `alt/*-catch-paper.png`.
 
