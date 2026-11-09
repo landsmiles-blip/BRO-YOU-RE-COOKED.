@@ -5,6 +5,8 @@ Phase A and B are DONE and committed: three verified helper reports (`agents/`),
 
 **9 Nov, later:** with the owner's go-ahead the zip `byc-1.0.2-playgama` (492,072 B, archive `cmw8qitr520q9mt0hm3r40acu`) was uploaded and PASSED Playgama's build check (Bridge 2.4.1 found, load 307 ms); form saved: description and how-to-play (variant A, no 'free' and no sound claim), category puzzle, devices desktop + iOS + Android, both orientations, English; distribution fields untouched (owner's earlier answer was ambiguous). The `sandbox` step is now TODO (`publish_sandbox` needs the owner's explicit yes). `story` is still empty: it must be real facts from the developer, a draft is awaiting the owner's approval. The `form` step for the tool still says NO_CERTIFICATION (a human play-through in Playgama's QA tool) but the form saved anyway.
 
+**9 Nov, evening:** the owner published the Sandbox in the console (live 04:05 UTC; https://playgama.ai/play/t527kwsjbecj3s). First real data and the real Sandbox targets are in `docs/research/data/sandbox-first-day-20261109.md`. The free traffic boost (3 runs, 3 days and about 50 plays each) is still unstarted and needs the owner's explicit yes.
+
 ## (history) Paused 6 Nov 2026, ~16:30 +07 by the owner's request, to move to another computer
 
 Approved plan: `PLAN.md` in this folder (phases 0-4). Phase 0 is done, Phase 1 was started, nothing after that. NOTHING new has been uploaded to Playgama since the covers described below.
